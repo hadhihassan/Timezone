@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/Customer/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/Customer/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/Customer/css/flaticon.css">
+    <link rel="stylesheet" href="/Customer/css/slicknav.css">
+    <link rel="stylesheet" href="/Customer/css/animate.min.css">
+    <link rel="stylesheet" href="/Customer/css/magnific-popup.css">
+    <link rel="stylesheet" href="/Customer/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="/Customer/css/themify-icons.css">
+    <link rel="stylesheet" href="/Customer/css/slick.css">
+    <link rel="stylesheet" href="/Customer/css/nice-select.css">
+    <link rel="stylesheet" href="/Customer/css/style.css">
+    <link rel="stylesheet" href="/Customer/css/button.css">
+</head>
+
+<body>
+    <%- include('../../partials/Customerside/header') %>
+        <div class="container">
+            <div class="shadow p-3 mb-5 bg-body rounded text-center">
+                <br>
+                <h3 class="text-black">Order Summary</h3>
+                <br>
+            </div>
+            <br>
+            <div class="row">
+                <br>
+                <% userOrder.forEach((order,i)=> { %>
+                    <div class="col-md-4">
+                        <div class="shadow card" style="width: 23rem;">
+                            <!-- Delivery Address -->
+                            <div class="text-center ">
+                                <br>
+                                <form action="/user/profile/show-product-details/" method="post">
+                                    <input type="hidden" name="Products" value="<%= userOrder[i]._id %>">
+                                    <button class="shadow-lg  btn_1">Show Product details</button>
+                                </form>
+                                <br>
+                            </div>
+
+                            <hr>
+                            <div class="card-body">
+                                <h5>Delivery Address</h5>
+                                <h6 class="card-text">
+                                    <%= order.deliveryAddress.Name %>
+                                </h6>
+                                <p>
+                                    <%= order.deliveryAddress.HouseName %>
+                                        <%= order.deliveryAddress.RoadArea %>
+                                            <%= order.deliveryAddress.City %>
+                                                <%= order.deliveryAddress.Region %>
+                                                    <%= order.deliveryAddress.Country %> <br>
+                                                        <%= order.deliveryAddress.PinCode %> <br>
+                                                            <%= order.deliveryAddress.Mobile %>
+                                </p>
+                            </div>
+                            <ul class="list-group list-group-light list-group-small">
+                                <li class="list-group-item px-4">
+                                    <h5>Delivery Date <sup class="text-success">(expecting)</sup></h5>
+                                    <p>
+                                        <%= order.deliveryDate %>
+                                    </p>
+                                </li>
+                                <% if (order.orderCanceled==false) { %>
+
+
+                                    <li class="list-group-item px-4 ">
+                                        <% if (order.returnRequest==="Pending" ) { %>
+                                            Status : <span class="text-info">
+                                                <%= order.returnRequest %>
+                                            </span>
+                                            <% } else if (order.returnRequest==="Reject" ) { %>
+                                                Status : <span class="text-danger">
+                                                    <%= order.returnRequest %>
+                                                </span>
+                                                <% } else { %>
+                                                    Status : <span class="text-success">
+                                                        <%= order.returnRequest %>
+                                                    </span>
+                                                    <% } %>
+                                    </li>
+                                    <% if (order.returnRequest==="Approved" || order.returnRequest==="Pending" ) { %>
+                                        <!-- Conditional rendering for Order Cancel button -->
+                                        <li class="list-group-item px-4 text-center">
+                                            <form action="/user/order/Cancel/" method="post">
+                                                <input type="hidden" name="orderId" value="<%= order._id %>">
+                                                <button class="btn_1">Order Cancel</button>
+                                            </form>
+                                        </li>
+                                        <% } %>
+                                            <% if (order.returnRequest==="Completed" ) { %>
+                                                <li class="list-group-item px-4  text-center">
+                                                    <button class="btn_1">Return Product</button>
+                                                </li>
+                                                <% } %>
+
+                                                    <% } else { %>
+                                                        <div class="text-center">
+                                                            <br>
+                                                            <h3 class="text-center text-danger">Order Canceld</h3>
+                                                            <br>
+
+                                                        </div>
+                                                        <% } %>
+
+
+                            </ul>
+                        </div>
+                        <br>
+                        <br>
+
+                    </div>
+                    <% }) %>
+            </div>
+        </div>
+
+
+        <%- include('../../partials/Customerside/footer') %>
+
+
+
+
+            <script src="/Customer/js/vendor/modernizr-3.5.0.min.js"></script>
+            <!-- Jquery, Popper, Bootstrap -->
+            <script src="/Customer/js/vendor/jquery-1.12.4.min.js"></script>
+            <script src="/Customer/js/popper.min.js"></script>
+            <script src="/Customer/js/bootstrap.min.js"></script>
+            <!-- Jquery Mobile Menu -->
+            <script src="/Customer/js/jquery.slicknav.min.js"></script>
+
+            <!-- Jquery Slick , Owl-Carousel Plugins -->
+            <script src="/Customer/js/owl.carousel.min.js"></script>
+            <script src="/Customer/js/slick.min.js"></script>
+
+            <!-- One Page, Animated-HeadLin -->
+            <script src="/Customer/js/wow.min.js"></script>
+            <script src="/Customer/js/animated.headline.js"></script>
+            <script src="/Customer/js/jquery.magnific-popup.js"></script>
+
+            <!-- Scrollup, nice-select, sticky -->
+            <script src="/Customer/js/jquery.scrollUp.min.js"></script>
+            <script src="/Customer/js/jquery.nice-select.min.js"></script>
+            <script src="/Customer/js/jquery.sticky.js"></script>
+
+            <!-- contact js -->
+            <script src="/Customer/js/contact.js"></script>
+            <script src="/Customer/js/jquery.form.js"></script>
+            <script src="/Customer/js/jquery.validate.min.js"></script>
+            <script src="/Customer/js/mail-script.js"></script>
+            <script src="/Customer/js/jquery.ajaxchimp.min.js"></script>
+
+            <!-- Jquery Plugins, main Jquery -->
+            <script src="/Customer/js/plugins.js"></script>
+            <script src="/Customer/js/main.js"></script>
+</body>
+
+</html>

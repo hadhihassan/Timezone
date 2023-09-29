@@ -1,0 +1,288 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Watch shop | eCommers</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="shortcut icon" type="image/x-icon" href="/Customer/img/favicon.ico">
+
+    <!-- CSS here -->
+        <link rel="stylesheet" href="/Customer/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/Customer/css/owl.carousel.min.css">
+        <link rel="stylesheet" href="/Customer/css/flaticon.css">
+        <link rel="stylesheet" href="/Customer/css/slicknav.css">
+        <link rel="stylesheet" href="/Customer/css/animate.min.css">
+        <link rel="stylesheet" href="/Customer/css/magnific-popup.css">
+        <link rel="stylesheet" href="/Customer/css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="/Customer/css/themify-icons.css">
+        <link rel="stylesheet" href="/Customer/css/slick.css">
+        <link rel="stylesheet" href="/Customer/css/nice-select.css">
+        <link rel="stylesheet" href="/Customer/css/style.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+
+<body>
+    <!--? Preloader Start -->
+    <div id="preloader-active">
+        <div class="preloader d-flex align-items-center justify-content-center">
+            <div class="preloader-inner position-relative">
+                <div class="preloader-circle"></div>
+                <div class="preloader-img pere-text">
+                    <img src="/Customer/img/logo/logo.png" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Preloader Start -->
+    <header>
+        <!-- Header Start -->
+        <%- include('../partials/Customerside/header') %>
+      
+        <!-- Header End -->
+    </header>
+    <main>
+        <!-- Hero Area Start-->
+        <div class="slider-area ">
+            <div class="single-slider slider-height2 d-flex align-items-center">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="hero-cap text-center">
+                                <h2>Watch Shop</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+     
+        <!-- Hero Area End-->
+        <!-- Latest Products Start -->
+        <section class="popular-items latest-padding">
+            <div class="container">
+                <div class="row product-btn justify-content-between mb-40">
+                    <div class="properties__button">
+                        <!--Nav Button  -->
+                        <nav>                                                      
+                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">NewestArrivals</a>
+                                <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false"> Price high to low</a>
+                                <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false"> Most populer </a>
+                            </div>
+                        </nav>
+                        <!--End Nav Button  -->
+                    </div>
+                    <!-- Grid and List view -->
+                    <div class="grid-list-view">
+                    </div>
+                    <!-- Select items -->
+                    <div class="select-this">
+                        <form action="#">
+                            <div class="select-itms">
+                                <select name="select" id="select1">
+                                    <option value="">40 per page</option>
+                                    <option value="">50 per page</option>
+                                    <option value="">60 per page</option>
+                                    <option value="">70 per page</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                      <!-- success message -->
+           <% if (success && success.length > 0) { %>
+            <div class="alert alert-succes text-center  " id="success-message">
+                <% success.forEach(function(message) { %>
+                    <p style="color: rgb(255, 0, 0);"><%= message %></p>
+                <% }); %>
+            </div>
+            <script>
+                // Add a timeout to hide the success message after 3 seconds (adjust as needed)
+                setTimeout(function() {
+                    var successMessage = document.getElementById('success-message');
+                    if (successMessage) {
+                        successMessage.style.display = 'none';
+                    }
+                }, 5000); // 3000 milliseconds (3 seconds)
+            </script>
+        <% } %>
+                <!-- Nav Card -->
+                <div class="tab-content" id="nav-tabContent">
+                 
+                    <!-- card one -->
+                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                        <div class="row">
+                            
+                            <% for (let product = 0; product < products.length; product += 3) { %>
+                            <!-- Start of product group -->
+                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
+                                <div class="single-popular-items mb-50 text-center">
+                                    <div class="popular-img">
+                                        <a href="/user/displayProduct?productId=<%= products[product]._id %>">
+                                            <img src="data:<%= products[product].images[0].contentType %>;base64,<%= products[product].images[0].data.toString('base64') %>" alt="<%= products[product].price %> Image" >
+                                        </a>
+
+                                        <% if (products[product].stock_count > 0) { %>
+                                            <div class="img-cap">
+                                                <a href="/user/product/addcart?productId=<%= products[product]._id %>">
+                                                    <span>Add to cart</span>
+                                                </a>
+                                            </div>
+                                        <% } else { %>
+                                            <div class="img-cap">
+                                                <span>Out Of stock</span>   
+                                            </div>
+                                        <% } %>
+                                        
+                                        
+                                        <div class="favorit-items">
+                                            <span class="flaticon-heart"></span>
+                                        </div>
+                                    </div>
+                                    <div class="popular-caption">
+                                        <h3><a><%= products[product].product_name %></a></h3>
+                                        <span> $ <%= products[product].price %></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <% if (product + 1 < products.length) { %>
+                            <!-- Product 2 (if available) -->
+                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
+                                <div class="single-popular-items mb-50 text-center">
+                                    <div class="popular-img">
+                                        <a href="/user/displayProduct?productId=<%= products[product + 1]._id %>">
+                                            <input type="hidden" name="productID" value="<%= product._id %>">
+                                            <img src="data:<%= products[product + 1].images[0].contentType %>;base64,<%= products[product + 1].images[0].data.toString('base64') %>" alt="<%= products[product + 1].price %> Image" >
+                                        </a>
+                                        
+                                        <% if (products[product + 1].stock_count > 0) { %>
+                                            <div class="img-cap">
+                                                <a href="/user/product/addcart?productId=<%= products[product +1]._id %>">
+                                                    <span>Add to cart</span>
+                                                </a>
+                                            </div>
+                                        <% } else { %>
+                                            <div class="img-cap">
+                                                <span>Out Of stock</span>
+                                            </div>
+                                        <% } %>
+                                        <div class="favorit-items">
+                                            <span class="flaticon-heart"></span>
+                                        </div>
+                                    </div>
+                                    <div class="popular-caption">
+                                        <h3><a ><%= products[product + 1].product_name %></a></h3>
+                                        <span>$<%= products[product + 1].price %></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <% } %>
+                            <% if (product + 2 < products.length) { %>
+                            <!-- Product 3 (if available) -->
+                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
+                                <div class="single-popular-items mb-50 text-center">
+                                    <div class="popular-img">
+                                        <a href="/user/displayProduct?productId=<%= products[product + 2]._id %>">
+                                            <input type="hidden" name="productID" value="<%= product._id %>">
+                                            <img src="data:<%= products[product + 2].images[0].contentType %>;base64,<%= products[product + 2].images[0].data.toString('base64') %>" alt="<%= products[product + 2].price %> Image" >
+                                        </a>
+                                        
+                                        <% if (products[product + 2].stock_count > 0) { %>
+                                            <div class="img-cap">
+                                                <a href="/user/product/addcart?productId=<%= products[product + 2]._id %>">
+                                                    <span>Add to cart</span>
+                                                </a>
+                                            </div>
+                                        <% } else { %>
+                                            <div class="img-cap">
+                                                <span>Out Of stock</span>
+                                            </div>
+                                        <% } %>
+                                        <div class="favorit-items">
+                                            <span class="flaticon-heart"></span>
+                                        </div>
+                                    </div>
+                                    <div class="popular-caption">
+                                        <h3><a href="product_details.html"><%= products[product + 2].product_name %></a></h3>
+                                        <span>$<%= products[product + 2].price %></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <% } %>
+                            <!-- End of product group -->
+                            <% } %>
+                        </div>
+                        
+                    </div>      
+                    <!-- Card two -->
+                  
+           
+                    <!-- Card three -->
+              
+                <!-- End Nav Card -->
+            </div>
+        </section>
+        <!-- Latest Products End -->
+        <!--? Shop Method Start-->
+        <%- include('../partials/Customerside/shopMethods') %>
+        <!-- Shop Method End-->
+    </main>
+    <footer>
+        <!-- Footer Start-->
+        <%- include('../partials/Customerside/footer') %>
+        <!-- Footer End-->
+    </footer>
+    <!--? Search model Begin -->
+    <div class="search-model-box">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="search-close-btn">+</div>
+            <form class="search-model-form">
+                <input type="text" id="search-input" placeholder="Searching key.....">
+            </form>
+        </div>
+    </div>
+    <!-- Search model end -->
+
+<!-- JS here -->
+    <!-- All JS Custom Plugins Link Here here -->
+    <script src="/Customer/js/vendor/modernizr-3.5.0.min.js"></script>
+    <!-- Jquery, Popper, Bootstrap -->
+    <script src="/Customer/js/vendor/jquery-1.12.4.min.js"></script>
+    <script src="/Customer/js/popper.min.js"></script>
+    <script src="/Customer/js/bootstrap.min.js"></script>
+    <!-- Jquery Mobile Menu -->
+    <script src="/Customer/js/jquery.slicknav.min.js"></script>
+
+    <!-- Jquery Slick , Owl-Carousel Plugins -->
+    <script src="/Customer/js/owl.carousel.min.js"></script>
+    <script src="/Customer/js/slick.min.js"></script>
+
+    <!-- One Page, Animated-HeadLin -->
+    <script src="/Customer/js/wow.min.js"></script>
+    <script src="/Customer/js/animated.headline.js"></script>
+    <script src="/Customer/js/jquery.magnific-popup.js"></script>
+
+    <!-- Scroll up, nice-select, sticky -->
+    <script src="/Customer/js/jquery.scrollUp.min.js"></script>
+    <script src="/Customer/js/jquery.nice-select.min.js"></script>
+    <script src="/Customer/js/jquery.sticky.js"></script>
+    
+    <!-- contact js -->
+    <script src="/Customer/js/contact.js"></script>
+    <script src="/Customer/js/jquery.form.js"></script>
+    <script src="/Customer/js/jquery.validate.min.js"></script>
+    <script src="/Customer/js/mail-script.js"></script>
+    <script src="/Customer/js/jquery.ajaxchimp.min.js"></script>
+    
+    <!-- Jquery Plugins, main Jquery -->	
+    <script src="/Customer/js/plugins.js"></script>
+    <script src="/Customer/js/main.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/Customer/js/memoryreload.js"></script>
+    
+</body>
+</html>

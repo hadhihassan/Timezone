@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Corona Admin</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="/Admin/vendors/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="/Admin/vendors/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <link rel="stylesheet" href="/Admin/vendors/jvectormap/jquery-jvectormap.css">
+    <link rel="stylesheet" href="/Admin/vendors/flag-icon-css/css/flag-icon.min.css">
+    <link rel="stylesheet" href="/Admin/vendors/owl-carousel-2/owl.carousel.min.css">
+    <link rel="stylesheet" href="/Admin/vendors/owl-carousel-2/owl.theme.default.min.css">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <!-- endinject -->
+    <!-- Layout styles -->
+    <link rel="stylesheet" href="/Admin/css/style.css">
+    <!-- End layout styles -->
+    <link rel="shortcut icon" href="/Admin/images/favicon.png" />
+  </head>
+  <body>
+    <div class="container-scroller">
+      <%- include('../partials/Adminside/adminsidepanel') %>
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <!-- partial:partials/_navbar.html -->
+       <%- include('../partials/Adminside/adminNav') %>
+        <!-- partial -->
+        <div class="main-panel">   
+          <div class="content-wrapper">
+              <div class="row">
+                 <div class="col-lg-12 grid-margin stretch-card">
+                  <div class="card">
+                    <div class="card-body">
+                      <h4 class="card-title">Add Category</h4>
+                      <a href="/admin/product/Category-management" >Back to   Category</a>
+                      </p>
+                    </div>  
+                  </div> 
+                </div>
+                <div class="col-md-12 grid-margin stretch-card">
+                    <div class="card">
+                      <div class="card-body">
+                         <form action="/admin/Category/Edit-Category?id=<%= id%>" method="post" enctype="multipart/form-data">
+                            
+                            <div class="form-group">
+                                <label>images upload :</label>
+                                <div class="input-group col-xs-12">
+                                  <input type="file" name="image" class="form-control" id="basic-default-name"
+                                  placeholder="Brand name of the product"  />
+                                </div>
+                                
+                              </div>
+
+                              <div class="form-group">
+                                <label for="exampleInputCity1">Category Name :</label>
+                                <input type="text" class="form-control" name="Categoryname" value="<%= EditCategory.categoryName %>"  id="exampleInputCity1" placeholder="Category name" required>
+                              </div>
+
+                              <!-- <div class="form-group">
+                                <label for="exampleInputCity1">Sub-Category Name :</label>
+                                <input type="text" class="form-control" name="SubCategoryname"  id="exampleInputCity1" placeholder="Sub-Category name" required>
+                              </div> -->
+
+                              <div class="form-group">
+                                <label for="exampleInputCity1">Description : </label>
+                                <input type="text" class="form-control" name="description"  value="<%= EditCategory.description %>"   id="exampleInputCity1" placeholder="enter description" required>
+                              </div>
+                             
+                              <button type="submit" class="btn btn-primary mb-4">Edit</button>
+                              <div>
+                                <% if (typeof message !="undefined" ) {%>
+
+                                  <p class="mt-3 text-info ">
+                                      <%= message %>
+                                  </p>
+
+                                  <%} %>
+                              </div>
+                         </form>
+                      </div>
+                    </div>
+                  </div>
+                </div> 
+
+          </div>
+          
+          <!-- content-wrapper ends -->
+          <!-- partial:../../partials/_footer.html -->
+
+          <footer class="footer">
+            <div class="d-sm-flex justify-content-center justify-content-sm-between">
+              <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © bootstrapdash.com 2020</span>
+              <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin templates</a> from Bootstrapdash.com</span>
+            </div>
+          </footer>
+          <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
+      </div>
+      <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+ <!-- plugins:js -->
+ <script src="/Admin/vendors/js/vendor.bundle.base.js"></script>
+ <!-- endinject -->
+ <!-- Plugin js for this page -->
+ <script src="/Admin/vendors/chart.js/Chart.min.js"></script>
+ <script src="/Admin/vendors/progressbar.js/progressbar.min.js"></script>
+ <script src="/Admin/vendors/jvectormap/jquery-jvectormap.min.js"></script>
+ <script src="/Admin/vendors/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+ <script src="/Admin/vendors/owl-carousel-2/owl.carousel.min.js"></script>
+ <!-- End plugin js for this page -->
+ <!-- inject:js -->
+ <script src="/Admin/js/off-canvas.js"></script>
+ <script src="/Admin/js/hoverable-collapse.js"></script>
+ <script src="/Admin/js/misc.js"></script>
+ <script src="/Admin/js/settings.js"></script>
+ <script src="/Admin/js/todolist.js"></script>
+ <!-- endinject -->
+ <!-- Custom js for this page -->
+ <script src="/Admin/js/dashboard.js"></script>
+  </body>
+</html>

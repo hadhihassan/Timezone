@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Corona Admin</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="../../Admin/vendors/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="../../Admin/vendors/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <!-- End Plugin css for this page -->
+    <!-- inject:css -->
+    <!-- endinject -->
+    <!-- Layout styles -->
+    <link rel="stylesheet" href="../../Admin/css/style.css">
+    <!-- End layout styles -->
+    <link rel="shortcut icon" href="../../Admin/images/favicon.png" />
+</head>
+
+<body>
+    <div class="container-scroller">
+        <!-- partial:../../partials/_sidebar.html -->
+        <%- include('../partials/Adminside/adminsidepanel') %>
+            <!-- partial -->
+            <!-- partial -->
+            <div class="container-fluid page-body-wrapper">
+                <%- include('../partials/Adminside/adminNav') %>
+                    <!-- partial -->
+                    <div class="main-panel">
+
+                        <div class="content-wrapper">
+                            <ul class="navbar-nav w-100">
+                                <li class="nav-item w-100">
+                                    <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
+                                        <input type="text" class="form-control" placeholder="Search products">
+                                    </form>
+                                </li>
+                            </ul>
+
+                            <div class="row">
+                                <div class="col-lg-12 grid-margin stretch-card">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Order Table</h4>
+                                            <p class="card-description"> All Orders <code>.table</code>
+                                            </p>
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>No</th>
+                                                            <th>Customer</th>
+                                                            <th>Products Name & Quantity</th>
+                                                            <th>Address</th>
+                                                            <th>Total</th>
+                                                            <th>Status</th>
+                                                            <th>Payment Option</th>
+                                                            <!-- <th>Show Details</th> -->
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <% orders.forEach((order,i)=> { %>
+                                                            <tr>
+                                                                <td>
+                                                                    <%= i+1 %>
+                                                                </td>
+                                                                <td>
+                                                                    <div>
+                                                                        <img
+                                                                            src="data:<%= order.user.image.contentType %>;base64,<%= order.user.image.data.toString('base64') %>">
+                                                                        <br>
+                                                                        <br>
+                                                                        <h6>
+                                                                            <%= order.user.name %>
+                                                                        </h6>
+                                                                        <p>
+                                                                            <%= order.user.email %>
+                                                                        </p>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <% order.products.forEach((pro,i)=> { %>
+                                                                        <div>
+                                                                            <h6>
+                                                                                <%= i+1 %> ) <%=
+                                                                                        pro.product.product_name %> :
+                                                                                        <%=pro.quantity %>, <br>
+                                                                            </h6>
+                                                                        </div> <br>
+                                                                        <% }) %>
+                                                                </td>
+                                                                <td>
+                                                                    <h6>
+                                                                        <%= order.deliveryAddress.HouseName %>
+                                                                            <%= order.deliveryAddress.RoadArea %>
+                                                                                <%= order.deliveryAddress.City %>
+                                                                                    <%= order.deliveryAddress.Region %>
+                                                                                        <br>
+                                                                                        <%=
+                                                                                            order.deliveryAddress.Country%>
+                                                                                            <%=
+                                                                                                order.deliveryAddress.PinCode%>
+                                                                                                <br>
+                                                                                                <%=
+                                                                                                    order.deliveryAddress.Mobile%>
+                                                                    </h6>
+                                                                </td>
+                                                                <td>
+                                                                    <h6>
+                                                                        $ <%= order.totalAmount %>
+                                                                    </h6>
+                                                                </td>
+                                                                <td>
+                                                                    <% if (order.orderCanceled==true){ %>
+                                                                        <h6 class="text-danger"> Order Canceled</h6>
+                                                                        <% } else { %>
+                                                                            <div class="btn-group">
+                                                                                <button type="button"
+                                                                                    class="btn btn-danger">
+                                                                                    <%= order.returnRequest %>
+                                                                                </button>
+                                                                                <button type="button"
+                                                                                    class="btn btn-danger dropdown-toggle dropdown-toggle-split"
+                                                                                    data-toggle="dropdown"
+                                                                                    aria-haspopup="true"
+                                                                                    aria-expanded="false">
+                                                                                    <span class="sr-only">Toggle
+                                                                                        Dropdown</span>
+                                                                                </button>
+                                                                                <div class="dropdown-menu">
+                                                                                    <a class="dropdown-item"
+                                                                                        href="/admin/order/action-update?action=Pending&orderId=<%= order._id %>">Pending</a>
+                                                                                    <a class="dropdown-item"
+                                                                                        href="/admin/order/action-update?action=Approved&orderId=<%= order._id %>">Approved</a>
+                                                                                    <a class="dropdown-item"
+                                                                                        href="/admin/order/action-update?action=Reject&orderId=<%= order._id %>">Reject</a>
+                                                                                    <a class="dropdown-item"
+                                                                                        href="/admin/order/action-update?action=Completed&orderId=<%= order._id %>">Completed</a>
+                                                                                </div>
+
+                                                                                <% } %>
+                                                                </td>
+                                                                <td>
+                                                                    <%= order.paymentOption %>
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <!-- <a class="fw-bold " href="">Go</a> -->
+                                                                </td>
+                                                            </tr>
+                                                            <% }) %>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- content-wrapper ends -->
+                        <!-- partial:../../partials/_footer.html -->
+                        <footer class="footer">
+                            <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                                <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright ©
+                                    bootstrapdash.com 2020</span>
+                                <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a
+                                        href="https://www.bootstrapdash.com/bootstrap-admin-template/"
+                                        target="_blank">Bootstrap admin templates</a> from Bootstrapdash.com</span>
+                            </div>
+                        </footer>
+                        <!-- partial -->
+                    </div>
+                    <!-- main-panel ends -->
+            </div>
+            <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+    <!-- plugins:js -->
+    <script src="../../Admin/vendors/js/vendor.bundle.base.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script src="../../Admin/js/off-canvas.js"></script>
+    <script src="../../Admin/js/hoverable-collapse.js"></script>
+    <script src="../../Admin/js/misc.js"></script>
+    <script src="../../Admin/js/settings.js"></script>
+    <script src="../../Admin/js/todolist.js"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page -->
+    <!-- End custom js for this page -->
+    <style>
+        th {
+            color: white;
+        }
+    </style>
+
+</body>
+
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Corona Admin</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="../../Admin/vendors/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="../../Admin/vendors/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <!-- End Plugin css for this page -->
+    <!-- inject:css -->
+    <!-- endinject -->
+    <!-- Layout styles -->
+    <link rel="stylesheet" href="../../Admin/css/style.css">
+    <!-- End layout styles -->
+    <link rel="shortcut icon" href="../../Admin/images/favicon.png" />
+  </head>
+  <body>
+    <div class="container-scroller">
+      <!-- partial:../../partials/_sidebar.html -->
+      <%- include('../partials/Adminside/adminsidepanel') %>
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <%- include('../partials/Adminside/adminNav') %>
+        <!-- partial -->
+      
+          <!-- content-wrapper ends -->
+          <!-- partial:../../partials/_footer.html -->
+
+          <div class="main-panel">
+            <div class="content-wrapper">
+              <div class="page-header">
+                <h3 class="page-title">Product Details</h3>
+              </div>
+              <div class="row">
+                <div class="col-md-12 grid-margin stretch-card">
+                  <div class="card">
+                    <div class="card-body">
+                      <h4 class="card-title">Product Information</h4>
+                      <p class="card-description text-info">Basic product info</p>
+                      <form action="/admin/product/create" method="post" class="forms-sample" enctype="multipart/form-data">
+                        <% if (message !== "") { %>
+                          <p class="text-danger"><%= message %></p>
+                        <% } %>
+          
+                        <!-- Product Name -->
+                        <div class="form-group">
+                          <label for="productName">Product Name</label>
+                          <input type="text" class="form-control text-white" name="productName" id="productName" placeholder="Name">
+                        </div>
+          
+                        <!-- Manufacturer Name -->
+                        <div class="form-group">
+                          <label for="manufacturerName">Manufacturer Name</label>
+                          <input type="text" class="form-control text-white" name="manufacturerName" id="manufacturerName" placeholder="Manufacturer">
+                        </div>
+          
+                        <!-- Brand Name -->
+                        <div class="form-group">
+                          <label for="brandName">Brand Name</label>
+                          <input type="text" class="form-control text-white" name="brandName" id="brandName" placeholder="Brand Name">
+                        </div>
+          
+                        <!-- Identification No -->
+                        <div class="form-group">
+                          <label for="id_No">Identification No</label>
+                          <input type="text" class="form-control text-white" name="id_No" id="id_No" placeholder="ID">
+                        </div>
+          
+                        <!-- Price -->
+                        <div class="form-group">
+                          <label for="price">Price</label>
+                          <input type="number" class="form-control text-white" name="price" id="price" placeholder="Price">
+                        </div>
+          
+                        <!-- Date of Release -->
+                        <div class="form-group">
+                          <label for="releaseDate">Date of Release</label>
+                          <input type="date" class="form-control text-white" name="releaseDate" id="releaseDate" placeholder="Release Date">
+                        </div>
+          
+                        <!-- Stock Count -->
+                        <div class="form-group">
+                          <label for="stockCount">Stock Count</label>
+                          <input type="number" class="form-control text-white" name="stockCount" id="stockCount" placeholder="Count">
+                        </div>
+          
+                        <!-- Description -->
+                        <div class="form-group">
+                          <label for="description">Description</label>
+                          <textarea class="text-white form-control" id="description" name="description" rows="8" placeholder="Write about the Product"></textarea>
+                        </div>
+          
+                        <!-- Product Categories and Tags -->
+                        <div class="col-md-12 grid-margin stretch-card">
+                          <div class="card">
+                            <div class="card-body">
+                              <h4 class="card-title">Product Categories and Tags</h4>
+                              <div class="form-group">
+                                <label for="category">Category</label>
+                                <select class="form-control form-control-lg text-white" name="category" id="category">
+                                  <option></option>
+                                  <% Categories.forEach(category => { %>
+                                    <option><%= category.categoryName %></option>
+                                  <% }) %>
+                                 
+                                
+                                </select>
+                              </div>
+                              <div class="form-group">
+                                <label for="tags">Product Tags</label>
+                                <input type="text" class="form-control" name="tags" id="tags" placeholder="Enter the Product Tags">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+          
+                        <!-- Availability -->
+                        <div class="col-md-12 grid-margin stretch-card">
+                          <div class="card">
+                            <div class="card-body">
+                              <h5 class="card-description text-white">Availability</h5>
+                              <div class="form-check">
+                                <input type="radio" class="form-check-input" name="inStock" id="inStockRadio" value="inStock">
+                                <label class="form-check-label" for="inStockRadio">In Stock</label>
+                              </div>
+                              <div class="form-check">
+                                <input type="radio" class="form-check-input" name="outOfStock" id="outOfStockRadio" value="outOfStock">
+                                <label class="form-check-label" for="outOfStockRadio">Out Of Stock</label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+          
+                        <!-- Images Upload -->
+                        <div class="form-group">
+                          <label>Images Upload (Required: 3)</label>
+                          <div class="input-group col-md-12">
+                            <input type="file" id="images" multiple  name="images" class="form-control file-upload-info" required>
+                          </div>
+                        </div>
+          
+                        <!-- Color -->
+                        <div class="form-group">
+                          <label for="color">Color</label>
+                          <select class="form-control text-white" name="color" id="color">
+                            <option value="-1" disabled>Select</option>
+                            <option>White</option>
+                            <option>Black</option>
+                            <option>Blue</option>
+                            <option>Silver</option>
+                            <option>Gold</option>
+                            <option>Red</option>
+                            <option>Gray</option>
+                            <option>Yellow</option>
+                            <option>Pink</option>
+                          </select>
+                        </div>
+          
+                        <!-- Material -->
+                        <div class="form-group">
+                          <label for="Metrial">Material</label>
+                          <select class="form-control text-white" name="Metrial" id="Metrial">
+                            <option>Select</option>
+                            <option>Stainless Steel</option>
+                            <option>Titanium</option>
+                            <option>Gold</option>
+                            <option>Silver</option>
+                            <option>Quartz</option>
+                            <option>Sapphire</option>
+                            <option>Bronze</option>
+                            <option>Tungsten</option>
+                            <option>Steel</option>
+                          </select>
+                        </div>
+          
+                        <!-- Submit and Clear Buttons -->
+                        <button type="submit" class="btn btn-primary mb-2">Submit</button>
+                        <button type="reset" class="btn btn-primary mb-2">Clear</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        <!--footer code start-->
+          <footer class="footer">
+            <div class="d-sm-flex justify-content-center justify-content-sm-between">
+              <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © bootstrapdash.com 2020</span>
+              <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin templates</a> from Bootstrapdash.com</span>
+            </div>
+          </footer>
+          <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
+      </div>
+      <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+    <!-- plugins:js -->
+    <script src="../../Admin/vendors/js/vendor.bundle.base.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script src="../../Admin/js/off-canvas.js"></script>
+    <script src="../../Admin/js/hoverable-collapse.js"></script>
+    <script src="../../Admin/js/misc.js"></script>
+    <script src="../../Admin/js/settings.js"></script>
+    <script src="../../Admin/js/todolist.js"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page -->
+    <!-- End custom js for this page -->
+  </body>
+</html>
