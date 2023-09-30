@@ -1,13 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Payment Page</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js" data-key="<%= key_id %>"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
+
 <body>
-    <h4>
-        payment pages
-    </h4>
+    <h5>payment processing </h5>
+
+    <script>
+        var options = {
+            key: "<%= key_id %>",
+            amount: "<%= order.amount %>", // Amount in paise
+            currency: "INR",
+            name: "Shoppers",
+            description: "Order Payment",
+            order_id: "<%= order.id %>", // Order ID from the server
+            handler: function (response) {
+                if (response.razorpay_payment_id) {
+                    console.log("hai");
+                    $.ajax({
+                       
+                        url: "/online-payment-order-save",
+                        method: "POST",
+                        data: {
+                            razorpay_payment_id: response.razorpay_payment_id,
+                            razorpay_order_id: response.razorpay_order_id,
+                            razorpay_signature: response.razorpay_signature,
+                            order_id: "<%= order.id %>",
+                            secret: "Q5MjXX4iusruEPRREUfWIFu9",
+                            
+                        },
+                        success: function (data) {
+                            // Handle success response
+                            console.log('Payment successful', data);
+                            window.location.href = "/user/show-order-details/";
+                            // You can redirect or display a success message here
+                        },
+                        error: function (xhr, status, error) {
+                            // Handle error response
+
+                            alert("Payment transation go an error...",status)
+                            console.error('Payment failed', error);
+                            // You can display an error message or take appropriate action here
+                        },
+                    });
+                } else {
+                    // Payment was canceled or unsuccessful
+                    // Display a message or handle it appropriately
+                    console.log('Payment was canceled or unsuccessful');
+                }
+            },
+            prefill: {
+                name: "<%= user.name %>",
+                email: "<%= user.email %>",
+                contact: "<%= user.mobile %>"
+            },
+            theme: {
+                color: "#ECFDFF"
+            }
+        };
+        var rzp = new Razorpay(options);
+        rzp.open();
+        
+    </script>
+    
 </body>
+
 </html>

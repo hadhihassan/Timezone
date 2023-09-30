@@ -34,29 +34,21 @@ const orderSchema = new mongoose.Schema({
             required: true
         },
         total: {
-            type: Number
+            type: Number,
+            required: true
         }
     }],
     paymentOption: {
         type: String,
-        require:true
+        required:true
     },
-    deliveryDate: {
-        type: Date,
-    },
+    deliveryDate: Date,
     deliveryAddress: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Address",
         required:true
     },
-    transactionId:{
-        type:String,
-        unique:true
-    },
-    isRefunded: {
-        type:Boolean,
-        default:false
-    },
+
 });
 
 orderSchema.pre("save", function (next) {

@@ -11,7 +11,11 @@ const cookieParser = require("cookie-parser")
 const nocache = require("nocache")
 const multer = require("multer")
 const morgan = require('morgan')
-// const razorpay = require("razorpay")
+// const Razorpay = require('razorpay');
+
+
+
+
 app.use(morgan('dev'));
 app.use(flash())
 app.use(nocache())

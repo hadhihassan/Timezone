@@ -11,8 +11,6 @@ const product = require("../Models/productModel");
 
 
 
-
-
 const loadRegister = async (req, res, next) => {
     try {
         res.render("User/register", { user: "sad" })
@@ -146,7 +144,7 @@ const loadOTPpage = async (req, res) => {
     try {
         const userId = req.query.userId;
         console.log(userId); // Log the userId for debugging
-        res.render('User/OTPverificationPage', { message: '',id: userId ,user:req.session.user});
+        res.render('User/OTPverificationPage', { message: '', id: userId, user: req.session.user });
 
     } catch (error) {
         console.log(error.message);
@@ -298,7 +296,6 @@ const ForgetPasswordcheckingValid = async (req, res) => {
         res.redirect('/'); // Redirect to an appropriate page or handle the error as needed.
     }
 };
-
 const loadChangePass = (req, res) => {
     const id = req.query.id
     console.log("________________________" + id)
@@ -362,7 +359,6 @@ const validOTPsetPass = async (req, res) => {
         res.status(500).send("Internal Server Error");
     }
 };
-
 //session destrying User Logouting
 const userLogouting = (req, res, next) => {
     try {
@@ -488,8 +484,8 @@ const loadAddAddressPage = (req, res) => {
     const id = req.body.id
     const back = req.body.back
     try {
-        
-        res.render("User/profile/addAddress", { id ,back})
+
+        res.render("User/profile/addAddress", { id, back })
     } catch (error) {
         console.log(error.message)
     }
@@ -512,7 +508,7 @@ const addUserAddress = async (req, res) => {
         })
         await saveaddress.save()
         if (saveaddress) {
-            if(back == "true"){
+            if (back == "true") {
                 return res.redirect("/user/Checkout")
             }
             return res.redirect("/user/profile")
@@ -717,22 +713,19 @@ const deleteProductCart = async (req, res) => {
         console.log(error.message)
     }
 }
-
 //CHECKOUT PAGE
-
-
 const loadchekout = async (req, res) => {
     const user_id = req.session.user
     try {
 
         const User = await Customer.findById(req.session.user).populate('cart.product');
-        
+
         const cart = User.cart
         const address = await Address.find({ User: user_id })
         // const selectedAddress = await Address.find
         const selectAddress = await Address.findOne({ in_use: true })
-      
-        return res.render("User/checkout", { User, cart, address, user: req.session.user, selectAddress })
+
+        res.render("User/checkout", { User, cart, address, user: req.session.user, selectAddress })
     } catch (error) {
         console.log(error.message)
     }
@@ -755,94 +748,128 @@ const selectAddress = async (req, res) => {
         console.log(error.message)
     }
 }
-
 //ORDER
-
 const placeOrder = async (req, res) => {
     try {
         const paymentOption = req.body.PaymentOption;
-        if (!paymentOption) {
-            return res.status(400).json({ error: 'Payment option is required' });
+
+        // Validate payment option
+        if (!["COD", "Wallet", "paypal"].includes(paymentOption)) {
+            return res.status(400).json({ error: 'Invalid payment option' });
         }
 
         const userId = req.session.user;
-        const user = await Customer.findById(userId).populate("cart.product")
+        const user = await Customer.findById(userId).populate('cart.product');
+
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
 
-        const totalAmount = user.totalCartAmount;
-        const usedAddress = await Address.findOne({$and:[{User: userId},{in_use: true}] });
-       
+        // Calculate the total cart amount correctly based on the user's cart
+        const totalAmount = user.cart.reduce(
+            (total, cartItem) => total + cartItem.total,
+            0
+        );
+
+        const usedAddress = await Address.findOne({
+            $and: [{ User: userId }, { in_use: true }],
+        });
+
         if (!usedAddress) {
             return res.status(404).json({ error: 'User address not found' });
         }
-        const address =  usedAddress._id
-        const order = new Order({
-            user: userId,
-            totalAmount: totalAmount, // Assign the correct total amount here
-            paymentOption: paymentOption,
-            deliveryAddress:address
-        });
-       
 
-        user.cart.forEach(async(cartItem) => {
-            order.products.push({
-                product: cartItem.product,
-                quantity: cartItem.quantity,
-                total: cartItem.total,
+        if (paymentOption == "COD") {
+            const address = usedAddress._id;
+            const order = new Order({
+                user: userId,
+                totalAmount: totalAmount, // Assign the correct total amount here
+                paymentOption: paymentOption,
+                deliveryAddress: address,
             });
-            const productItem = await product.findById(cartItem.product)
-            productItem.stock_count -=cartItem.quantity
-            productItem.save()
 
-        });
+            // Update product stock counts and add products to the order
+            for (const cartItem of user.cart) {
+                const productItem = await Product.findById(cartItem.product);
 
-        console.log(order);
-      
-        await order.save();
-        if(paymentOption == "paypal"){
-            return res.redirect("/user/product/online-payment")
-        }else{
-            res.json({ message: 'Order placed succeccfully', order });
+                if (!productItem) {
+                    return res.status(404).json({ error: 'Product not found' });
+                }
+
+                if (cartItem.quantity > productItem.stock_count) {
+                    return res
+                        .status(400)
+                        .json({ error: 'Not enough stock for some products' });
+                }
+
+                // Update stock count and save the product
+                productItem.stock_count -= cartItem.quantity;
+                await productItem.save();
+
+                // Add product to the order
+                order.products.push({
+                    product: cartItem.product,
+                    quantity: cartItem.quantity,
+                    total: cartItem.total,
+                });
+            }
+
+            // Save the order and remove cart items
+            const orderSave = await order.save();
+
+            if (orderSave) {
+                // Remove cart items from the user's cart
+                const removeCart = await Customer.findByIdAndUpdate(req.session.user, { $unset: { cart: {} } });
+
+                if (removeCart) {
+                    return res.redirect('/user/show-order-details/');
+                } else {
+                    console.log("Cannot find any cart items...");
+                }
+            } else {
+                console.log("COD not working properly ");
+            }
+
+        } else if (paymentOption == "Wallet") {
+            // Implement wallet payment logic here
+
+        } else if (paymentOption == "paypal") {
+            return res.redirect('/user/product/online-payment');
         }
-        // Clear the user's cart or update it as needed
-        // user.cart = []; // Uncomment this line to clear the user's cart
-
-        // Save the user object if you cleared the cart
-        // await user.save();
-        
 
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ error: 'An error occurred while placing the order' });
+        return res
+            .status(500)
+            .json({ error: 'An error occurred while placing the order' });
     }
 };
+
+
 //display the order ditails
 const loadOrder = async (req, res) => {
     try {
         const userId = req.session.user
         const userOrder = await Order.find({ user: userId })
-        .populate("user")
-        .populate("products.product")
-        .populate("deliveryAddress")
-        .exec();
-            console.log(userOrder)
-            return res.render("User/profile/showOrders",{userOrder,user:userId})
-        
+            .populate("user")
+            .populate("products.product")
+            .populate("deliveryAddress")
+            .exec();
+        console.log(userOrder)
+        return res.render("User/profile/showOrders", { userOrder, user: userId })
+
     } catch (error) {
         console.log(error.message)
     }
 }
-
 const loadOrderProductDetails = async (req, res) => {
     const orderId = req.body.Products; // Assuming you pass orderId as a route parameter
-    console.log("____________________"+orderId)
+    console.log("____________________" + orderId)
     try {
         // Validate orderId here (e.g., check if it's a valid ObjectId)
 
         const order = await Order.findById(orderId).populate("products.product");
-        
+
         if (!order) {
             return res.status(404).send("Order not found"); // Handle case where the order is not found
         }
@@ -856,11 +883,11 @@ const loadOrderProductDetails = async (req, res) => {
         return res.status(500).send("Internal Server Error"); // Handle other errors
     }
 };
-const cancelOrder = async (req,res) => {
+const cancelOrder = async (req, res) => {
     const orderId = req.body.orderId
     try {
-        const cancel = await Order.findByIdAndUpdate(orderId,{$set:{orderCanceled:true,}})
-        cancel.products.forEach(async(pro)=>{
+        const cancel = await Order.findByIdAndUpdate(orderId, { $set: { orderCanceled: true, } })
+        cancel.products.forEach(async (pro) => {
             const proUpdateQuantity = await product.findById(pro.product)
             proUpdateQuantity.stock_count += pro.quantity
             proUpdateQuantity.save()
@@ -879,8 +906,8 @@ module.exports = {
     userLogouting, loadShop, loadProfile, loadEditPage, updateUser, addImageProfile, deleteUserProfile,
     userUpdatePassword, loadAddAddressPage, addUserAddress, editAddress, updateAddress, deleteAddress, displayProduct,
     productAddToCart, loadCart, updateCartQuantity, deleteProductCart, loadForgetPage, ForgetPasswordcheckingValid,
-    loadChangePass, validOTPsetPass, loadchekout, selectAddress, placeOrder, loadOrder, loadOrderProductDetails, 
-    cancelOrder, 
+    loadChangePass, validOTPsetPass, loadchekout, selectAddress, placeOrder, loadOrder, loadOrderProductDetails,
+    cancelOrder,
 }
 
 

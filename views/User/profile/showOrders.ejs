@@ -38,14 +38,20 @@
                                 <br>
                                 <form action="/user/profile/show-product-details/" method="post">
                                     <input type="hidden" name="Products" value="<%= userOrder[i]._id %>">
-                                    <button class="shadow-lg  btn_1">Show Product details</button>
+                                    <button class="shadow-lg  btn_1">Show Product details <sup></sup> </button>
                                 </form>
                                 <br>
                             </div>
 
                             <hr>
                             <div class="card-body">
-                                <h5>Delivery Address</h5>
+                                <% if (order.paymentOption == "razorpay") { %>
+                                    <h5>Delivery Address <sup class="text-danger">(Payment successful)</sup></h5>
+                                <% } else { %>
+                                    <h5>Delivery Address</h5>
+                                <% } %>
+                                
+
                                 <h6 class="card-text">
                                     <%= order.deliveryAddress.Name %>
                                 </h6>

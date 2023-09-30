@@ -3,23 +3,23 @@ const mongoose = require('mongoose')
 const productSchema = new mongoose.Schema({
     product_name : {
         type:String,
-        require:true
+        required:true
     },
     manufacturer_name : {
         type:String,
-        require:true
+        required:true
     },
     brand_name : {
         type:String,
-        require:true
+        required:true
     },
     idendification_no : {
         type:String,
-        require:true,   
+        required:true,   
     },
     price:{
         type:Number,
-        require:true
+        required:true
     },
     relese_date : {
         type:Date,
@@ -27,7 +27,7 @@ const productSchema = new mongoose.Schema({
     },
     stock_count : {
         type:Number,
-        require:true
+        required:true
     },
     description : {
         type:String,
@@ -35,15 +35,15 @@ const productSchema = new mongoose.Schema({
     },
     category : {
         type:String,
-        require:true
+        required:true
     },
     product_tags : {
         type:String,
-        require:true
+        required:true
     },
     in_stock : {
         type:Boolean,
-        require:true
+        required:true
     },
     images : [{
         data:Buffer,
@@ -51,11 +51,11 @@ const productSchema = new mongoose.Schema({
     }],
     color : {
         type:String,
-        require:true
+        required:true
     },
     meterial : {
         type:String,
-        require:true
+        required:true
     },
     is_delete : {
         type:Boolean,

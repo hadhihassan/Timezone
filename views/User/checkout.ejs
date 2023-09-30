@@ -309,16 +309,16 @@
 
 
 
-                 <div style="background-color: chartreuse;" class=" alert-succes text-center">
+                <div style="background-color: chartreuse;" class=" alert-succes text-center">
                   <p id="flash-message" style="color: green;"></p>
                 </div>
-                
+
 
 
 
 
                 <div class="payment_item">
-               <form  id="myForm" action="" method="">
+                  <form action="/user/place-order" method="post">
 
                     <div>
                       <br>
@@ -334,23 +334,23 @@
                       <label for="f-option9">Wallet</label>
                       <div class="check"></div>
                     </div>
-                </div>
-                <div class="payment_item active">
-                  <div class="radion_btn">
-                    <input type="radio" id="f-option6" name="PaymentOption" value="paypal" />
-                    <label for="f-option6">Paypal </label>
-                    <img src="/Customer/img/product/single-product/card.jpg" alt="" />
-                    <div class="check"></div>
-                  </div>
-                </div>
-                <div class="creat_account">
-                  <input type="checkbox" id="f-option4" name="selector" />
-                  <label for="f-option4">I’ve read and accept the </label>
-                  <a href="#">terms & conditions*</a>
-                </div>
-                <button type="submit" class="order_btn btn_3 col-md-12">Place Order    </button>
 
-              </form>
+                    <div class="payment_item active">
+                      <div class="radion_btn">
+                        <input type="radio" id="f-option6" name="PaymentOption" value="paypal" />
+                        <label for="f-option6">Paypal </label>
+                        <img src="/Customer/img/product/single-product/card.jpg" alt="" />
+                        <div class="check"></div>
+                      </div>
+                    </div>
+                    <div class="creat_account">
+                      <input type="checkbox" id="f-option4" name="selector" />
+                      <label for="f-option4">I’ve read and accept the </label>
+                      <a href="#">terms & conditions*</a>
+                    </div>
+                    <button type="submit" class="order_btn btn_3 col-md-12">Place Order </button>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
@@ -412,7 +412,7 @@
   <script src="/Customer/js/main.js"></script>
 
 
-  <script>const form = document.getElementById("myForm");
+  <!-- <script>const form = document.getElementById("myForm");
 
  
     form.addEventListener("submit", function (event) {
@@ -449,7 +449,7 @@
         flashMessageElement.style.display = 'none'; // Hide the flash message after 3 seconds (adjust as needed)
       }, 5000);
     }
-  </script>
+  </script> -->
 
 
 

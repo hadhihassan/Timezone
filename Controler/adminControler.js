@@ -5,6 +5,79 @@ const productCategry = require("../Models/productCategory")
 const Product = require("../Models/productModel")
 const Order = require("../Models/orderModel")
 
+
+
+// CALCULATING THE DALY INCOME
+const DailyIncome = async (req, res) => {
+    try {
+        // Get the current date in the user's timezone
+        const currentDate = new Date();
+
+        // Extract year, month, and day
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth() + 1; // Months are 0-indexed
+        const day = currentDate.getDate();
+
+        // Create a formatted date string in "YYYY-MM-DD" format
+        const formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+
+        // Define the start and end of the current day
+        const startDate = new Date(`${formattedDate}T00:00:00`);
+        const endOfDay = new Date(`${formattedDate}T23:59:59.999`);
+
+        // Your MongoDB aggregation pipeline
+        const pipeline = [
+            {
+                $match: {
+                    orderDate: {
+                        $gte: startDate,
+                        $lte: endOfDay
+                    }
+                }
+            },
+            {
+                $group: {
+                    _id: null,
+                    dailyRevenue: { $sum: '$totalAmount' }
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    dailyRevenue: 1
+                }
+            }
+        ];
+
+        // Assuming you have a model named Order
+        const result = await Order.aggregate(pipeline);
+        console.log(result)
+        // Send the result as a response
+        // res.json({ dailyRevenue: result[0] });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: 'An error occurred' });
+    }
+};
+
+//CALCULATING THE MONTHLY INCOME 
+const MonthlyIncome = async (req,res) =>{
+    try{
+        const currentDate = new Date()
+        //supperating the year and month
+        const  year =  currentDate.getFullYear()
+        const month = currentDate.getMonth() + 1 //month index stating at 0 
+
+        const formattedDate = `${year}-${month.toString().padStart(2, '0')}`; //create the actual format year/month/day
+
+    
+
+
+    } catch (error){
+        console.log("error.message")
+    }
+}
+
 //ADMIN LOGIN
 const loadAaminLogin = async (req, res, next) => {
     try {
@@ -80,7 +153,8 @@ const adminValid = async (req, res) => {
 }
 const loadDash = async (req, res) => {
     try {
-        res.render("admin/index")
+        const dailyIncome = await DailyIncome()
+
     } catch (error) {
         console.log(error.message);
     }
@@ -97,9 +171,6 @@ const adminLogout = (req, res) => {
         console.log(error.message);
     }
 }
-
-
-
 
 //CUSTOMERS
 const displayCustomers = async (req, res) => {
@@ -160,12 +231,10 @@ const blockTheUser = async (req, res) => {
     }
 }
 
-
-
 // CATEGORY
 const addProductCategory = async (req, res) => {
 
-    
+
     if (!req.body.Categoryname || !req.file) {
         return res.render("admin/addCategory", { message: "Fill all fields...." });
     }
@@ -200,7 +269,7 @@ const addProductCategory = async (req, res) => {
 const loadCategory = async (req, res) => {
     try {
         const Categores = await productCategry.find().sort({ _id: -1 })
-       
+
         res.render("admin/productCategory", { Categores })
 
     } catch (error) {
@@ -220,22 +289,22 @@ const deleteCategory = async (req, res) => {
     }
 }
 
-const loadEditCategory = async (req,res) => {
+const loadEditCategory = async (req, res) => {
     try {
         const { id } = req.params
-        console.log(id+"HHHHHHHHHHHHHHHHHHHHHH")
+        console.log(id + "HHHHHHHHHHHHHHHHHHHHHH")
         const EditCategory = await productCategry.findById({ _id: id })
 
         if (EditCategory) {
-            return res.render("admin/editCategory",{EditCategory,message:"" ,id})
+            return res.render("admin/editCategory", { EditCategory, message: "", id })
         }
 
     } catch (error) {
-        
+
     }
 }
 const EditCategory = async (req, res) => {
-    
+
     const id = req.query.id
     try {
 
@@ -245,13 +314,13 @@ const EditCategory = async (req, res) => {
             // Update category data if provided
             editedCategory.categoryName = req.body.Categoryname
             editedCategory.description = req.body.description
-            
+
             // Update image data if a new file is uploaded
             if (req.file) {
                 editedCategory.image.data = req.file.buffer;
                 editedCategory.image.contentType = req.file.mimetype;
             }
-            
+
             await editedCategory.save();
             return res.redirect("/admin/product/Category-management");
         } else {
@@ -270,9 +339,6 @@ const loadAddCategory = (req, res) => {
         console.log(error.message)
     }
 }
-
-
-
 
 // PRODUCT 
 const loadProductCreate = async (req, res) => {
@@ -370,7 +436,7 @@ const editProduct = async (req, res) => {
 
     const { productName, manufacturerName, brandName, id_No, price, releaseDate, description, stockCount, category, inStock, outOfStock, images, tags, color, Metrial, id } = req.body;
     try {
-        
+
         let stock
         if (inStock) {
             stock = true
@@ -415,7 +481,7 @@ const editProduct = async (req, res) => {
         }
 
 
-        
+
         // const deleteprodct = await Product.deleteOne({ _id: id });
         if (updatedProduct) {
             console.log("Product edited successfully.");
@@ -475,16 +541,16 @@ const deleteImgDelete = async (req, res) => {
         console.log(error.message)
     }
 }
-const loadOrder = async (req,res) => {
+const loadOrder = async (req, res) => {
     try {
         const orders = await Order.find()
-        .populate("user")
-        .populate("products.product")
-        .populate("deliveryAddress")
-        .exec();
-        if(orders){
-            return res.render("admin/order",{orders})
-            
+            .populate("user")
+            .populate("products.product")
+            .populate("deliveryAddress")
+            .exec();
+        if (orders) {
+            return res.render("admin/order", { orders })
+
         }
         console.log("GOT ERROR")
     } catch (error) {
@@ -509,12 +575,9 @@ const updateOrderStatus = async (req, res) => {
     }
 };
 
-
-
-
 module.exports = {
     loadAaminLogin, loginValidation, adminValid, loadDash, adminLogout, displayCustomers,
     UnblockTheUser, blockTheUser, addProductCategory, loadCategory, deleteCategory, loadAddCategory, loadProductCreate,
     createProduct, loadProductPage, editProduct, loadProductEditPage, productDeactivate, productActivate, deleteImgDelete,
-    loadOrder, updateOrderStatus, loadEditCategory, EditCategory, 
+    loadOrder, updateOrderStatus, loadEditCategory, EditCategory,
 }

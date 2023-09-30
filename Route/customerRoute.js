@@ -3,14 +3,14 @@ const Customer_Route = express.Router()
 const uplodaImg = require("../middleware/uploadimages")
 const Auth = require("../middleware/Auth")
 
-const {loadPaymentPage,} =require("../Controler/order")
+const { loadPaymentPage, checkRazorpaySignature } = require("../Controler/order")
 
 const { loadRegister, loadhome, insertUser, loadOTPpage, checkOTPValid, loadLogin, checkUserValid,
     userLogouting, loadShop, loadProfile, loadEditPage, updateUser, addImageProfile, deleteUserProfile,
     userUpdatePassword, loadAddAddressPage, addUserAddress, editAddress, updateAddress, deleteAddress,
     displayProduct, productAddToCart, loadCart, updateCartQuantity, deleteProductCart, loadForgetPage,
     ForgetPasswordcheckingValid, loadChangePass, validOTPsetPass, loadchekout, selectAddress, placeOrder,
-    loadOrder, loadOrderProductDetails, cancelOrder, 
+    loadOrder, loadOrderProductDetails, cancelOrder,
 } = require('../Controler/customerControler')
 const multer = require("multer")
 const Customer = require('../Models/customerModel')
@@ -28,8 +28,8 @@ Customer_Route.get('/', loadhome)
 
 //login and logout
 Customer_Route.get('/user-Login', Auth.userAuth, loadLogin)
-                .post('/user-Login', checkUserValid)
-                .get('/user_LogOut', userLogouting)
+    .post('/user-Login', checkUserValid)
+    .get('/user_LogOut', userLogouting)
 
 
 
@@ -43,16 +43,16 @@ Customer_Route.post("/register", insertUser,)
 
 //otp verification 
 Customer_Route.get('/user/otpVerification', Auth.userAuth, loadOTPpage)
-                .post('/user/otpVerification', checkOTPValid)
+    .post('/user/otpVerification', checkOTPValid)
 
 
 
 
 //forget password
 Customer_Route.get('/user/forget-password', loadForgetPage)
-                .post('/user/forget-password', ForgetPasswordcheckingValid)
-                .get('/user/set-new-password', loadChangePass)
-                .post("/user/set-new-password-check-otp", validOTPsetPass)
+    .post('/user/forget-password', ForgetPasswordcheckingValid)
+    .get('/user/set-new-password', loadChangePass)
+    .post("/user/set-new-password-check-otp", validOTPsetPass)
 
 
 //render the shoping page 
@@ -63,21 +63,21 @@ Customer_Route.get('/user/shop', loadShop)
 
 //user profile 
 Customer_Route.get("/user/profile", Auth.logged, loadProfile)
-                .post("/user/edit_profile", Auth.logged, loadEditPage)
-                .post("/user/Update-profile", Auth.logged, updateUser)
-                .post("/user/profile/addimg", upload.single('images'), addImageProfile)
-                .get("/user/profile/image-remove", Auth.logged, deleteUserProfile)
-                .post("/user/profile/upadtePassword", Auth.logged, userUpdatePassword)
+    .post("/user/edit_profile", Auth.logged, loadEditPage)
+    .post("/user/Update-profile", Auth.logged, updateUser)
+    .post("/user/profile/addimg", upload.single('images'), addImageProfile)
+    .get("/user/profile/image-remove", Auth.logged, deleteUserProfile)
+    .post("/user/profile/upadtePassword", Auth.logged, userUpdatePassword)
 
 
 
 
 //add address 
 Customer_Route.post('/user/address/add-user', loadAddAddressPage)
-                 .post('/user/address/add', addUserAddress)
-                 .post("/user/address/edit", editAddress)
-                 .post("/user/address/edit-and-update", updateAddress)
-                 .post("/user/address/delete", deleteAddress)
+    .post('/user/address/add', addUserAddress)
+    .post("/user/address/edit", editAddress)
+    .post("/user/address/edit-and-update", updateAddress)
+    .post("/user/address/delete", deleteAddress)
 
 
 
@@ -85,7 +85,7 @@ Customer_Route.post('/user/address/add-user', loadAddAddressPage)
 
 // USER PROFILE ORDER DETALS
 Customer_Route.get("/user/show-order-details/", loadOrder)
-            .post("/user/profile/show-product-details/", loadOrderProductDetails)
+    .post("/user/profile/show-product-details/", loadOrderProductDetails)
 
 
 
@@ -98,27 +98,31 @@ Customer_Route.get("/user/displayProduct", displayProduct)
 
 //CART ADD DELETE DIPSPLAY
 Customer_Route.get("/user/cart", Auth.logged, loadCart)
-                .get("/user/product/addcart", Auth.logged, productAddToCart)
-                .post("/update-cart-item-quantity", updateCartQuantity)
-                .get('/user/remove-Cart-item', deleteProductCart)
+    .get("/user/product/addcart", Auth.logged, productAddToCart)
+    .post("/update-cart-item-quantity", updateCartQuantity)
+    .get('/user/remove-Cart-item', deleteProductCart)
 
 
 
 
 
 //**CHECKOUT PAGES** 
-Customer_Route.get('/user/Checkout', loadchekout)
-              .post("/user/address/selsect", selectAddress)
+Customer_Route.post('/user/Checkout', loadchekout)
+    .post("/user/address/selsect", selectAddress)
 
 
 
 
-    
+
 //ORDER PLACE
 //canel order
 Customer_Route.post("/user/order/Cancel/", cancelOrder)
-                .post("/user/palce-order", placeOrder)
-                .get("/user/product/online-payment", loadPaymentPage)
+Customer_Route.post("/user/place-order", placeOrder)
+              .get("/user/product/online-payment", loadPaymentPage)
+
+// ONLINE PAYMENT AND ORDER SAVE 
+
+Customer_Route.post("/online-payment-order-save", checkRazorpaySignature)
 
 
 
