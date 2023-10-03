@@ -61,56 +61,64 @@
                                         alt="<%= product.product_name %>" style="width: 600px; height: 600px;">
                                 </div>
                                 <% }) %>
+                      
                         </div>
                     </div>
                     <div class="col-lg-8">
                         <div class="single_product_text text-center">
-                            <div class="product_count_area d-flex flex-column">
-                                   
-                                <div class="col-md-6 col-lg-6 col-xl-6">
+                            <div class="product_count_area ">
+                                <div>
+                                    <div>
+                                      
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-xl-12 ">
+      
+                                      <div class="text-center">
+                                          <div class="text-danger mb-1 me-2 ">
+                                             <div >
+                                                <h3><%= product.product_name %></h3> <br> 
+                                              
+                                                <h3>$<%= product.price %>   </h4>
 
-                                    <div class="d-flex flex-row text-center ">
-                                        <div class="text-danger mb-1 me-2 text-center">
-                                            <h4>$ <%= product.price %>
-                                            </h4>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                        <span>310</span>
-                                    </div>
-                                    <div class="mt-1 mb-0 text-muted small">
-                                        <span>100% <%= product.material %></span>
-                                        <span class="text-primary"> • </span>
-                                        <span>Light weight</span>
-                                        <span class="text-primary"> • </span>
-                                        <span>
-                                            <%= product.color %><br />
-                                        </span>
-                                    </div>
-                                    <div class="mb-2 text-muted small">
-                                        <span>Unique design</span>
-                                        <span class="text-primary"> • </span>
-                                        <span>
-                                            <%= product.material %>
-                                        </span>
-                                        <span class="text-primary"> • </span>
-                                        <span>
-                                            <%= product.category %><br />
-                                        </span>
-                                    </div>
-                                    <p class="text-truncate mb-4 mb-md-0">
-                                        <%= product.description %>
-                                    </p>
+                                                
+                                             </div>
+                                              <i class="fa fa-star"></i>
+                                              <i class="fa fa-star"></i>
+                                              <i class="fa fa-star"></i>
+                                              <i class="fa fa-star"></i>
+                                          </div>
+                                          <!-- <span>310</span> -->
+                                      </div>
+                                      <div class="mt-1 mb-0 text-truncate small">
+                                          <span>100% <%= product.meterial %></span>
+                                          <span class="text-primary"> • </span>
+                                          <span>Light weight</span>
+                                          <span class="text-primary"> • </span>
+                                          <span>
+                                              <%= product.color %><br />
+                                          </span>
+                                      </div>
+                                      <div class="mb-2 text-truncate small">
+                                          <span>Unique design</span>
+                                          <span class="text-primary"> • </span>
+                                          <span><%= product.meterial %></span>
+                                          <span class="text-primary"> • </span>
+                                          <span>
+                                              <%= product.category %><br />
+                                          </span>
+                                      </div>
                                 </div>
+                                   
+                             
+                             
                             </div>
-                            <h3>
-                                <%= product.product_name %>
-                            </h3>
-                            <p>
-                                <%= product.description %>
-                            </p>
+                        </div>
+                              <div>  <hr>
+                                  <p>
+                                      <%= product.description %>
+                                  </p>
+                              </div>
+
                             <div class="card_area">
                                
                                

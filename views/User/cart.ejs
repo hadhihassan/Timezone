@@ -1,7 +1,6 @@
-
-    <!-- Header Start -->
-    <%- include('../partials/Customerside/header')%>
-      <!-- Header End -->
+<!-- Header Start -->
+<%- include('../partials/Customerside/header')%>
+  <!-- Header End -->
   </header>
   <main>
 
@@ -47,182 +46,182 @@
                   <p id="flash-message" style="color: green;"></p>
                 </div>
                 <!-- success message -->
-              
-                    <table class="table">
-                      <thead>
+
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Product</th>
+                      <th scope="col">Price</th>
+                      <th scope="col">Quantity</th>
+                      <th scope="col">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+
+
+                    <% Products.forEach((product, i)=> { %>
+                      <% if ( currentUser.cart[i].quantity !==0 ) { %>
+
+
                         <tr>
-                          <th scope="col">Product</th>
-                          <th scope="col">Price</th>
-                          <th scope="col">Quantity</th>
-                          <th scope="col">Total</th>
-                        </tr>
-                      </thead>
-                      <tbody>
+                          <td>
+                            <div>
 
+                            </div>
+                            <div class="media">
+                              <div class="d-flex">
+                                <img
+                                  src="data:<%= product.product.images[0].contentType %>;base64,<%= product.product.images[0].data.toString('base64') %>"
+                                  alt="<%= product.price %>">
+                              </div>
+                              <div>
+                                <div class="media-body">
+                                  <p class="font-weight-bold">
+                                    <strong>
+                                      <%= product.product.product_name %>
+                                    </strong>
+                                    <br><br>
+                                  </p>
+                                  <span class="font-weight-light">Color : <%= product.product.color %></span> <br>
+                                  <br>
+                                  <span class="font-weight-light"> Brand : <%= product.product.brand_name %></span>
 
-
-                        <% Products.forEach((product, i)=> { %>
-                          <% if ( currentUser.cart[i].quantity !==0 ) { %>
-
-
-                            <tr>
-                              <td>
+                                </div>
+                                <br>
                                 <div>
 
+                                  <a href="/user/remove-Cart-item?id=<%= currentUser.cart[i]._id %>" type="button"
+                                    class=" btn-primary btn-sm me-1 mb-2" data-mdb-toggle="tooltip" title="Remove item">
+                                    <i class="fas fa-trash"></i>
+                                  </a>
+
+                                  <a href="#" type="button" class=" btn-danger btn-sm mb-2" data-mdb-toggle="tooltip"
+                                    title="Move to the wish list">
+                                    <i class="fas fa-heart"></i>
+                                  </a>
+
                                 </div>
-                                <div class="media">
-                                  <div class="d-flex">
-                                    <img
-                                      src="data:<%= product.product.images[0].contentType %>;base64,<%= product.product.images[0].data.toString('base64') %>"
-                                      alt="<%= product.price %>">
-                                  </div>
-                                  <div>
-                                    <div class="media-body">
-                                      <p class="font-weight-bold">
-                                        <strong>
-                                          <%= product.product.product_name %>
-                                        </strong>
-                                        <br><br>
-                                      </p>
-                                      <span class="font-weight-light">Color : <%= product.product.color %></span> <br>
-                                      <br>
-                                      <span class="font-weight-light"> Brand : <%= product.product.brand_name %></span>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <p>
 
-                                    </div>
-                                    <br>
-                                    <div>
-                                      
-                                      <a href="/user/remove-Cart-item?id=<%= currentUser.cart[i]._id %>" type="button"
-                                        class=" btn-primary btn-sm me-1 mb-2" data-mdb-toggle="tooltip"
-                                        title="Remove item">
-                                        <i class="fas fa-trash"></i>
-                                      </a>
+                              $ <%= product.product.price %>
+                            </p>
+                          </td>
+                          <td>
+                            <div class="product_count">
+                              <button class="input-number-decrement btn btn-primary btn-sm" data-action="decrement"
+                                data-cart-item-id="<%= product.product._id %>">
+                                <i class="fas fa-minus"></i>
+                              </button>
+                              <input class="input-number" type="number" value="<%= currentUser.cart[i].quantity %>"
+                                min="0" max="10" step="1" readonly>
+                              <button class="input-number-increment btn btn-primary btn-sm" data-action="increment"
+                                data-cart-item-id="<%= product.product._id %>">
+                                <i class="fas fa-plus"></i>
+                              </button>
+                            </div>
+                          </td>
+                          <td>
 
-                                      <a href="#" type="button" class=" btn-danger btn-sm mb-2"
-                                        data-mdb-toggle="tooltip" title="Move to the wish list">
-                                        <i class="fas fa-heart"></i>
-                                      </a>
+                            <p class="price" id="cart-total-amount_<%= product.product._id %>"
+                              data-cart-total-id="change_total" name="totalAmount">&#8377;<%=currentUser.cart[i].total
+                                %>
+                            </p>
 
-                                    </div>
-                                  </div>
+
+                          </td>
+                        </tr>
+                        <% } %>
+                          <% }) %>
+
+
+
+                            <tr class="bottom_button">
+                              <td>
+                                <a class="btn_1" href="#">Update Cart</a>
+                              </td>
+                              <td></td>
+                              <td></td>
+                              <td>
+                                <div class="cupon_text float-right">
+                                  <a class="btn_1" href="#">Close Coupon</a>
                                 </div>
                               </td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td></td>
                               <td>
-                                <p>
-
-                                  $ <%= product.product.price %>
-                                </p>
-                              </td>
-                              <td>
-                                <div class="product_count">
-                                  <button class="input-number-decrement btn btn-primary btn-sm" data-action="decrement"
-                                    data-cart-item-id="<%= product.product._id %>">
-                                    <i class="fas fa-minus"></i>
-                                  </button>
-                                  <input class="input-number" type="number" value="<%= currentUser.cart[i].quantity %>"
-                                    min="0" max="10" step="1" readonly>
-                                  <button class="input-number-increment btn btn-primary btn-sm" data-action="increment"
-                                    data-cart-item-id="<%= product.product._id %>">
-                                    <i class="fas fa-plus"></i>
-                                  </button>
-                                </div>
+                                <h5>Subtotal</h5>
                               </td>
                               <td>
 
-                                <p class="price" id="cart-total-amount_<%= product.product._id %>" data-cart-total-id="change_total"
-                                  name="totalAmount">&#8377;<%=currentUser.cart[i].total %>
-                                </p>
 
+                                <span id="subtotalAmount">
+                                  <%= currentUser.totalCartAmount %>
+                                </span>
 
                               </td>
                             </tr>
-                            <% } %>
-                              <% }) %>
+                            <tr class="shipping_area">
+                              <td></td>
+                              <td></td>
+                              <td>
+                                <h5>Shipping</h5>
+                              </td>
+                              <td>
+                                <div class="shipping_box">
+                                  <ul class="list">
+                                    <li>
+                                      Flat Rate: $5.00
+                                      <input type="radio" aria-label="Radio button for following text input">
+                                    </li>
+                                    <li>
+                                      Free Shipping
+                                      <input type="radio" aria-label="Radio button for following text input">
+                                    </li>
+                                    <li>
+                                      Flat Rate: $10.00
+                                      <input type="radio" aria-label="Radio button for following text input">
+                                    </li>
+                                    <li class="active">
+                                      Local Delivery: $2.00
+                                      <input type="radio" aria-label="Radio button for following text input">
+                                    </li>
+                                  </ul>
+                                  <h6>
+                                    Calculate Shipping
+                                    <i class="fa fa-caret-down" aria-hidden="true"></i>
+                                  </h6>
+                                  <select class="shipping_select">
+                                    <option value="1">Bangladesh</option>
+                                    <option value="2">India</option>
+                                    <option value="4">Pakistan</option>
+                                  </select>
+                                  <select class="shipping_select section_bg">
+                                    <option value="1">Select a State</option>
+                                    <option value="2">Select a State</option>
+                                    <option value="4">Select a State</option>
+                                  </select>
+                                  <input class="post_code" type="text" placeholder="Postcode/Zipcode" />
+                                  <a class="btn_1" href="#">Update Details</a>
+                                </div>
+                              </td>
+                            </tr>
+                  </tbody>
+                </table>
+                <div class="checkout_btn_inner float-right d-flex">
+                  <a class="btn_1" href="/user/shop">Continue Shopping</a>
 
+                  <form action="/user/Checkout" method="get">
 
-
-                                <tr class="bottom_button">
-                                  <td>
-                                    <a class="btn_1" href="#">Update Cart</a>
-                                  </td>
-                                  <td></td>
-                                  <td></td>
-                                  <td>
-                                    <div class="cupon_text float-right">
-                                      <a class="btn_1" href="#">Close Coupon</a>
-                                    </div>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td></td>
-                                  <td></td>
-                                  <td>
-                                    <h5>Subtotal</h5>
-                                  </td>
-                                  <td>
-
-                                   
-                                    <span id="subtotalAmount">
-                                      <%= currentUser.totalCartAmount %>
-                                    </span>
-
-                                  </td>
-                                </tr>
-                                <tr class="shipping_area">
-                                  <td></td>
-                                  <td></td>
-                                  <td>
-                                    <h5>Shipping</h5>
-                                  </td>
-                                  <td>
-                                    <div class="shipping_box">
-                                      <ul class="list">
-                                        <li>
-                                          Flat Rate: $5.00
-                                          <input type="radio" aria-label="Radio button for following text input">
-                                        </li>
-                                        <li>
-                                          Free Shipping
-                                          <input type="radio" aria-label="Radio button for following text input">
-                                        </li>
-                                        <li>
-                                          Flat Rate: $10.00
-                                          <input type="radio" aria-label="Radio button for following text input">
-                                        </li>
-                                        <li class="active">
-                                          Local Delivery: $2.00
-                                          <input type="radio" aria-label="Radio button for following text input">
-                                        </li>
-                                      </ul>
-                                      <h6>
-                                        Calculate Shipping
-                                        <i class="fa fa-caret-down" aria-hidden="true"></i>
-                                      </h6>
-                                      <select class="shipping_select">
-                                        <option value="1">Bangladesh</option>
-                                        <option value="2">India</option>
-                                        <option value="4">Pakistan</option>
-                                      </select>
-                                      <select class="shipping_select section_bg">
-                                        <option value="1">Select a State</option>
-                                        <option value="2">Select a State</option>
-                                        <option value="4">Select a State</option>
-                                      </select>
-                                      <input class="post_code" type="text" placeholder="Postcode/Zipcode" />
-                                      <a class="btn_1" href="#">Update Details</a>
-                                    </div>
-                                  </td>
-                                </tr>
-                      </tbody>
-                    </table>
-                    <div class="checkout_btn_inner float-right d-flex">
-                      <a class="btn_1" href="/user/shop">Continue Shopping</a> 
-                      
-                      <form action="/user/Checkout" method="post">
-   
-                        <button type="submit"  class="btn_1 checkout_btn_1">Proceed to checkout</button>
-                      </form>
-                    </div>
+                    <button type="submit" class="btn_1 checkout_btn_1">Proceed to checkout</button>
+                  </form>
+                </div>
               </div>
             </div>
         </section>
@@ -309,17 +308,17 @@
       let currentValue = parseInt(inputElement.value);
 
       if (!isNaN(currentValue)) {
-          if (action === "increment" && currentValue < 10) {
-            currentValue++;
-          } else if (action === "decrement" && currentValue > 1) {
-            currentValue--;
-          }
+        if (action === "increment" && currentValue < 10) {
+          currentValue++;
+        } else if (action === "decrement" && currentValue > 1) {
+          currentValue--;
         }
+      }
 
-          // Update the input value
-          inputElement.value = currentValue;
+      // Update the input value
+      inputElement.value = currentValue;
 
-      
+
 
       if (!isNaN(currentValue)) {
         $.ajax({
@@ -343,11 +342,11 @@
                 const cartTotal = document.querySelector(`#cart-total-amount_${cartItemId}`);
                 cartTotal.textContent = newTotal;
 
-              
-                  const subtotalAmount = response.totalCartAmount;
+
+                const subtotalAmount = response.totalCartAmount;
                 const subtotalAmountElement =
                   document.querySelector("#subtotalAmount"); // Add an ID to your total amount element
-                  subtotalAmountElement.textContent = `₹${subtotalAmount}`;
+                subtotalAmountElement.textContent = `₹${subtotalAmount}`;
 
               } else {
                 // Handle the error, e.g., display a message to the user
@@ -355,11 +354,11 @@
               }
             }
           }
-       
-      // error: function (error) {
-      //       // Handle the AJAX error, e.g., display an error message
-      //       console.error("AJAX error:", error);
-      //     },
+
+          // error: function (error) {
+          //       // Handle the AJAX error, e.g., display an error message
+          //       console.error("AJAX error:", error);
+          //     },
         });
       } else {
         // Handle the case where currentValue is not a valid number
@@ -383,6 +382,6 @@
 
 
 
-</body>
+  </body>
 
-</html>
+  </html>

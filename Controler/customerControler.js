@@ -8,9 +8,9 @@ const Product = require('../Models/productModel')
 const Address = require('../Models/userAddress')
 const Order = require("../Models/orderModel");
 const product = require("../Models/productModel");
-
-
-
+const jwt = require('jsonwebtoken');
+const crypto = require("crypto")
+require("dotenv").config();
 const loadRegister = async (req, res, next) => {
     try {
         res.render("User/register", { user: "sad" })
@@ -70,6 +70,11 @@ const insertUser = async (req, res) => {
                     //send the verification email 
                     sendOTPVerificationEmail(userData, res)
                     const user_id = userData._id
+
+                    const accessToken = jwt.sign(user,
+                        process.env.JWTSECRET)
+                        res.json({ accessToken : accessToken })
+                        
                     res.redirect(`/user/otpVerification?userId=${user_id}`);
 
 
@@ -224,12 +229,16 @@ const checkUserValid = async (req, res) => {
             if (!isValid) {
                 res.render('User/login', { message: "password is incorrect try again..", user: req.session.user })
             } else {
+                
 
-
+                const token = jwt.sign({userId:verifiedUser._id},process.env.JWTSECRET,{
+                    expiresIn: '30d',
+                })
+                
                 req.session.user = verifiedUser._id
                 req.u = verifiedUser._id
 
-
+                res.cookie(token);
                 return res.redirect('/')
             }
         } else {
@@ -376,8 +385,30 @@ const userLogouting = (req, res, next) => {
 const loadShop = async (req, res) => {
     try {
         const products = await Product.find({ is_delete: false, in_stock: true })
-        console.log(products);
-        res.render('User/shop', { products, user: req.session.user, success: req.flash('success') })
+        const pipeline = [
+            {
+                $match: {
+                    is_delete: false,
+                    in_stock: true
+                }
+            },
+            {
+                $group: {
+                    _id: null,
+                    colors: { $addToSet: "$color" },
+                    categories: { $addToSet: "$category" },
+                    brands: { $addToSet: "$brand_name" }
+                }
+            },{
+                $project:{
+                    _id:0
+                }
+            }
+        ];
+        
+        const filter = await Product.aggregate(pipeline);
+        console.log(filter)
+        res.render('User/shop', { products, user: req.session.user, success: req.flash('success'),filter })
     } catch (error) {
         console.log(error.message);
     }

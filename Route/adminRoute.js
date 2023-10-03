@@ -2,10 +2,13 @@ const express = require("express")
 const admin_Route = express.Router()
 const Auth = require('../middleware/Auth')
 const imgResizing = require("../middleware/uploadimages")
-const { loadAaminLogin, loginValidation, adminValid, loadDash, adminLogout, displayCustomers, 
+const { loadAaminLogin, loginValidation, adminValid, adminLogout, displayCustomers, 
     UnblockTheUser, blockTheUser, addProductCategory, loadCategory, deleteCategory, loadAddCategory,
     loadProductCreate, createProduct,  loadProductPage , editProduct ,loadProductEditPage ,productDeactivate,productActivate,
-    deleteImgDelete, loadOrder, updateOrderStatus, EditCategory, loadEditCategory } = require('../Controler/adminControler')
+    deleteImgDelete, loadOrder, updateOrderStatus, EditCategory, loadEditCategory, deleteCategoryImg
+     } = require('../Controler/adminControler')
+
+const { loadDash } = require("../Controler/dasboard")
 
 const multer = require("multer")
 const storage = multer.memoryStorage()
@@ -50,7 +53,7 @@ const upload = multer({storage:storage})
             .get("/Category/:id/Edit-Category", Auth.adminAuth, loadEditCategory)
 
             .post("/Category/Edit-Category", Auth.adminAuth,upload.single('image'), EditCategory)
-
+            .get("/category/:id/images-delete", deleteCategoryImg)
 //PRODUCT MANGEMNT
 
  admin_Route.get('/product/create', loadProductCreate)

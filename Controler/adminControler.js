@@ -7,77 +7,6 @@ const Order = require("../Models/orderModel")
 
 
 
-// CALCULATING THE DALY INCOME
-const DailyIncome = async (req, res) => {
-    try {
-        // Get the current date in the user's timezone
-        const currentDate = new Date();
-
-        // Extract year, month, and day
-        const year = currentDate.getFullYear();
-        const month = currentDate.getMonth() + 1; // Months are 0-indexed
-        const day = currentDate.getDate();
-
-        // Create a formatted date string in "YYYY-MM-DD" format
-        const formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-
-        // Define the start and end of the current day
-        const startDate = new Date(`${formattedDate}T00:00:00`);
-        const endOfDay = new Date(`${formattedDate}T23:59:59.999`);
-
-        // Your MongoDB aggregation pipeline
-        const pipeline = [
-            {
-                $match: {
-                    orderDate: {
-                        $gte: startDate,
-                        $lte: endOfDay
-                    }
-                }
-            },
-            {
-                $group: {
-                    _id: null,
-                    dailyRevenue: { $sum: '$totalAmount' }
-                }
-            },
-            {
-                $project: {
-                    _id: 0,
-                    dailyRevenue: 1
-                }
-            }
-        ];
-
-        // Assuming you have a model named Order
-        const result = await Order.aggregate(pipeline);
-        console.log(result)
-        // Send the result as a response
-        // res.json({ dailyRevenue: result[0] });
-    } catch (error) {
-        console.error(error.message);
-        res.status(500).json({ error: 'An error occurred' });
-    }
-};
-
-//CALCULATING THE MONTHLY INCOME 
-const MonthlyIncome = async (req,res) =>{
-    try{
-        const currentDate = new Date()
-        //supperating the year and month
-        const  year =  currentDate.getFullYear()
-        const month = currentDate.getMonth() + 1 //month index stating at 0 
-
-        const formattedDate = `${year}-${month.toString().padStart(2, '0')}`; //create the actual format year/month/day
-
-    
-
-
-    } catch (error){
-        console.log("error.message")
-    }
-}
-
 //ADMIN LOGIN
 const loadAaminLogin = async (req, res, next) => {
     try {
@@ -151,14 +80,7 @@ const adminValid = async (req, res) => {
         console.log(error.message);
     }
 }
-const loadDash = async (req, res) => {
-    try {
-        const dailyIncome = await DailyIncome()
 
-    } catch (error) {
-        console.log(error.message);
-    }
-}
 const adminLogout = (req, res) => {
     try {
         if (req.session.admin) {
@@ -238,7 +160,12 @@ const addProductCategory = async (req, res) => {
     if (!req.body.Categoryname || !req.file) {
         return res.render("admin/addCategory", { message: "Fill all fields...." });
     }
-    const exist = await productCategry.findOne({ categoryName: req.body.Categoryname })
+    const exist = await productCategry.find({ categoryName: req.body.Categoryname })
+    
+    if(exist){
+        return res.render("admin/addCategory", { message: "Same category name not possible try another name please...." });
+    }
+    
 
     console.log("File uploaded successfully.");
 
@@ -335,6 +262,16 @@ const EditCategory = async (req, res) => {
 const loadAddCategory = (req, res) => {
     try {
         res.render('admin/addCategory', { message: '' })
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+const deleteCategoryImg = async (req,res) => {
+    try {
+        const categoryId = req.params.id
+        const category = await productCategry.findByIdAndUpdate(categoryId,{$unset:{image:{}}})
+        return res.redirect(`/admin/Category/${categoryId}/Edit-Category`)
     } catch (error) {
         console.log(error.message)
     }
@@ -576,8 +513,8 @@ const updateOrderStatus = async (req, res) => {
 };
 
 module.exports = {
-    loadAaminLogin, loginValidation, adminValid, loadDash, adminLogout, displayCustomers,
+    loadAaminLogin, loginValidation, adminValid, adminLogout, displayCustomers,
     UnblockTheUser, blockTheUser, addProductCategory, loadCategory, deleteCategory, loadAddCategory, loadProductCreate,
     createProduct, loadProductPage, editProduct, loadProductEditPage, productDeactivate, productActivate, deleteImgDelete,
-    loadOrder, updateOrderStatus, loadEditCategory, EditCategory,
+    loadOrder, updateOrderStatus, loadEditCategory, EditCategory, deleteCategoryImg, 
 }

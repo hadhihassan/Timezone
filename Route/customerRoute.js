@@ -10,7 +10,7 @@ const { loadRegister, loadhome, insertUser, loadOTPpage, checkOTPValid, loadLogi
     userUpdatePassword, loadAddAddressPage, addUserAddress, editAddress, updateAddress, deleteAddress,
     displayProduct, productAddToCart, loadCart, updateCartQuantity, deleteProductCart, loadForgetPage,
     ForgetPasswordcheckingValid, loadChangePass, validOTPsetPass, loadchekout, selectAddress, placeOrder,
-    loadOrder, loadOrderProductDetails, cancelOrder,
+    loadOrder, loadOrderProductDetails, cancelOrder, authonticateToken
 } = require('../Controler/customerControler')
 const multer = require("multer")
 const Customer = require('../Models/customerModel')
@@ -107,7 +107,7 @@ Customer_Route.get("/user/cart", Auth.logged, loadCart)
 
 
 //**CHECKOUT PAGES** 
-Customer_Route.post('/user/Checkout', loadchekout)
+Customer_Route.get('/user/Checkout', loadchekout)
     .post("/user/address/selsect", selectAddress)
 
 

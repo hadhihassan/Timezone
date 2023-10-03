@@ -136,3 +136,39 @@
 
 .no-csspointerevents .nice-select.open .list {
   display: block; }
+
+        .section1 {
+            margin-top: 20px;
+        }
+
+        .filter-box {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .filter-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .filter-link {
+            color: #333;
+            text-decoration: none;
+        }
+
+        .filter-link:hover {
+            color: #007bff;
+        }
+        .price-filter {
+          margin-top: 20px;
+      }
+
+      .price-range {
+          margin-bottom: 10px;
+      }
+
+      .price-input {
+          width: 80px;
+

@@ -23,13 +23,12 @@ const resizeProductImages = async (req, res, next) => {
 
     // Set the content type to 'image/jpeg' for the response
     res.contentType('image/jpeg');
+    console.log("hai+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
     next();
   } catch (error) {
-    console.log(error.message); // Corrected 'conosle' to 'console'
+    console.error(error.message); // Corrected 'conosle' to 'console'
     next(error);
   }
 };
 
-
-
-module.exports = {resizeProductImages}
+module.exports = { resizeProductImages }

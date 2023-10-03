@@ -23,10 +23,13 @@
     <link rel="stylesheet" href="/Customer/css/nice-select.css">
     <link rel="stylesheet" href="/Customer/css/style.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"> 
+    
 
 </head>
 
 <body>
+    
     <!--? Preloader Start -->
     <div id="preloader-active">
         <div class="preloader d-flex align-items-center justify-content-center">
@@ -60,11 +63,66 @@
                 </div>
             </div>
         </div>
+        <div class="container">
+            <div class="section1 ">
+                <div class="row filter-box ">
+                    <div class="col-md-3" > 
+                        <div class="filter-box">
+                            <h3 class=" filter-title text-center">Category</h3>
+                            <hr>
+                            <% filter[0].categories.forEach((Category) => { %>
+                                <a class="text-black" href="#"><%= Category %></a> <br>
+                              <% }) %>
+                      
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="filter-box">
+                            <h3 class="filter-title "text-center>Brand Name</h3>
+                            <hr>
+                            <% filter[0].brands.forEach((brand) => { %>
+                                <a class="text-black" href="#"><%= brand %></a> <br>
+                              <% }) %>
+                
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="filter-box ">
+                            <h3 class="filter-title "text-center>Color</h3>
+                            <hr>
+                            <% filter[0].colors.forEach((color) => { %>
+                                <a class="text-black" href="#"><%= color %></a> <br>
+                              <% }) %>
+                     
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="filter-box">
+                            <h3 class="filter-title">text-center Price Range</h3>
+                            <hr>
+                             
+                                  <form id="price-range-form">
+                                    <label for="min-price" class="form-label">Min price: </label>
+                                    <span id="min-price-txt">$0</span>
+                                    <input type="range" class="form-range" min="0" max="500" id="min-price" step="1" value="0">
+                                    <label for="max-price" class="form-label">Max price: </label>
+                                    <span id="max-price-txt">$100</span>
+                                    <input type="range" class="form-range" min="100" max="50000" id="max-price" step="1" value="100">
+                                  </form>
+                          
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Hero Area End-->
         <!-- Latest Products Start -->
         <section class="popular-items latest-padding">
+
             <div class="container">
+                
+
                 <div class="row product-btn justify-content-between mb-40">
                     <div class="properties__button">
                         <!--Nav Button  -->
@@ -132,7 +190,7 @@
                                                     <a
                                                         href="/user/displayProduct?productId=<%= products[product]._id %>">
                                                         <img src="data:<%= products[product].images[0].contentType %>;base64,<%= products[product].images[0].data.toString('base64') %>"
-                                                            alt="<%= products[product].price %> Image">
+                                                            alt="<%= products[product].price %>" 
                                                     </a>
 
                                                     <% if (products[product].stock_count> 0) { %>
@@ -307,7 +365,20 @@
     <script src="/Customer/js/main.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/Customer/js/memoryreload.js"></script>
+    <script>
+        $("#min-price").on("change mousemove", function () {
+  min_price = parseInt($("#min-price").val());
+  $("#min-price-txt").text("$" + min_price);
+  showItemsFiltered();
+});
 
+$("#max-price").on("change mousemove", function () {
+  max_price = parseInt($("#max-price").val());
+  $("#max-price-txt").text("$" + max_price);
+  showItemsFiltered();
+});
+    </script>
+    
 </body>
 
 </html>

@@ -46,7 +46,7 @@
                             <hr>
                             <div class="card-body">
                                 <% if (order.paymentOption == "razorpay") { %>
-                                    <h5>Delivery Address <sup class="text-danger">(Payment successful)</sup></h5>
+                                    <h5>Delivery Address <sup class="text-danger  class="badge bg-primary text-wrap"">(Payment successful)</sup></h5>
                                 <% } else { %>
                                     <h5>Delivery Address</h5>
                                 <% } %>
@@ -95,13 +95,13 @@
                                         <li class="list-group-item px-4 text-center">
                                             <form action="/user/order/Cancel/" method="post">
                                                 <input type="hidden" name="orderId" value="<%= order._id %>">
-                                                <button class="btn_1">Order Cancel</button>
+                                                <button class="btn">Order Cancel</button>
                                             </form>
                                         </li>
                                         <% } %>
                                             <% if (order.returnRequest==="Completed" ) { %>
                                                 <li class="list-group-item px-4  text-center">
-                                                    <button class="btn_1">Return Product</button>
+                                                    <button class="btn">Return Product</button>
                                                 </li>
                                                 <% } %>
 
@@ -121,6 +121,7 @@
                         <br>
 
                     </div>
+                    <hr>
                     <% }) %>
             </div>
         </div>

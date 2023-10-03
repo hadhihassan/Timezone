@@ -1,134 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Corona Admin</title>
-    <!-- plugins:css -->
-    <link rel="stylesheet" href="../../Admin/vendors/mdi/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="../../Admin/vendors/css/vendor.bundle.base.css">
-    <!-- endinject -->
-    <!-- Plugin css for this page -->
-    <!-- End Plugin css for this page -->
-    <!-- inject:css -->
-    <!-- endinject -->
-    <!-- Layout styles -->
-    <link rel="stylesheet" href="../../Admin/css/style.css">
-    <!-- End layout styles -->
-    <link rel="shortcut icon" href="../../Admin/images/favicon.png" />
-  </head>
-  <body>
-    <div class="container-scroller">
-      <!-- partial:../../partials/_sidebar.html -->
-      <%- include('../partials/Adminside/adminsidepanel') %>
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Corona Admin</title>
+  <!-- plugins:css -->
+  <link rel="stylesheet" href="../../Admin/vendors/mdi/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="../../Admin/vendors/css/vendor.bundle.base.css">
+  <!-- endinject -->
+  <!-- Plugin css for this page -->
+  <!-- End Plugin css for this page -->
+  <!-- inject:css -->
+  <!-- endinject -->
+  <!-- Layout styles -->
+  <link rel="stylesheet" href="../../Admin/css/style.css">
+  <!-- End layout styles -->
+  <link rel="shortcut icon" href="../../Admin/images/favicon.png" />
+</head>
+
+<body>
+  <div class="container-scroller">
+    <!-- partial:../../partials/_sidebar.html -->
+    <%- include('../partials/Adminside/adminsidepanel') %>
       <!-- partial -->
-        <!-- partial -->
-        <div class="container-fluid page-body-wrapper">
-      <%- include('../partials/Adminside/adminNav') %>
-        <!-- partial -->
-        <div class="main-panel">
-          
-          <div class="content-wrapper">
-            <ul class="navbar-nav w-100">
-              <li class="nav-item w-100">
-                <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
-                  <input type="text" class="form-control" placeholder="Search products">
-                </form>
-              </li>
-            </ul>
-           
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <%- include('../partials/Adminside/adminNav') %>
+          <!-- partial -->
+          <div class="main-panel">
+
+            <div class="content-wrapper">
+              <ul class="navbar-nav w-100">
+                <li class="nav-item w-100">
+                  <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
+                    <input type="text" class="form-control" placeholder="Search products">
+                  </form>
+                </li>
+              </ul>
+
               <div class="row">
-                 <div class="col-lg-12 grid-margin stretch-card">
+                <div class="col-lg-12 grid-margin stretch-card">
                   <div class="card">
                     <div class="card-body">
-                     
+
                       <div class="d-flex flex-row justify-content-between">
                         <h4 class="card-title">All Category</h4>
-                        <a href="/admin/product/add-category" >Add Category</a>
-                       </div>
+                        <a href="/admin/product/add-category">Add Category</a>
+                      </div>
 
                       </p>
                       <div class="table-responsive">
 
 
                         <% if (Categores.length) { %>
-                             <table class="table">
-                          <thead>
-                            <tr>
-                              <th>NO</th>
-                              <th>Images</th>
-                              <th>Category Name</th>
-                              <th>Description</th>
-                              <th>Action</th>
-                            </tr>
-                          </thead>
-                          <tbody>
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <th>NO</th>
+                                <th>Images</th>
+                                <th>Category Name</th>
+                                <th>Description</th>
+                                <th>Action</th>
+                              </tr>
+                            </thead>
+                            <tbody>
 
-                           <% Categores.forEach((Category,i) => { %>
-                             <tr>
-                                <td><%= i+1 %></td>
-                                <td>
-                                  
-                                   
-                                    <img src="data:<%= Category.image.contentType %>;base64,<%= Category.image.data.toString('base64') %>" alt="<%= Category.categoryName %> Image" style="width: 50px; height: 50px;">
-                                    
+                              <% Categores.forEach((Category,i)=> { %>
+                                <tr>
+                                  <td>
+                                    <%= i+1 %>
+                                  </td>
+                                  <td>
 
-                              </td>
-                              
-                                <td> <%= Category.categoryName %> </td>
-                                <!-- <td> </td> -->
-                                <td> <%= Category.description %></td>
-                                <td>
-                               
-                                  <a href="/admin/Category/<%= Category._id %>/Delete" class="btn btn-danger">Delete</i></a>     
-                                  <a href="/admin/Category/<%= Category._id %>/Edit-Category" class="btn btn-primary">Edit</i></a>     
-                                  
-                                 </td>
-                            </tr>
-                            <% }) %>
-                          </tbody> 
-                        </table>
-                        
-                        <% } else { %>
-                          <p>No Categores</p>
-                        <% } %> 
-                     
-                      </div> 
+                                    <% if (Category.image.contentType) { %>
+
+                                      <img
+                                        src="data:<%= Category.image.contentType %>;base64,<%= Category.image.data.toString('base64') %>"
+                                        alt="<%= Category.categoryName %> Image" style="width: 50px; height: 50px;">
+                                      <% } %>
+
+
+                                  </td>
+
+                                  <td>
+                                    <%= Category.categoryName %>
+                                  </td>
+                                  <!-- <td> </td> -->
+                                  <td>
+                                    <%= Category.description %>
+                                  </td>
+                                  <td>
+
+                                    <a href="/admin/Category/<%= Category._id %>/Delete"
+                                      class="btn btn-danger">Delete</i></a>
+                                    <a href="/admin/Category/<%= Category._id %>/Edit-Category"
+                                      class="btn btn-primary">Edit</i></a>
+
+                                  </td>
+                                </tr>
+                                <% }) %>
+                            </tbody>
+                          </table>
+
+                          <% } else { %>
+                            <p>No Categores</p>
+                            <% } %>
+
+                      </div>
                     </div>
-                  </div> 
+                  </div>
                 </div>
-          </div>
-          
-          <!-- content-wrapper ends -->
-          <!-- partial:../../partials/_footer.html -->
+              </div>
 
-          <footer class="footer">
-            <div class="d-sm-flex justify-content-center justify-content-sm-between">
-              <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © bootstrapdash.com 2020</span>
-              <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin templates</a> from Bootstrapdash.com</span>
+              <!-- content-wrapper ends -->
+              <!-- partial:../../partials/_footer.html -->
+
+              <footer class="footer">
+                <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                  <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright ©
+                    bootstrapdash.com 2020</span>
+                  <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a
+                      href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin
+                      templates</a> from Bootstrapdash.com</span>
+                </div>
+              </footer>
+              <!-- partial -->
             </div>
-          </footer>
-          <!-- partial -->
-        </div>
-        <!-- main-panel ends -->
+            <!-- main-panel ends -->
+          </div>
+          <!-- page-body-wrapper ends -->
       </div>
-      <!-- page-body-wrapper ends -->
-    </div>
-    <!-- container-scroller -->
-    <!-- plugins:js -->
-    <script src="../../Admin/vendors/js/vendor.bundle.base.js"></script>
-    <!-- endinject -->
-    <!-- Plugin js for this page -->
-    <!-- End plugin js for this page -->
-    <!-- inject:js -->
-    <script src="../../Admin/js/off-canvas.js"></script>
-    <script src="../../Admin/js/hoverable-collapse.js"></script>
-    <script src="../../Admin/js/misc.js"></script>
-    <script src="../../Admin/js/settings.js"></script>
-    <script src="../../Admin/js/todolist.js"></script>
-    <!-- endinject -->
-    <!-- Custom js for this page -->
-    <!-- End custom js for this page -->
-  </body>
+      <!-- container-scroller -->
+      <!-- plugins:js -->
+      <script src="../../Admin/vendors/js/vendor.bundle.base.js"></script>
+      <!-- endinject -->
+      <!-- Plugin js for this page -->
+      <!-- End plugin js for this page -->
+      <!-- inject:js -->
+      <script src="../../Admin/js/off-canvas.js"></script>
+      <script src="../../Admin/js/hoverable-collapse.js"></script>
+      <script src="../../Admin/js/misc.js"></script>
+      <script src="../../Admin/js/settings.js"></script>
+      <script src="../../Admin/js/todolist.js"></script>
+      <!-- endinject -->
+      <!-- Custom js for this page -->
+      <!-- End custom js for this page -->
+</body>
+
 </html>

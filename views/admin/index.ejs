@@ -21,6 +21,8 @@
   <!-- Layout styles -->
   <link rel="stylesheet" href="/Admin/css/style.css">
   <!-- End layout styles -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <link rel="shortcut icon" href="/Admin/images/favicon.png" />
 </head>
 
@@ -37,33 +39,56 @@
             <div class="content-wrapper">
 
               <div class="row">
+
                 <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
                   <div class="card">
                     <div class="card-body">
                       <div class="row">
                         <div class="col-9">
                           <div class="d-flex align-items-center align-self-start">
-                            <h3 class="mb-0">$12.34</h3>
+                            <h3 class="mb-0" id="dailyRevenueValue">
+                              <% if (daily && daily.length> 0) { %>
+                                <%= daily[0].dailyRevenue %>
+                                  <% } else { %>
+                                    0
+                                    <% } %>
+                            </h3>
+
                             <p class="text-success ml-2 mb-0 font-weight-medium">+3.5%</p>
                           </div>
                         </div>
                         <div class="col-3">
-                          <div class="icon icon-box-success ">
+                          <div class="icon icon-box-success">
                             <span class="mdi mdi-arrow-top-right icon-item"></span>
                           </div>
                         </div>
                       </div>
                       <h6 class="text-muted font-weight-normal">Daily Income</h6>
+
+
                     </div>
                   </div>
                 </div>
+
+
+
+
+
                 <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
                   <div class="card">
                     <div class="card-body">
                       <div class="row">
                         <div class="col-9">
                           <div class="d-flex align-items-center align-self-start">
-                            <h3 class="mb-0">$17.34</h3>
+                            <h3 class="mb-0">
+                              <% if (monthly && monthly.length> 0) { %>
+                                <%= monthly[0].monthlyRevenue %>
+                                  <% } else { %>
+                                    0
+                                    <% } %>
+                            </h3>
+
+
                             <p class="text-success ml-2 mb-0 font-weight-medium">+11%</p>
                           </div>
                         </div>
@@ -83,8 +108,15 @@
                       <div class="row">
                         <div class="col-9">
                           <div class="d-flex align-items-center align-self-start">
-                            <h3 class="mb-0">$12.34</h3>
-                            <p class="text-danger ml-2 mb-0 font-weight-medium">-2.4%</p>
+                            <h3 class="mb-0">
+                              <% if (yearly && yearly.length> 0) { %>
+                                <%= yearly[0].yearlyIncome %>
+                                  <% } else { %>
+                                    0
+                                    <% } %>
+
+                            </h3>
+                            <p class="text-success ml-2 mb-0 font-weight-medium">-2.4%</p>
                           </div>
                         </div>
                         <div class="col-3">
@@ -93,7 +125,7 @@
                           </div>
                         </div>
                       </div>
-                      <h6 class="text-muted font-weight-normal">Daily Income</h6>
+                      <h6 class="text-muted font-weight-normal">Yearly Income</h6>
                     </div>
                   </div>
                 </div>
@@ -103,7 +135,14 @@
                       <div class="row">
                         <div class="col-9">
                           <div class="d-flex align-items-center align-self-start">
-                            <h3 class="mb-0">$31.53</h3>
+                            <h3 class="mb-0">
+
+                              <% if (lifeTime && lifeTime.length> 0) { %>
+                                <%= lifeTime[0].lifeTimeRevenue %>
+                                  <% } else { %>
+                                    0
+                                    <% } %>
+                            </h3>
                             <p class="text-success ml-2 mb-0 font-weight-medium">+3.5%</p>
                           </div>
                         </div>
@@ -122,28 +161,44 @@
                 <div class="col-md-4 grid-margin stretch-card">
                   <div class="card">
                     <div class="card-body">
-                      <h4 class="card-title">Transaction History</h4>
-                      <canvas id="transaction-history" class="transaction-chart"></canvas>
+                      <h4 class="card-title">Transaction History</h4><br>
+                      <canvas id="transaction"></canvas>
+                      <br><br><br>
                       <div
                         class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3">
                         <div class="text-md-center text-xl-left">
-                          <h6 class="mb-1">Transfer to Paypal</h6>
-                          <p class="text-muted mb-0">07 Jan 2019, 09:12AM</p>
+                          <h6 class="mb-1"> Total Transfer to Paypal</h6>
+                          <!-- <p class="text-muted mb-0">07 Jan 2019, 09:12AM</p> -->
                         </div>
                         <div
                           class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
-                          <h6 class="font-weight-bold mb-0">$236</h6>
+                          <h6 class="font-weight-bold mb-0">
+
+                            <% if (paymentoptins && paymentoptins.length> 0) { %>
+                              <%= paymentoptins[0].totalAmount %>
+                                <% } else { %>
+                                  No payment information available.
+                                  <% } %>
+
+                          </h6>
                         </div>
                       </div>
                       <div
                         class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3">
                         <div class="text-md-center text-xl-left">
-                          <h6 class="mb-1">Tranfer to Stripe</h6>
-                          <p class="text-muted mb-0">07 Jan 2019, 09:12AM</p>
+                          <h6 class="mb-1">Total Tranfer to COD</h6>
+                          <!-- <p class="text-muted mb-0">07 Jan 2019, 09:12AM</p> -->
                         </div>
                         <div
                           class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
-                          <h6 class="font-weight-bold mb-0">$593</h6>
+                          <h6 class="font-weight-bold mb-0">
+                            <% if (paymentoptins && paymentoptins.length> 1) { %>
+                              <%= paymentoptins[1].totalAmount %>
+                                <% } else { %>
+                                  No second payment information available.
+                                  <% } %>
+
+                          </h6>
                         </div>
                       </div>
                     </div>
@@ -152,127 +207,58 @@
                 <div class="col-md-8 grid-margin stretch-card">
                   <div class="card">
                     <div class="card-body">
+
+                      <h4 class="card-title">Transaction History</h4> <br>
+                      <div class="row">
+                        <canvas id="bestSellingProducts" width="400" height="300"></canvas>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+
+
+              <div class="row">
+                <div class="col-12">
+                  <div class="card">
+                    <div class="card-body">
                       <div class="d-flex flex-row justify-content-between">
-                        <h4 class="card-title mb-1">Open Projects</h4>
+                        <h4 class="card-title mb-1">Monthly Revenue</h4>
                         <p class="text-muted mb-1">Your data status</p>
                       </div>
                       <div class="row">
                         <div class="col-12">
-                          <div class="preview-list">
-                            <div class="preview-item border-bottom">
-                              <div class="preview-thumbnail">
-                                <div class="preview-icon bg-primary">
-                                  <i class="mdi mdi-file-document"></i>
-                                </div>
-                              </div>
-                              <div class="preview-item-content d-sm-flex flex-grow">
-                                <div class="flex-grow">
-                                  <h6 class="preview-subject">Admin dashboard design</h6>
-                                  <p class="text-muted mb-0">Broadcast web app mockup</p>
-                                </div>
-                                <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                  <p class="text-muted">15 minutes ago</p>
-                                  <p class="text-muted mb-0">30 tasks, 5 issues </p>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="preview-item border-bottom">
-                              <div class="preview-thumbnail">
-                                <div class="preview-icon bg-success">
-                                  <i class="mdi mdi-cloud-download"></i>
-                                </div>
-                              </div>
-                              <div class="preview-item-content d-sm-flex flex-grow">
-                                <div class="flex-grow">
-                                  <h6 class="preview-subject">Wordpress Development</h6>
-                                  <p class="text-muted mb-0">Upload new design</p>
-                                </div>
-                                <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                  <p class="text-muted">1 hour ago</p>
-                                  <p class="text-muted mb-0">23 tasks, 5 issues </p>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="preview-item border-bottom">
-                              <div class="preview-thumbnail">
-                                <div class="preview-icon bg-info">
-                                  <i class="mdi mdi-clock"></i>
-                                </div>
-                              </div>
-                              <div class="preview-item-content d-sm-flex flex-grow">
-                                <div class="flex-grow">
-                                  <h6 class="preview-subject">Project meeting</h6>
-                                  <p class="text-muted mb-0">New project discussion</p>
-                                </div>
-                                <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                  <p class="text-muted">35 minutes ago</p>
-                                  <p class="text-muted mb-0">15 tasks, 2 issues</p>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="preview-item border-bottom">
-                              <div class="preview-thumbnail">
-                                <div class="preview-icon bg-danger">
-                                  <i class="mdi mdi-email-open"></i>
-                                </div>
-                              </div>
-                              <div class="preview-item-content d-sm-flex flex-grow">
-                                <div class="flex-grow">
-                                  <h6 class="preview-subject">Broadcast Mail</h6>
-                                  <p class="text-muted mb-0">Sent release details to team</p>
-                                </div>
-                                <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                  <p class="text-muted">55 minutes ago</p>
-                                  <p class="text-muted mb-0">35 tasks, 7 issues </p>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="preview-item">
-                              <div class="preview-thumbnail">
-                                <div class="preview-icon bg-warning">
-                                  <i class="mdi mdi-chart-pie"></i>
-                                </div>
-                              </div>
-                              <div class="preview-item-content d-sm-flex flex-grow">
-                                <div class="flex-grow">
-                                  <h6 class="preview-subject">UI Design</h6>
-                                  <p class="text-muted mb-0">New application planning</p>
-                                </div>
-                                <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                  <p class="text-muted">50 minutes ago</p>
-                                  <p class="text-muted mb-0">27 tasks, 4 issues </p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
+                          <canvas id="monthlyRevenueChart"></canvas>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="row">
-                <div class="col-12">
-                  <div class="card">
-                    <div class="card-body">
-                      <p>s</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+
               <br>
               <div class="row">
                 <div class="col-sm-4 grid-margin">
                   <div class="card">
                     <div class="card-body">
-                      <h5>Revenue</h5>
+                      <h5> Revenue</h5>
                       <div class="row">
                         <div class="col-8 col-sm-12 col-xl-8 my-auto">
                           <div class="d-flex d-sm-block d-md-flex align-items-center">
-                            <h2 class="mb-0">$32123</h2>
+                            <h2 class="mb-0">
+                              <% if (monthly && monthly.length> 0) { %>
+                                <%= monthly[0].monthlyRevenue %>
+                                  <% } else { %>
+                                    No monthly revenue data available.
+                                    <% } %>
+
+                            </h2>
                             <p class="text-success ml-2 mb-0 font-weight-medium">+3.5%</p>
                           </div>
-                          <h6 class="text-muted font-weight-normal">11.38% Since last month</h6>
+                          <h6 class="text-muted font-weight-normal">Since last month</h6>
                         </div>
                         <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
                           <i class="icon-lg mdi mdi-codepen text-primary ml-auto"></i>
@@ -284,14 +270,22 @@
                 <div class="col-sm-4 grid-margin">
                   <div class="card">
                     <div class="card-body">
-                      <h5>Sales</h5>
+                      <h5>Total count of Sales</h5>
                       <div class="row">
                         <div class="col-8 col-sm-12 col-xl-8 my-auto">
                           <div class="d-flex d-sm-block d-md-flex align-items-center">
-                            <h2 class="mb-0">$45850</h2>
+                            <h2 class="mb-0">
+                              <% if (paymentoptins && paymentoptins.length> 1 && typeof paymentoptins[0].count ===
+                                'number' && typeof paymentoptins[1].count === 'number') { %>
+                                <%= paymentoptins[0].count + paymentoptins[1].count %>
+                                  <% } else { %>
+                                    Unable to calculate the sum of counts.
+                                    <% } %>
+
+                            </h2>
                             <p class="text-success ml-2 mb-0 font-weight-medium">+8.3%</p>
                           </div>
-                          <h6 class="text-muted font-weight-normal"> 9.61% Since last month</h6>
+                          <h6 class="text-muted font-weight-normal">Since started </h6>
                         </div>
                         <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
                           <i class="icon-lg mdi mdi-wallet-travel text-danger ml-auto"></i>
@@ -303,17 +297,19 @@
                 <div class="col-sm-4 grid-margin">
                   <div class="card">
                     <div class="card-body">
-                      <h5>Purchase</h5>
+                      <h5>Total Customers</h5>
                       <div class="row">
                         <div class="col-8 col-sm-12 col-xl-8 my-auto">
                           <div class="d-flex d-sm-block d-md-flex align-items-center">
-                            <h2 class="mb-0">$2039</h2>
-                            <p class="text-danger ml-2 mb-0 font-weight-medium">-2.1% </p>
+                            <h2 class="mb-0">
+                              <%= allUsers.length %>
+                            </h2>
+                            <!-- <p class="text-danger ml-2 mb-0 font-weight-medium">-2.1% </p> -->
                           </div>
-                          <h6 class="text-muted font-weight-normal">2.27% Since last month</h6>
+                          <h6 class="text-muted font-weight-normal"> Since started</h6>
                         </div>
                         <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
-                          <i class="icon-lg mdi mdi-monitor text-success ml-auto"></i>
+                          <i class="icon-lg mdi mdi-wallet-travel text-success ml-auto"></i>
                         </div>
                       </div>
                     </div>
@@ -324,7 +320,7 @@
                 <div class="col-12 grid-margin">
                   <div class="card">
                     <div class="card-body">
-                      <h4 class="card-title">Order Status</h4>
+                      <h4 class="card-title">Pending Orders </h4>
                       <div class="table-responsive">
                         <table class="table">
                           <thead>
@@ -338,120 +334,56 @@
                               </th>
                               <th> Client Name </th>
                               <th> Order No </th>
-                              <th> Product Cost </th>
+                              <th> Products Cost </th>
                               <th> Project </th>
                               <th> Payment Mode </th>
                               <th> Start Date </th>
                               <th> Payment Status </th>
                             </tr>
                           </thead>
+
+
                           <tbody>
-                            <tr>
-                              <td>
-                                <div class="form-check form-check-muted m-0">
-                                  <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input">
-                                  </label>
-                                </div>
-                              </td>
-                              <td>
-                                <img src="//Admin/images/faces/face1.jpg" alt="image" />
-                                <span class="pl-2">Henry Klein</span>
-                              </td>
-                              <td> 02312 </td>
-                              <td> $14,500 </td>
-                              <td> Dashboard </td>
-                              <td> Credit card </td>
-                              <td> 04 Dec 2019 </td>
-                              <td>
-                                <div class="badge badge-outline-success">Approved</div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <div class="form-check form-check-muted m-0">
-                                  <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input">
-                                  </label>
-                                </div>
-                              </td>
-                              <td>
-                                <img src="/Admin/images/faces/face2.jpg" alt="image" />
-                                <span class="pl-2">Estella Bryan</span>
-                              </td>
-                              <td> 02312 </td>
-                              <td> $14,500 </td>
-                              <td> Website </td>
-                              <td> Cash on delivered </td>
-                              <td> 04 Dec 2019 </td>
-                              <td>
-                                <div class="badge badge-outline-warning">Pending</div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <div class="form-check form-check-muted m-0">
-                                  <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input">
-                                  </label>
-                                </div>
-                              </td>
-                              <td>
-                                <img src="/Admin/images/faces/face5.jpg" alt="image" />
-                                <span class="pl-2">Lucy Abbott</span>
-                              </td>
-                              <td> 02312 </td>
-                              <td> $14,500 </td>
-                              <td> App design </td>
-                              <td> Credit card </td>
-                              <td> 04 Dec 2019 </td>
-                              <td>
-                                <div class="badge badge-outline-danger">Rejected</div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <div class="form-check form-check-muted m-0">
-                                  <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input">
-                                  </label>
-                                </div>
-                              </td>
-                              <td>
-                                <img src="/Admin/images/faces/face3.jpg" alt="image" />
-                                <span class="pl-2">Peter Gill</span>
-                              </td>
-                              <td> 02312 </td>
-                              <td> $14,500 </td>
-                              <td> Development </td>
-                              <td> Online Payment </td>
-                              <td> 04 Dec 2019 </td>
-                              <td>
-                                <div class="badge badge-outline-success">Approved</div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <div class="form-check form-check-muted m-0">
-                                  <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input">
-                                  </label>
-                                </div>
-                              </td>
-                              <td>
-                                <img src="/Admin/images/faces/face4.jpg" alt="image" />
-                                <span class="pl-2">Sallie Reyes</span>
-                              </td>
-                              <td> 02312 </td>
-                              <td> $14,500 </td>
-                              <td> Website </td>
-                              <td> Credit card </td>
-                              <td> 04 Dec 2019 </td>
-                              <td>
-                                <div class="badge badge-outline-success">Approved</div>
-                              </td>
-                            </tr>
+                            <% orders.forEach(order=> { %>
+                              <tr>
+                                <td>
+                                  <div class="form-check form-check-muted m-0">
+                                    <label class="form-check-label">
+                                      <input type="checkbox" class="form-check-input">
+                                    </label>
+                                  </div>
+                                </td>
+                                <td>
+                                  <img
+                                    src="data:<%= order.user.image.contentType %>;base64,<%=order.user.image.data.toString('base64') %>"
+                                    alt="<%= order.user.name %>">
+                                  <span class="pl-2">
+                                    <%= order.user.name %>
+                                  </span>
+                                </td>
+                                <td>------</td>
+                                <td>
+                                  <%= order.totalAmount %>
+                                </td>
+                                <td> Dashboard </td>
+                                <td>
+                                  <%= order.paymentOption %>
+                                </td>
+                                <td>
+                                  <%= order.orderDate.toLocaleDateString() %>
+                                </td>
+
+                                <td>
+                                  <div class="badge badge-outline-primary">Pending</div>
+                                </td>
+                                <td>
+                                  <a href="/admin/orders"><span>Go</span></a>
+                                </td>
+                              </tr>
+
+                              <% }) %>
                           </tbody>
+
                         </table>
                       </div>
                     </div>
@@ -459,278 +391,332 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-6 col-xl-4 grid-margin stretch-card">
+                <div class="col-md-6 col-xl-6 grid-margin stretch-card">
                   <div class="card">
                     <div class="card-body">
                       <div class="d-flex flex-row justify-content-between">
-                        <h4 class="card-title">Messages</h4>
+                        <h4 class="card-title">Blocked Users</h4>
                         <p class="text-muted mb-1 small">View all</p>
                       </div>
                       <div class="preview-list">
-                        <div class="preview-item border-bottom">
-                          <div class="preview-thumbnail">
-                            <img src="/Admin/images/faces/face6.jpg" alt="image" class="rounded-circle" />
-                          </div>
-                          <div class="preview-item-content d-flex flex-grow">
-                            <div class="flex-grow">
-                              <div class="d-flex d-md-block d-xl-flex justify-content-between">
-                                <h6 class="preview-subject">Leonard</h6>
-                                <p class="text-muted text-small">5 minutes ago</p>
-                              </div>
-                              <p class="text-muted">Well, it seems to be working now.</p>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="preview-item border-bottom">
-                          <div class="preview-thumbnail">
-                            <img src="/Admin/images/faces/face8.jpg" alt="image" class="rounded-circle" />
-                          </div>
-                          <div class="preview-item-content d-flex flex-grow">
-                            <div class="flex-grow">
-                              <div class="d-flex d-md-block d-xl-flex justify-content-between">
-                                <h6 class="preview-subject">Luella Mills</h6>
-                                <p class="text-muted text-small">10 Minutes Ago</p>
-                              </div>
-                              <p class="text-muted">Well, it seems to be working now.</p>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="preview-item border-bottom">
-                          <div class="preview-thumbnail">
-                            <img src="/Admin/images/faces/face9.jpg" alt="image" class="rounded-circle" />
-                          </div>
-                          <div class="preview-item-content d-flex flex-grow">
-                            <div class="flex-grow">
-                              <div class="d-flex d-md-block d-xl-flex justify-content-between">
-                                <h6 class="preview-subject">Ethel Kelly</h6>
-                                <p class="text-muted text-small">2 Hours Ago</p>
-                              </div>
-                              <p class="text-muted">Please review the tickets</p>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="preview-item border-bottom">
-                          <div class="preview-thumbnail">
-                            <img src="/Admin/images/faces/face11.jpg" alt="image" class="rounded-circle" />
-                          </div>
-                          <div class="preview-item-content d-flex flex-grow">
-                            <div class="flex-grow">
-                              <div class="d-flex d-md-block d-xl-flex justify-content-between">
-                                <h6 class="preview-subject">Herman May</h6>
-                                <p class="text-muted text-small">4 Hours Ago</p>
-                              </div>
-                              <p class="text-muted">Thanks a lot. It was easy to fix it .</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6 col-xl-4 grid-margin stretch-card">
-                  <div class="card">
-                    <div class="card-body">
-                      <h4 class="card-title">Portfolio Slide</h4>
-                      <div class="owl-carousel owl-theme full-width owl-carousel-dash portfolio-carousel"
-                        id="owl-carousel-basic">
-                        <div class="item">
-                          <img src="/Admin/images/dashboard/Rectangle.jpg" alt="">
-                        </div>
-                        <div class="item">
-                          <img src="/Admin/images/dashboard/Img_5.jpg" alt="">
-                        </div>
-                        <div class="item">
-                          <img src="/Admin/images/dashboard/img_6.jpg" alt="">
-                        </div>
-                      </div>
-                      <div class="d-flex py-4">
-                        <div class="preview-list w-100">
-                          <div class="preview-item p-0">
+                        <% BlockedUsers.forEach(user=> { %>
+
+
+
+
+                          <div class="preview-item border-bottom">
                             <div class="preview-thumbnail">
-                              <img src="/Admin/images/faces/face12.jpg" class="rounded-circle" alt="">
+                              <% if (!user.image.contentType ) { %>
+
+                                <img
+                                  src="/Customer/img/blog/popular-post/account-icon-user-icon-vector-graphics_292645-552.avif"
+                                  alt="image" class="rounded-circle">
+                                <% } else { %>
+                                  <img
+                                    src="data:<%= user.image.contentType %>;base64,<%=user.image.data.toString('base64') %>"
+                                    alt="<%= user.name %>">
+
+                                  <% } %>
+
                             </div>
                             <div class="preview-item-content d-flex flex-grow">
                               <div class="flex-grow">
                                 <div class="d-flex d-md-block d-xl-flex justify-content-between">
-                                  <h6 class="preview-subject">CeeCee Bass</h6>
-                                  <p class="text-muted text-small">4 Hours Ago</p>
+                                  <h6 class="preview-subject">
+                                    <%= user.name %>
+                                  </h6>
+                                  <!-- <p class="text-muted text-small">5 minutes ago</p> -->
                                 </div>
-                                <p class="text-muted">Well, it seems to be working now.</p>
+                                <p class="text-muted">This account got a block list now..</p>
                               </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <p class="text-muted">Well, it seems to be working now. </p>
-                      <div class="progress progress-md portfolio-progress">
-                        <div class="progress-bar bg-success" role="progressbar" style="width: 50%" aria-valuenow="25"
-                          aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-12 col-xl-4 grid-margin stretch-card">
-                  <div class="card">
-                    <div class="card-body">
-                      <h4 class="card-title">To do list</h4>
-                      <div class="add-items d-flex">
-                        <input type="text" class="form-control todo-list-input" placeholder="enter task..">
-                        <button class="add btn btn-primary todo-list-add-btn">Add</button>
-                      </div>
-                      <div class="list-wrapper">
-                        <ul class="d-flex flex-column-reverse text-white todo-list todo-list-custom">
-                          <li>
-                            <div class="form-check form-check-primary">
-                              <label class="form-check-label">
-                                <input class="checkbox" type="checkbox"> Create invoice </label>
-                            </div>
-                            <i class="remove mdi mdi-close-box"></i>
-                          </li>
-                          <li>
-                            <div class="form-check form-check-primary">
-                              <label class="form-check-label">
-                                <input class="checkbox" type="checkbox"> Meeting with Alita </label>
-                            </div>
-                            <i class="remove mdi mdi-close-box"></i>
-                          </li>
-                          <li class="completed">
-                            <div class="form-check form-check-primary">
-                              <label class="form-check-label">
-                                <input class="checkbox" type="checkbox" checked> Prepare for presentation </label>
-                            </div>
-                            <i class="remove mdi mdi-close-box"></i>
-                          </li>
-                          <li>
-                            <div class="form-check form-check-primary">
-                              <label class="form-check-label">
-                                <input class="checkbox" type="checkbox"> Plan weekend outing </label>
-                            </div>
-                            <i class="remove mdi mdi-close-box"></i>
-                          </li>
-                          <li>
-                            <div class="form-check form-check-primary">
-                              <label class="form-check-label">
-                                <input class="checkbox" type="checkbox"> Pick up kids from school </label>
-                            </div>
-                            <i class="remove mdi mdi-close-box"></i>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-12">
-                  <div class="card">
-                    <div class="card-body">
-                      <h4 class="card-title">Visitors by Countries</h4>
-                      <div class="row">
-                        <div class="col-md-5">
-                          <div class="table-responsive">
-                            <table class="table">
-                              <tbody>
-                                <tr>
-                                  <td>
-                                    <i class="flag-icon flag-icon-us"></i>
-                                  </td>
-                                  <td>USA</td>
-                                  <td class="text-right"> 1500 </td>
-                                  <td class="text-right font-weight-medium"> 56.35% </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <i class="flag-icon flag-icon-de"></i>
-                                  </td>
-                                  <td>Germany</td>
-                                  <td class="text-right"> 800 </td>
-                                  <td class="text-right font-weight-medium"> 33.25% </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <i class="flag-icon flag-icon-au"></i>
-                                  </td>
-                                  <td>Australia</td>
-                                  <td class="text-right"> 760 </td>
-                                  <td class="text-right font-weight-medium"> 15.45% </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <i class="flag-icon flag-icon-gb"></i>
-                                  </td>
-                                  <td>United Kingdom</td>
-                                  <td class="text-right"> 450 </td>
-                                  <td class="text-right font-weight-medium"> 25.00% </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <i class="flag-icon flag-icon-ro"></i>
-                                  </td>
-                                  <td>Romania</td>
-                                  <td class="text-right"> 620 </td>
-                                  <td class="text-right font-weight-medium"> 10.25% </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <i class="flag-icon flag-icon-br"></i>
-                                  </td>
-                                  <td>Brasil</td>
-                                  <td class="text-right"> 230 </td>
-                                  <td class="text-right font-weight-medium"> 75.00% </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-                        <div class="col-md-7">
-                          <div id="audience-map" class="vector-map">
+                              <div class="text-center">
+                                <a href="/admin/Customers"><span>Go</span></a>
+                              </div>
 
+                            </div>
                           </div>
-                        </div>
+
+                          <% }) %>
+
                       </div>
                     </div>
                   </div>
                 </div>
+
+                <div class="col-md-6 col-xl-6 grid-margin stretch-card">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="d-flex flex-row justify-content-between">
+                        <h4 class="card-title">Out of stock products</h4>
+                        <p class="text-muted mb-1 small">View all</p>
+                      </div>
+                      <div class="preview-list">
+                        <% outofstock.forEach((pro)=> { %>
+
+
+
+
+                          <div class="preview-item border-bottom">
+                            <div class="preview-thumbnail">
+                              <% if (!pro.images.contentType ) { %>
+
+                                <img
+                                  src="/Customer/img/blog/popular-post/account-icon-user-icon-vector-graphics_292645-552.avif"
+                                  alt="image" class="rounded-circle">
+                                <% } else { %>
+                                  <img
+                                    src="data:<%= pro.images.contentType %>;base64,<%=pro.images.data.toString('base64') %>"
+                                    alt="<%= pro.product_name%>">
+
+                                  <% } %>
+
+                            </div>
+                            <div class="preview-item-content d-flex flex-grow">
+                              <div class="flex-grow">
+                                <div class="d-flex d-md-block">
+
+                                  <% if (pro.is_delete) { %>
+                                    <h6 class="text-danger badge ">
+                                      deactive
+                                    </h6>
+                                    <% } else { %>
+                                      <h6 class="text-success badge ">
+                                        active
+                                      </h6>
+                                      <% } %>
+
+
+                                        <h6 class="preview-subject"> name :
+                                          <%=pro.product_name%>
+                                        </h6>
+                                        <!-- <p class="text-muted text-small">5 minutes ago</p> -->
+                                        <h6 class="preview-subject"> Category :
+                                          <%=pro.category%>
+                                        </h6>
+
+                                        <!-- <p class="text-muted text-small">5 minutes ago</p> -->
+                                </div>
+                                <p class="text-danger">This product have no stock..</p>
+                              </div>
+                              <div class="text-center">
+                                <a href="/admin/product"><span>Go</span></a>
+                              </div>
+
+                            </div>
+                          </div>
+
+                          <% }) %>
+
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
               </div>
+
+              <!-- content-wrapper ends -->
+              <!-- partial:partials/_footer.html -->
+              <footer class="footer">
+                <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                  <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright ©
+                    bootstrapdash.com 2020</span>
+                  <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a
+                      href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin
+                      templates</a> from Bootstrapdash.com</span>
+                </div>
+              </footer>
+              <!-- partial -->
             </div>
-            <!-- content-wrapper ends -->
-            <!-- partial:partials/_footer.html -->
-            <footer class="footer">
-              <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright ©
-                  bootstrapdash.com 2020</span>
-                <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a
-                    href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin
-                    templates</a> from Bootstrapdash.com</span>
-              </div>
-            </footer>
-            <!-- partial -->
+            <!-- main-panel ends -->
           </div>
-          <!-- main-panel ends -->
+          <!-- page-body-wrapper ends -->
       </div>
-      <!-- page-body-wrapper ends -->
-  </div>
-  <!-- container-scroller -->
-  <!-- plugins:js -->
-  <script src="/Admin/vendors/js/vendor.bundle.base.js"></script>
-  <!-- endinject -->
-  <!-- Plugin js for this page -->
-  <script src="/Admin/vendors/chart.js/Chart.min.js"></script>
-  <script src="/Admin/vendors/progressbar.js/progressbar.min.js"></script>
-  <script src="/Admin/vendors/jvectormap/jquery-jvectormap.min.js"></script>
-  <script src="/Admin/vendors/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
-  <script src="/Admin/vendors/owl-carousel-2/owl.carousel.min.js"></script>
-  <!-- End plugin js for this page -->
-  <!-- inject:js -->
-  <script src="/Admin/js/off-canvas.js"></script>
-  <script src="/Admin/js/hoverable-collapse.js"></script>
-  <script src="/Admin/js/misc.js"></script>
-  <script src="/Admin/js/settings.js"></script>
-  <script src="/Admin/js/todolist.js"></script>
-  <!-- endinject -->
-  <!-- Custom js for this page -->
-  <script src="/Admin/js/dashboard.js"></script>
-  <!-- End custom js for this page -->
+      <input type="hidden" name="mo" value="<%= allMonths %>" id="months">
+      <!-- container-scroller -->
+      <!-- plugins:js -->
+      <script src="/Admin/vendors/js/vendor.bundle.base.js"></script>
+      <!-- endinject -->
+      <!-- Plugin js for this page -->
+      <script src="/Admin/vendors/chart.js/Chart.min.js"></script>
+      <script src="/Admin/vendors/progressbar.js/progressbar.min.js"></script>
+      <script src="/Admin/vendors/jvectormap/jquery-jvectormap.min.js"></script>
+      <script src="/Admin/vendors/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+      <script src="/Admin/vendors/owl-carousel-2/owl.carousel.min.js"></script>
+      <!-- End plugin js for this page -->
+      <!-- inject:js -->
+      <script src="/Admin/js/off-canvas.js"></script>
+      <script src="/Admin/js/hoverable-collapse.js"></script>
+      <script src="/Admin/js/misc.js"></script>
+      <script src="/Admin/js/settings.js"></script>
+      <script src="/Admin/js/todolist.js"></script>
+      <!-- endinject -->
+      <!-- Custom js for this page -->
+      <script src="/Admin/js/dashboard.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <script>
+        const pro1 = <%= bestProducts[0].count %>;
+        const pro2 = <%= bestProducts[1].count %>;
+        const pro3 = <%= bestProducts[2].count %>;
+
+        const name1 = "<%= bestProducts[0].name %>";
+        const name2 = "<%= bestProducts[1].name %>";
+        const name3 = "<%= bestProducts[2].name %>";
+
+        // Sample data for the bar graph
+        var data = {
+          labels: [name1, name2, name3], // This will be populated with product names
+          datasets: [{
+            label: 'Best selling products',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1,
+            data: [pro1, pro2, pro3], // This will be populated with product counts
+          }]
+        };
+
+        // Perform an AJAX request to fetch data from the server
+
+
+
+        // Get the canvas element and create the bar graph
+        var ctx = document.getElementById('bestSellingProducts').getContext('2d');
+        var myBarChart = new Chart(ctx, {
+          type: 'bar',
+          data: data,
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+
+
+      </script>
+      <!-- End custom js for this page -->
+      <script>
+
+
+        // big chart 
+          document.addEventListener("DOMContentLoaded", function () {
+
+          const canvas = document.getElementById("monthlyRevenueChart");
+          const label = "<%= allMonths.map(item => item._id) %>";
+          const labelArray = label.split(","); // Split the label string into an array
+
+          const amounts = "<%= allMonths.map(item => item.monthlyIncome) %>";
+          const amountArray = amounts.split(",").map(item => parseFloat(item)); // Parse as floating-point numbers
+          // Now, you can use labelArray and amountArray as needed.
+
+
+          console.log(amountArray); // Log the resulting amountArray
+          console.log(labelArray); // Log the resulting amountArray
+
+
+
+
+          // Create a column chart
+          const columnChart = new Chart(canvas, {
+            type: "bar", // Specify chart type as "bar" for a column chart
+            data: {
+              labels: labelArray,
+              datasets: [
+                {
+                  label: "Monthly Revenue",
+                  data: amountArray,
+                  backgroundColor: [
+                    "rgba(75, 192, 192, 0.7)",
+                    "rgba(255, 99, 132, 0.7)",
+                    "rgba(255, 205, 86, 0.7)",
+                    "rgba(54, 162, 235, 0.7)",
+                    "rgba(153, 102, 255, 0.7)",
+                    "rgba(134, 102, 255, 0.7)",
+                    "rgba(153, 10, 55, 0.7)",
+                    "rgba(153, 10, 55, 0.7)",
+                    "rgba(255, 159, 64, 0.7)",
+                    "rgba(255, 159, 64, 0.7)",
+                    "rgba(75, 192, 192, 0.7)",
+                    "rgba(255, 192, 192, 0.5)",
+                  ],
+                  borderColor: [
+                    "rgba(75, 192, 192, 1)",
+                    "rgba(75, 192, 102, 1)",
+                    "rgba(75, 192, 142, 1)",
+                    "rgba(255, 99, 132, 1)",
+                    "rgba(255, 99, 132, 1)",
+                    "rgba(255, 205, 86, 1)",
+                    "rgba(54, 162, 235, 1)",
+                    "rgba(54, 162, 235, 9)",
+                    "rgba(153, 102, 255, 1)",
+                    "rgba(255, 159, 64, 1)",
+                    "rgba(255, 160, 64, 5)",
+                  ],
+                  // borderWidth: 1,
+                  barPercentage: 0.1
+                },
+              ],
+            },
+            options: {
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  // Adjust the bar width as a percentage (e.g., 50%)
+                },
+
+              },
+            },
+          });
+        });
+
+
+
+        // JavaScript code to create the ring graph
+        var ctx = document.getElementById('transaction').getContext('2d');
+        var cod = "<%= paymentoptins[0].count %>" ?" <%= paymentoptins[0].count %>" : 0;
+        var razorpay =" <%= paymentoptins[1].count %>" ?" <%= paymentoptins[1].count %> ": 0;
+
+
+
+        var myRingChart = new Chart(ctx, {
+          type: 'doughnut', // Use 'doughnut' for a ring graph
+          data: {
+            labels: ['COD', 'Zaropay', 'Wallet'],
+            datasets: [{
+              data: [cod, razorpay, 0], // Replace with your data values
+              backgroundColor: [
+                'rgba(255, 99, 132, 0.5)',
+                'rgba(54, 162, 235, 0.5)',
+                'rgba(255, 206, 86, 0.5)'
+              ],
+              borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            cutoutPercentage: 60, // Customize the cutout percentage to create a ring
+            // Customize other chart options here
+          }
+        });
+      </script>
+      <style>
+        /* Add CSS for hover effect */
+        .hover-info {
+          display: none;
+          font-size: 12px;
+          margin-top: 10px;
+          color: #333;
+        }
+
+        .card:hover .hover-info {
+          display: block;
+        }
+      </style>
 </body>
 
 </html>

@@ -6,6 +6,10 @@ const { RAZORPAY_ID_KEY, RAZORPAY_SECRET_KEY } = process.env
 const crypto = require("crypto")
 const Product = require("../Models/productModel")
 const Address = require("../Models/userAddress")
+
+
+
+
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_ID_KEY,
   key_secret: process.env.RAZORPAY_SECRET_KEY,
@@ -13,7 +17,7 @@ const razorpay = new Razorpay({
 
 
 
-
+//loadPaymentpage
 const loadPaymentPage = async (req, res) => {
   try {
     const userId = req.session.user;
@@ -40,9 +44,7 @@ const loadPaymentPage = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 }
-
-
-
+// checkThePayment 
 const checkRazorpaySignature = async (req, res) => {
   const { razorpay_payment_id, razorpay_order_id, razorpay_signature, order_id, secret } = req.body;
   console.log(req.body);
@@ -104,6 +106,8 @@ const checkRazorpaySignature = async (req, res) => {
     console.log(error.message);
   }
 };
+
+
 
 module.exports = {
     loadPaymentPage, checkRazorpaySignature

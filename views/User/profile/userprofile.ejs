@@ -86,14 +86,14 @@
                                                             imageDataUrl=`data:${user.image.contentType};base64,${user.image.data.toString('base64')}`
                                                             %>
                                                             <img src="<%= imageDataUrl %>" alt="<%= user.name %> Image"
-                                                                style="width: 150px; height: 200px;">
+                                                            alt="image"alt="Avatar" class="avatar">
                                                             <hr>
                                                             <% } else { %>
                                                                 <!-- Default image or alternative content -->
                                                                 <div
                                                                     style="background-color: white; width: 150px; height: 200px; display: flex; justify-content: center; align-items: center;">
                                                                     <img src="/Customer/img/blog/popular-post/account-icon-user-icon-vector-graphics_292645-552.avif"
-                                                                        alt="asdajsh "
+                                                                    alt="image" class="rounded-circle"
                                                                         style="width: 100px; height: 100px;">
                                                                     <hr>
                                                                 </div>
