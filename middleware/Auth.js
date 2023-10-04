@@ -6,12 +6,12 @@ const util = require("util")
 //user authonticated or not
 const userAuth = (req, res, next) => {
     try {
-        if (!req.session.user) {
+        if (!req.session.user || !req.cookie) {
 
             next()
         } else {
 
-            res.redirect("/")
+            res.redirect("/user-login")
         }
     } catch (error) {
         console.log(error.message);
@@ -20,10 +20,10 @@ const userAuth = (req, res, next) => {
 
 const logged = (req, res, next) => {
     try {
-        if (req.session.user) {
+        if (req.session.user ||  req.cookie) {
             next()
         } else {
-            res.redirect('/')
+            res.redirect('/user-login')
         }
     } catch (error) {
         console.log(error.message)
@@ -58,21 +58,32 @@ const isAdmin = (req, res, next) => {
     }
 }
 
-const authonticateToken = (req, res, next) => {
-    try {
-        const authHeader = req.headers['authorization']
-        const token = authHeader && authHeader.split(' ')[1]
-        if (token == null) return res.sendStatus(401)
-
-        jwt.verify(token, process.env.JWTSECRET, (err, user) => {
-            if (err) return res.sendStatus(403)
-            req.user = user
-            next()
-        })
-    } catch (error) {
-
+const authonticateToken = async (req, res, next) => {
+    
+    let token
+    if (
+      req.headers.authorization &&
+      req.headers.authorization.startsWith("Bearer")
+    ) {
+      token = req.headers.authorization.split(" ")[1];
+    } else if (req.cookies.jwt) {
+      token = req.cookies.jwt;
     }
-}
+  
+    if(!token){
+      return next();
+    }
+  
+    const decoded = await promisify(jwt.verify)(token, process.env.JWTSECRET);
+    const currentUser = await User.findById(decoded.id);
+    if(!currentUser){
+      return next();
+    }
+    req.user = currentUser;
+    res.locals.user = req.user
+    return next();
+  }
+
 module.exports = {
     userAuth, adminAuth, isAdmin, logged,authonticateToken
 }

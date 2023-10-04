@@ -9,12 +9,7 @@
   <!-- plugins:css -->
   <link rel="stylesheet" href="../../Admin/vendors/mdi/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="../../Admin/vendors/css/vendor.bundle.base.css">
-  <!-- endinject -->
-  <!-- Plugin css for this page -->
-  <!-- End Plugin css for this page -->
-  <!-- inject:css -->
-  <!-- endinject -->
-  <!-- Layout styles -->
+
   <link rel="stylesheet" href="../../Admin/css/style.css">
   <!-- End layout styles -->
   <link rel="shortcut icon" href="../../Admin/images/favicon.png" />
@@ -109,6 +104,33 @@
                             <% } %>
 
                       </div>
+                      <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-end">
+                          <% if (currentPage !== 1) { %>
+                            <li class="page-item">
+                              <a class="page-link" href="/admin/product?page=<%= currentPage-1 %>" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                              </a>
+                            </li>
+                          <% } %>
+                          <!-- Calculate the total number of pages -->
+                          <% const totalPages = Math.max(1, Math.ceil(len.length / 10)); %>                                                  <!-- Loop through the total number of pages and create a page link for each -->
+                          <% for (let page = 1; page <= totalPages; page++) { %>
+                            <li class="page-item <% if (currentPage == page) { %>active<% } %>">
+                              <a class="page-link" href="/admin/product/Category-management?page=<%= page %>"><%= page %></a>
+                            </li>
+                          <% } %>
+                          <% if (currentPage !== totalPages ) { %>
+                            <li class="page-item">
+                              <% const nextPage = currentPage + 1; %>
+                              <a class="page-link" href="/admin/product?page=<%= nextPage %>" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                              </a>
+                              
+                            </li>
+                          <% } %> 
+                        </ul>
+                      </nav>
                     </div>
                   </div>
                 </div>

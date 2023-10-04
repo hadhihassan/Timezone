@@ -11,6 +11,10 @@ const product = require("../Models/productModel");
 const jwt = require('jsonwebtoken');
 const crypto = require("crypto")
 require("dotenv").config();
+
+
+
+
 const loadRegister = async (req, res, next) => {
     try {
         res.render("User/register", { user: "sad" })
@@ -231,14 +235,12 @@ const checkUserValid = async (req, res) => {
             } else {
                 
 
-                const token = jwt.sign({userId:verifiedUser._id},process.env.JWTSECRET,{
-                    expiresIn: '30d',
-                })
-                
+                const token = jwt.sign({ userId: verifiedUser.id }, process.env.JWTSECRET, { expiresIn: '30d' });
+                res.cookie('token', token, { httpOnly: true })
+                res.cookie.user =  verifiedUser._id
                 req.session.user = verifiedUser._id
                 req.u = verifiedUser._id
 
-                res.cookie(token);
                 return res.redirect('/')
             }
         } else {

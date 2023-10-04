@@ -5,14 +5,15 @@ const imgResizing = require("../middleware/uploadimages")
 const { loadAaminLogin, loginValidation, adminValid, adminLogout, displayCustomers, 
     UnblockTheUser, blockTheUser, addProductCategory, loadCategory, deleteCategory, loadAddCategory,
     loadProductCreate, createProduct,  loadProductPage , editProduct ,loadProductEditPage ,productDeactivate,productActivate,
-    deleteImgDelete, loadOrder, updateOrderStatus, EditCategory, loadEditCategory, deleteCategoryImg
+    deleteImgDelete, loadOrder, updateOrderStatus, EditCategory, loadEditCategory, deleteCategoryImg, loadCouponPage, createCoupon
      } = require('../Controler/adminControler')
-
+     const multer = require("multer")
 const { loadDash } = require("../Controler/dasboard")
-
-const multer = require("multer")
 const storage = multer.memoryStorage()
 const upload = multer({storage:storage})
+
+
+
 
 
 
@@ -58,7 +59,7 @@ const upload = multer({storage:storage})
 
  admin_Route.get('/product/create', loadProductCreate)
 
-            .post('/product/create',imgResizing.resizeProductImages,upload.array('images',5), createProduct)
+            .post('/product/create',upload.array('images', 3), createProduct)
 
             .get('/product',  loadProductPage)
 
@@ -76,5 +77,12 @@ const upload = multer({storage:storage})
 
  admin_Route.get("/orders",loadOrder)
             .get("/order/action-update", updateOrderStatus)
+
+
+
+//COUPON MANGMENT 
+ admin_Route.get("/product/coupon-management/", loadCouponPage)            
+ admin_Route.get("/coupon/create/", createCoupon)            
+
 
 module.exports = admin_Route

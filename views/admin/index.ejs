@@ -555,23 +555,18 @@
       <script src="/Admin/js/dashboard.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
       <script>
-        const pro1 = "<%= bestProducts[0].count %>";
-        const pro2 =" <%= bestProducts[1].count %>";
-        const pro3 =" <%= bestProducts[2].count %>";
 
-        const name1 = "<%= bestProducts[0].name %>";
-        const name2 = "<%= bestProducts[1].name %>";
-        const name3 = "<%= bestProducts[2].name %>";
+  
 
         // Sample data for the bar graph
         var data = {
-          labels: [name1, name2, name3], // This will be populated with product names
+          labels: [df, sfdg, sdgf], // This will be populated with product names
           datasets: [{
             label: 'Best selling products',
             backgroundColor: 'rgba(75, 192, 192, 0.2)',
             borderColor: 'rgba(75, 192, 192, 1)',
             borderWidth: 1,
-            data: [pro1, pro2, pro3], // This will be populated with product counts
+            data: [1, 1, 1], // This will be populated with product counts
           }]
         };
 
@@ -600,7 +595,7 @@
 
 
         // big chart 
-          document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function () {
 
           const canvas = document.getElementById("monthlyRevenueChart");
           const label = "<%= allMonths.map(item => item._id) %>";
@@ -674,8 +669,8 @@
 
         // JavaScript code to create the ring graph
         var ctx = document.getElementById('transaction').getContext('2d');
-        var cod = "<%= paymentoptins[0].count %>" ?" <%= paymentoptins[0].count %>" : 0;
-        var razorpay =" <%= paymentoptins[1].count %>" ?" <%= paymentoptins[1].count %> ": 0;
+        var cod = "<%= paymentoptins[0].count %>" ? " <%= paymentoptins[0].count %>" : 0;
+        var razorpay = " <%= paymentoptins[1].count %>" ? " <%= paymentoptins[1].count %> " : 0;
 
 
 

@@ -1,43 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Corona Admin</title>
-    <!-- plugins:css -->
-    <link rel="stylesheet" href="../../Admin/vendors/mdi/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="../../Admin/vendors/css/vendor.bundle.base.css">
-    <!-- endinject -->
-    <!-- Plugin css for this page -->
-    <!-- End Plugin css for this page -->
-    <!-- inject:css -->
-    <!-- endinject -->
-    <!-- Layout styles -->
-    <link rel="stylesheet" href="../../Admin/css/style.css">
-    <!-- End layout styles -->
-    <link rel="shortcut icon" href="../../Admin/images/favicon.png" />
-  </head>
-  <body>
-    <div class="container-scroller">
-      <!-- partial:../../partials/_sidebar.html -->
-      <%- include('../partials/Adminside/adminsidepanel') %>
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Corona Admin</title>
+  <!-- plugins:css -->
+  <link rel="stylesheet" href="../../Admin/vendors/mdi/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="../../Admin/vendors/css/vendor.bundle.base.css">
+  <!-- endinject -->
+  <!-- Plugin css for this page -->
+  <!-- End Plugin css for this page -->
+  <!-- inject:css -->
+  <!-- endinject -->
+  <!-- Layout styles -->
+  <link rel="stylesheet" href="../../Admin/css/style.css">
+  <!-- End layout styles -->
+  <link rel="shortcut icon" href="../../Admin/images/favicon.png" />
+</head>
+
+<body>
+  <div class="container-scroller">
+    <!-- partial:../../partials/_sidebar.html -->
+    <%- include('../partials/Adminside/adminsidepanel') %>
       <!-- partial -->
-        <!-- partial -->
-        <div class="container-fluid page-body-wrapper">
-      <%- include('../partials/Adminside/adminNav') %>
-        <!-- partial -->
-        <div class="main-panel">
-          
-          <div class="content-wrapper">
-            <ul class="navbar-nav w-100">
-              <li class="nav-item w-100">
-                <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
-                  <input type="text" class="form-control" placeholder="Search products">
-                </form>
-              </li>
-            </ul>
-           
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <%- include('../partials/Adminside/adminNav') %>
+          <!-- partial -->
+          <div class="main-panel">
+
+            <div class="content-wrapper">
+              <ul class="navbar-nav w-100">
+                <li class="nav-item w-100">
+                  <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
+                    <input type="text" class="form-control" placeholder="Search products">
+                  </form>
+                </li>
+              </ul>
+
               <div class="row">
                 <div class="col-lg-12 grid-margin stretch-card">
                   <div class="card">
@@ -45,7 +47,7 @@
                       <h4 class="card-title">Products Table</h4>
                       <p class="card-description"> All Products <code>.table</code>
                       </p>
-                      
+
                       <div class="table-responsive">
                         <table class="table">
                           <thead>
@@ -63,100 +65,129 @@
                           </thead>
                           <tbody>
 
-                            <% products.forEach((product,i) => { %>
-                             
-                          
+                            <% products.forEach((product,i)=> { %>
 
 
-                            <tr>
-                              <td><%= i+1 %></td>
-                              <td>
-                                <% product.images.forEach(image => { %>
-                                 
-                                  <img src="data:<%= image.contentType %>;base64,<%= image.data.toString('base64') %>" alt="<%= product.price %>">
-                                <% }) %>
-                              </td>
-                              <td><%= product.product_name %></td>
-                              <td><%= product.brand_name %></td>
-                              <td><%= product.category %></td>
-                              <td><%= product.price %></td>
-                              <td><%= product.stock_count %></td>
-                              <% if (product.is_delete === true) { %>
-                               <td>
-                                <label class="text-danger">Deactive</label>
-                              </td>
-                               <td>
-                                <a href="/admin/product/<%= product._id %>/Edit %>" class="btn btn-primary">Edit</a>
-                                <a href="/admin/product/<%= product._id %>/Active" class="btn btn-success">Active</a>
-                               </td>
-                              <%} else {%>
+
+
+                              <tr>
                                 <td>
-                                  <label class="text-success">Active</label>
+                                  <%= i+1 %>
                                 </td>
-                                 <td>
-                                  <a href="/admin/product/<%= product._id %>/Edit %>" class="btn btn-primary">Edit</a>
-                                  <a href="/admin/product/<%= product._id %>/Deactive" class="btn btn-danger">Deactive</a>
-                                 </td>
-                             <% }%>
-                              
-                               
-                              <td>
-                              
-                              </td>
-                            </tr>
+                                <td>
+                                  <% product.images.forEach(image=> { %>
 
-                            <% }) %>
+                                    <img src="data:<%= image.contentType %>;base64,<%= image.data.toString('base64') %>"
+                                      alt="<%= product.price %>">
+                                    <% }) %>
+                                </td>
+                                <td>
+                                  <%= product.product_name %>
+                                </td>
+                                <td>
+                                  <%= product.brand_name %>
+                                </td>
+                                <td>
+                                  <%= product.category %>
+                                </td>
+                                <td>
+                                  <%= product.price %>
+                                </td>
+                                <td>
+                                  <%= product.stock_count %>
+                                </td>
+                                <% if (product.is_delete===true) { %>
+                                  <td>
+                                    <label class="text-danger">Deactive</label>
+                                  </td>
+                                  <td>
+                                    <a href="/admin/product/<%= product._id %>/Edit %>" class="btn btn-primary">Edit</a>
+                                    <a href="/admin/product/<%= product._id %>/Active"
+                                      class="btn btn-success">Active</a>
+                                  </td>
+                                  <%} else {%>
+                                    <td>
+                                      <label class="text-success">Active</label>
+                                    </td>
+                                    <td>
+                                      <a href="/admin/product/<%= product._id %>/Edit %>"
+                                        class="btn btn-primary">Edit</a>
+                                      <a href="/admin/product/<%= product._id %>/Deactive"
+                                        class="btn btn-danger">Deactive</a>
+                                    </td>
+                                    <% }%>
+
+
+                                      <td>
+
+                                      </td>
+                              </tr>
+
+                              <% }) %>
                           </tbody>
                         </table>
                       </div>
+                      <br>
+                      
+                  
+                      
+                      
+                      
+
+              
+              
                     </div>
                   </div>
                 </div>
-                </div> 
-          </div>
-          <!-- content-wrapper ends -->
-          <!-- partial:../../partials/_footer.html -->
-
-       
-
-
-
-
-
-
-
-
-          <footer class="footer">
-            <div class="d-sm-flex justify-content-center justify-content-sm-between">
-              <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © bootstrapdash.com 2020</span>
-              <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin templates</a> from Bootstrapdash.com</span>
+              </div>
             </div>
-          </footer>
-          <!-- partial -->
-        </div>
-        <!-- main-panel ends -->
+            <!-- content-wrapper ends -->
+            <!-- partial:../../partials/_footer.html -->
+
+
+
+
+
+
+
+
+
+
+            <footer class="footer">
+              <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright ©
+                  bootstrapdash.com 2020</span>
+                <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a
+                    href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin
+                    templates</a> from Bootstrapdash.com</span>
+              </div>
+            </footer>
+            <!-- partial -->
+          </div>
+          <!-- main-panel ends -->
       </div>
       <!-- page-body-wrapper ends -->
-    </div>
-    <!-- container-scroller -->
-    <!-- plugins:js -->
-    <script src="../../Admin/vendors/js/vendor.bundle.base.js"></script>
-    <!-- endinject -->
-    <!-- Plugin js for this page -->
-    <!-- End plugin js for this page -->
-    <!-- inject:js -->
-    <script src="../../Admin/js/off-canvas.js"></script>
-    <script src="../../Admin/js/hoverable-collapse.js"></script>
-    <script src="../../Admin/js/misc.js"></script>
-    <script src="../../Admin/js/settings.js"></script>
-    <script src="../../Admin/js/todolist.js"></script>
-    <!-- endinject -->
-    <!-- Custom js for this page -->
-    <!-- End custom js for this page -->
-    <style>
-       th{
-            color: white;
-        }
-    </style>
-  </body>
+  </div>
+  <!-- container-scroller -->
+  <!-- plugins:js -->
+  <script src="../../Admin/vendors/js/vendor.bundle.base.js"></script>
+  <!-- endinject -->
+  <!-- Plugin js for this page -->
+  <!-- End plugin js for this page -->
+  <!-- inject:js -->
+  <script src="../../Admin/js/off-canvas.js"></script>
+  <script src="../../Admin/js/hoverable-collapse.js"></script>
+  <script src="../../Admin/js/misc.js"></script>
+  <script src="../../Admin/js/settings.js"></script>
+  <script src="../../Admin/js/todolist.js"></script>
+  <!-- endinject -->
+  <!-- Custom js for this page -->
+  <!-- End custom js for this page -->
+  <style>
+    th {
+      color: white;
+    }
+  </style>
+</body>
+
 </html>

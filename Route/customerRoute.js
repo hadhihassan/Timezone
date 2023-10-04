@@ -62,12 +62,12 @@ Customer_Route.get('/user/shop', loadShop)
 
 
 //user profile 
-Customer_Route.get("/user/profile", Auth.logged, loadProfile)
-    .post("/user/edit_profile", Auth.logged, loadEditPage)
-    .post("/user/Update-profile", Auth.logged, updateUser)
+Customer_Route.get("/user/profile", Auth.authonticateToken, Auth.logged, loadProfile)
+    .post("/user/edit_profile", Auth.authonticateToken, Auth.logged, loadEditPage)
+    .post("/user/Update-profile", Auth.authonticateToken, Auth.logged, updateUser)
     .post("/user/profile/addimg", upload.single('images'), addImageProfile)
-    .get("/user/profile/image-remove", Auth.logged, deleteUserProfile)
-    .post("/user/profile/upadtePassword", Auth.logged, userUpdatePassword)
+    .get("/user/profile/image-remove", Auth.authonticateToken, Auth.logged, deleteUserProfile)
+    .post("/user/profile/upadtePassword", Auth.authonticateToken, Auth.logged, userUpdatePassword)
 
 
 
@@ -97,7 +97,7 @@ Customer_Route.get("/user/displayProduct", displayProduct)
 
 
 //CART ADD DELETE DIPSPLAY
-Customer_Route.get("/user/cart", Auth.logged, loadCart)
+Customer_Route.get("/user/cart",Auth.authonticateToken, Auth.logged, loadCart)
     .get("/user/product/addcart", Auth.logged, productAddToCart)
     .post("/update-cart-item-quantity", updateCartQuantity)
     .get('/user/remove-Cart-item', deleteProductCart)

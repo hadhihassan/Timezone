@@ -4,8 +4,8 @@ const Customer = require('../Models/customerModel')
 const productCategry = require("../Models/productCategory")
 const Product = require("../Models/productModel")
 const Order = require("../Models/orderModel")
-
-
+const Coupon = require("../Models/couponModel")
+const sharp = require("sharp")
 
 //ADMIN LOGIN
 const loadAaminLogin = async (req, res, next) => {
@@ -80,7 +80,6 @@ const adminValid = async (req, res) => {
         console.log(error.message);
     }
 }
-
 const adminLogout = (req, res) => {
     try {
         if (req.session.admin) {
@@ -94,38 +93,34 @@ const adminLogout = (req, res) => {
     }
 }
 
+
+
 //CUSTOMERS
 const displayCustomers = async (req, res) => {
-    const { query } = req.query
     try {
-        //     
-        // if (users) {
-        //     res.render("admin/user", { users })
-        // }
-        let users;
-
-        if (query) {
-            users = await Customer.find({
-                name: { $regex: '.*' + query + '.*' },
-                is_admin: false,
-                is_varified: true,
-            });
-
-            if (users.length > 0) {
-                console.log(users);
-                return res.render("admin/user", { users, query });
-            }
-        } else {
-            users = await Customer.find({ is_varified: true, is_Admin: false });
-
-            if (users.length > 0) {
-                return res.render("admin/user", { users, query });
-            }
-        }
-
-
+    
+        const page = parseInt(req.query.page) || 1;
+        const pageSize = 10;
+        const skip = (page - 1) * pageSize;
+        const users = await Customer.find({
+            is_varified: true,
+            is_Admin: false,
+        });
+        const len = await Customer.find({
+            is_admin: false,
+            is_varified: true,
+        })
+        // .skip(skip)
+        // .limit(pageSize);
+        console.log(users,len);
+        return res.render("admin/user", {
+            users,
+            len,
+            currentPage: page,
+        });
+        
     } catch (error) {
-        console.log(error.message);
+        console.error(error.message);
     }
 }
 const UnblockTheUser = async (req, res) => {
@@ -153,6 +148,8 @@ const blockTheUser = async (req, res) => {
     }
 }
 
+
+
 // CATEGORY
 const addProductCategory = async (req, res) => {
 
@@ -161,11 +158,11 @@ const addProductCategory = async (req, res) => {
         return res.render("admin/addCategory", { message: "Fill all fields...." });
     }
     const exist = await productCategry.find({ categoryName: req.body.Categoryname })
-    
-    if(exist){
+
+    if (exist) {
         return res.render("admin/addCategory", { message: "Same category name not possible try another name please...." });
     }
-    
+
 
     console.log("File uploaded successfully.");
 
@@ -194,10 +191,18 @@ const addProductCategory = async (req, res) => {
     }
 }
 const loadCategory = async (req, res) => {
-    try {
-        const Categores = await productCategry.find().sort({ _id: -1 })
+    let page = req.query.page
+    const pageSize = 10
 
-        res.render("admin/productCategory", { Categores })
+    try {
+        page = parseInt(req.query.page) || 1;
+        const skip = ((page - 1) * pageSize);
+        const currentPage = page
+
+        const len = await productCategry.find().sort({ _id: -1 })
+        const Categores = await productCategry.find().sort({ _id: -1 }).skip(skip).limit(pageSize)
+
+        res.render("admin/productCategory", { Categores , len, currentPage})
 
     } catch (error) {
         console.log(error.message);
@@ -215,7 +220,6 @@ const deleteCategory = async (req, res) => {
         console.log(error.message)
     }
 }
-
 const loadEditCategory = async (req, res) => {
     try {
         const { id } = req.params
@@ -258,7 +262,6 @@ const EditCategory = async (req, res) => {
         return res.status(500).send("Internal Server Error");
     }
 };
-
 const loadAddCategory = (req, res) => {
     try {
         res.render('admin/addCategory', { message: '' })
@@ -266,16 +269,17 @@ const loadAddCategory = (req, res) => {
         console.log(error.message)
     }
 }
-
-const deleteCategoryImg = async (req,res) => {
+const deleteCategoryImg = async (req, res) => {
     try {
         const categoryId = req.params.id
-        const category = await productCategry.findByIdAndUpdate(categoryId,{$unset:{image:{}}})
+        const category = await productCategry.findByIdAndUpdate(categoryId, { $unset: { image: {} } })
         return res.redirect(`/admin/Category/${categoryId}/Edit-Category`)
     } catch (error) {
         console.log(error.message)
     }
 }
+
+
 
 // PRODUCT 
 const loadProductCreate = async (req, res) => {
@@ -290,22 +294,17 @@ const loadProductCreate = async (req, res) => {
 //add a product details into database
 const createProduct = async (req, res) => {
     console.log("Product added successfully.");
+    console.log(req.files);
+
     const { productName, manufacturerName, brandName, id_No, price, releaseDate, description, stockCount, category, inStock, outOfStock, images, tags, color, Metrial } = req.body;
+
     try {
-
-
-
-
         // Validate that required fields are provided
         if (!productName || !manufacturerName) {
-            return res.render('admin/addproduct', { message: "All fields are required. Please fill in all fields.", });
+            return res.render('admin/addproduct', { message: "All fields are required. Please fill in all fields." });
         }
-        let stock
-        if (inStock) {
-            stock = true
-        } else {
-            stock = false
-        }
+
+        let stock = inStock ? true : false;
 
         // Create the product
         const product = new Product({
@@ -325,28 +324,53 @@ const createProduct = async (req, res) => {
         });
 
         // Assuming req.files is an array of uploaded image files
-        req.files.forEach(file => {
-            product.images.push({ data: file.buffer, contentType: file.mimetype });
-        });
-        await product.save();
+        const croppedImages = await Promise.all(
+            req.files.map(async (file, i) => {
+                const filename = `-${Date.now()}test-${i + 1}.jpeg`;
 
+                // Crop and process the image
+                const croppedImageBuffer = await sharp(file.buffer)
+                    .resize(540, 560) // Specify your desired dimensions here
+                    .toFormat('jpeg')
+                    .jpeg({ quality: 90 })
+                    .toBuffer();
+
+                // Push the cropped image to the product's images array
+                product.images.push({ data: croppedImageBuffer, contentType: 'image/jpeg' });
+
+                return {
+                    filename: filename,
+                    buffer: croppedImageBuffer,
+                };
+            })
+        );
+            log
+        await product.save();
 
         if (product) {
             console.log("Product added successfully.");
-            return res.redirect("/admin/product")
+            return res.redirect("/admin/product");
         }
-
     } catch (error) {
-        //    console.error(error);
         console.log(error.message);
-        //    res.status(500).send("Error creating the product.");
+        // Handle the error appropriately, e.g., send an error response
+        return res.status(500).send("Error creating the product.");
     }
 };
+
+// ...
 const loadProductPage = async (req, res) => {
+    let page = req.query.page
+    const pageSize = 10
     try {
-        const products = await Product.find()
+        page = parseInt(req.query.page) || 1;
+        const skip = ((page - 1) * pageSize);
+        const currentPage = page
+
+        const products = await Product.find().skip(skip).limit(pageSize)
+        const len = await Product.find()
         if (products) {
-            return res.render('admin/products', { products })
+            return res.render('admin/products', { products, len, currentPage })
         } else {
             console.log("products not get");
         }
@@ -455,7 +479,6 @@ const productActivate = async (req, res) => {
         console.log(error.message);
     }
 }
-
 const deleteImgDelete = async (req, res) => {
     const id = req.params.id
     const imageId = req.params.imageId
@@ -479,14 +502,23 @@ const deleteImgDelete = async (req, res) => {
     }
 }
 const loadOrder = async (req, res) => {
+    let page = req.query.page
+    const pageSize = 10
     try {
+        page = parseInt(req.query.page) || 1;
+        const skip = ((page - 1) * pageSize);
+        const currentPage = page
+
+        const len = await Order.find()
         const orders = await Order.find()
+            .skip(skip)
+            .limit(pageSize)
             .populate("user")
             .populate("products.product")
             .populate("deliveryAddress")
             .exec();
         if (orders) {
-            return res.render("admin/order", { orders })
+            return res.render("admin/order", { orders, len, currentPage })
 
         }
         console.log("GOT ERROR")
@@ -494,7 +526,6 @@ const loadOrder = async (req, res) => {
         consoel.log(error.message)
     }
 }
-
 const updateOrderStatus = async (req, res) => {
     const action = req.query.action;
     const orderId = req.query.orderId;
@@ -512,9 +543,29 @@ const updateOrderStatus = async (req, res) => {
     }
 };
 
+
+//Coupon
+const loadCouponPage = async (req,res) => {
+    try {
+        const allCoupon = await Coupon.find()
+        return res.render("admin/coupon")
+
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+const createCoupon = async (req,res) => {
+    const { couponName, type, MinimumpurchaseAmount, amountOrPercentage, Description} = req.body
+    try {
+        
+    } catch (error) {
+        
+    }
+}
+
 module.exports = {
     loadAaminLogin, loginValidation, adminValid, adminLogout, displayCustomers,
     UnblockTheUser, blockTheUser, addProductCategory, loadCategory, deleteCategory, loadAddCategory, loadProductCreate,
     createProduct, loadProductPage, editProduct, loadProductEditPage, productDeactivate, productActivate, deleteImgDelete,
-    loadOrder, updateOrderStatus, loadEditCategory, EditCategory, deleteCategoryImg, 
+    loadOrder, updateOrderStatus, loadEditCategory, EditCategory, deleteCategoryImg, loadCouponPage, createCoupon,  
 }

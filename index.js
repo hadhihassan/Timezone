@@ -11,11 +11,9 @@ const cookieParser = require("cookie-parser")
 const nocache = require("nocache")
 const multer = require("multer")
 const morgan = require('morgan')
-// const Razorpay = require('razorpay');
 
 
-
-
+app.use(express.json());
 app.use(morgan('dev'));
 app.use(flash())
 app.use(nocache())
@@ -38,6 +36,14 @@ mongoose
     .then(() => console.log("DATABASE CONNECTED"))
     .catch((error) => console.log(error))
 
-
+    app.use((err, req, res, next) => {
+        console.error(err.stack);
+        res.status(500).json({ message: 'Internal Server Error' });
+    });
+    
 app.listen(PORT, () => console.log("Server Running"))
 
+
+app.use((req,res)=>{
+    res.render("admin/addCoupon")
+})

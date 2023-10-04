@@ -65,35 +65,36 @@
                             <div class="login_part_form_iner">
                                 <h3>Welcome ! <br>
                                     Please register in now</h3>
-                                <form class="row contact_form" action="/register" method="post" id="registrationForm" novalidate="novalidate">
+                                <form class="row contact_form" action="/register" method="post" id="registrationForm"
+                                    >
                                     <div class="col-md-12 form-group p_star">
-                                        <input type="text" class="form-control" id="name" name="name" 
+                                        <input type="text" class="form-control" id="name" name="name"
                                             placeholder="Username" required>
-                                    </div>
-                                  
-                                    <div class="col-md-12 form-group p_star">
-                                        <input type="number" minlength="10" maxlength="10" class="form-control" id="mbn" name="mbn" 
-                                            placeholder="Mobile" required>
                                     </div>
 
                                     <div class="col-md-12 form-group p_star">
-                                        <input type="text" class="form-control" id="gender" name="gender" 
+                                        <input type="number" minlength="10" maxlength="10" class="form-control" id="mbn"
+                                            name="mbn" placeholder="Mobile" required>
+                                    </div>
+
+                                    <div class="col-md-12 form-group p_star">
+                                        <input type="text" class="form-control" id="gender" name="gender"
                                             placeholder="Gender" required>
                                     </div>
 
                                     <div class="col-md-12 form-group p_star">
-                                        <input type="email" class="form-control" id="email" name="email" 
+                                        <input type="email" class="form-control" id="email" name="email"
                                             placeholder="Email" required>
                                     </div>
 
                                     <div class="col-md-12 form-group p_star">
-                                        <input required type="password" class="form-control" id="password" name="password"
-                                             placeholder="Password" >
+                                        <input required type="password" class="form-control" id="password"
+                                            name="password" placeholder="Password">
                                     </div>
 
                                     <div class="col-md-12 form-group p_star">
                                         <input type="password" class="form-control" id="conformpassword"
-                                            name="conformpassword"  placeholder="conform Password" required>
+                                            name="conformpassword" placeholder="conform Password" required>
                                     </div>
 
                                     <div class="col-md-12 form-group">
@@ -105,16 +106,20 @@
                                         <!--error messages-->
                                         <% if (typeof message !="undefined" ) {%>
 
+                                            <p id="error-message" class="text-danger"></p>
                                             <p class="mt-3 text-info ">
                                                 <%= message %>
                                             </p>
 
                                             <%} %>
                                                 <!--end messages-->
-                                                <p id="error-message-name" class="text-danger"></p>
+                                                <div>
+
+                                                   
+                                                </div>
 
 
-                                                <button type="submit" id="bt"  value="submit" class="btn_3">
+                                                <button type="submit" id="sub-button" value="submit" class="btn_3">
                                                     register
                                                 </button>
 
@@ -145,78 +150,86 @@
         </div>
     </div>
     <!-- Search model end -->
-<script>
+    <script>
+        const form = document.getElementById("registrationForm");
+        const button = document.getElementById("sub-button");
     
-    const form = document.getElementById("registrationForm");
-    const button = document.getElementById("f-option")
-    button.addEventListener("click", async function (event) {
-        const nameInput = document.getElementById("name");
-        const mbnInput = document.getElementById("mbn");
-        const genderInput = document.getElementById("gender");
-        const emailInput = document.getElementById("email");
-        const passwordInput = document.getElementById("password");
-        const confirmPasswordInput = document.getElementById("conformpassword");
-        const nameError = document.getElementById("nameError");
-        const mbnError = document.getElementById("mbnError");
-        const emailError = document.getElementById("emailError");
-        const passwordError = document.getElementById("passwordError");
-        const confirmPasswordError = document.getElementById("confirmPasswordError");
-
-        let isValid = true;
-        document.getElementById('error-message-name').innerHTML = ""
-        // document.getElementById('error-message').innerHTML = ""
-        // document.getElementById('error-message').innerHTML = ""
-        // document.getElementById('error-message').innerHTML = ""
-        // document.getElementById('error-message').innerHTML = ""
-        // document.getElementById('error-message').innerHTML = ""
-        // Validation for name
-        if (nameInput.value.trim() === "") {
-            document.getElementById('error-message').innerHTML = "Username is required"
-            nameError.textContent = "Username is required";
-            isValid = false;
-        } else {
-            nameError.textContent = "";
+        // Add an event listener to the form instead of mbnInput
+        form.addEventListener("submit", async function (event) {
+            const nameInput = document.getElementById("name");
+            const mbnInput = document.getElementById("mbn");
+            const genderInput = document.getElementById("gender");
+            const emailInput = document.getElementById("email");
+            const passwordInput = document.getElementById("password");
+            const confirmPasswordInput = document.getElementById("conformpassword");
+            const nameError = document.getElementById("nameError");
+            const mbnError = document.getElementById("mbnError");
+            const emailError = document.getElementById("emailError");
+            const passwordError = document.getElementById("passwordError");
+            const confirmPasswordError = document.getElementById("confirmPasswordError");
+    
+            let isValid = true;
+            const usernamePattern = /^[a-zA-Z0-9_-]{3,16}$/;
+            document.getElementById('error-message-name').innerHTML = "";
+    
+            // Validation for name
+            if (nameInput.value.trim() === "") {
+                displayErrorMessage("Username is required", "error-message");
+                isValid = false;
+            } else if (!usernamePattern.test(nameInput.value)) {
+                displayErrorMessage("Invalid username format", "error-message");
+                isValid = false;
+            } else {
+                nameError.textContent = "";
+            }
+    
+            // Validation for mobile number (assuming it should be numeric)
+            if (!/^\d+$/.test(mbnInput.value)) {
+                displayErrorMessage("Mobile number must be numeric", "error-message");
+                isValid = false;
+            } else {
+                mbnError.textContent = "";
+            }
+    
+            // Validation for email (basic format check)
+            if (!/^\S+@\S+\.\S+$/.test(emailInput.value)) {
+                displayErrorMessage("Invalid email address", "error-message");
+                isValid = false;
+            } else {
+                emailError.textContent = "";
+            }
+    
+            // Validation for password (you can add more complex rules as needed)
+            if (passwordInput.value.length < 6) {
+                displayErrorMessage("Password must be at least 6 characters", "error-message");
+                isValid = false;
+            } else {
+                passwordError.textContent = "";
+            }
+    
+            // Validation for confirmPassword
+            if (confirmPasswordInput.value !== passwordInput.value) {
+                displayErrorMessage("Passwords do not match", "error-message");
+                isValid = false;
+            } else {
+                confirmPasswordError.textContent = "";
+            }
+    
+            if (!isValid) {
+                event.preventDefault(); // Prevent form submission
+            }
+        });
+    
+        function displayErrorMessage(message, elementId) {
+            const errorMessage = document.getElementById(elementId);
+            errorMessage.textContent = message;
+    
+            setTimeout(() => {
+                errorMessage.textContent = '';
+            }, 5000); // Display the message for 5 seconds (5000 milliseconds)
         }
-
-        // Validation for mobile number (assuming it should be numeric)
-        if (!/^\d+$/.test(mbnInput.value)) {
-            mbnError.textContent = "Mobile number must be numeric";
-            isValid = false;
-        } else {
-            mbnError.textContent = "";
-        }
-
-        // Validation for email (basic format check)
-        if (!/^\S+@\S+\.\S+$/.test(emailInput.value)) {
-            emailError.textContent = "Invalid email address";
-            isValid = false;
-        } else {
-            emailError.textContent = "";
-        }
-
-        // Validation for password (you can add more complex rules as needed)
-        if (passwordInput.value.length < 6) {
-            passwordError.textContent = "Password must be at least 6 characters";
-            isValid = false;
-        } else {
-            passwordError.textContent = "";
-        }
-
-        // Validation for confirmPassword
-        if (confirmPasswordInput.value !== passwordInput.value) {
-            confirmPasswordError.textContent = "Passwords do not match";
-            isValid = false;
-        } else {
-            confirmPasswordError.textContent = "";
-        }
-
-        if (!isValid) {
-            event.preventDefault();
-        }
-    });
-
-
-</script>
+    </script>
+    
     <!-- JS here -->
     <script src="/Customer/js/vendor/modernizr-3.5.0.min.js"></script>
     <!-- Jquery, Popper, Bootstrap -->

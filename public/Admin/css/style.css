@@ -21133,3 +21133,14 @@ div.tagsinput {
   flex-grow: 1; }
 
 /*# sourceMappingURL=maps/style.css.map */
+
+  /* Custom styles for active and non-active page links */
+  .page-item.active .page-link {
+    background-color: #007bff; /* Change this to your desired active page color */
+    color: #fff; /* Change this to your desired text color for active page */
+  }
+
+  .page-item:not(.active) .page-link {
+    background-color: #fff; /* Change this to your desired non-active page color */
+    color: #007bff; /* Change this to your desired text color for non-active page */
+  }

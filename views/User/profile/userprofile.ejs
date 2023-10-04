@@ -79,63 +79,75 @@
                                     <div class="col col-lg-9 col-xl-7">
                                         <div style="border-radius: 30px;" class="card">
                                             <!-- Header with user image and edit profile button -->
+                                            <br>
                                             <div class="rounded-top text-white d-flex flex-row" style="height: 200px;">
-                                                <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
+                                                <div class="ms-4 mt-4 d-flex flex-column" style="width: 150px;">
+                                                    
                                                     <% if (user.image && user.image.contentType && user.image.data) { %>
                                                         <% const
                                                             imageDataUrl=`data:${user.image.contentType};base64,${user.image.data.toString('base64')}`
                                                             %>
                                                             <img src="<%= imageDataUrl %>" alt="<%= user.name %> Image"
-                                                            alt="image"alt="Avatar" class="avatar">
+                                                                alt="image" alt="Avatar" class="avatar">
                                                             <hr>
                                                             <% } else { %>
                                                                 <!-- Default image or alternative content -->
                                                                 <div
                                                                     style="background-color: white; width: 150px; height: 200px; display: flex; justify-content: center; align-items: center;">
                                                                     <img src="/Customer/img/blog/popular-post/account-icon-user-icon-vector-graphics_292645-552.avif"
-                                                                    alt="image" class="rounded-circle"
+                                                                        alt="image" class="rounded-circle"
                                                                         style="width: 100px; height: 100px;">
+                                                                      
                                                                     <hr>
+                                                                  
                                                                 </div>
+                                                           
                                                                 <% } %>
+                                                           
 
                                                 </div>
-                                                <div class="ms-3" style="margin-top: 130px;">
+                                              
+                                                <div class="ms-3" style="margin-top: 130px;"><br>
                                                     <h5 style="color: #000000;">
                                                         <%= user.name %>
                                                     </h5>
+                                                    
                                                 </div>
                                             </div>
+                                            <br> <br> <br>
+                                            
                                             <!-- Navigation Links -->
-                                            <div class=" text-white"
+                                            <div class=" text-white "
                                                 style="border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;">
-                                                <div class="d-flex justify-content-end text-center">
+                                                <div class="d-flex justify-content-center text-center">
                                                     <div>
                                                         <form action="/user/show-order-details/" method="get">
 
-                                                            <button style="color: hsl(0, 0%, 100%);" class=" text-black"
-                                                                type="submit">My Orders</button>
+                                                            <button style="color: hsl(0, 0%, 100%);"
+                                                                class="btn text-black" type="submit">My Orders</button>
 
                                                         </form>
                                                     </div>
                                                     <div class="px-3">
                                                         <form action="/user/address/add-user" method="post">
                                                             <input type="hidden" name="id" value="<%= user._id %>">
-                                                            <button style="color: hsl(0, 0%, 100%);" class=" text-black"
-                                                                type="submit">Add Address</button>
+                                                            <button style="color: hsl(0, 0%, 100%);"
+                                                                class="btn text-black" type="submit">Add
+                                                                Address</button>
 
                                                         </form>
                                                     </div>
                                                     <div class="px3">
                                                         <form action="/user/edit_profile" method="post">
                                                             <input type="hidden" name="id" value="<%= user._id %>">
-                                                            <button style="color: hsl(0, 0%, 100%);" class=" text-black"
-                                                                type="submit">Edit
+                                                            <button style="color: hsl(0, 0%, 100%);"
+                                                                class="btn  text-black" type="submit">Edit
                                                                 Profile</button>
                                                         </form>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <br>
                                             <!-- Profile Details -->
                                             <div class="card-body p-4">
                                                 <div class="mb-5">
@@ -232,6 +244,7 @@
             </div>
             <!-- Search model end -->
             <style>
+       
                 button {
 
                     border-radius: 10px;
