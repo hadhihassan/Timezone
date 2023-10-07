@@ -50,312 +50,309 @@
     <section class="checkout_area section_padding">
       <div class="container">
         <div class="returning_customer">
-          <div class="check_title">
-            <h2>
-              Returning Customer?
-              <a href="Customer#">Click here to login</a>
-            </h2>
+
+          <div class="cupon_area">
+            <div class="check_title">
+              <h2>
+                Have a coupon?
+                <a href="/coupon">Click here to then see the you earned coupons</a>
+              </h2>
+            </div>
+            <input type="text" id="couponInput" placeholder="Enter coupon code" />
+            <button class="tp_btn" type="button" onclick="applayCoupon()">
+              Apply Coupon
+            </button>
           </div>
-          <p>
-            If you have shopped with us before, please enter your details in the
-            boxes below. If you are a new customer, please proceed to the
-            Billing & Shipping section.
-          </p>
-          <form class="row contact_form" action="#" method="post" novalidate="novalidate">
-            <div class="col-md-6 form-group p_star">
-              <input type="text" class="form-control" id="name" name="name" value=" " />
-              <span class="placeholder" data-placeholder="Username or Email"></span>
-            </div>
-            <div class="col-md-6 form-group p_star">
-              <input type="password" class="form-control" id="password" name="password" value="" />
-              <span class="placeholder" data-placeholder="Password"></span>
-            </div>
-            <div class="col-md-12 form-group">
-              <button type="submit" value="submit" class="btn_3">
-                log in
-              </button>
-              <div class="creat_account">
-                <input type="checkbox" id="f-option" name="selector" />
-                <label for="f-option">Remember me</label>
-              </div>
-              <a class="lost_pass" href="#">Lost your password?</a>
-            </div>
-          </form>
-        </div>
-        <div class="cupon_area">
-          <div class="check_title">
-            <h2>
-              Have a coupon?
-              <a href="#">Click here to enter your code</a>
-            </h2>
-          </div>
-          <input type="text" placeholder="Enter coupon code" />
-          <a class="tp_btn" href="#">Apply Coupon</a>
-        </div>
 
-        <div class="billing_details">
-          <div class="row">
-            <div class="col-lg-8">
-              <!-- display product start-->
-              <h3>Products Details</h3>
+          <div class="billing_details">
+            <div class="row">
+              <div class="col-lg-8">
+                <div id="message-container"></div>
 
-              <% cart.forEach(items=> { %>
 
-                <div class="card mb-4 shadow">
-                  <div class="card-body p-4  rounded-pill">
-                    <div class="row align-items-center">
-                      <div class="col-md-2">
-                        <img
-                          src="data:<%= items.product.images[0].contentType %>;base64,<%= items.product.images[0].data.toString('base64') %>"
-                          alt="<%= items.total %> " style="width: 80px;height: 80px;">
 
-                      </div>
-                      <div class="col-md-2 d-flex justify-content-center">
-                        <div>
-                          <p class="small text-muted mb-4 pb-2">Brand</p>
-                          <p class="lead fw-normal mb-0">
-                            <%=items.product.brand_name %>
-                          </p>
+                <% cart.forEach(items=> { %>
+
+                  <div class="card mb-4 shadow">
+                    <div class="card-body p-4  rounded-pill">
+                      <div class="row align-items-center">
+                        <div class="col-md-2">
+                          <img
+                            src="data:<%= items.product.images[0].contentType %>;base64,<%= items.product.images[0].data.toString('base64') %>"
+                            alt="<%= items.total %> " style="width: 80px;height: 80px;">
+
                         </div>
+                        <div class="col-md-2 d-flex justify-content-center">
+                          <div>
+                            <p class="small text-muted mb-4 pb-2">Brand</p>
+                            <p class="lead fw-normal mb-0">
+                              <%=items.product.brand_name %>
+                            </p>
+                          </div>
 
-                      </div>
-                      <div class="col-md-2 d-flex justify-content-center">
-                        <div>
-                          <p class="small text-muted mb-4 pb-2">Color</p>
-                          <p class="lead fw-normal mb-0">
-                            <%= items.product.color %>
-                          </p>
+                        </div>
+                        <div class="col-md-2 d-flex justify-content-center">
+                          <div>
+                            <p class="small text-muted mb-4 pb-2">Color</p>
+                            <p class="lead fw-normal mb-0">
+                              <%= items.product.color %>
+                            </p>
+                          </div>
+                        </div>
+                        <div class="col-md-2 d-flex justify-content-center">
+                          <div>
+                            <p class="small text-muted mb-4 pb-2">Quantity</p>
+                            <p class="lead fw-normal mb-0">
+                              <%= items.quantity %>
+                            </p>
+                          </div>
+                        </div>
+                        <div class="col-md-2 d-flex justify-content-center">
+                          <div>
+                            <p class="small text-muted mb-4 pb-2">Price</p>
+                            <p class="lead fw-normal mb-0">
+                              <%= items.product.price %>
+                            </p>
+                          </div>
+                        </div>
+                        <div class="col-md-2 d-flex justify-content-center">
+                          <div>
+                            <p class="small text-muted mb-4 pb-2">Total</p>
+                            <p class="lead fw-normal mb-0 ">
+                              <%= items.total %>
+                            </p>
+                          </div>
                         </div>
                       </div>
-                      <div class="col-md-2 d-flex justify-content-center">
-                        <div>
-                          <p class="small text-muted mb-4 pb-2">Quantity</p>
-                          <p class="lead fw-normal mb-0">
-                            <%= items.quantity %>
-                          </p>
-                        </div>
-                      </div>
-                      <div class="col-md-2 d-flex justify-content-center">
-                        <div>
-                          <p class="small text-muted mb-4 pb-2">Price</p>
-                          <p class="lead fw-normal mb-0">
-                            <%= items.product.price %>
-                          </p>
-                        </div>
-                      </div>
-                      <div class="col-md-2 d-flex justify-content-center">
-                        <div>
-                          <p class="small text-muted mb-4 pb-2">Total</p>
-                          <p class="lead fw-normal mb-0">
-                            <%= items.total %>
-                          </p>
-                        </div>
-                      </div>
+
                     </div>
-
                   </div>
-                </div>
-                <% }) %>
-                  <!-- display product end -->
+                  <% }) %>
+                    <!-- display product end -->
 
-                  <!-- Modal Trigger Button -->
-                  <div class="card">
-                    <div class="card-body shadow-sm">
-                      <h3 class="card-title">default address</h3>
-                      <hr>
-                      <h5>
-                        <%= selectAddress.Name %>
-                      </h5>
-                      <p class="card-text">
-
-                        <%=selectAddress.HouseName%>
-                          <%= selectAddress.RoadArea %> <br>
-                            <%= selectAddress.City %>
-                              <%= selectAddress.Region %>
-                                <%=selectAddress.PinCode %>
-                      </p>
-                      <form action="/user/address/edit" method="post">
-                        <input type="hidden" name="id" value="<%= selectAddress._id %>">
+                    <!-- Modal Trigger Button -->
+                    <% if (!selectAddress) { %>
+                      <form action="/user/address/add-user" method="post">
+                        <input type="hidden" name="id" value="<%= User._id %>">
                         <input type="hidden" name="back" value="true">
-                        <button type="submit" class="btn_1 btn-primary">Edit</a>
+                        <button type="submit" class="btn_1 btn-secondary">Add address</button>
                       </form>
-                    </div>
-                  </div>
-                  <br>
-                  <button type="button" class="btn_1 " data-toggle="modal" data-target="#productDetailsModal">
-                    Select Address
-                  </button>
 
-                  <!-- Modal -->
-                  <div class="modal fade" id="productDetailsModal" tabindex="-1" role="dialog"
-                    aria-labelledby="productDetailsModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg" role="document"><!-- Added modal-lg class here -->
-                      <div class="modal-content">
-                        <div class="modal-header">
 
-                          <h5 class="modal-title" id="productDetailsModalLabel">Product Details</h5>
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                          </button>
+                      <% } else { %>
+
+                        <div class="card">
+                          <div class="card-body shadow-sm">
+                            <h3 class="card-title">default address</h3>
+                            <hr>
+                            <h5>
+                              <%= selectAddress.Name %>
+                            </h5>
+                            <p class="card-text">
+
+                              <%=selectAddress.HouseName%>
+                                <%= selectAddress.RoadArea %> <br>
+                                  <%= selectAddress.City %>
+                                    <%= selectAddress.Region %>
+                                      <%=selectAddress.PinCode %>
+                            </p>
+                            <form action="/user/address/edit" method="post">
+                              <input type="hidden" name="id" value="<%= selectAddress._id %>">
+                              <input type="hidden" name="back" value="true">
+                              <button type="submit" class="btn_1 btn-primary">Edit</a>
+                            </form>
+                          </div>
                         </div>
+                        <br>
 
-                        <div class="modal-body">
-                          <!-- Card Inside the Modal -->
-                          <% address.forEach((item,i)=> { %>
-                            <% if (!item.in_use) { %>
+                        <% } %>
+                          <br>
+
+                          <button type="button" class="btn_1 " data-toggle="modal" data-target="#productDetailsModal">
+                            Select Address
+                          </button>
+                          <!-- Modal -->
+                          <div class="modal fade" id="productDetailsModal" tabindex="-1" role="dialog"
+                            aria-labelledby="productDetailsModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg" role="document"><!-- Added modal-lg class here -->
+                              <div class="modal-content">
+                                <div class="modal-header">
+
+                                  <h5 class="modal-title" id="productDetailsModalLabel">Product Details</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+
+                                <div class="modal-body">
+                                  <!-- Card Inside the Modal -->
+                                  <% address.forEach((item,i)=> { %>
+                                    <% if (!item.in_use) { %>
 
 
-                              <div class="card ">
-                                <div class="card-body">
-                                  <h5 class="card-title">ADDRESS <i>
-                                      <%= i+1 %>
-                                    </i> </h5>
-                                  <hr>
-                                  <h6 class="card-text">
-                                    <%=item.Name %>
+                                      <div class="card ">
+                                        <div class="card-body">
+                                          <h5 class="card-title">ADDRESS <i>
+                                              <%= i+1 %>
+                                            </i> </h5>
+                                          <hr>
+                                          <h6 class="card-text">
+                                            <%=item.Name %>
 
-                                  </h6>
-                                  <p class="card-text">
+                                          </h6>
+                                          <p class="card-text">
 
-                                  </p>
-                                  <div>
-                                    <%=item.HouseName%>
-                                      <%= item.RoadArea %> <br>
-                                        <%= item.City %>
-                                          <%= item.Region %>
-                                            <%=item.PinCode %>
-                                              <br>
-                                              <br>
+                                          </p>
+                                          <div>
+                                            <%=item.HouseName%>
+                                              <%= item.RoadArea %> <br>
+                                                <%= item.City %>
+                                                  <%= item.Region %>
+                                                    <%=item.PinCode %>
+                                                      <br>
+                                                      <br>
 
-                                              <div class="d-flex modal-footer float-left">
-                                                <form action="/user/address/edit" method="post">
-                                                  <input type="hidden" name="id" value="<%= item._id %>">
-                                                  <input type="hidden" name="back" value="true">
+                                                      <div class="d-flex modal-footer float-left">
+                                                        <form action="/user/address/edit" method="post">
+                                                          <input type="hidden" name="id" value="<%= item._id %>">
+                                                          <input type="hidden" name="back" value="true">
 
-                                                  <button type="submit" class="btn_1 btn-primary">Edit</a>
-                                                </form>
-                                                <form action="/user/address/selsect" method="post">
-                                                  <input type="hidden" name="addressId" value="<%= item._id %>">
+                                                          <button type="submit" class="btn_1 btn-primary">Edit</a>
+                                                        </form>
+                                                        <form action="/user/address/selsect" method="post">
+                                                          <input type="hidden" name="addressId" value="<%= item._id %>">
 
-                                                  <button type="submit"
-                                                    class="btn_1 btn-primary rounded-pill">Select</button>
-                                                </form>
-                                              </div>
-                                  </div>
+                                                          <button type="submit"
+                                                            class="btn_1 btn-primary rounded-pill">Select</button>
+                                                        </form>
+                                                      </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <% } %>
+                                        <% }) %>
+                                          <!-- End Card -->
+                                </div>
+
+                                <div class="modal-footer">
+                                  <button type="button" class="btn_1 btn-secondary" data-dismiss="modal">Close</button>
+                                  <form action="/user/address/add-user" method="post">
+                                    <input type="hidden" name="id" value="<%= User._id %>">
+                                    <input type="hidden" name="back" value="true">
+                                    <button type="submit" class="btn_1 btn-secondary">Add</button>
+                                  </form>
+                                  <!-- <button type="button" class="btn_1 btn-primary">Save changes</button> -->
                                 </div>
                               </div>
-                              <% } %>
-                                <% }) %>
-                                  <!-- End Card -->
-                        </div>
-
-                        <div class="modal-footer">
-                          <button type="button" class="btn_1 btn-secondary" data-dismiss="modal">Close</button>
-                          <form action="/user/address/add-user" method="post">
-                            <input type="hidden" name="id" value="<%= User._id %>">
-                            <input type="hidden" name="back" value="true">
-                            <button type="submit" class="btn_1 btn-secondary">Add</button>
-                          </form>
-                          <!-- <button type="button" class="btn_1 btn-primary">Save changes</button> -->
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-            </div>
-            <div class="col-lg-4">
-              <div class="order_box">
-                <h2>Your Order</h2>
-                <ul class="list">
-                  <li>
-                    <a href="#">Product
-                      <span>Total</span>
-                    </a>
-                  </li>
-                  <% cart.forEach(item=> { %>
-
+                            </div>
+                          </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="order_box">
+                  <h2>Your Order</h2>
+                  <ul class="list">
                     <li>
-                      <a href="/user/cart">
-                        <%= item.product.product_name %>
-                          <span class="middle">x<%= item.quantity %></span>
-                          <span class="last">$<%= item.total %></span>
+                      <a href="#">Product
+                        <span>Total</span>
                       </a>
                     </li>
-                    <% }) %>
+                    <% cart.forEach(item=> { %>
 
-                </ul>
-                <ul class="list list_2">
-                  <li>
-                    <a href="#">Subtotal
-                      <span>
-                        <%= User.totalCartAmount %>
-                      </span>
-                    </a>
-                  </li>
-                  <li>
+                      <li>
+                        <a href="/user/cart">
+                          <%= item.product.product_name %>
+                            <span class="middle">x<%= item.quantity %></span>
+                            <span class="last">$<%= item.total %></span>
+                        </a>
+                      </li>
+                      <% }) %>
+
+                  </ul>
+                  <ul class="list list_2">
+                    <!-- <li>
                     <a href="#">Shipping
                       <span>Flat rate: $50.00</span>
                     </a>
-                  </li>
-                  <li>
-                    <a href="#">Total
-                      <span>
-                        <%= User.totalCartAmount %>
-                      </span>
-                    </a>
-                  </li>
-                </ul>
+                  </li> -->
+
+                    <li>
+                      <a href="#">Total
+                        <span>
+                          <%= User.totalCartAmount %>
+                        </span>
+                      </a>
+                    </li>
+
+                    <li id="granddiv">
+                      <a href="#" class="text-danger">Discount amount
+                        <span class="text-danger" id="Discount">
+                          0
+                        </span>
+                      </a>
+                    </li>
+
+                    <li>
+                      <a href="#">Grand Total
+                        <span id="Grand" class="text-danger">
+                          <%= User.totalCartAmount %>
+                        </span>
+                      </a>
+                    </li>
+
+                  </ul>
 
 
 
 
 
-                <div style="background-color: chartreuse;" class=" alert-succes text-center">
-                  <p id="flash-message" style="color: green;"></p>
-                </div>
+                  <div style="background-color: chartreuse;" class=" alert-succes text-center">
+                    <p id="flash-message" style="color: green;"></p>
+                  </div>
 
 
 
 
 
-                <div class="payment_item">
-                  <form action="/user/place-order" method="post">
-
-                    <div>
-                      <br>
-                      <label style="color: #415094;">Select Payment option </label>
-                    </div>
-                    <div class="radion_btn">
-                      <input type="radio" id="f-option5" name="PaymentOption" value="COD" />
-                      <label for="f-option5">Cahs on delivery</label>
-                      <div class="check"></div>
-                    </div>
-                    <div class="radion_btn">
-                      <input type="radio" id="f-option9" name="PaymentOption" value="wallet" />
-                      <label for="f-option9">Wallet</label>
-                      <div class="check"></div>
-                    </div>
-
-                    <div class="payment_item active">
+                  <div class="payment_item">
+                    <form action="/user/place-order" method="post">
+                      <input type="hidden" id="couponFlag" name="discountAmount">
+                      <input type="hidden" id="codeID" name="codeID">
+                      <div>
+                        <br>
+                        <label style="color: #415094;">Select Payment option </label>
+                      </div>
                       <div class="radion_btn">
-                        <input type="radio" id="f-option6" name="PaymentOption" value="paypal" />
-                        <label for="f-option6">Paypal </label>
-                        <img src="/Customer/img/product/single-product/card.jpg" alt="" />
+                        <input type="radio" id="f-option5" name="PaymentOption" value="COD" />
+                        <label for="f-option5">Cahs on delivery</label>
                         <div class="check"></div>
                       </div>
-                    </div>
-                    <div class="creat_account">
-                      <input type="checkbox" id="f-option4" name="selector" />
-                      <label for="f-option4">I’ve read and accept the </label>
-                      <a href="#">terms & conditions*</a>
-                    </div>
-                    <button type="submit" class="order_btn btn_3 col-md-12">Place Order </button>
-                  </form>
+                      <div class="radion_btn">
+                        <input type="radio" id="f-option9" name="PaymentOption" value="wallet" />
+                        <label for="f-option9">Wallet</label>
+                        <div class="check"></div>
+                      </div>
+
+                      <div class="payment_item active">
+                        <div class="radion_btn">
+                          <input type="radio" id="f-option6" name="PaymentOption" value="paypal" />
+                          <label for="f-option6">Razorpay </label>
+                          <img src="/Customer/img/product/single-product/card.jpg" alt="" />
+                          <div class="check"></div>
+                        </div>
+                      </div>
+                      <div class="creat_account">
+                        <input type="checkbox" id="f-option4" name="selector" />
+                        <label for="f-option4">I’ve read and accept the </label>
+                        <a href="#">terms & conditions*</a>
+                      </div>
+                      <button type="submit" class="order_btn btn_3 col-md-12">Place Order </button>
+                    </form>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
     </section>
     <!--================End Checkout Area =================-->
   </main>
@@ -378,6 +375,86 @@
 
   <!-- JS here -->
 
+  <script>
+    function applayCoupon() {
+      const couponinp = document.getElementById("couponInput").value
+
+      if (couponinp != "") {
+
+        $.ajax({
+          url: "/applay-coupon-code",
+          method: "POST",
+          data: {
+            couponCode: couponinp
+          },
+
+
+          success: function (response) {
+            if (response.error) {
+              displayMessage(response.error)
+            } else if (response.newAmount) {
+              const amount = response.newAmount
+              const id = response.id
+              const minusAmount = response.discountAmount
+              console.log(amount,);
+              const dis = document.querySelector("#Discount");
+              const grand = document.querySelector("#Grand");
+     
+
+
+              dis.textContent = `-${minusAmount}`;
+              grand.textContent = amount;
+              
+              const couponFlag = document.getElementById("couponFlag");
+              couponFlag.value = minusAmount;
+              
+              const idCODE = document.getElementById("codeID");
+              idCODE.value = id;
+              // Replace "calculatedValue" with your actual calculated value
+              // Assuming grand is a variable with the calculated value
+
+
+            }
+          }
+        })
+      } else {
+        displayMessage("Empty data not allowed")
+      }
+
+    }
+
+
+
+
+
+
+
+
+
+    // Function to display the message for 5 seconds
+    function displayMessage(message) {
+      const messageContainer = document.getElementById("message-container");
+
+      // Create a new paragraph element with the message
+      const messageElement = document.createElement("p");
+      messageElement.classList.add("text-danger");
+      messageElement.innerText = message;
+
+      // Append the message element to the container
+      messageContainer.appendChild(messageElement);
+
+      // Remove the message element after 5 seconds
+      setTimeout(() => {
+        messageContainer.removeChild(messageElement);
+      }, 5000); // 5000 milliseconds (5 seconds)
+    }
+
+    // Call the displayMessage function with your message
+    const message = "<%= message %>";
+    if (message || message !== undefined) {
+      displayMessage(message);
+    }
+  </script>
   <script src="/Customer/js/vendor/modernizr-3.5.0.min.js"></script>
   <!-- Jquery, Popper, Bootstrap -->
   <script src="/Customer/js/vendor/jquery-1.12.4.min.js"></script>
@@ -410,46 +487,10 @@
   <!-- Jquery Plugins, main Jquery -->
   <script src="/Customer/js/plugins.js"></script>
   <script src="/Customer/js/main.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 
-  <!-- <script>const form = document.getElementById("myForm");
 
- 
-    form.addEventListener("submit", function (event) {
-     
-      event.preventDefault();
-    
-      const formData = new FormData(form);
-      const name = formData.get("PaymentOption");
-
-     $.ajax({
-      url:"/user/palce-order",
-      method:"POST",
-      data:{
-        PaymentOption:name
-      },
-      success: function (response) {
-        if(response.order){
-          displayFlashMessage(response.message)
-        }
-      }
-     })
-    
-     
-   
-    
-     
-    });
-        function displayFlashMessage(message) {
-      const flashMessageElement = document.getElementById('flash-message');
-      flashMessageElement.textContent = message;
-      flashMessageElement.style.display = 'block'; // Show the flash message
-
-      setTimeout(() => {
-        flashMessageElement.style.display = 'none'; // Hide the flash message after 3 seconds (adjust as needed)
-      }, 5000);
-    }
-  </script> -->
 
 
 

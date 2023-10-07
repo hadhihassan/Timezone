@@ -1,25 +1,21 @@
-const { emit } = require("../../../Models/customerModel");
+// Get references to the day and month elements
+var dayElement = document.getElementById("day");
+var monthElement = document.getElementById("month");
 
+// Create a Date object for the current date
+var currentDate = new Date();
 
-function validateForm() {
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+// Define an array of month names
+var monthNames = [
+    "Jan", "Feb", "Mar", "Apr",
+    "May", "Jun", "Jul", "Aug",
+    "Sep", "Oct", "Nov", "Dec"
+];
 
-    if (name === '' || email === '' || password === '') {
-        alert('All fields are required');
-        return false;
-    }
-    if (!isValidEmail(email)) {
-        alert('Invalid email format');
-        return false;
-    }
+// Get the day and month
+var day = currentDate.getDate();
+var month = monthNames[currentDate.getMonth()];
 
-    return true;
-}
-
-function isValidEmail(email) {
-    // Use a regular expression to validate the email format
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
-}
+// Set the content of the day and month elements
+dayElement.textContent = day;
+monthElement.textContent = month;

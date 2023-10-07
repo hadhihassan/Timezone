@@ -6,7 +6,7 @@ const { RAZORPAY_ID_KEY, RAZORPAY_SECRET_KEY } = process.env
 const crypto = require("crypto")
 const Product = require("../Models/productModel")
 const Address = require("../Models/userAddress")
-
+const mongoose = require("mongoose")
 
 
 
@@ -20,12 +20,22 @@ const razorpay = new Razorpay({
 //loadPaymentpage
 const loadPaymentPage = async (req, res) => {
   try {
+    //if have a coupon then work this 
+
+    const couponId = req.query.id || '0';
+
     const userId = req.session.user;
+    let couponDiscount = parseInt(req.query.discount) || 0;
+
+
     const user = await Customer.findById(userId)
     const orderDetails = await Order.find({ user: userId });
     // Calculate the total order amount in paise
-    const totalPayAmount = user.totalCartAmount
 
+
+    let am = user.totalCartAmount
+    let totalPayAmount = (am - couponDiscount)
+    console.log(totalPayAmount, couponDiscount);
     const razorpayOrder = await razorpay.orders.create({
       amount: (totalPayAmount * 100),
       currency: "INR",
@@ -33,11 +43,14 @@ const loadPaymentPage = async (req, res) => {
     });
 
 
+
     return res.render("User/payment", {
       order: razorpayOrder,
       key_id: process.env.RAZORPAY_ID_KEY,
-      user: userId
+      user: userId,
+      couponId: couponId
     });
+
 
   } catch (error) {
     console.error(error);
@@ -46,7 +59,7 @@ const loadPaymentPage = async (req, res) => {
 }
 // checkThePayment 
 const checkRazorpaySignature = async (req, res) => {
-  const { razorpay_payment_id, razorpay_order_id, razorpay_signature, order_id, secret } = req.body;
+  const { razorpay_payment_id, razorpay_order_id, razorpay_signature, order_id, secret, amount, couponId } = req.body;
   console.log(req.body);
   const userId = req.session.user;
 
@@ -65,7 +78,7 @@ const checkRazorpaySignature = async (req, res) => {
 
       const userOrder = new Order({
         user: userId,
-        totalAmount: User.totalCartAmount,
+        totalAmount: (amount / 100),
         paymentOption: "razorpay",
         deliveryAddress: usedAddress,
       });
@@ -91,7 +104,18 @@ const checkRazorpaySignature = async (req, res) => {
           total: cartItem.total,
         });
       }
+      if (couponId !== " 0") {
+        const customerId = req.session.user; // Assuming you have the customer's ID
+        const stringid = couponId.trim()
+        // Convert couponId to ObjectId
+        const objectId = new mongoose.Types.ObjectId(stringid);
+       
 
+        // Push the new coupon ID into the earnedCoupons array
+        await Customer.findByIdAndUpdate(customerId, {
+          $push: { earnedCoupons: { coupon: objectId } }
+        });
+      }
       const orderSave = await userOrder.save();
       await Customer.findByIdAndUpdate(userId, { $unset: { cart: {} } });
 
@@ -101,7 +125,7 @@ const checkRazorpaySignature = async (req, res) => {
       } else {
         console.log("ONLINE PAYMENT AND ORDER SAVING NOT WORKING");
       }
-    } 
+    }
   } catch (error) {
     console.log(error.message);
   }
@@ -110,5 +134,5 @@ const checkRazorpaySignature = async (req, res) => {
 
 
 module.exports = {
-    loadPaymentPage, checkRazorpaySignature
-  };
+  loadPaymentPage, checkRazorpaySignature
+};

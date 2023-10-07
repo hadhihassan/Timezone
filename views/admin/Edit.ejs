@@ -176,15 +176,9 @@
                                           src="data:<%= image.contentType %>;base64,<%= image.data.toString('base64') %>"
                                           alt="<%= product.product_name %>" style="width: 180px;height: 180px;">
 
-                                        <!-- Add a "Delete" button (X button) -->
-                                      
-
-                                        <!-- Add a hidden input field to identify which image to delete -->
-
-                                      
                                         <a class="btn btn-danger btn-delete-image" href="/admin/product/<%= image._id %>/<%= id %>/deleteImg">X</a>
                    
-                                        <!-- <button type="submit" class="btn btn-danger btn-delete-image">X</button> -->
+                                
                                       </div>
                                     <!-- </form> -->
 
@@ -259,23 +253,6 @@
   </div>
   <!-- container-scroller -->
   <!-- plugins:js -->
-<!-- 
-  <script>
-    // JavaScript code to handle image deletion
-    const deleteButtons = document.querySelectorAll('.btn-delete-image');
-    deleteButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        const imageId = button.getAttribute('data-image-id');
-        const confirmDelete = confirm('Are you sure you want to delete this image?');
-        if (confirmDelete) {
-          // Assuming you want to trigger form submission here
-          const form = button.closest('form');
-          form.submit();
-        }
-      });
-    });
-  </script> --> 
-
 
 
 

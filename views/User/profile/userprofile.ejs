@@ -76,7 +76,7 @@
                         <section class="h-100 gradient-custom-2">
                             <div class="container py-5 h-100">
                                 <div class="row d-flex justify-content-center align-items-center h-100">
-                                    <div class="col col-lg-9 col-xl-7">
+                                    <div class="col col-lg-9 col-xl-12">
                                         <div style="border-radius: 30px;" class="card">
                                             <!-- Header with user image and edit profile button -->
                                             <br>
@@ -91,12 +91,17 @@
                                                                 alt="image" alt="Avatar" class="avatar">
                                                             <hr>
                                                             <% } else { %>
+                                                                <br>
+                                                                <br>
+                                                                <br>
+                                                                
                                                                 <!-- Default image or alternative content -->
                                                                 <div
+                                                                
                                                                     style="background-color: white; width: 150px; height: 200px; display: flex; justify-content: center; align-items: center;">
                                                                     <img src="/Customer/img/blog/popular-post/account-icon-user-icon-vector-graphics_292645-552.avif"
-                                                                        alt="image" class="rounded-circle"
-                                                                        style="width: 100px; height: 100px;">
+                                                                        alt="image" class=" border border-dark "
+                                                                        style="width: 150px; height: 150px;">
                                                                       
                                                                     <hr>
                                                                   
@@ -137,13 +142,18 @@
 
                                                         </form>
                                                     </div>
-                                                    <div class="px3">
+                                                    <div class="px-3">
                                                         <form action="/user/edit_profile" method="post">
                                                             <input type="hidden" name="id" value="<%= user._id %>">
                                                             <button style="color: hsl(0, 0%, 100%);"
                                                                 class="btn  text-black" type="submit">Edit
                                                                 Profile</button>
                                                         </form>
+                                                    </div>
+                                                    <div >
+                                                            <button style="color: hsl(0, 0%, 100%);"
+                                                                class="btn  text-black" type="submit"> <a href="/coupon">Coupons</a>
+                                                                </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -188,7 +198,7 @@
                                                             <!-- Delete Button (top right corner) -->
                                                             <form action="/user/address/delete" method="post">
                                                                 <input type="hidden" name="id" value="<%= add._id %>">
-                                                                <button class=" text-black"
+                                                                <button class=" bt"
                                                                     style="position: absolute; top: 10px; right: 100px;color: hsl(0, 0%, 100%)">Delete</button>
                                                             </form>
 

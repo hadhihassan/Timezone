@@ -1,9 +1,7 @@
-const express = require("express")
 const Customer = require('../Models/customerModel')
 const UserOTPVerification = require('../Models/UserOTPVerification')
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
-const session = require('express-session');
 const Product = require('../Models/productModel')
 const Address = require('../Models/userAddress')
 const Order = require("../Models/orderModel");
@@ -11,7 +9,8 @@ const product = require("../Models/productModel");
 const jwt = require('jsonwebtoken');
 const crypto = require("crypto")
 require("dotenv").config();
-
+const Coupon = require("../Models/couponModel")
+const CatchAsync = require("../utils/CatchAsync")
 
 
 
@@ -48,9 +47,9 @@ const insertUser = async (req, res) => {
             res.render('User/register', { message: 'the password miss matched', user: req.session.user })
 
         } else if (mbn.length !== 10 || mbn.length !== 10 || !/^\d+$/.test(mbn)) {
-            return res.render('User/register', { message: "mobile number must be 10 digit", user: req.session.user })
+            return res.render('User/register', { message: "Mobile number must be 10 digit", user: req.session.user })
         } else if (!/^\S+@\S+\.\S+$/.test(email)) {
-            return res.render('User/register', { message: "email not valid ", user: req.session.user })
+            return res.render('User/register', { message: "Email not valid ", user: req.session.user })
         }
         else {
 
@@ -67,7 +66,7 @@ const insertUser = async (req, res) => {
             console.log(userExist);
             if (userExist) {
 
-                res.render("User/register", { message: "this accound alredy existed", user: req.session.user })
+                res.render("User/register", { message: "This accound alredy existed", user: req.session.user })
             } else {
                 const userData = await user.save()
                 if (userData) {
@@ -77,13 +76,13 @@ const insertUser = async (req, res) => {
 
                     const accessToken = jwt.sign(user,
                         process.env.JWTSECRET)
-                        res.json({ accessToken : accessToken })
-                        
+                    res.json({ accessToken: accessToken })
+
                     res.redirect(`/user/otpVerification?userId=${user_id}`);
 
 
                 } else {
-                    res.render('User/register', { message: "account creation has been failed", user: req.session.user })
+                    res.render('User/register', { message: "Account creation has been failed", user: req.session.user })
 
                 }
 
@@ -210,7 +209,7 @@ const checkUserValid = async (req, res) => {
     const { email, password } = req.body
 
     if (!email || !password) {
-        res.render('User/login', { message: 'empty information are not possible..', user: req.session.user })
+        res.render('User/login', { message: 'Empty information are not possible..', user: req.session.user })
 
     } else if (!/^\S+@\S+\.\S+$/.test(email)) {
         res.render('User/login', { message: "Invalid Email..", user: req.session.user })
@@ -231,13 +230,13 @@ const checkUserValid = async (req, res) => {
             const isValid = await bcrypt.compare(password, hashPassword)
 
             if (!isValid) {
-                res.render('User/login', { message: "password is incorrect try again..", user: req.session.user })
+                res.render('User/login', { message: "Password is incorrect try again..", user: req.session.user })
             } else {
-                
+
 
                 const token = jwt.sign({ userId: verifiedUser.id }, process.env.JWTSECRET, { expiresIn: '30d' });
                 res.cookie('token', token, { httpOnly: true })
-                res.cookie.user =  verifiedUser._id
+                res.cookie.user = verifiedUser._id
                 req.session.user = verifiedUser._id
                 req.u = verifiedUser._id
 
@@ -385,32 +384,63 @@ const userLogouting = (req, res, next) => {
     }
 }
 const loadShop = async (req, res) => {
+    let products
+    let pipeline
+    const query = req.query.query
     try {
-        const products = await Product.find({ is_delete: false, in_stock: true })
-        const pipeline = [
-            {
-                $match: {
-                    is_delete: false,
-                    in_stock: true
+        if (query) {
+            products = await Product.find({ is_delete: false, in_stock: true })
+            pipeline = [
+                {
+                    $match: {
+                        is_delete: false,
+                        in_stock: true,
+                        name: {
+                            $regex: query,
+                            $options: 'i', // 'i' for case-insensitive
+                        },
+                    }
+                },
+                {
+                    $group: {
+                        _id: null,
+                        colors: { $addToSet: "$color" },
+                        categories: { $addToSet: "$category" },
+                        brands: { $addToSet: "$brand_name" }
+                    }
+                }, {
+                    $project: {
+                        _id: 0
+                    }
                 }
-            },
-            {
-                $group: {
-                    _id: null,
-                    colors: { $addToSet: "$color" },
-                    categories: { $addToSet: "$category" },
-                    brands: { $addToSet: "$brand_name" }
+            ];
+        } else {
+            products = await Product.find({ is_delete: false, in_stock: true })
+            pipeline = [
+                {
+                    $match: {
+                        is_delete: false,
+                        in_stock: true
+                    }
+                },
+                {
+                    $group: {
+                        _id: null,
+                        colors: { $addToSet: "$color" },
+                        categories: { $addToSet: "$category" },
+                        brands: { $addToSet: "$brand_name" }
+                    }
+                }, {
+                    $project: {
+                        _id: 0
+                    }
                 }
-            },{
-                $project:{
-                    _id:0
-                }
-            }
-        ];
-        
+            ];
+        }
+
         const filter = await Product.aggregate(pipeline);
         console.log(filter)
-        res.render('User/shop', { products, user: req.session.user, success: req.flash('success'),filter })
+        res.render('User/shop', { query: "", products, user: req.session.user, success: req.flash('success'), filter })
     } catch (error) {
         console.log(error.message);
     }
@@ -749,16 +779,17 @@ const deleteProductCart = async (req, res) => {
 //CHECKOUT PAGE
 const loadchekout = async (req, res) => {
     const user_id = req.session.user
+    const mess = req.query.message
     try {
 
         const User = await Customer.findById(req.session.user).populate('cart.product');
 
         const cart = User.cart
         const address = await Address.find({ User: user_id })
-        // const selectedAddress = await Address.find
-        const selectAddress = await Address.findOne({ in_use: true })
 
-        res.render("User/checkout", { User, cart, address, user: req.session.user, selectAddress })
+        const selectAddress = await Address.findOne({ in_use: true, User: user_id })
+
+        res.render("User/checkout", { User, cart, address, user: req.session.user, selectAddress, message: mess })
     } catch (error) {
         console.log(error.message)
     }
@@ -783,40 +814,51 @@ const selectAddress = async (req, res) => {
 }
 //ORDER
 const placeOrder = async (req, res) => {
+
+    couponDiscount = parseInt(req.body.discountAmount) || 0;
+    const couponId = req.body.codeID
+    console.log(couponId)
     try {
         const paymentOption = req.body.PaymentOption;
-
         // Validate payment option
         if (!["COD", "Wallet", "paypal"].includes(paymentOption)) {
-            return res.status(400).json({ error: 'Invalid payment option' });
+
+            return res.redirect("/user/checkout?message=Invalid payment option")
         }
 
         const userId = req.session.user;
         const user = await Customer.findById(userId).populate('cart.product');
 
         if (!user) {
-            return res.status(404).json({ error: 'User not found' });
+            return res.redirect("/user/checkout?message=User not found")
+
         }
 
         // Calculate the total cart amount correctly based on the user's cart
-        const totalAmount = user.cart.reduce(
+        let totalAmount = user.cart.reduce(
             (total, cartItem) => total + cartItem.total,
             0
         );
+        totalAmount = totalAmount - couponDiscount
 
         const usedAddress = await Address.findOne({
             $and: [{ User: userId }, { in_use: true }],
         });
 
         if (!usedAddress) {
-            return res.status(404).json({ error: 'User address not found' });
+            return res.redirect("/user/checkout?message=Select any address or add address")
+
+
+
         }
+
+
 
         if (paymentOption == "COD") {
             const address = usedAddress._id;
             const order = new Order({
                 user: userId,
-                totalAmount: totalAmount, // Assign the correct total amount here
+                totalAmount, // Assign the correct total amount here
                 paymentOption: paymentOption,
                 deliveryAddress: address,
             });
@@ -826,13 +868,13 @@ const placeOrder = async (req, res) => {
                 const productItem = await Product.findById(cartItem.product);
 
                 if (!productItem) {
-                    return res.status(404).json({ error: 'Product not found' });
+                    return res.redirect("/user/checkout?message=Product not found")
+
                 }
 
                 if (cartItem.quantity > productItem.stock_count) {
-                    return res
-                        .status(400)
-                        .json({ error: 'Not enough stock for some products' });
+                    return res.redirect("/user/checkout?message=Not enough stock for some products")
+
                 }
 
                 // Update stock count and save the product
@@ -845,6 +887,15 @@ const placeOrder = async (req, res) => {
                     quantity: cartItem.quantity,
                     total: cartItem.total,
                 });
+            }
+
+            if (couponDiscount > 0) {
+                await Customer.findByIdAndUpdate(req.session.user, {
+                    $push: { "earnedCoupons": { coupon: couponId } }
+                });
+
+
+
             }
 
             // Save the order and remove cart items
@@ -867,7 +918,9 @@ const placeOrder = async (req, res) => {
             // Implement wallet payment logic here
 
         } else if (paymentOption == "paypal") {
-            return res.redirect('/user/product/online-payment');
+        
+            return res.redirect(`/user/product/online-payment?discount=${couponDiscount}&id=${couponId}`);
+
         }
 
     } catch (error) {
@@ -933,6 +986,74 @@ const cancelOrder = async (req, res) => {
 /*ORDER MANAGEMENT */
 
 
+//COUPONS
+
+const loadCoupons = async (req, res) => {
+    try {
+        const Coupons = await Coupon.find()
+        res.render("User/profile/coupons", { user: req.session.user, Coupons })
+    } catch (error) {
+        console.log(error.message);
+    }
+
+}
+
+const applayingCoupon = async (req, res) => {
+    const code = req.body.couponCode;
+    console.log(code);
+    try {
+        const findCode = await Coupon.findOne({ code });
+
+        if (!findCode) {
+            return res.json({ error: "Coupon not found, please try again..." });
+        }
+
+        const user = await Customer.findById(req.session.user);
+
+        for (const earnedCoupon of user.earnedCoupons) {
+            const couponId = earnedCoupon.coupon;
+            const isUsed = earnedCoupon.isUsed;
+
+            if (couponId.equals(findCode._id)) {
+                return res.json({ error: "Sorry, you already used this coupon code..." });
+            }
+        }
+        const currentDate = new Date();
+
+        if (findCode.expaire_date < currentDate) {
+            return res.json({ error: "This coupon has expired..." });
+        }
+
+
+
+        if (user.totalCartAmount > findCode.minimumPurchaseAmount) {
+            if (findCode.discount_type === "Percentage") {
+                console.log("totaCartAmount " + user.totalCartAmount)
+                const discountAmount = Math.floor((findCode.discount_amount_or_percentage / 100) * user.totalCartAmount);
+                const newAmount = Math.floor(user.totalCartAmount - discountAmount);
+                console.log(newAmount, discountAmount + " (Percentage)");
+
+                return res.json({ newAmount, discountAmount, id: findCode._id });
+            } else {
+                const discountAmount = findCode.discount_amount_or_percentage;
+                const newAmount = Math.floor(user.totalCartAmount - discountAmount);
+                console.log(newAmount, discountAmount + " (Fixed Amount)");
+                return res.json({ newAmount, discountAmount, id: findCode._id });
+            }
+        } else {
+            return res.json({ error: "The coupon valid at purchase above 500 rupees.." });
+        }
+
+
+
+    } catch (error) {
+        // Handle any errors here
+    }
+};
+
+
+
+
 
 module.exports = {
     loadRegister, loadhome, insertUser, loadOTPpage, checkOTPValid, loadLogin, checkUserValid,
@@ -940,7 +1061,7 @@ module.exports = {
     userUpdatePassword, loadAddAddressPage, addUserAddress, editAddress, updateAddress, deleteAddress, displayProduct,
     productAddToCart, loadCart, updateCartQuantity, deleteProductCart, loadForgetPage, ForgetPasswordcheckingValid,
     loadChangePass, validOTPsetPass, loadchekout, selectAddress, placeOrder, loadOrder, loadOrderProductDetails,
-    cancelOrder,
+    cancelOrder, loadCoupons, applayingCoupon,
 }
 
 

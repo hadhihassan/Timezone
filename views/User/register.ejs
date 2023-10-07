@@ -65,8 +65,7 @@
                             <div class="login_part_form_iner">
                                 <h3>Welcome ! <br>
                                     Please register in now</h3>
-                                <form class="row contact_form" action="/register" method="post" id="registrationForm"
-                                    >
+                                <form class="row contact_form" action="/register" method="post" id="registrationForm">
                                     <div class="col-md-12 form-group p_star">
                                         <input type="text" class="form-control" id="name" name="name"
                                             placeholder="Username" required>
@@ -104,24 +103,24 @@
                                         </div>
 
                                         <!--error messages-->
-                                        <% if (typeof message !="undefined" ) {%>
 
+
+                                        <div style="background-color: rgb(164, 173, 170);">
                                             <p id="error-message" class="text-danger"></p>
-                                            <p class="mt-3 text-info ">
-                                                <%= message %>
-                                            </p>
-
-                                            <%} %>
-                                                <!--end messages-->
-                                                <div>
-
-                                                   
-                                                </div>
+                                        </div>
 
 
-                                                <button type="submit" id="sub-button" value="submit" class="btn_3">
-                                                    register
-                                                </button>
+
+                                        <!--end messages-->
+                                        <div>
+
+
+                                        </div>
+
+
+                                        <button type="submit" id="sub-button" value="submit" class="btn_3">
+                                            register
+                                        </button>
 
 
 
@@ -153,7 +152,7 @@
     <script>
         const form = document.getElementById("registrationForm");
         const button = document.getElementById("sub-button");
-    
+
         // Add an event listener to the form instead of mbnInput
         form.addEventListener("submit", async function (event) {
             const nameInput = document.getElementById("name");
@@ -162,74 +161,69 @@
             const emailInput = document.getElementById("email");
             const passwordInput = document.getElementById("password");
             const confirmPasswordInput = document.getElementById("conformpassword");
-            const nameError = document.getElementById("nameError");
-            const mbnError = document.getElementById("mbnError");
-            const emailError = document.getElementById("emailError");
-            const passwordError = document.getElementById("passwordError");
-            const confirmPasswordError = document.getElementById("confirmPasswordError");
-    
+
+            const genderValue = genderInput.value.toLowerCase();
+            const expectedGenders = ["male", "female", "other", "prefer not to say"];
+            const alphabeticPattern = /^[a-zA-Z]+$/;
             let isValid = true;
             const usernamePattern = /^[a-zA-Z0-9_-]{3,16}$/;
-            document.getElementById('error-message-name').innerHTML = "";
-    
+            document.getElementById('error-message').innerHTML = ""; // Use the correct ID
+
             // Validation for name
             if (nameInput.value.trim() === "") {
                 displayErrorMessage("Username is required", "error-message");
                 isValid = false;
-            } else if (!usernamePattern.test(nameInput.value)) {
+            } else if (usernamePattern.test(nameInput.value)) {
                 displayErrorMessage("Invalid username format", "error-message");
                 isValid = false;
-            } else {
-                nameError.textContent = "";
             }
-    
+            if (!expectedGenders.includes(genderValue)) {
+                displayErrorMessage("Enter the your valid gender not allowd other words", "error-message");
+                isValid = false;
+            } else if(!alphabeticPattern.test(genderInput.value)){
+                displayErrorMessage("Enter the your valid gender not possible numeric value", "error-message");
+                isValid = false;
+            }
+
             // Validation for mobile number (assuming it should be numeric)
-            if (!/^\d+$/.test(mbnInput.value)) {
+            if (!/^\d+$/.test(mbnInput.value) && mbnInput.value.length == 10) {
                 displayErrorMessage("Mobile number must be numeric", "error-message");
                 isValid = false;
-            } else {
-                mbnError.textContent = "";
             }
-    
+
             // Validation for email (basic format check)
             if (!/^\S+@\S+\.\S+$/.test(emailInput.value)) {
                 displayErrorMessage("Invalid email address", "error-message");
                 isValid = false;
-            } else {
-                emailError.textContent = "";
             }
-    
+
             // Validation for password (you can add more complex rules as needed)
             if (passwordInput.value.length < 6) {
                 displayErrorMessage("Password must be at least 6 characters", "error-message");
                 isValid = false;
-            } else {
-                passwordError.textContent = "";
             }
-    
+
             // Validation for confirmPassword
-            if (confirmPasswordInput.value !== passwordInput.value) {
+            if (confirmPasswordInput.value != passwordInput.value) {
                 displayErrorMessage("Passwords do not match", "error-message");
                 isValid = false;
-            } else {
-                confirmPasswordError.textContent = "";
             }
-    
+
             if (!isValid) {
                 event.preventDefault(); // Prevent form submission
             }
         });
-    
+
         function displayErrorMessage(message, elementId) {
             const errorMessage = document.getElementById(elementId);
             errorMessage.textContent = message;
-    
+
             setTimeout(() => {
                 errorMessage.textContent = '';
             }, 5000); // Display the message for 5 seconds (5000 milliseconds)
         }
     </script>
-    
+
     <!-- JS here -->
     <script src="/Customer/js/vendor/modernizr-3.5.0.min.js"></script>
     <!-- Jquery, Popper, Bootstrap -->

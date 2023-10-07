@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/Customer/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/Customer/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/Customer/css/flaticon.css">
+    <link rel="stylesheet" href="/Customer/css/slicknav.css">
+    <link rel="stylesheet" href="/Customer/css/animate.min.css">
+    <link rel="stylesheet" href="/Customer/css/magnific-popup.css">
+    <link rel="stylesheet" href="/Customer/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="/Customer/css/themify-icons.css">
+    <link rel="stylesheet" href="/Customer/css/slick.css">
+    <link rel="stylesheet" href="/Customer/css/nice-select.css">
+    <link rel="stylesheet" href="/Customer/css/style.css">
+    <link rel="stylesheet" href="/Customer/css/button.css">
+</head>
+
+<body>
+    <%- include('../../partials/Customerside/header') %>
+        <div class="container">
+            <div class="shadow p-3 mb-5 bg-body rounded text-center">
+                <br>
+                <h3 class="text-black">Collected Coupons</h3>
+                <br>
+            </div>
+            <div class="row">
+                <section class="container">
+                    <div class="d-flex justify-content-between">
+
+                        <% Coupons.forEach((element,i)=> { %>
+                            <div class=" card text-center ">
+                                <% const currentDate=new Date(); %>
+                                    <% if (element.expaire_date < currentDate) { %>
+                                        <div class="image"><img
+                                                src="https://www.onlygfx.com/wp-content/uploads/2020/05/expired-stamp-1.png"
+                                                width="150"></div>
+                                        <div class="image2"><img
+                                                src="https://www.onlygfx.com/wp-content/uploads/2020/05/expired-stamp-1.png"
+                                                width="150"></div>
+                                        <% } else { %>
+                                            <div class="image"><img src="https://i.imgur.com/DC94rZe.png" width="150">
+                                            </div>
+                                            <div class="image2"><img src="https://i.imgur.com/DC94rZe.png" width="150">
+                                            </div>
+                                            <% } %>
+                                                <% if (element.discount_type=="Percentage" ) { %>
+                                                    <h1>
+                                                        <%=element.discount_amount_or_percentage %>% OFF
+                                                    </h1>
+                                                    <% } else {%>
+                                                        <h1>
+                                                            <%=element.discount_amount_or_percentage %>₹ OFF
+                                                        </h1>
+                                                        <% }%>
+
+                                                            <span class="d-block">On Everything</span>
+                                                            <small class="d-block">Expire on :
+                                                                <%=element.expaire_date.toLocaleDateString() %>
+                                                            </small>
+
+                                                            <small>Code: <%= element.code %> </small>
+                                                            <small>
+                                                                <%= element.coupon_name %>
+                                                            </small>
+                                                            <small>
+                                                                <%= element.description %>
+                                                            </small>
+                            </div>
+                            <% }) %>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+
+        <br>
+        <br>
+        <br>
+        <br>
+
+        <%- include('../../partials/Customerside/footer') %>
+
+
+
+
+            <script src="/Customer/js/vendor/modernizr-3.5.0.min.js"></script>
+            <!-- Jquery, Popper, Bootstrap -->
+            <script src="/Customer/js/vendor/jquery-1.12.4.min.js"></script>
+            <script src="/Customer/js/popper.min.js"></script>
+            <script src="/Customer/js/bootstrap.min.js"></script>
+            <!-- Jquery Mobile Menu -->
+            <script src="/Customer/js/jquery.slicknav.min.js"></script>
+
+            <!-- Jquery Slick , Owl-Carousel Plugins -->
+            <script src="/Customer/js/owl.carousel.min.js"></script>
+            <script src="/Customer/js/slick.min.js"></script>
+
+            <!-- One Page, Animated-HeadLin -->
+            <script src="/Customer/js/wow.min.js"></script>
+            <script src="/Customer/js/animated.headline.js"></script>
+            <script src="/Customer/js/jquery.magnific-popup.js"></script>
+
+            <!-- Scrollup, nice-select, sticky -->
+            <script src="/Customer/js/jquery.scrollUp.min.js"></script>
+            <script src="/Customer/js/jquery.nice-select.min.js"></script>
+            <script src="/Customer/js/jquery.sticky.js"></script>
+
+            <!-- contact js -->
+            <script src="/Customer/js/contact.js"></script>
+            <script src="/Customer/js/jquery.form.js"></script>
+            <script src="/Customer/js/jquery.validate.min.js"></script>
+            <script src="/Customer/js/mail-script.js"></script>
+            <script src="/Customer/js/jquery.ajaxchimp.min.js"></script>
+
+            <!-- Jquery Plugins, main Jquery -->
+            <script src="/Customer/js/plugins.js"></script>
+            <script src="/Customer/js/main.js"></script>
+            <script src="/Customer/js/validate.js"></script>
+            <style>
+                .card {
+                    width: 350px;
+                    padding: 10px;
+                    border-radius: 20px;
+                    background: orange;
+                    border: none;
+                    color: #fff;
+                    height: 350px;
+                    display: flex;
+                    position: relative;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .card h1 {
+                    font-size: 48px;
+                    margin-bottom: 0px;
+                }
+
+                .card span {
+                    font-size: 28px;
+                }
+
+                .image {
+                    position: absolute;
+                    opacity: .3;
+                    left: 0;
+                    top: 0;
+                }
+
+                .image2 {
+                    position: absolute;
+                    bottom: 0;
+                    right: 0;
+                    opacity: .3;
+                }
+            </style>
+
+</body>
+
+</html>

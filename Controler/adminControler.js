@@ -98,7 +98,7 @@ const adminLogout = (req, res) => {
 //CUSTOMERS
 const displayCustomers = async (req, res) => {
     try {
-    
+
         const page = parseInt(req.query.page) || 1;
         const pageSize = 10;
         const skip = (page - 1) * pageSize;
@@ -112,13 +112,13 @@ const displayCustomers = async (req, res) => {
         })
         // .skip(skip)
         // .limit(pageSize);
-        console.log(users,len);
+        console.log(users, len);
         return res.render("admin/user", {
             users,
             len,
             currentPage: page,
         });
-        
+
     } catch (error) {
         console.error(error.message);
     }
@@ -202,7 +202,7 @@ const loadCategory = async (req, res) => {
         const len = await productCategry.find().sort({ _id: -1 })
         const Categores = await productCategry.find().sort({ _id: -1 }).skip(skip).limit(pageSize)
 
-        res.render("admin/productCategory", { Categores , len, currentPage})
+        res.render("admin/productCategory", { Categores, len, currentPage })
 
     } catch (error) {
         console.log(error.message);
@@ -344,7 +344,7 @@ const createProduct = async (req, res) => {
                 };
             })
         );
-            log
+        
         await product.save();
 
         if (product) {
@@ -545,27 +545,67 @@ const updateOrderStatus = async (req, res) => {
 
 
 //Coupon
-const loadCouponPage = async (req,res) => {
+const loadCouponPage = async (req, res) => {
     try {
         const allCoupon = await Coupon.find()
-        return res.render("admin/coupon")
+        return res.render("admin/coupon",{allCoupon})
 
     } catch (error) {
         console.log(error.message)
     }
 }
-const createCoupon = async (req,res) => {
-    const { couponName, type, MinimumpurchaseAmount, amountOrPercentage, Description} = req.body
+const createCoupon = async (req, res) => {
+    console.log(req.body)
+    const { couponName, type, MinimumpurchaseAmount, amountOrPercentage, Description } = req.body;
     try {
+
+        // Create a function to generate a unique coupon code
+        function generateCouponCode() {
+            const length = 6;
+            const characters = '0123456789';
+            let couponCode = '';
+
+            for (let i = 0; i < length; i++) {
+                const randomIndex = Math.floor(Math.random() * characters.length);
+                couponCode += characters.charAt(randomIndex);
+            }
+
+            return couponCode;
+        }
+
+      
+            const code = generateCouponCode();
+            const CouponCode = new Coupon({
+                coupon_name: couponName,
+                description: Description,
+                discount_type: type,
+                minimumPurchaseAmount: MinimumpurchaseAmount,
+                discount_amount_or_percentage: amountOrPercentage,
+                code: code, // Assign the generated code to the 'code' property
+            });
+
+            if (CouponCode) {
+                await CouponCode.save();
+                console.log("coupon saved");
+                return res.redirect("/admin/product/coupon-management");
+            } else {
+                console.log("not working");
+            }
+     
+            return res.render("admin/addCoupon", { message: "Please fill in all fields...." });
         
+
     } catch (error) {
-        
+        // Handle the error appropriately
+        console.error(error);
+        // Return an error response if necessary
+        return res.status(500).send("Error creating the coupon.");
     }
-}
+};
 
 module.exports = {
     loadAaminLogin, loginValidation, adminValid, adminLogout, displayCustomers,
     UnblockTheUser, blockTheUser, addProductCategory, loadCategory, deleteCategory, loadAddCategory, loadProductCreate,
     createProduct, loadProductPage, editProduct, loadProductEditPage, productDeactivate, productActivate, deleteImgDelete,
-    loadOrder, updateOrderStatus, loadEditCategory, EditCategory, deleteCategoryImg, loadCouponPage, createCoupon,  
+    loadOrder, updateOrderStatus, loadEditCategory, EditCategory, deleteCategoryImg, loadCouponPage, createCoupon,
 }

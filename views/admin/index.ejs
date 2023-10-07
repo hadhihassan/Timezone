@@ -208,7 +208,7 @@
                   <div class="card">
                     <div class="card-body">
 
-                      <h4 class="card-title">Transaction History</h4> <br>
+                      <h4 class="card-title">Best selled products</h4> <br>
                       <div class="row">
                         <canvas id="bestSellingProducts" width="400" height="300"></canvas>
                       </div>
@@ -354,12 +354,25 @@
                                   </div>
                                 </td>
                                 <td>
-                                  <img
-                                    src="data:<%= order.user.image.contentType %>;base64,<%=order.user.image.data.toString('base64') %>"
-                                    alt="<%= order.user.name %>">
-                                  <span class="pl-2">
-                                    <%= order.user.name %>
-                                  </span>
+
+
+
+                                  <% if (!order.user.image.contentType) { %>
+                                    <img
+                                      src="/Customer/img/blog/popular-post/account-icon-user-icon-vector-graphics_292645-552.avif"
+                                      alt="image" class="rounded-circle">
+                                    <% } else { %>
+                                      <% if (order.user.image && order.user.image.contentType && order.user.image.data)
+                                        { %>
+                                        <img
+                                          src="data:<%= order.user.image.contentType %>;base64,<%= order.user.image.data.toString('base64') %>"
+                                          alt="<%= order.user.name %>">
+                                        <% } else { %>
+                                          <span class="pl-2">
+                                            <%= order.user.name %>
+                                          </span>
+                                          <% } %>
+                                            <% } %>
                                 </td>
                                 <td>------</td>
                                 <td>
@@ -556,17 +569,23 @@
       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
       <script>
 
-  
+        const pro1 = " <%= bestProducts[0].count %>";
+        const pro2 = " <%= bestProducts[1].count %>";
+        const pro3 = " <%= bestProducts[2].count %>";
+
+        const name1 = "<%= bestProducts[0].name %>";
+        const name2 = "<%= bestProducts[1].name %>";
+        const name3 = "<%= bestProducts[2].name %>";
 
         // Sample data for the bar graph
         var data = {
-          labels: [df, sfdg, sdgf], // This will be populated with product names
+          labels: [name1, name2, name3], // This will be populated with product names
           datasets: [{
             label: 'Best selling products',
             backgroundColor: 'rgba(75, 192, 192, 0.2)',
             borderColor: 'rgba(75, 192, 192, 1)',
             borderWidth: 1,
-            data: [1, 1, 1], // This will be populated with product counts
+            data: [pro1, pro2, pro3], // This will be populated with product counts
           }]
         };
 

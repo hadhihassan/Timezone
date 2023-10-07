@@ -66,7 +66,18 @@
                             <% users.forEach((user, i)=> { %>
                             <tr>
                               <th> <%= i+1 %></th>
-                              <td> <img src="../../Admin/images/faces-clipart/pic-1.png" alt="image" /></td>
+                              <td>
+
+                                <% if (!user.image.contentType &&
+                                !user.image.data) { %>
+                                  <img src="../../Admin/images/faces-clipart/pic-1.png" alt="image" />
+                                <% } else { %>
+                                    <img src="data:<%= user.image.contentType %>;base64,<%= user.image.data.toString('base64') %>"
+                                        alt="User Image">
+                                    <% } %>
+
+                               
+                                </td>
                               <td><%= user.name %></td>
                               <td><%= user.mobile %></td>
                               <td><%= user.email %></td>

@@ -10,7 +10,7 @@ const { loadRegister, loadhome, insertUser, loadOTPpage, checkOTPValid, loadLogi
     userUpdatePassword, loadAddAddressPage, addUserAddress, editAddress, updateAddress, deleteAddress,
     displayProduct, productAddToCart, loadCart, updateCartQuantity, deleteProductCart, loadForgetPage,
     ForgetPasswordcheckingValid, loadChangePass, validOTPsetPass, loadchekout, selectAddress, placeOrder,
-    loadOrder, loadOrderProductDetails, cancelOrder, authonticateToken
+    loadOrder, loadOrderProductDetails, cancelOrder, loadCoupons, applayingCoupon,
 } = require('../Controler/customerControler')
 const multer = require("multer")
 const Customer = require('../Models/customerModel')
@@ -117,13 +117,21 @@ Customer_Route.get('/user/Checkout', loadchekout)
 //ORDER PLACE
 //canel order
 Customer_Route.post("/user/order/Cancel/", cancelOrder)
-Customer_Route.post("/user/place-order", placeOrder)
+              .post("/user/place-order", placeOrder)
               .get("/user/product/online-payment", loadPaymentPage)
 
-// ONLINE PAYMENT AND ORDER SAVE 
 
+
+
+
+// ONLINE PAYMENT AND ORDER SAVE 
 Customer_Route.post("/online-payment-order-save", checkRazorpaySignature)
 
+
+
+//Coupons 
+Customer_Route.get("/coupon", loadCoupons)
+Customer_Route.post("/applay-coupon-code", applayingCoupon)
 
 
 

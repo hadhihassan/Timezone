@@ -34,9 +34,9 @@
             <div class="content-wrapper">
               <ul class="navbar-nav w-100">
                 <li class="nav-item w-100">
-                  <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
+    
                     <input type="text" class="form-control" placeholder="Search products">
-                  </form>
+                 
                 </li>
               </ul>
 
@@ -128,6 +128,33 @@
                         </table>
                       </div>
                       <br>
+                      <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-end">
+                          <% if (currentPage !== 1) { %>
+                            <li class="page-item">
+                              <a class="page-link" href="/admin/product?page=<%= currentPage-1 %>" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                              </a>
+                            </li>
+                          <% } %>
+                          <!-- Calculate the total number of pages -->
+                          <% const totalPages = Math.max(1, Math.ceil(len.length / 10)); %>                                                  <!-- Loop through the total number of pages and create a page link for each -->
+                          <% for (let page = 1; page <= totalPages; page++) { %>
+                            <li class="page-item <% if (currentPage == page) { %>active<% } %>">
+                              <a class="page-link" href="/admin/product?page=<%= page %>"><%= page %></a>
+                            </li>
+                          <% } %>
+                          <% if (currentPage !== totalPages ) { %>
+                            <li class="page-item">
+                              <% const nextPage = currentPage + 1; %>
+                              <a class="page-link" href="/admin/product?page=<%= nextPage %>" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                              </a>
+                              
+                            </li>
+                          <% } %> 
+                        </ul>
+                      </nav>
                       
                   
                       

@@ -81,8 +81,8 @@ const upload = multer({storage:storage})
 
 
 //COUPON MANGMENT 
- admin_Route.get("/product/coupon-management/", loadCouponPage)            
- admin_Route.get("/coupon/create/", createCoupon)            
+ admin_Route.get("/product/coupon-management", loadCouponPage)            
+ admin_Route.post("/coupon/create", createCoupon)            
 
 
 module.exports = admin_Route
