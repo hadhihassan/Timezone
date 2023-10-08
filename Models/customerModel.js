@@ -71,7 +71,59 @@ const CustomerSchema = new mongoose.Schema({
             default: false,
         },
     }],
+    wallet: {
+        type: Number,
+        default: 0
+    },
+    walletHistory: [{
+        date: {
+            type: Date,
+        },
+        amount: {
+            type: Number
+        },
+        message: {
+            type: String
+        }
+    }],
+    referralCode: {
+        type: String,
+    },
+    referred: {
+        type: Boolean,
+        required: true,
+        default : false,
+    },
+    referredBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Customer',
+    }
+
 })
+
+
+function generateRandomCode(length) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let code = '';
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        code += characters.charAt(randomIndex);
+    }
+    return code;
+}
+
+CustomerSchema.pre('save', async function (next) {
+    if (!this.referralCode) {
+        let uniqueReferralCode;
+        do {
+            uniqueReferralCode = generateRandomCode(6); // You can customize the length of the referral code
+        } while (await this.constructor.findOne({ referralCode: uniqueReferralCode }));
+
+        this.referralCode = uniqueReferralCode;
+    }
+    next();
+});
+
 
 const Customer = mongoose.model(
     'Customer',

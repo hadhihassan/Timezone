@@ -44,6 +44,3 @@ mongoose
 app.listen(PORT, () => console.log("Server Running"))
 
 
-app.use((req,res)=>{
-    res.render("admin/addCoupon")
-})

@@ -1,0 +1,260 @@
+
+    <%- include('../../partials/Customerside/header') %>
+        <div class="container">
+            <div class="shadow p-3 mb-5 bg-body rounded text-center">
+                <br>
+                <h3 class="text-black">My Wallet</h3>
+                <br>
+            </div>
+            <div class="row">
+                <div class="container d-flex justify-content-center mt-5">
+
+                    <div class="card">
+
+                        <div class="top-container">
+
+                            <% if (user.image && user.image.contentType && user.image.data) { %>
+                                <% const
+                                    imageDataUrl=`data:${user.image.contentType};base64,${user.image.data.toString('base64')}`
+                                    %>
+                                    <img src="<%= imageDataUrl %>" alt="<%= user.name %> Image" alt="image" alt="Avatar"
+                                        class="avatar" style="width: 70px;">
+
+                                    <div class="ml-3">
+                                        <h5 class="name">
+                                            <%= user.name %>
+                                        </h5>
+                                        <p class="mail">
+                                            <%= user.email %>
+                                        </p>
+                                    </div>
+                                    <hr>
+                                    <% } else { %>
+                                        <br>
+                                        <br>
+                                        <br>
+
+
+                                        <!-- Default image or alternative content -->
+                                        <div
+                                            style="background-color: white; width: 150px; height: 200px; display: flex; justify-content: center; align-items: center;">
+                                            <img src="/Customer/img/blog/popular-post/account-icon-user-icon-vector-graphics_292645-552.avif"
+                                                alt="image" class=" border border-dark "
+                                                style="width: 150px; height: 150px;">
+
+                                            <hr>
+                                            <div class="ml-3">
+                                                <h5 class="name">
+                                                    <%= user.name %>
+                                                </h5>
+                                                <p class="mail">
+                                                    <%= user.email %>
+                                                </p>
+                                            </div>
+
+
+                                        </div>
+
+                                        <% } %>
+
+
+                        </div>
+
+
+                        <div class="middle-container d-flex justify-content-between align-items-center mt-3 p-2">
+                            <div class="dollar-div px-3">
+
+                                <div class="round-div"><i class="fa fa-dollar dollar"></i></div>
+
+                            </div>
+                            <div class="d-flex flex-column text-right mr-2">
+                                <span class="current-balance">Current Balance</span>
+                                <span class="amount"><span class="dollar-sign">$</span>
+                                    <%= user.wallet %>
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <div class="recent-border mt-4">
+                            <span class="recent-orders">Recent orders</span>
+                        </div>
+                        <div class="middle-container d-flex justify-content-between align-items-center mt-3 p-2">
+
+                            <div class="transaction-history">
+                                <% user.walletHistory.forEach((element)=> { %>
+                                    <div class="transaction-item mb-3 p-3 rounded">
+                                        <div class="transaction-icon">
+                                            <!-- Use icons or symbols based on transaction type -->
+
+                                        </div>
+                                        <div class="transaction-details">
+                                            <div class="transaction-date">
+                                                <span class="text-muted">
+                                                    <%= element.date.toLocaleDateString() %>
+                                                </span>
+                                            </div>
+                                            <div class="transaction-amount">
+                                                <span class="text-primary"> Amount :
+                                                    <%= element.amount %>
+                                                </span>
+                                            </div>
+                                            <div class="transaction-message">
+                                                <span>
+                                                    <%= element.message %>
+                                                </span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <% }) %>
+                            </div>
+
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+        <br>
+        <br>
+        <br>
+        <br>
+
+        <%- include('../../partials/Customerside/footer') %>
+
+
+
+            <style>
+                .card {
+                    background-color: #fff;
+                    width: 780px;
+                    border-radius: 33px;
+                    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                    padding: 2rem !important;
+                }
+
+                .top-container {
+                    display: flex;
+                    align-items: center;
+                }
+
+                .profile-image {
+                    border-radius: 10px;
+                    border: 2px solid #5957f9;
+                }
+
+                .name {
+                    font-size: 15px;
+                    font-weight: bold;
+                    color: #272727;
+                    position: relative;
+                    top: 8px;
+                }
+
+                .mail {
+                    font-size: 14px;
+                    color: grey;
+                    position: relative;
+                    top: 2px;
+                }
+
+                .middle-container {
+                    background-color: #eee;
+                    border-radius: 12px;
+
+                }
+
+                .middle-container:hover {
+                    border: 1px solid #5957f9;
+                }
+
+                .dollar-div {
+                    background-color: #5957f9;
+                    padding: 12px;
+                    border-radius: 10px;
+                }
+
+                .round-div {
+                    border-radius: 50%;
+                    width: 35px;
+                    height: 35px;
+                    background-color: #fff;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    text-align: center;
+                }
+
+                .dollar {
+                    font-size: 16px !important;
+                    color: #5957f9 !important;
+                    font-weight: bold !important;
+                }
+
+
+                .current-balance {
+                    font-size: 15px;
+                    color: #272727;
+                    font-weight: bold;
+                }
+
+                .amount {
+                    color: #5957f9;
+                    font-size: 16px;
+                    font-weight: bold;
+                }
+
+                .dollar-sign {
+                    font-size: 16px;
+                    color: #272727;
+                    font-weight: bold;
+                }
+
+                .recent-border {
+                    border-left: 2px solid #5957f9;
+                    display: flex;
+                    align-items: center;
+
+                }
+
+                .recent-border:hover {
+                    border-bottom: 1px solid #dee2e6 !important;
+                }
+
+                .recent-orders {
+                    font-size: 16px;
+                    font-weight: 700;
+                    color: #5957f9;
+                    margin-left: 2px;
+                }
+
+                .wishlist {
+                    font-size: 16px;
+                    font-weight: 700;
+                    color: #272727;
+
+                }
+
+                .wishlist-border:hover {
+                    border-bottom: 1px solid #dee2e6 !important;
+                }
+
+                .fashion-studio {
+                    font-size: 16px;
+                    font-weight: 700;
+                    color: #272727;
+                }
+
+                .fashion-studio-border:hover {
+                    border-bottom: 1px solid #dee2e6 !important;
+                }
+            </style>

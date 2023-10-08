@@ -82,7 +82,7 @@
                                             <br>
                                             <div class="rounded-top text-white d-flex flex-row" style="height: 200px;">
                                                 <div class="ms-4 mt-4 d-flex flex-column" style="width: 150px;">
-                                                    
+
                                                     <% if (user.image && user.image.contentType && user.image.data) { %>
                                                         <% const
                                                             imageDataUrl=`data:${user.image.contentType};base64,${user.image.data.toString('base64')}`
@@ -94,33 +94,32 @@
                                                                 <br>
                                                                 <br>
                                                                 <br>
-                                                                
+
                                                                 <!-- Default image or alternative content -->
                                                                 <div
-                                                                
                                                                     style="background-color: white; width: 150px; height: 200px; display: flex; justify-content: center; align-items: center;">
                                                                     <img src="/Customer/img/blog/popular-post/account-icon-user-icon-vector-graphics_292645-552.avif"
                                                                         alt="image" class=" border border-dark "
                                                                         style="width: 150px; height: 150px;">
-                                                                      
+
                                                                     <hr>
-                                                                  
+
                                                                 </div>
-                                                           
+
                                                                 <% } %>
-                                                           
+
 
                                                 </div>
-                                              
-                                                <div class="ms-3" style="margin-top: 130px;"><br>
+
+                                                <div class="ms-3" style="margin-top: 130px;">
                                                     <h5 style="color: #000000;">
                                                         <%= user.name %>
                                                     </h5>
-                                                    
+
                                                 </div>
                                             </div>
                                             <br> <br> <br>
-                                            
+
                                             <!-- Navigation Links -->
                                             <div class=" text-white "
                                                 style="border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;">
@@ -150,10 +149,15 @@
                                                                 Profile</button>
                                                         </form>
                                                     </div>
-                                                    <div >
-                                                            <button style="color: hsl(0, 0%, 100%);"
-                                                                class="btn  text-black" type="submit"> <a href="/coupon">Coupons</a>
-                                                                </button>
+                                                    <div class="px-3">
+                                                        <button style="color: hsl(0, 0%, 100%);" class="btn  text-black"
+                                                        type="submit"> <a href="/Wallet">Wallet</a>
+                                                    </button>
+                                                    </div>
+                                                    <div>
+                                                        <button style="color: hsl(0, 0%, 100%);" class="btn  text-black"
+                                                            type="submit"> <a href="/coupon">Coupons</a>
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -223,11 +227,45 @@
 
 
                                             </div>
+                                            <div class="container mt-5">
+                                                <div class="d-flex justify-content-center row">
+                                                  <div class="col-md-6">
+                                                    <div class="coupon p-3 bg-info">
+                                                      <div class="row no-gutters">
+                                                        <div class="col-md-4 border-right">
+                                                          <div class="d-flex flex-column align-items-center">
+                                                            <img src="https://i.imgur.com/XwBlVpS.png">
+                                                            <span class="d-block">Invite friends to get $100</span>
+                                                            <span class="text-black-50">Invite friends to get a reward. They get $20</span>
+                                                          </div>
+                                                        </div>
+                                                        <div class="col-md-8">
+                                                          <div>
+                                                            <br>
+                                                            <br>
+                                                            <div class="d-flex flex-row justify-content-between off px-3 p-2">
+                                                              <span>Code:</span>
+                                                              <span class="border border-success px-3 rounded code" id="couponCode"><%= user.referralCode %></span>
+                                                            </div>
+                                                            <button class="btn btn-primary mt-3" onclick="copyCouponCode()">Copy Code</button>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              
+                                           <br>
+                                           <br>
+                                           <br>
+                                              
+
                                         </div>
                                     </div>
                                 </div>
-                            </div>
                         </section>
+
                     </div>
                 </div>
                 <!-- slider Area End-->
@@ -254,12 +292,13 @@
             </div>
             <!-- Search model end -->
             <style>
-       
                 button {
 
-                    border-radius: 10px;
                     background-color: #ff2020;
-                    ;
+                    border: none;
+                    
+                    
+                    height: 30px;
                 }
             </style>
             <!-- JS here -->
@@ -296,6 +335,26 @@
             <!-- Jquery Plugins, main Jquery -->
             <script src="/Customer/js/plugins.js"></script>
             <script src="/Customer/js/main.js"></script>
+            <script>
+                function copyCouponCode() {
+                  // Get the coupon code element
+                  var couponCodeElement = document.getElementById("couponCode");
+              
+                  // Create a temporary input element to copy the code
+                  var tempInput = document.createElement("input");
+                  tempInput.value = couponCodeElement.textContent;
+              
+                  // Append the input element to the body and select its content
+                  document.body.appendChild(tempInput);
+                  tempInput.select();
+              
+                  // Copy the selected text to the clipboard
+                  document.execCommand("copy");
+              
+                  // Remove the temporary input element
+                  document.body.removeChild(tempInput);
+                }
+              </script>
 
     </body>
 

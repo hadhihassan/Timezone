@@ -34,10 +34,17 @@
             <div class="content-wrapper">
               <ul class="navbar-nav w-100">
                 <li class="nav-item w-100">
-    
-                    <input type="text" class="form-control" placeholder="Search products">
+                  <form action="/admin/product" method="get">
+                  <div class="input-group">
                  
-                </li>
+                      <input  type="text" class="form-control" name="query" value="<%= query ?? "" %>" placeholder="Search products">
+                      <button class="btn btn-primary" type="submit">Search</button>
+                   
+                  </div>
+              </li>
+            </form>
+              <br>
+              
               </ul>
 
               <div class="row">

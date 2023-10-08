@@ -31,20 +31,7 @@
             <!-- Header End -->
     </header>
     <main>
-        <!-- Hero Area Start-->
-        <div class="slider-area ">
-            <div class="single-slider slider-height2 d-flex align-items-center">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xl-12">
-                            <div class="hero-cap text-center">
-                                <h2>Register</h2>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
         <!-- Hero Area End-->
         <!--================login_part Area =================-->
         <section class="login_part section_padding ">
@@ -123,6 +110,62 @@
                                         </button>
 
 
+                                        <% if (typeof message !="undefined") {%>
+
+                                            <p class="mt-3 text-danger "><%= message %></p>
+                                                
+                                            <%} %>
+
+
+                                        <!-- Add a button to trigger the modal -->
+                                        <button type="button" class="btn btn-primary col-lg-12" data-toggle="modal"
+                                            data-target="#loginModal">
+                                            you have refferal code 
+
+                                        </button>
+
+
+                                        <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                              <div class="modal-content">
+                                                <!-- ... (rest of your modal code) ... -->
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="loginModalLabel">applay code</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="container">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label for="inputEmail" class="sr-only">Refferal code 
+                                                                        </label>
+                                                                    <input type="text" class="form-control"
+                                                                        id="inputEmail"
+                                                                        placeholder="Enet the refferal code " name="rafferalcode">
+                                                                </div>
+                                                            </div>
+                                                         
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <button type="submit" data-dismiss="modal"
+                                                                        class="btn btn-primary mb-2">applay</button>
+                                                                </div>
+                                                            </div>
+                                                        
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        <!-- Create the modal -->
+                          
 
                                     </div>
                                 </form>
@@ -180,7 +223,7 @@
             if (!expectedGenders.includes(genderValue)) {
                 displayErrorMessage("Enter the your valid gender not allowd other words", "error-message");
                 isValid = false;
-            } else if(!alphabeticPattern.test(genderInput.value)){
+            } else if (!alphabeticPattern.test(genderInput.value)) {
                 displayErrorMessage("Enter the your valid gender not possible numeric value", "error-message");
                 isValid = false;
             }

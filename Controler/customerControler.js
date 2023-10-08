@@ -38,7 +38,7 @@ const secrePassword = async (password) => {
     }
 }
 const insertUser = async (req, res) => {
-    const { name, mbn, gender, email, password, conformpassword } = req.body
+    const { name, mbn, gender, email, password, conformpassword, rafferalcode } = req.body
     try {
         const sPassword = await secrePassword(password)
 
@@ -68,20 +68,53 @@ const insertUser = async (req, res) => {
 
                 res.render("User/register", { message: "This accound alredy existed", user: req.session.user })
             } else {
+                const refferedUser = await Customer.findOne({ referralCode: rafferalcode });
+
+                if (refferedUser) {
+                    const currDate = Date.now(); // Use Date.now() to get the current timestamp
+
+                    // Update the referred user's wallet and add an entry to walletHistory
+                    await Customer.findByIdAndUpdate(
+                        refferedUser._id,
+                        {
+                            $inc: { wallet: 100 },
+                            $push: {
+                                walletHistory: {
+                                    date: currDate,
+                                    amount: 100,
+                                    message: "Inviting friend using the referral code",
+                                },
+                            },
+                        },
+                        { upsert: true }
+                    );
+
+                    // Update the new user's wallet and add an entry to walletHistory
+                    user.wallet = 20;
+                    user.referred = true
+                    user.walletHistory.push({
+                        date: currDate,
+                        amount: 20,
+                        message: "Sign up with the referral code",
+                    });
+                }
+
+
                 const userData = await user.save()
+                console.log(userData);
                 if (userData) {
                     //send the verification email 
                     sendOTPVerificationEmail(userData, res)
                     const user_id = userData._id
 
-                    const accessToken = jwt.sign(user,
-                        process.env.JWTSECRET)
-                    res.json({ accessToken: accessToken })
+
+
 
                     res.redirect(`/user/otpVerification?userId=${user_id}`);
 
 
                 } else {
+                    console.log("ccount creation has been failed");
                     res.render('User/register', { message: "Account creation has been failed", user: req.session.user })
 
                 }
@@ -152,7 +185,7 @@ const loadOTPpage = async (req, res) => {
     try {
         const userId = req.query.userId;
         console.log(userId); // Log the userId for debugging
-        res.render('User/OTPverificationPage', { message: '', id: userId, user: req.session.user });
+        res.render('User/OTPverificationPage', { message: '', id: userId, user: "" });
 
     } catch (error) {
         console.log(error.message);
@@ -164,26 +197,26 @@ const checkOTPValid = async (req, res) => {
         console.log("userId: " + ID);
 
         if (OTP === '') {
-            return res.render("User/OTPverificationPage", { message: "Empty data is not allowed", id: ID });
+            return res.render("User/OTPverificationPage", { message: "Empty data is not allowed", id: ID, user: "" });
         }
 
         const OTPRecord = await UserOTPVerification.findOne({ userId: ID });
 
         if (!OTPRecord) {
-            return res.render("User/OTPverificationPage", { message: "Enter a valid OTP", id: ID });
+            return res.render("User/OTPverificationPage", { message: "Enter a valid OTP", id: ID, user: "" });
         }
 
         const { expireAt, userId, otp } = OTPRecord;
 
         if (expireAt < Date.now()) {
             await UserOTPVerification.deleteOne({ userId });
-            return res.render("User/OTPverificationPage", { message: "The code has expired, please try again", id: ID });
+            return res.render("User/OTPverificationPage", { message: "The code has expired, please try again", id: ID, user: "" });
         }
 
         const isValid = await bcrypt.compare(OTP, otp);
 
         if (!isValid) {
-            return res.render("User/OTPverificationPage", { message: "The entered OTP is invalid", id: ID });
+            return res.render("User/OTPverificationPage", { message: "The entered OTP is invalid", id: ID, user: "" });
         }
 
         console.log("userId: " + userId);
@@ -385,58 +418,41 @@ const userLogouting = (req, res, next) => {
 }
 const loadShop = async (req, res) => {
     let products
-    let pipeline
     const query = req.query.query
+    const highTOLowPRice = req.query.HLPrice
+    const min = parseInt(req.query.min) || 0
+    const max = parseInt(req.query.max) || 1000000
+
     try {
+
         if (query) {
-            products = await Product.find({ is_delete: false, in_stock: true })
-            pipeline = [
-                {
-                    $match: {
-                        is_delete: false,
-                        in_stock: true,
-                        name: {
-                            $regex: query,
-                            $options: 'i', // 'i' for case-insensitive
-                        },
-                    }
-                },
-                {
-                    $group: {
-                        _id: null,
-                        colors: { $addToSet: "$color" },
-                        categories: { $addToSet: "$category" },
-                        brands: { $addToSet: "$brand_name" }
-                    }
-                }, {
-                    $project: {
-                        _id: 0
-                    }
-                }
-            ];
+            const regex = new RegExp(query, 'i');
+            products = await Product.find({ is_delete: false, in_stock: true, product_name: regex , price:{$gt:min,$lt:max}});
         } else {
-            products = await Product.find({ is_delete: false, in_stock: true })
-            pipeline = [
-                {
-                    $match: {
-                        is_delete: false,
-                        in_stock: true
-                    }
-                },
-                {
-                    $group: {
-                        _id: null,
-                        colors: { $addToSet: "$color" },
-                        categories: { $addToSet: "$category" },
-                        brands: { $addToSet: "$brand_name" }
-                    }
-                }, {
-                    $project: {
-                        _id: 0
-                    }
-                }
-            ];
+            products = await Product.find({ is_delete: false, in_stock: true  , price:{$gt:min,$lt:max}})
         }
+       
+
+        let pipeline = [
+            {
+                $match: {
+                    is_delete: false,
+                    in_stock: true,
+                }
+            },
+            {
+                $group: {
+                    _id: null,
+                    colors: { $addToSet: "$color" },
+                    categories: { $addToSet: "$category" },
+                    brands: { $addToSet: "$brand_name" }
+                }
+            }, {
+                $project: {
+                    _id: 0
+                }
+            }
+        ];
 
         const filter = await Product.aggregate(pipeline);
         console.log(filter)
@@ -918,7 +934,7 @@ const placeOrder = async (req, res) => {
             // Implement wallet payment logic here
 
         } else if (paymentOption == "paypal") {
-        
+
             return res.redirect(`/user/product/online-payment?discount=${couponDiscount}&id=${couponId}`);
 
         }
@@ -983,73 +999,33 @@ const cancelOrder = async (req, res) => {
         console.log(error.message)
     }
 }
-/*ORDER MANAGEMENT */
 
 
-//COUPONS
-
-const loadCoupons = async (req, res) => {
+//wallet
+const loadWallet = async (req, res) => {
     try {
-        const Coupons = await Coupon.find()
-        res.render("User/profile/coupons", { user: req.session.user, Coupons })
+        const user = await Customer.findById(req.session.user)
+            .sort({ "walletHistory.date": -1 });
+
+        return res.render("User/profile/wallet", { user, sessionUser: req.session.user });
+
     } catch (error) {
         console.log(error.message);
     }
-
 }
 
-const applayingCoupon = async (req, res) => {
-    const code = req.body.couponCode;
-    console.log(code);
+const loadShopFilter = async (req,res) => {
+    console.log(req.body)
     try {
-        const findCode = await Coupon.findOne({ code });
-
-        if (!findCode) {
-            return res.json({ error: "Coupon not found, please try again..." });
-        }
-
-        const user = await Customer.findById(req.session.user);
-
-        for (const earnedCoupon of user.earnedCoupons) {
-            const couponId = earnedCoupon.coupon;
-            const isUsed = earnedCoupon.isUsed;
-
-            if (couponId.equals(findCode._id)) {
-                return res.json({ error: "Sorry, you already used this coupon code..." });
-            }
-        }
-        const currentDate = new Date();
-
-        if (findCode.expaire_date < currentDate) {
-            return res.json({ error: "This coupon has expired..." });
-        }
-
-
-
-        if (user.totalCartAmount > findCode.minimumPurchaseAmount) {
-            if (findCode.discount_type === "Percentage") {
-                console.log("totaCartAmount " + user.totalCartAmount)
-                const discountAmount = Math.floor((findCode.discount_amount_or_percentage / 100) * user.totalCartAmount);
-                const newAmount = Math.floor(user.totalCartAmount - discountAmount);
-                console.log(newAmount, discountAmount + " (Percentage)");
-
-                return res.json({ newAmount, discountAmount, id: findCode._id });
-            } else {
-                const discountAmount = findCode.discount_amount_or_percentage;
-                const newAmount = Math.floor(user.totalCartAmount - discountAmount);
-                console.log(newAmount, discountAmount + " (Fixed Amount)");
-                return res.json({ newAmount, discountAmount, id: findCode._id });
-            }
-        } else {
-            return res.json({ error: "The coupon valid at purchase above 500 rupees.." });
-        }
-
-
-
+        
     } catch (error) {
-        // Handle any errors here
+        console.log(error.message)
     }
-};
+}
+
+
+
+
 
 
 
@@ -1057,11 +1033,11 @@ const applayingCoupon = async (req, res) => {
 
 module.exports = {
     loadRegister, loadhome, insertUser, loadOTPpage, checkOTPValid, loadLogin, checkUserValid,
-    userLogouting, loadShop, loadProfile, loadEditPage, updateUser, addImageProfile, deleteUserProfile,
+    userLogouting, loadShop, loadShopFilter, loadProfile, loadEditPage, updateUser, addImageProfile, deleteUserProfile,
     userUpdatePassword, loadAddAddressPage, addUserAddress, editAddress, updateAddress, deleteAddress, displayProduct,
     productAddToCart, loadCart, updateCartQuantity, deleteProductCart, loadForgetPage, ForgetPasswordcheckingValid,
     loadChangePass, validOTPsetPass, loadchekout, selectAddress, placeOrder, loadOrder, loadOrderProductDetails,
-    cancelOrder, loadCoupons, applayingCoupon,
+    cancelOrder, loadWallet
 }
 
 

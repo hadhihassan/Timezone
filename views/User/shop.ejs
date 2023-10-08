@@ -1,46 +1,5 @@
-<!doctype html>
-<html class="no-js" lang="zxx">
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Watch shop | eCommers</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="manifest" href="site.webmanifest">
-    <link rel="shortcut icon" type="image/x-icon" href="/Customer/img/favicon.ico">
 
-    <!-- CSS here -->
-    <link rel="stylesheet" href="/Customer/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/Customer/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="/Customer/css/flaticon.css">
-    <link rel="stylesheet" href="/Customer/css/slicknav.css">
-    <link rel="stylesheet" href="/Customer/css/animate.min.css">
-    <link rel="stylesheet" href="/Customer/css/magnific-popup.css">
-    <link rel="stylesheet" href="/Customer/css/fontawesome-all.min.css">
-    <link rel="stylesheet" href="/Customer/css/themify-icons.css">
-    <link rel="stylesheet" href="/Customer/css/slick.css">
-    <link rel="stylesheet" href="/Customer/css/nice-select.css">
-    <link rel="stylesheet" href="/Customer/css/style.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
-</head>
-
-<body>
-
-    <!--? Preloader Start -->
-    <div id="preloader-active">
-        <div class="preloader d-flex align-items-center justify-content-center">
-            <div class="preloader-inner position-relative">
-                <div class="preloader-circle"></div>
-                <div class="preloader-img pere-text">
-                    <img src="/Customer/img/logo/logo.png" alt="">
-                </div>
-            </div>
-        </div>
-    </div>
     <!-- Preloader Start -->
     <header>
         <!-- Header Start -->
@@ -49,80 +8,78 @@
             <!-- Header End -->
     </header>
     <main>
-        <!-- Hero Area Start-->
-        <div class="slider-area ">
-            <div class="single-slider slider-height2 d-flex align-items-center">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xl-12">
-                            <div class="hero-cap text-center">
-                                <h2>Watch Shop</h2>
+   
+        <div class="container">
+            <div > <br> <br> <br>
+                <div class="row filter-box d-flex shadow-sm">
+                    <div class="col-md-4">
+                        <div class="filter-box">
+                            <h3 class="filter-title text-center">Category</h3>
+                            <hr>    
+                            <form id="price-range-form" action="/user/shop" method="get">
+                            <div class="form-check">
+                                <% filter[0].categories.forEach((Category) => { %>
+                                    <input class="form-check-input" type="radio" name="category" id="<%= Category %>" value="<%= Category %>">
+                                    <label class="form-check-label" for="<%= Category %>">
+                                        <%= Category %>
+                                    </label>
+                                    <br>
+                                <% }) %>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="section1 shadow-lg border-bottom-0 ">
-                <div class="row filter-box ">
-                    <div class="col-md-3">
-                        <div class="filter-box ">
-                            <h3 class=" filter-title text-center">Category</h3>
-                            <hr>
-                            <% filter[0].categories.forEach((Category)=> { %>
-                                <a class="text-black" href="#">
-                                    <%= Category %>
-                                </a> <br>
-                                <% }) %>
-
-                        </div>
-                    </div>
-                    <div class="col-md-3">
+                    
+                    <div class="col-md-4">
                         <div class="filter-box">
-                            <h3 class="filter-title " text-center>Brand Name</h3>
+                            <h3 class="filter-title text-center">Brand Name</h3>
                             <hr>
-                            <% filter[0].brands.forEach((brand)=> { %>
-                                <a class="text-black" href="#">
-                                    <%= brand %>
-                                </a> <br>
+                            <div class="form-check">
+                                <% filter[0].brands.forEach((brand) => { %>
+                                    <input class="form-check-input" type="radio" name="brand" id="<%= brand %>" value="<%= brand %>">
+                                    <label class="form-check-label" for="<%= brand %>">
+                                        <%= brand %>
+                                    </label>
+                                    <br>
                                 <% }) %>
-
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    
+                    <!-- <div class="col-md-3">
                         <div class="filter-box ">
                             <h3 class="filter-title " text-center>Color</h3>
                             <hr>
                             <% filter[0].colors.forEach((color)=> { %>
-                                <a class="text-black" href="#">
+                                <a class="text-danger" href="#">
                                     <%= color %>
                                 </a> <br>
                                 <% }) %>
 
                         </div>
-                    </div>
+                    </div> -->
 
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="filter-box">
                             <h3 class="filter-title">text-center Price Range</h3>
                             <hr>
 
-                            <form id="price-range-form">
+                           
                                 <label for="min-price" class="form-label">Min price: </label>
                                 <span id="min-price-txt">$0</span>
-                                <input type="range" class="form-range" min="0" max="500" id="min-price" step="1"
-                                    value="0">
+                                <input type="range" class="form-range" name="min" min="0" max="500" id="min-price" step="1"
+                                    value="0"> <br>
                                 <label for="max-price" class="form-label">Max price: </label>
                                 <span id="max-price-txt">$100</span>
-                                <input type="range" class="form-range" min="100" max="50000" id="max-price" step="1"
-                                    value="100">
+                                <input type="range" class="form-range" name="max" min="100" max="50000" id="max-price" step="1"
+                                    value="100"> <br> <br>
+                                     <button class="btn ">Applay</button>
                             </form>
 
 
                         </div>
 
                     </div>
+                   
                 </div>
             </div>
         </div>
@@ -141,7 +98,7 @@
                             <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                 <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home"
                                     role="tab" aria-controls="nav-home" aria-selected="true">NewestArrivals</a>
-                                <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile"
+                                <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="/user/shop?HLPrice=true"
                                     role="tab" aria-controls="nav-profile" aria-selected="false"> Price high to low</a>
                                 <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact"
                                     role="tab" aria-controls="nav-contact" aria-selected="false"> Most populer </a>
@@ -154,14 +111,10 @@
                     </div>
                     <!-- Select items -->
                     <div class="select-this">
-                        <form action="#">
-                            <div class="select-itms">
-                                <select name="select" id="select1">
-                                    <option value="">40 per page</option>
-                                    <option value="">50 per page</option>
-                                    <option value="">60 per page</option>
-                                    <option value="">70 per page</option>
-                                </select>
+                        <form action="/user/shop" method="get">
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="query" value="<%= query ?? '' %>" placeholder="Search products">
+                                <button class="btn_3  btn-search btn-primary" type="submit" style="height: 10px;">Search</button>
                             </div>
                         </form>
                     </div>
@@ -192,7 +145,11 @@
                             <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
                                 aria-labelledby="nav-home-tab">
                                 <div class="row">
-
+                                    <% if (products.length == 0) { %>
+                                     <h4 class="text-center text-danger">
+                                        No items products..
+                                     </h4>
+                                    <% } %>
                                     <% for (let product=0; product < products.length; product +=3) { %>
                                         <!-- Start of product group -->
                                         <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
@@ -310,6 +267,7 @@
                                 </div>
 
                             </div>
+                          
                             <!-- Card two -->
 
 
@@ -332,66 +290,11 @@
     <div class="search-model-box">
         <div class="h-100 d-flex align-items-center justify-content-center">
             <div class="search-close-btn">+</div>
-            <form class="search-model-form">
-                <input type="text" id="search-input" placeholder="Searching key.....">
+            <form class="search-model-form" action="/user/shop" method="get">
+                <input type="text" id="search-input" name="query" placeholder="Searching key.....">
             </form>
         </div>
     </div>
     <!-- Search model end -->
 
-    <!-- JS here -->
-    <!-- All JS Custom Plugins Link Here here -->
-    <script src="/Customer/js/vendor/modernizr-3.5.0.min.js"></script>
-    <!-- Jquery, Popper, Bootstrap -->
-    <script src="/Customer/js/vendor/jquery-1.12.4.min.js"></script>
-    <script src="/Customer/js/popper.min.js"></script>
-    <script src="/Customer/js/bootstrap.min.js"></script>
-    <!-- Jquery Mobile Menu -->
-    <script src="/Customer/js/jquery.slicknav.min.js"></script>
-
-    <!-- Jquery Slick , Owl-Carousel Plugins -->
-    <script src="/Customer/js/owl.carousel.min.js"></script>
-    <script src="/Customer/js/slick.min.js"></script>
-
-    <!-- One Page, Animated-HeadLin -->
-    <script src="/Customer/js/wow.min.js"></script>
-    <script src="/Customer/js/animated.headline.js"></script>
-    <script src="/Customer/js/jquery.magnific-popup.js"></script>
-
-    <!-- Scroll up, nice-select, sticky -->
-    <script src="/Customer/js/jquery.scrollUp.min.js"></script>
-    <script src="/Customer/js/jquery.nice-select.min.js"></script>
-    <script src="/Customer/js/jquery.sticky.js"></script>
-
-    <!-- contact js -->
-    <script src="/Customer/js/contact.js"></script>
-    <script src="/Customer/js/jquery.form.js"></script>
-    <script src="/Customer/js/jquery.validate.min.js"></script>
-    <script src="/Customer/js/mail-script.js"></script>
-    <script src="/Customer/js/jquery.ajaxchimp.min.js"></script>
-
-    <!-- Jquery Plugins, main Jquery -->
-    <script src="/Customer/js/plugins.js"></script>
-    <script src="/Customer/js/main.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="/Customer/js/memoryreload.js"></script>
-    <script>
-        $("#min-price").on("change mousemove", function () {
-            min_price = parseInt($("#min-price").val());
-            $("#min-price-txt").text("$" + min_price);
-            showItemsFiltered();
-        });
-
-        $("#max-price").on("change mousemove", function () {
-            max_price = parseInt($("#max-price").val());
-            $("#max-price-txt").text("$" + max_price);
-            showItemsFiltered();
-        });
-
-
     
-    </script>
-
-</body>
-
-</html>

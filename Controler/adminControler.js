@@ -360,24 +360,38 @@ const createProduct = async (req, res) => {
 
 // ...
 const loadProductPage = async (req, res) => {
-    let page = req.query.page
-    const pageSize = 10
-    try {
-        page = parseInt(req.query.page) || 1;
-        const skip = ((page - 1) * pageSize);
-        const currentPage = page
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = 10;
+    const skip = ((page - 1) * pageSize);
+    const currentPage = page;
+    const query = req.query.query || ''; // Get the search query from the request
 
-        const products = await Product.find().skip(skip).limit(pageSize)
-        const len = await Product.find()
-        if (products) {
-            return res.render('admin/products', { products, len, currentPage })
+    try {
+        let products;
+        let len;
+
+        if (query) {
+            // If there's a query, filter products by name using regex
+            products = await Product.find({ product_name: { $regex: query, $options: 'i' } })
+                .skip(skip)
+                .limit(pageSize);
+            len = await Product.find({ product_name: { $regex: query, $options: 'i' } });
         } else {
-            console.log("products not get");
+            // If no query, retrieve all products
+            products = await Product.find().skip(skip).limit(pageSize);
+            len = await Product.find();
+        }
+
+        if (products) {
+            return res.render('admin/products', { products, len, currentPage, query });
+        } else {
+            console.log("Products not found");
         }
     } catch (error) {
         console.log(error.message);
     }
 }
+
 const loadProductEditPage = async (req, res) => {
     try {
         const id = req.params.id

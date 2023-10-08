@@ -5,19 +5,7 @@
   <main>
 
     <!-- Hero Area Start-->
-    <div class="slider-area ">
-      <div class="single-slider slider-height2 d-flex align-items-center">
-        <div class="container">
-          <div class="row">
-            <div class="col-xl-12">
-              <div class="hero-cap text-center">
-                <h2>Cart List</h2>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+
     <% if (success && success.length> 0) { %>
       <div class="alert alert-success text-center" id="success-message">
         <% success.forEach(function(message) { %>
@@ -153,18 +141,6 @@
 
 
                                 <tr class="bottom_button">
-                                  <td>
-                                    <a class="btn_1" href="#">Update Cart</a>
-                                  </td>
-                                  <td></td>
-                                  <td></td>
-                                  <td>
-                                    <div class="cupon_text float-right">
-                                      <a class="btn_1" href="#">Close Coupon</a>
-                                    </div>
-                                  </td>
-                                </tr>
-                                <tr>
                                   <td></td>
                                   <td></td>
                                   <td>
@@ -179,61 +155,15 @@
 
                                   </td>
                                 </tr>
-                                <tr class="shipping_area">
-                                  <td></td>
-                                  <td></td>
-                                  <td>
-                                    <h5>Shipping</h5>
-                                  </td>
-                                  <td>
-                                    <div class="shipping_box">
-                                      <ul class="list">
-                                        <li>
-                                          Flat Rate: $5.00
-                                          <input type="radio" aria-label="Radio button for following text input">
-                                        </li>
-                                        <li>
-                                          Free Shipping
-                                          <input type="radio" aria-label="Radio button for following text input">
-                                        </li>
-                                        <li>
-                                          Flat Rate: $10.00
-                                          <input type="radio" aria-label="Radio button for following text input">
-                                        </li>
-                                        <li class="active">
-                                          Local Delivery: $2.00
-                                          <input type="radio" aria-label="Radio button for following text input">
-                                        </li>
-                                      </ul>
-                                      <h6>
-                                        Calculate Shipping
-                                        <i class="fa fa-caret-down" aria-hidden="true"></i>
-                                      </h6>
-                                      <select class="shipping_select">
-                                        <option value="1">Bangladesh</option>
-                                        <option value="2">India</option>
-                                        <option value="4">Pakistan</option>
-                                      </select>
-                                      <select class="shipping_select section_bg">
-                                        <option value="1">Select a State</option>
-                                        <option value="2">Select a State</option>
-                                        <option value="4">Select a State</option>
-                                      </select>
-                                      <input class="post_code" type="text" placeholder="Postcode/Zipcode" />
-                                      <a class="btn_1" href="#">Update Details</a>
-                                    </div>
-                                  </td>
-                                </tr>
-
-
+                               
                   </tbody>
                 </table>
                 <div class="checkout_btn_inner float-right d-flex">
-                  <a class="btn_1" href="/user/shop">Continue Shopping</a>
+                  <a class="btn_1 " href="/user/shop">Continue Shopping</a>
 
                   <form action="/user/Checkout" method="get">
-
-                    <button type="submit" class="btn_1 checkout_btn_1">Proceed to checkout</button>
+                    &nbsp;
+                    <button type="submit" class="btn_1 ">Proceed to checkout</button>
                   </form>
                 </div>
               </div>
@@ -258,144 +188,6 @@
   <!-- Search model end -->
 
   <!-- JS here -->
-  <script src="/Customer/js/vendor/modernizr-3.5.0.min.js"></script>
-  <!-- Jquery, Popper, Bootstrap -->
-  <script src="/Customer/js/vendor/jquery-1.12.4.min.js"></script>
-  <script src="/Customer/js/popper.min.js"></script>
-  <script src="/Customer/js/bootstrap.min.js"></script>
-  <!-- Jquery Mobile Menu -->
-  <script src="/Customer/js/jquery.slicknav.min.js"></script>
-
-  <!-- Jquery Slick , Owl-Carousel Plugins -->
-  <script src="/Customer/js/owl.carousel.min.js"></script>
-  <script src="/Customer/js/slick.min.js"></script>
-
-  <!-- One Page, Animated-HeadLin -->
-  <script src="/Customer/js/wow.min.js"></script>
-  <script src="/Customer/js/animated.headline.js"></script>
-  <script src="/Customer/js/jquery.magnific-popup.js"></script>
-
-  <!-- Scroll up, nice-select, sticky -->
-  <script src="/Customer/js/jquery.scrollUp.min.js"></script>
-  <script src="/Customer/js/jquery.nice-select.min.js"></script>
-  <script src="/Customer/js/jquery.sticky.js"></script>
-
-  <!-- contact js -->
-  <script src="/Customer/js/contact.js"></script>
-  <script src="/Customer/js/jquery.form.js"></script>
-  <script src="/Customer/js/jquery.validate.min.js"></script>
-  <script src="/Customer/js/mail-script.js"></script>
-  <script src="/Customer/js/jquery.ajaxchimp.min.js"></script>
-
-  <!-- Jquery Plugins, main Jquery -->
-  <script src="/Customer/js/plugins.js"></script>
-  <script src="/Customer/js/main.js"></script>
-  <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="
-    crossorigin="anonymous"></script>
-  <!-- Add this script at the end of your HTML body -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="/Customer/js/memoryreload.js"></script>
-  <script>
-    // Get all input elements and increment/decrement buttons
-    const inputNumbers = document.querySelectorAll(".input-number");
-    const incrementButtons = document.querySelectorAll(".input-number-increment");
-    const decrementButtons = document.querySelectorAll(".input-number-decrement");
-
-    // Add click event listeners for all increment and decrement buttons
-    incrementButtons.forEach((button, index) => {
-      button.addEventListener("click", () => {
-        updateCartItemQuantity(inputNumbers[index], "increment");
-      });
-    });
-
-    decrementButtons.forEach((button, index) => {
-      button.addEventListener("click", () => {
-        updateCartItemQuantity(inputNumbers[index], "decrement");
-      });
-    });
-
-    function updateCartItemQuantity(inputElement, action) {
-      const cartItemId = inputElement.parentElement
-        .querySelector(".input-number-increment")
-        .getAttribute("data-cart-item-id");
-
-      let currentValue = parseInt(inputElement.value);
-
-      if (!isNaN(currentValue)) {
-        if (action === "increment" && currentValue < 10) {
-          currentValue++;
-        } else if (action === "decrement" && currentValue > 1) {
-          currentValue--;
-        }
-      }
-
-      // Update the input value
-      inputElement.value = currentValue;
 
 
 
-      if (!isNaN(currentValue)) {
-        $.ajax({
-          url: "/update-cart-item-quantity", // Replace with your server-side route
-          method: "POST", // or 'PUT' depending on your API
-          data: {
-            cartItemId: cartItemId,
-            quantity: currentValue,
-          },
-
-          success: function (response) {
-            if (response.stock) {
-              displayFlashMessage(response.error)
-            } else {
-              console.log(response, 'res-out');
-              if (response) {
-
-                console.log(response, 'res');
-
-                const newTotal = response.total;
-                const cartTotal = document.querySelector(`#cart-total-amount_${cartItemId}`);
-                cartTotal.textContent = newTotal;
-
-
-                const subtotalAmount = response.totalCartAmount;
-                const subtotalAmountElement =
-                  document.querySelector("#subtotalAmount"); // Add an ID to your total amount element
-                subtotalAmountElement.textContent = `₹${subtotalAmount}`;
-
-              } else {
-                // Handle the error, e.g., display a message to the user
-                console.error("Error in response:", response);
-              }
-            }
-          }
-
-          // error: function (error) {
-          //       // Handle the AJAX error, e.g., display an error message
-          //       console.error("AJAX error:", error);
-          //     },
-        });
-      } else {
-        // Handle the case where currentValue is not a valid number
-        console.error("Invalid input value:", inputElement.value);
-      }
-    }
-
-
-
-
-    function displayFlashMessage(message) {
-      const flashMessageElement = document.getElementById('flash-message');
-      flashMessageElement.textContent = message;
-      flashMessageElement.style.display = 'block'; // Show the flash message
-
-      setTimeout(() => {
-        flashMessageElement.style.display = 'none'; // Hide the flash message after 3 seconds (adjust as needed)
-      }, 4000);
-    }
-  </script>
-
-
-
-  </body>
-
-  </html>
