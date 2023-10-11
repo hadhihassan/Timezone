@@ -15,8 +15,6 @@ const razorpay = new Razorpay({
   key_secret: process.env.RAZORPAY_SECRET_KEY,
 });
 
-
-
 //loadPaymentpage
 const loadPaymentPage = async (req, res) => {
   try {
@@ -41,8 +39,6 @@ const loadPaymentPage = async (req, res) => {
       currency: "INR",
       receipt: `${Math.floor(Math.random() * 10000).toString().padStart(4, '0')}${Date.now()}`, // Provide a unique receipt ID
     });
-
-
 
     return res.render("User/payment", {
       order: razorpayOrder,
@@ -109,7 +105,7 @@ const checkRazorpaySignature = async (req, res) => {
         const stringid = couponId.trim()
         // Convert couponId to ObjectId
         const objectId = new mongoose.Types.ObjectId(stringid);
-       
+
 
         // Push the new coupon ID into the earnedCoupons array
         await Customer.findByIdAndUpdate(customerId, {

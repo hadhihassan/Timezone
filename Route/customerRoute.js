@@ -1,6 +1,6 @@
 const express = require('express')
 const Customer_Route = express.Router()
-const uplodaImg = require("../middleware/uploadimages")
+
 const Auth = require("../middleware/Auth")
 
 const { loadPaymentPage, checkRazorpaySignature } = require("../Controler/order")
@@ -10,10 +10,10 @@ const { loadRegister, loadhome, insertUser, loadOTPpage, checkOTPValid, loadLogi
     userUpdatePassword, loadAddAddressPage, addUserAddress, editAddress, updateAddress, deleteAddress,
     displayProduct, productAddToCart, loadCart, updateCartQuantity, deleteProductCart, loadForgetPage,
     ForgetPasswordcheckingValid, loadChangePass, validOTPsetPass, loadchekout, selectAddress, placeOrder,
-    loadOrder, loadOrderProductDetails, cancelOrder, loadWallet, 
+    loadOrder, loadOrderProductDetails, cancelOrder, loadWallet, loadCoupons, applayingCoupon,
 } = require('../Controler/customerControler')
 
-const { loadCoupons, applayingCoupon  } = require("../Controler/CouponControler")
+
 
 const multer = require("multer")
 const Customer = require('../Models/customerModel')

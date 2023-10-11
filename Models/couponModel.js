@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-
 const CouponSchema = new Schema({
     coupon_name : {
         type : String,
@@ -21,8 +20,7 @@ const CouponSchema = new Schema({
         min: 0,
     },
     expaire_date : {
-        type : Date,
-        
+        type : Date,  
     },
     coupon_done : {
         type : Boolean,
@@ -36,7 +34,6 @@ const CouponSchema = new Schema({
         type:String,
         required:true,
     },
-
 })
 
 CouponSchema.pre("save", function (next) {
@@ -46,10 +43,8 @@ CouponSchema.pre("save", function (next) {
     this.expaire_date = expaire_date;
     next();
 });
-
 const coupon = mongoose.model(
      "coupon",
      CouponSchema
 )
-
 module.exports = coupon;

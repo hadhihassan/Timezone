@@ -89,7 +89,31 @@
                             <div class="form-group">
                               <label for="price">Price</label>
                               <input type="number" class="form-control text-white" value="<%= product.price %>"
-                                name="price" id="price" placeholder="Price">
+                                name="price" id="price" placeholder="Price">product
+                            </div>
+                            <!-- Offer  -->
+                            <div class="form-group">
+                              <label for="price">Offer </label>
+                              <select class="form-control form-control-lg text-white" name="offer" id="offer">
+                                <% if (product.offer) { %>
+                                  <option value="<%= product.offer._id %>"  selected><%= product.offer.name %></option>
+                                <% } else {%>
+                                  <option value="" disabled selected>No offers</option>
+                                  <% } %>
+                             
+                                <% offers.forEach(element => { %>
+                                  <% if (product.offer) { %>
+                                    <% if (element.name !== product.offer.name ) { %>
+                                      <option value="<%= element._id %>"><%= element.name %></option>
+                                     <% } %>
+                                  <% }else{ %>
+                                    <option value="<%= element._id %>"><%= element.name %></option>
+                                    <% } %> 
+                                <% }) %>
+                                <% if (product.offer) { %>
+                                  <option value="Delete">Delete Offer</option>
+                                <% } %>
+                              </select>
                             </div>
 
                             <!-- Date of Release -->
@@ -123,13 +147,14 @@
                                     <label for="category">Category</label>
                                     <select class="form-control form-control-lg text-white" name="category"
                                       id="category">
-                                      <option>
-                                        <%= product.category %>
-                                      </option>
+
+                                      <option value="<%= product.category._id %>"  selected > <%= product.category.categoryName %></option>
                                       <% Categories.forEach(category=> { %>
-                                        <option>
+                                        <% if (product.category !==  category.categoryName ) { %>
+                                        <option value="<%= category._id %>">
                                           <%= category.categoryName %>
                                         </option>
+                                        <% } %>
                                         <% }) %>
 
 
@@ -170,21 +195,23 @@
                                 <div class="col-md-12 grid-margin stretch-card">
                                   <% product.images.forEach(image=> { %>
                                     <!-- <form action="/admin/product/img-delete" method="post"> -->
-                                      <div style="position: relative;">
-                                        <!-- Display the image -->
-                                        <img
-                                          src="data:<%= image.contentType %>;base64,<%= image.data.toString('base64') %>"
-                                          alt="<%= product.product_name %>" style="width: 180px;height: 180px;">
+                                    <div style="position: relative;">
+                                      <!-- Display the image -->
+                                      <img
+                                        src="data:<%= image.contentType %>;base64,<%= image.data.toString('base64') %>"
+                                        alt="<%= product.product_name %>" style="width: 180px;height: 180px;">
 
-                                        <a class="btn btn-danger btn-delete-image" href="/admin/product/<%= image._id %>/<%= id %>/deleteImg">X</a>
-                   
-                                
-                                      </div>
+                                      <a class="btn btn-danger btn-delete-image"
+                                        href="/admin/product/<%= image._id %>/<%= id %>/deleteImg">X</a>
+
+
+                                    </div>
                                     <!-- </form> -->
 
                                     <% }) %>
                                 </div>
-                                <input type="file" id="images" name="images" multiple class="form-control file-upload-info" >
+                                <input type="file" id="images" name="images" multiple
+                                  class="form-control file-upload-info">
                               </div>
                             </div>
 
@@ -236,15 +263,7 @@
           </div>
 
           <!--footer code start-->
-          <footer class="footer">
-            <div class="d-sm-flex justify-content-center justify-content-sm-between">
-              <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © bootstrapdash.com
-                2020</span>
-              <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a
-                  href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin
-                  templates</a> from Bootstrapdash.com</span>
-            </div>
-          </footer>
+
           <!-- partial -->
       </div>
       <!-- main-panel ends -->

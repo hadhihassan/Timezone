@@ -34,8 +34,8 @@ const productSchema = new mongoose.Schema({
         require:true
     },
     category : {
-        type:String,
-        required:true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'productCategry'
     },
     product_tags : {
         type:String,
@@ -60,6 +60,18 @@ const productSchema = new mongoose.Schema({
     is_delete : {
         type:Boolean,
         default:false
+    },
+    offer:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Offer'
+    },
+    offerPrice: { 
+        type: Number,
+        default:0
+    },
+    categoryOfferPrice: {
+        type:Number,
+        default:0
     }
 })
 

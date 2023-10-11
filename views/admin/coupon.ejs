@@ -9,7 +9,6 @@
   <!-- plugins:css -->
   <link rel="stylesheet" href="../../Admin/vendors/mdi/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="../../Admin/vendors/css/vendor.bundle.base.css">
-
   <link rel="stylesheet" href="../../Admin/css/style.css">
   <!-- End layout styles -->
   <link rel="shortcut icon" href="../../Admin/images/favicon.png" />
@@ -17,15 +16,12 @@
 
 <body>
   <div class="container-scroller">
-    <!-- partial:../../partials/_sidebar.html -->
+    <!-- Sidebar -->
     <%- include('../partials/Adminside/adminsidepanel') %>
-      <!-- partial -->
-      <!-- partial -->
+      <!-- Main Content -->
       <div class="container-fluid page-body-wrapper">
         <%- include('../partials/Adminside/adminNav') %>
-          <!-- partial -->
           <div class="main-panel">
-
             <div class="content-wrapper">
               <ul class="navbar-nav w-100">
                 <li class="nav-item w-100">
@@ -34,18 +30,14 @@
                   </form>
                 </li>
               </ul>
-
               <div class="row">
                 <div class="col-lg-12 grid-margin stretch-card">
                   <div class="card">
                     <div class="card-body">
-
                       <div class="d-flex flex-row justify-content-between">
-                        <h4 class="card-title">All Coupons </h4>
-                        <a href="/admin/product/add-coupon">Add Coupon</a>
+                        <h4 class="card-title">All Coupons</h4>
+                        <a href="/admin/coupon/add-coupon">Add Coupon</a>
                       </div>
-
-                      </p>
                       <div class="table-responsive">
                         <% if (allCoupon.length) { %>
                           <table class="table">
@@ -54,16 +46,14 @@
                                 <th>NO</th>
                                 <th>Coupon Name</th>
                                 <th>Description</th>
-                                <th>Minimum <br> Purchase Amount</th>
-                                <th>Expaire Date</th>
+                                <th>Minimum Purchase <br> Amount</th>
+                                <th>Expiry Date</th>
                                 <th>Discount Amount / <br> Percentage</th>
                                 <th>Code</th>
                                 <th>Action</th>
-                                
                               </tr>
                             </thead>
                             <tbody>
-
                               <% allCoupon.forEach((coupon,i)=> { %>
                                 <tr>
                                   <td>
@@ -72,66 +62,52 @@
                                   <td>
                                     <%= coupon.coupon_name %>
                                   </td>
-                                  <!-- <td> </td> -->
                                   <td>
-                                    <% const words = coupon.description.split(' ');
-                                    for (let i = 0; i < words.length; i++) {
-                                        if (i % 5 === 0 && i !== 0) {
-                                            %><br> <br><% // Break line after every 5 words
-                                        }
-                                        %><%= words[i] %><% // Display each word
-                                    }
-                                    %>
-                                </td>
-                                
-                                  <td>
-                                    <%= coupon.minimumPurchaseAmount %>
-                                  </td>
-                                  <td>
-                                    <%= coupon.expaire_date.toLocaleDateString() %>
-                                  </td>
-                                  <td>
-                                    <%= coupon.discount_amount_or_percentage %>
-                                  </td>
-                                  <td>
-                                    <%= coupon.code %>
-                                  </td>
-                                  <td>
+                                    <% const words=coupon.description.split(' ');
+                            for (let i = 0; i < words.length; i++) {
+                                if (i % 5 === 0 && i !== 0) {
+                                    %><br> <br><% // Break line after every 5 words
+                                }
+                                %><%= words[i] %><% // Display each word
+                            }
+                            %>
+                          </td>
+                          <td><%= coupon.minimumPurchaseAmount %></td>
+                          <td><%= coupon.expaire_date.toLocaleDateString() %></td>
+                          <td><%= coupon.discount_amount_or_percentage %></td>
+                          <td><%= coupon.code %></td>
+                          <td>
+                            <% if (coupon.coupon_done === true) { %>
+                                <a href="/admin/coupon/<%= coupon._id %>/Active" class="btn btn-info">Active</a>
+                                <a href="/admin/coupon/<%= coupon._id %>/Edit-coupon" class="btn btn-primary">Edit</a>
+                            <% } else { %>
+                                <a href="/admin/coupon/<%= coupon._id %>/Delete" class="btn btn-danger">Delete</a>
+                                <a href="/admin/coupon/<%= coupon._id %>/Edit-coupon" class="btn btn-primary">Edit</a>
+                             <% } %>
 
-                                    <a href="/admin/coupon/<%= coupon._id %>/Delete"
-                                      class="btn btn-danger">Delete</i></a>
-                                    <a href="/admin/coupon/<%= coupon._id %>/Edit-coupon"
-                                      class="btn btn-primary">Edit</i></a>
-
-                                  </td>
-                                </tr>
-                                <% }) %>
-                            </tbody>
-                          </table>
-
-                          <% } else { %>
-                            <p>No Coupons Created</p>
-                            <% } %>
-
-
-
-            
-                        
-                   
-                      </div>
-                      <!-- main-panel ends -->
-                    </div>
-                    <!-- page-body-wrapper ends -->
+                         
+                          </td>
+                        </tr>
+                        <% }) %>
+                      </tbody>
+                    </table>
+                    <% } else { %>
+                    <p>No Coupons Created</p>
+                    <% } %>
                   </div>
-          
-                  <script src="../../Admin/vendors/js/vendor.bundle.base.js"></script>
-  
-                  <script src="../../Admin/js/off-canvas.js"></script>
-                  <script src="../../Admin/js/hoverable-collapse.js"></script>
-                  <script src="../../Admin/js/misc.js"></script>
-                  <script src="../../Admin/js/settings.js"></script>
-                  <script src="../../Admin/js/todolist.js"></script>
-           
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script src="../../Admin/vendors/js/vendor.bundle.base.js"></script>
+      <script src="../../Admin/js/off-canvas.js"></script>
+      <script src="../../Admin/js/hoverable-collapse.js"></script>
+      <script src="../../Admin/js/misc.js"></script>
+      <script src="../../Admin/js/settings.js"></script>
+      <script src="../../Admin/js/todolist.js"></script>
+    </div>
+  </div>
 </body>
-
 </html>

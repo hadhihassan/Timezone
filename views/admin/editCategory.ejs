@@ -79,6 +79,32 @@
                                 placeholder="Category name" required>
                             </div>
 
+                            <div class="form-group">
+                              <label for="exampleInputCity1">Offer :</label>
+                              <select class="form-control form-control-lg text-white" name="offer" id="offer">
+                                <% if (EditCategory.offer) { %>
+                                  <option value="" disabled selected><%= EditCategory.offer.name %></option>
+                                <% } else {%>
+                                  <option value="" disabled selected>No offers</option>
+                                  <% } %>
+                             
+                                <% offers.forEach(element => { %>
+                                  <% if (EditCategory.offer) { %>
+                                    <% if (element.name !== EditCategory.offer.name ) { %>
+                                      <option value="<%= element._id %>"><%= element.name %></option>
+                                     <% } %>
+                                  <% }else{ %>
+                                    <option value="<%= element._id %>"><%= element.name %></option>
+                                    <% } %> 
+                                <% }) %>
+                                <% if (EditCategory.offer) { %>
+                                  <option value="Delete">Delete Offer</option>
+                                <% } %>
+                               
+                              </select>
+                          
+                            </div>
+
 
                             <div class="form-group">
                               <label for="exampleInputCity1">Description : </label>

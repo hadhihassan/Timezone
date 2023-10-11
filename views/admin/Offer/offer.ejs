@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Corona Admin</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="/../Admin/vendors/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="/../Admin/vendors/css/vendor.bundle.base.css">
+
+    <link rel="stylesheet" href="/../Admin/css/style.css">
+    <!-- End layout styles -->
+    <link rel="shortcut icon" href="/../Admin/images/favicon.png" />
+</head>
+
+<body>
+    <div class="container-scroller">
+        <!-- partial:../../partials/_sidebar.html -->
+        <%- include('../../partials/Adminside/adminsidepanel') %>
+            <!-- partial -->
+            <!-- partial -->
+            <div class="container-fluid page-body-wrapper">
+                <%- include('../../partials/Adminside/adminNav') %>
+                    <!-- partial -->
+                    <div class="main-panel">
+
+                        <div class="content-wrapper">
+                            <ul class="navbar-nav w-100">
+                                <li class="nav-item w-100">
+                                    <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
+                                        <input type="text" class="form-control" placeholder="Search products">
+                                    </form>
+                                </li>
+                            </ul>
+
+                            <div class="row">
+                                <div class="col-lg-12 grid-margin stretch-card">
+                                    <div class="card">
+                                        <div class="card-body">
+
+                                            <div class="d-flex flex-row justify-content-between">
+                                                <h4 class="card-title">Offers </h4>
+                                                <a href="/admin/offer/create/">Add Offer</a>
+                                            </div>
+
+                                            </p>
+                                            <div class="table-responsive">
+                                                <% if (Offers.length) { %>
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>NO</th>
+                                                                <th>Offer Name</th>
+                                                                <th>Starting Date</th>
+                                                                <th>Expaire Date </th>
+                                                                <th>Expaire Date</th>
+                                                                <th>Discount % </th>
+                                                                <th>Status</th>
+                                                                <th>Action</th>
+
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+
+                                                            <% Offers.forEach((offer,i)=> { %>
+                                                                <tr>
+                                                                    <td>
+                                                                        <%= i+1 %>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%= offer.name %>
+                                                                    </td>
+                                                                    <!-- <td> </td> -->
+                                                                    <td>
+                                                                        <%= offer.startingDate.toLocaleDateString() %>
+                                                                    </td>
+
+                                                                    <td>
+                                                                        <%= offer.expiryDate.toLocaleDateString() %>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%= offer.expiryDate.toLocaleDateString() %>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%= offer.discount %>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%= offer.status %>
+                                                                    </td>
+                                                                    <td>
+
+                                                                        <a href="/admin/offer/<%= offer._id %>/Delete-offer"
+                                                                            class="btn btn-danger">Delete</i></a>
+                                                                        <a href="/admin/offer/<%= offer._id %>/Edit-offer"
+                                                                            class="btn btn-primary">Edit</i></a>
+
+                                                                    </td>
+                                                                </tr>
+                                                                <% }) %>
+                                                        </tbody>
+                                                    </table>
+
+                                                    <% } else { %>
+                                                        <p>No Offers..!</p>
+                                                        <% } %>
+
+
+
+
+
+
+                                            </div>
+
+
+
+                                            <script src="/../Admin/vendors/js/vendor.bundle.base.js"></script>
+
+                                            <script src="/../Admin/js/off-canvas.js"></script>
+                                            <script src="/../Admin/js/hoverable-collapse.js"></script>
+                                            <script src="/../Admin/js/misc.js"></script>
+                                            <script src="/../Admin/js/settings.js"></script>
+                                            <script src="/../Admin/js/todolist.js"></script>
+
+</body>
+
+</html>

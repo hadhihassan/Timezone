@@ -10,8 +10,6 @@ const jwt = require('jsonwebtoken');
 const crypto = require("crypto")
 require("dotenv").config();
 const Coupon = require("../Models/couponModel")
-const CatchAsync = require("../utils/CatchAsync")
-
 
 
 const loadRegister = async (req, res, next) => {
@@ -126,6 +124,7 @@ const insertUser = async (req, res) => {
         console.log(error);
     }
 }
+
 //send email models
 let transporter = nodemailer.createTransport({
     service: "Gmail",
@@ -137,6 +136,7 @@ let transporter = nodemailer.createTransport({
         pass: process.env.AUTH_PASS,
     }
 });
+
 // Send OTP verification email
 const sendOTPVerificationEmail = async ({ _id, email }, res) => {
     try {
@@ -280,6 +280,7 @@ const checkUserValid = async (req, res) => {
         }
     }
 }
+
 //forget password
 const loadForgetPage = (req, res) => {
     try {
@@ -402,6 +403,7 @@ const validOTPsetPass = async (req, res) => {
         res.status(500).send("Internal Server Error");
     }
 };
+
 //session destrying User Logouting
 const userLogouting = (req, res, next) => {
     try {
@@ -417,50 +419,42 @@ const userLogouting = (req, res, next) => {
     }
 }
 const loadShop = async (req, res) => {
+    console.log(req.query);
     let products
     const query = req.query.query
-    const highTOLowPRice = req.query.HLPrice
+    const cate = req.query.category
+    const brand = req.query.brand
+    // const highTOLowPRice = req.query.HLPrice
     const min = parseInt(req.query.min) || 0
     const max = parseInt(req.query.max) || 1000000
 
     try {
-
-        if (query) {
-            const regex = new RegExp(query, 'i');
-            products = await Product.find({ is_delete: false, in_stock: true, product_name: regex , price:{$gt:min,$lt:max}});
-        } else {
-            products = await Product.find({ is_delete: false, in_stock: true  , price:{$gt:min,$lt:max}})
-        }
-       
-
-        let pipeline = [
-            {
-                $match: {
-                    is_delete: false,
-                    in_stock: true,
-                }
-            },
-            {
-                $group: {
-                    _id: null,
-                    colors: { $addToSet: "$color" },
-                    categories: { $addToSet: "$category" },
-                    brands: { $addToSet: "$brand_name" }
-                }
-            }, {
-                $project: {
-                    _id: 0
-                }
+            if(cate && brand){
+                const regex = new RegExp(query, 'i');
+                products = await Product.find({ is_delete: false, in_stock: true, product_name: regex, price: { $gte: min, $lte: max } ,category : cate,brand_name : brand})
+            }else if(brand && !cate){
+                const regex = new RegExp(query, 'i');
+                products = await Product.find({ is_delete: false, in_stock: true, product_name: regex, price: { $gte: min, $lte: max } ,brand_name : brand})
+            }else if(cate && !brand){
+                const regex = new RegExp(query, 'i');
+                products = await Product.find({ is_delete: false, in_stock: true, product_name: regex, price: { $gte: min, $lte: max } ,category : cate})
+            }else{
+                const regex = new RegExp(query, 'i');
+                products = await Product.find({ is_delete: false, in_stock: true, product_name: regex, price: { $gte: min, $lte: max } })
             }
-        ];
-
-        const filter = await Product.aggregate(pipeline);
+   
+        
+        
+        const filter = await Product.find({ is_delete: false }, { _id: 0, brand_name: 1, category: 1 })
+        .populate("category", { _id: 1, categoryName: 1 });
+      
         console.log(filter)
-        res.render('User/shop', { query: "", products, user: req.session.user, success: req.flash('success'), filter })
+        res.render('User/shop', { query: "", products, user: req.session.user, success: req.flash('success') ,filter})
     } catch (error) {
         console.log(error.message);
     }
 }
+
 //user Profile 
 const loadProfile = async (req, res) => {
     try {
@@ -651,6 +645,7 @@ const deleteAddress = async (req, res) => {
         console.log(error.message);
     }
 }
+
 //display the product 
 const displayProduct = async (req, res) => {
     try {
@@ -664,29 +659,58 @@ const displayProduct = async (req, res) => {
         console.log(error.message);
     }
 }
-//ADD TO CART DISPLAY AND EDIT DELETE
+
 const loadCart = async (req, res) => {
     try {
-        console.log(req.session.user)
-        const currentUser = await Customer.findById(req.session.user).populate('cart.product');
-        const Products = currentUser.cart
-        console.log(Products)
-        if (Products) {
-
-            return res.render('User/cart', { currentUser, user: req.session.user, Products, success: '' })
+        const userId = req.session.user;
+        const userWithCart = await Customer.findById(userId).populate('cart.product');
+        if (!userWithCart) {
+            return res.status(404).send('User not found');
         }
+        const cartItems = userWithCart.cart;
+
+        cartItems.forEach((item) => {
+            let productOff = item.product.offerPrice
+            let categoryOff = item.product.categoryOfferPrice
+            const lowoOfferPrice = Math.max(productOff, categoryOff)
+            let actualPrice
+            if (lowoOfferPrice !== 0) {
+                actualPrice = lowoOfferPrice
+            } else {
+                actualPrice = lowoOfferPrice  
+            }
+            const productPrice = actualPrice
+            const quantity = item.quantity;
+
+            item.total = quantity * productPrice;
+        });
+        await userWithCart.save();
+        return res.render('User/cart', {
+            currentUser: userWithCart,
+            user: userId,
+            Products: cartItems,
+            success: '',
+        });
     } catch (error) {
-        console.log(error.nessage)
+        console.error('Error loading cart:', error);
+        res.status(500).json({ error: 'Failed to load cart' });
     }
-}
+};
+
 const productAddToCart = async (req, res) => {
     try {
         const user = await Customer.findById(req.session.user)
         const quantity = 1
         const product = await Product.findById(req.query.productId)
         const checkthestock = product.stock_count
-
-        const total = quantity * product.price
+        const lowoOfferPrice = Math.max(product.offerPrice, product.categoryOfferPrice)
+        let regularPrice
+        if (lowoOfferPrice !== 0) {
+            regularPrice = lowoOfferPrice
+        } else {
+            regularPrice = product.price
+        }
+        const total = quantity * regularPrice
         let totalCartAmount = 0;
         user.cart.forEach(item => {
             totalCartAmount += item.total;
@@ -727,33 +751,30 @@ const updateCartQuantity = async (req, res) => {
     try {
         const user = await Customer.findById(req.session.user)
 
-        //geting the data's through the ajax product id and the new quantity
         const cartProductId = req.body.cartItemId
         const newQuantity = req.body.quantity
-
-        //find the cart product in the user cart list by the ID
 
         const cartProduct = user.cart.find(item => item.product._id.equals(cartProductId));
         if (!cartProduct) {
             return res.status(404).json({ message: 'Cart item not found' });
         }
-
-        //find the Cart Product and the checking the stock and update it */* stock managment / inventory mangment 
         const product = await Product.findById(cartProduct.product);
 
         if (newQuantity > product.stock_count) {
-            // Handle the case where newQuantity exceeds stock_count
-            // req.flash('success', 'stock limit exceeded!')
-            // console.log('Stock was exceeded');
-            // You can return an success response here if needed
-            // For example:
-            // return res.render("/user/cart",{success: req.flash('success')})
             return res.json({ stock: product.stock_count, error: "stock limit exceeded!" })
         }
 
 
-        //Calculating the new cart quantity and update 
-        const newTotal = newQuantity * product.price
+        const lowoOfferPrice = Math.max(product.offerPrice, product.categoryOfferPrice)
+        let regularPrice
+        if (lowoOfferPrice !== 0) {
+            regularPrice = lowoOfferPrice
+        } else {
+            regularPrice = product.price
+        }
+
+
+        const newTotal = newQuantity * regularPrice
         cartProduct.quantity = newQuantity
         cartProduct.total = newTotal
         //caluculating the total cart amount
@@ -792,6 +813,7 @@ const deleteProductCart = async (req, res) => {
         console.log(error.message)
     }
 }
+
 //CHECKOUT PAGE
 const loadchekout = async (req, res) => {
     const user_id = req.session.user
@@ -799,6 +821,25 @@ const loadchekout = async (req, res) => {
     try {
 
         const User = await Customer.findById(req.session.user).populate('cart.product');
+        const cartItems = User.cart;
+
+        cartItems.forEach((item) => {
+
+            const lowoOfferPrice = Math.max(item.product.offerPrice, item.product.categoryOfferPrice)
+            let regularPrice
+            if (lowoOfferPrice !== 0) {
+                regularPrice = lowoOfferPrice
+            } else {
+                regularPrice = item.product.price
+            }
+
+
+            const productPrice = regularPrice
+            const quantity = item.quantity; // Make sure 'quantity' is defined and accurate
+            item.total = quantity * productPrice;
+        });
+
+        await User.save();
 
         const cart = User.cart
         const address = await Address.find({ User: user_id })
@@ -947,7 +988,6 @@ const placeOrder = async (req, res) => {
     }
 };
 
-
 //display the order ditails
 const loadOrder = async (req, res) => {
     try {
@@ -1000,7 +1040,6 @@ const cancelOrder = async (req, res) => {
     }
 }
 
-
 //wallet
 const loadWallet = async (req, res) => {
     try {
@@ -1014,19 +1053,76 @@ const loadWallet = async (req, res) => {
     }
 }
 
-const loadShopFilter = async (req,res) => {
+const loadShopFilter = async (req, res) => {
     console.log(req.body)
     try {
-        
+
     } catch (error) {
         console.log(error.message)
     }
 }
 
+const loadCoupons = async (req, res) => {
+    try {
+        const Coupons = await Coupon.find({ coupon_done: false })
+        res.render("User/profile/coupons", { user: req.session.user, Coupons })
+    } catch (error) {
+        console.log(error.message);
+    }
+
+}
+const applayingCoupon = async (req, res) => {
+    const code = req.body.couponCode;
+    console.log(code);
+    try {
+        const findCode = await Coupon.findOne({ code });
+
+        if (!findCode) {
+            return res.json({ error: "Coupon not found, please try again..." });
+        }
+
+        const user = await Customer.findById(req.session.user);
+
+        for (const earnedCoupon of user.earnedCoupons) {
+            const couponId = earnedCoupon.coupon;
+            const isUsed = earnedCoupon.isUsed;
+
+            if (couponId.equals(findCode._id)) {
+                return res.json({ error: "Sorry, you already used this coupon code..." });
+            }
+        }
+        const currentDate = new Date();
+
+        if (findCode.expaire_date < currentDate) {
+            return res.json({ error: "This coupon has expired..." });
+        }
 
 
 
+        if (user.totalCartAmount > findCode.minimumPurchaseAmount) {
+            if (findCode.discount_type === "Percentage") {
+                console.log("totaCartAmount " + user.totalCartAmount)
+                const discountAmount = Math.floor((findCode.discount_amount_or_percentage / 100) * user.totalCartAmount);
+                const newAmount = Math.floor(user.totalCartAmount - discountAmount);
+                console.log(newAmount, discountAmount + " (Percentage)");
 
+                return res.json({ newAmount, discountAmount, id: findCode._id });
+            } else {
+                const discountAmount = findCode.discount_amount_or_percentage;
+                const newAmount = Math.floor(user.totalCartAmount - discountAmount);
+                console.log(newAmount, discountAmount + " (Fixed Amount)");
+                return res.json({ newAmount, discountAmount, id: findCode._id });
+            }
+        } else {
+            return res.json({ error: "The coupon valid at purchase above 500 rupees.." });
+        }
+
+
+
+    } catch (error) {
+        // Handle any errors here
+    }
+};
 
 
 
@@ -1037,7 +1133,5 @@ module.exports = {
     userUpdatePassword, loadAddAddressPage, addUserAddress, editAddress, updateAddress, deleteAddress, displayProduct,
     productAddToCart, loadCart, updateCartQuantity, deleteProductCart, loadForgetPage, ForgetPasswordcheckingValid,
     loadChangePass, validOTPsetPass, loadchekout, selectAddress, placeOrder, loadOrder, loadOrderProductDetails,
-    cancelOrder, loadWallet
+    cancelOrder, loadWallet, loadCoupons, applayingCoupon,
 }
-
-

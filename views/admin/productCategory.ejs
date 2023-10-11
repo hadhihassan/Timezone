@@ -57,6 +57,7 @@
                                 <th>Images</th>
                                 <th>Category Name</th>
                                 <th>Description</th>
+                                <th>Offer</th>
                                 <th>Action</th>
                               </tr>
                             </thead>
@@ -82,9 +83,17 @@
                                   <td>
                                     <%= Category.categoryName %>
                                   </td>
-                                  <!-- <td> </td> -->
+                               
                                   <td>
                                     <%= Category.description %>
+                                  </td>
+                                  <td>
+                                    <% if (Category.offer) { %>
+                                     <p class="text-success "> <%= Category.offer.name %></p>
+                                    <% } else { %>
+                                   <p class="text-danger">   No Offers</p>
+                                    <%}%>
+                                    
                                   </td>
                                   <td>
 

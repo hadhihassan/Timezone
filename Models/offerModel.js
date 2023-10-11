@@ -1,38 +1,36 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
-
-const offerSchema = mongoose.Schema({
+const offerSchema = new mongoose.Schema(
+  {
     name: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     discount: {
-        type: Number,
-        required: true
+      type: Number,
+      required: true,
     },
     startingDate: {
-        type: Date
+      type: Date,
     },
     expiryDate: {
-        type: Date,
-        required: true
+      type: Date,
+      required: true,
     },
     status: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     is_deleted: {
-        type: Boolean,
-        default: false
+      type: Boolean,
+      default: false,
     },
-},
-    {
-        timestamps: true
-    })
+  },
+  {
+    timestamps: true,
+  }
+);
 
-const offer = mongoose.model(
-    "offer",
-    "offerSchema")
+const Offer = mongoose.model("Offer", offerSchema);
 
-module.exports = offer
-
+module.exports = Offer;

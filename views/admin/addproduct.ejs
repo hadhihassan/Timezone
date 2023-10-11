@@ -41,6 +41,22 @@
                     <div class="card-body">
                       <h4 class="card-title">Product Information</h4>
                       <p class="card-description text-info">Basic product info</p>
+                      <% if (error && error.length > 0  ) { %>
+                        <div class="alert alert-danger text-center" id="error-message">
+                            <% error.forEach(function(message) { %>
+                                <p><%= message %></p>
+                            <% }); %>
+                        </div>
+                        <script>
+                            // Add a timeout to hide the error message after 3 seconds (adjust as needed)
+                            setTimeout(function() {
+                                var errorMessage = document.getElementById('error-message');
+                                if (errorMessage) {
+                                    errorMessage.style.display = 'none';
+                                }
+                            }, 5000); // 3000 milliseconds (3 seconds)
+                        </script>
+                    <% } %>
                       <form action="/admin/product/create" method="post" class="forms-sample" enctype="multipart/form-data">
                         <% if (message !== "") { %>
                           <p class="text-danger"><%= message %></p>
@@ -75,6 +91,18 @@
                           <label for="price">Price</label>
                           <input type="number" class="form-control text-white" name="price" id="price" placeholder="Price">
                         </div>
+
+                        <!-- Offers -->
+
+                        <div class="form-group">
+                          <label for="price">Offer</label>
+                          <select class="form-control form-control-lg text-white" name="offer" id="category">
+                            <option value="-1" disabled selected>Select an offer</option>
+                            <% offers.forEach(offer => { %>
+                              <option value="<%= offer._id %>"> <%= offer.name %> </option>
+                            <% }) %>
+                          </select>
+                        </div>
           
                         <!-- Date of Release -->
                         <div class="form-group">
@@ -102,12 +130,10 @@
                               <div class="form-group">
                                 <label for="category">Category</label>
                                 <select class="form-control form-control-lg text-white" name="category" id="category">
-                                  <option></option>
+                                  <option value="-1" disabled selected>Select a Category </option>
                                   <% Categories.forEach(category => { %>
-                                    <option><%= category.categoryName %></option>
+                                    <option value="<%= category._id%>"><%= category.categoryName %></option>
                                   <% }) %>
-                                 
-                                
                                 </select>
                               </div>
                               <div class="form-group">
@@ -147,7 +173,7 @@
                         <div class="form-group">
                           <label for="color">Color</label>
                           <select class="form-control text-white" name="color" id="color">
-                            <option value="-1" disabled>Select</option>
+                            <option value="-1" disabled selected>Select a Color </option>
                             <option>White</option>
                             <option>Black</option>
                             <option>Blue</option>
@@ -164,7 +190,7 @@
                         <div class="form-group">
                           <label for="Metrial">Material</label>
                           <select class="form-control text-white" name="Metrial" id="Metrial">
-                            <option>Select</option>
+                            <option value="-1" disabled selected>Select a Material </option>
                             <option>Stainless Steel</option>
                             <option>Titanium</option>
                             <option>Gold</option>
@@ -189,12 +215,7 @@
           </div>
           
         <!--footer code start-->
-          <footer class="footer">
-            <div class="d-sm-flex justify-content-center justify-content-sm-between">
-              <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © bootstrapdash.com 2020</span>
-              <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin templates</a> from Bootstrapdash.com</span>
-            </div>
-          </footer>
+  
           <!-- partial -->
         </div>
         <!-- main-panel ends -->

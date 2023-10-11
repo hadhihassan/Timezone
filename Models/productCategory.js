@@ -13,7 +13,11 @@ const productCategrySchema = new mongoose.Schema({
     image:{
         data:Buffer,
         contentType:String
-    }
+    },
+    offer:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Offer'
+    },
 })
 const productCategry = mongoose.model(
     "productCategry",

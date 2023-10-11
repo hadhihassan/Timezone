@@ -35,16 +35,17 @@
               <ul class="navbar-nav w-100">
                 <li class="nav-item w-100">
                   <form action="/admin/product" method="get">
-                  <div class="input-group">
-                 
-                      <input  type="text" class="form-control" name="query" value="<%= query ?? "" %>" placeholder="Search products">
+                    <div class="input-group">
+
+                      <input type="text" class="form-control" name="query" value="<%= query ?? "" %>"
+                        placeholder="Search products">
                       <button class="btn btn-primary" type="submit">Search</button>
-                   
-                  </div>
-              </li>
-            </form>
-              <br>
-              
+
+                    </div>
+                </li>
+                </form>
+                <br>
+
               </ul>
 
               <div class="row">
@@ -66,6 +67,7 @@
                               <th>Category</th>
                               <th>Price(MRP)</th>
                               <th>Quantity</th>
+                              <th>Offer</th>
                               <th>Status</th>
                               <th>Action</th>
                             </tr>
@@ -95,13 +97,28 @@
                                   <%= product.brand_name %>
                                 </td>
                                 <td>
-                                  <%= product.category %>
+                                  <%= product.category ? product.category.categoryName : 'No Category' %>
                                 </td>
                                 <td>
                                   <%= product.price %>
                                 </td>
                                 <td>
                                   <%= product.stock_count %>
+                                </td>
+                                <td>
+                                  <% if (product.offerPrice > 0 ) { %>
+                                    <p class="text-info">
+                                      <%= product.offer.name %> <br>
+                                      <% if (product.categoryOfferPrice > 0) { %>
+                                        and Category Offer
+                                      <% } %>
+                                    </p>
+                                  <% } else if (product.categoryOfferPrice > 0 ) { %>
+                                    <p class="text-info">Category Offer</p>
+                                  <% } else { %>
+                                    <p class="text-danger">No offers</p>
+                                  <% } %>
+                                  
                                 </td>
                                 <% if (product.is_delete===true) { %>
                                   <td>
@@ -137,39 +154,44 @@
                       <br>
                       <nav aria-label="Page navigation">
                         <ul class="pagination justify-content-end">
-                          <% if (currentPage !== 1) { %>
+                          <% if (currentPage !==1) { %>
                             <li class="page-item">
-                              <a class="page-link" href="/admin/product?page=<%= currentPage-1 %>" aria-label="Previous">
+                              <a class="page-link" href="/admin/product?page=<%= currentPage-1 %>"
+                                aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                               </a>
                             </li>
-                          <% } %>
-                          <!-- Calculate the total number of pages -->
-                          <% const totalPages = Math.max(1, Math.ceil(len.length / 10)); %>                                                  <!-- Loop through the total number of pages and create a page link for each -->
-                          <% for (let page = 1; page <= totalPages; page++) { %>
-                            <li class="page-item <% if (currentPage == page) { %>active<% } %>">
-                              <a class="page-link" href="/admin/product?page=<%= page %>"><%= page %></a>
-                            </li>
-                          <% } %>
-                          <% if (currentPage !== totalPages ) { %>
-                            <li class="page-item">
-                              <% const nextPage = currentPage + 1; %>
-                              <a class="page-link" href="/admin/product?page=<%= nextPage %>" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                              </a>
-                              
-                            </li>
-                          <% } %> 
+                            <% } %>
+                              <!-- Calculate the total number of pages -->
+                              <% const totalPages=Math.max(1, Math.ceil(len.length / 10)); %>
+                                <!-- Loop through the total number of pages and create a page link for each -->
+                                <% for (let page=1; page <=totalPages; page++) { %>
+                                  <li class="page-item <% if (currentPage == page) { %>active<% } %>">
+                                    <a class="page-link" href="/admin/product?page=<%= page %>">
+                                      <%= page %>
+                                    </a>
+                                  </li>
+                                  <% } %>
+                                    <% if (currentPage !==totalPages ) { %>
+                                      <li class="page-item">
+                                        <% const nextPage=currentPage + 1; %>
+                                          <a class="page-link" href="/admin/product?page=<%= nextPage %>"
+                                            aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                          </a>
+
+                                      </li>
+                                      <% } %>
                         </ul>
                       </nav>
-                      
-                  
-                      
-                      
-                      
 
-              
-              
+
+
+
+
+
+
+
                     </div>
                   </div>
                 </div>
