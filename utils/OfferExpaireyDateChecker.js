@@ -9,12 +9,9 @@ const OfferCheckAndDeleteOffer = async (req, res) => {
     try {
         const currentDate = new Date();
         const findExpiredOffers = await Offer.find({ is_deleted: false, expiryDate: { $lte: currentDate } });
-        
         if (findExpiredOffers.length > 0) {
             for (const offer of findExpiredOffers) {
                 offer.is_deleted = true;
-              
-                
                 const offerId = offer._id;
                 await Product.updateMany({ offer: offerId }, {
                     $unset: { offer: 1 },
@@ -34,8 +31,6 @@ const OfferCheckAndDeleteOffer = async (req, res) => {
                 await offer.save();
             }
         }
-
-
     } catch (error) {
         console.error("Error in OfferCheckAndDeleteOffer:", error);
         res.status(500).json({ error: "Internal server error" });

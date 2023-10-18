@@ -3,7 +3,10 @@ const jwt = require('jsonwebtoken');
 const crypto = require("crypto")
 require("dotenv").config();
 const util = require("util")
-//user authonticated or not
+
+
+
+//CHECK USER IS LOGGED OR NOT 
 const userAuth = (req, res, next) => {
     try {
         if (!req.session.user || !req.cookie) {
@@ -17,7 +20,7 @@ const userAuth = (req, res, next) => {
         console.log(error.message);
     }
 }
-
+//USER  THIS IS ADMIN OR NOT
 const logged = (req, res, next) => {
     try {
         if (req.session.user ||  req.cookie) {
@@ -29,9 +32,7 @@ const logged = (req, res, next) => {
         console.log(error.message)
     }
 }
-
-//admin authonticated or note
-
+//CHECK ADMIN AUTHONTICATED OR NOT
 const adminAuth = (req, res, next) => {
     try {
         if (req.session.admin) {
@@ -44,6 +45,7 @@ const adminAuth = (req, res, next) => {
         console.log(error.message);
     }
 }
+//CHECK USER OR ADMIN
 const isAdmin = (req, res, next) => {
     try {
         if (!req.session.admin) {
@@ -57,7 +59,7 @@ const isAdmin = (req, res, next) => {
         console.log(error.message);
     }
 }
-
+//JWT USER HAVE TOKEN
 const authonticateToken = async (req, res, next) => {
     
     let token

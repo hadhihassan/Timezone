@@ -1,15 +1,9 @@
-const express = require("express")
-const bcrypt = require("bcrypt")
-const Customer = require('../Models/customerModel')
-const productCategry = require("../Models/productCategory")
-const Product = require("../Models/productModel")
-const Order = require("../Models/orderModel")
-const Coupon = require("../Models/couponModel")
 const Offer = require("../Models/offerModel")
 
 
+//**OFFER MANAGEMNT**//
 
-
+//LIST THE ALL OFFERS
 const loadOffersPage = async (req,res) => {
     try {
         const Offers = await Offer.find().sort({is_deleted:-1})
@@ -18,14 +12,14 @@ const loadOffersPage = async (req,res) => {
     } catch (error) {
         console.log(error.message)
     }
-} 
+}//RENDERE THE ADD OFFERE PAGE 
 const loadAddOfferPage = async (req,res) => {
     try {
         return res.render("admin/Offer/addOffer",{error:req.flash('error')})
     } catch (error) {
         console.log(error.message);
     }
-}
+}//CREATE THE OFFERE 
 const createOffer = async  (req,res) =>{
     const {name, discount, startingDate, expiryDate, status } = req.body
     try {

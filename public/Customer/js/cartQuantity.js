@@ -3,7 +3,7 @@
   const inputNumbers = document.querySelectorAll(".input-number");
   const incrementButtons = document.querySelectorAll(".input-number-increment");
   const decrementButtons = document.querySelectorAll(".input-number-decrement");
-
+let outOfStock = false
   // Add click event listeners for all increment and decrement buttons
   incrementButtons.forEach((button, index) => {
     button.addEventListener("click", () => {
@@ -13,11 +13,13 @@
 
   decrementButtons.forEach((button, index) => {
     button.addEventListener("click", () => {
+      // outOfStock = index
       updateCartItemQuantity(inputNumbers[index], "decrement");
     });
   });
 
   function updateCartItemQuantity(inputElement, action) {
+    
     const cartItemId = inputElement.parentElement
       .querySelector(".input-number-increment")
       .getAttribute("data-cart-item-id");
@@ -25,15 +27,27 @@
     let currentValue = parseInt(inputElement.value);
 
     if (!isNaN(currentValue)) {
-      if (action === "increment" && currentValue < 10) {
-        currentValue++;
+      if (action === "increment" && currentValue < 100) {
+        if(!outOfStock){
+         
+          currentValue++;
+        }
+    
+       
       } else if (action === "decrement" && currentValue > 1) {
-        currentValue--;
+        
+        outOfStock = false
+          currentValue--;
+        
+       
       }
     }
 
     // Update the input value
-    inputElement.value = currentValue;
+    
+
+      inputElement.value = currentValue;
+    
 
 
 
@@ -48,6 +62,8 @@
 
         success: function (response) {
           if (response.stock) {
+            outOfStock = true
+            // inputNumbers[outOfStock].value = currentValue-1
             displayFlashMessage(response.error)
           } else {
             console.log(response, 'res-out');

@@ -31,10 +31,10 @@ const CustomerSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    image: {
+    images: [{
         data: Buffer,
         contentType: String
-    },
+    }],
     is_varified: {
         type: Boolean,
         default: false
@@ -68,7 +68,7 @@ const CustomerSchema = new mongoose.Schema({
         },
         isUsed: {
             type: Boolean,
-            default: false,
+            default: true,
         },
     }],
     wallet: {
@@ -92,7 +92,7 @@ const CustomerSchema = new mongoose.Schema({
     referred: {
         type: Boolean,
         required: true,
-        default : false,
+        default: false,
     },
     referredBy: {
         type: mongoose.Schema.Types.ObjectId,

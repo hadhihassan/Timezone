@@ -1,12 +1,7 @@
-const express = require("express")
 const Customer = require('../Models/customerModel')
 const productCategry = require("../Models/productCategory")
 const Product = require("../Models/productModel")
 const Order = require("../Models/orderModel")
-
-
-
-
 
 
 // CALCULATING THE DALY INCOME
@@ -195,8 +190,7 @@ const everyMonthIncome = async (req, res) => {
         // res.status(500).json({ error: 'An error occurred' });
     }
 }
-
-//finding the best 5 selling products
+//FIND THE BEST SELLED THREE PRODUCTS
 const findBestSellingProducts = async (req, res) => {
     try {
         const pipeline = [
@@ -241,7 +235,7 @@ const findBestSellingProducts = async (req, res) => {
         console.log(error.message);
     }
 }
-//loadDashboaed
+//RENDERE THE DASHBOARD PAGE
 const loadDash = async (req, res) => {
     try {
         const pipeline = [
@@ -318,7 +312,6 @@ const loadDash = async (req, res) => {
         console.log(error.message);
     }
 }
-
 
 
 module.exports = {

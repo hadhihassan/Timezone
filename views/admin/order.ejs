@@ -90,15 +90,19 @@
                                                                     </div>
                                                                 </td>
                                                                 <td>
-                                                                    <% order.products.forEach((pro,i)=> { %>
+                                                                    <% order.products.forEach((pro, i)=> { %>
                                                                         <div>
                                                                             <h6>
-                                                                                <%= i+1 %> ) <%=
-                                                                                        pro.product.product_name %> :
-                                                                                        <%=pro.quantity %>, <br>
+                                                                                <%= i + 1 %> ) <% if (pro.product) { %>
+                                                                                        <%= pro.product.product_name %>
+                                                                                            : <%= pro.quantity %>,
+                                                                                                <% } %>
+                                                                                                    <br>
                                                                             </h6>
-                                                                        </div> <br>
+                                                                        </div>
+                                                                        <br>
                                                                         <% }) %>
+
                                                                 </td>
                                                                 <td>
                                                                     <h6>
@@ -122,34 +126,66 @@
                                                                     </h6>
                                                                 </td>
                                                                 <td>
-                                                                    <% if (order.orderCanceled==true){ %>
-                                                                        <h6 class="text-danger"> Order Canceled</h6>
+                                                                    <% if (order.return_Status === "Completed"){%>
+                                                                        <h5 class="text-danger">
+                                                                            The product return as been successfully </h5>
+                                                                        
+                                                                    <% }else if (order.is_returned === true) { %>
+                                                                        <p class="text-danger">user requesting to <br> return the product</p> <br> 
+                                                                        <div class="btn-group">
+                                                                                        <button type="button"
+                                                                                            class="btn btn-danger">
+                                                                                            <%= order.return_Status %>
+                                                                                        </button>
+                                                                                        <button type="button"
+                                                                                            class="btn btn-danger dropdown-toggle dropdown-toggle-split"
+                                                                                            data-toggle="dropdown"
+                                                                                            aria-haspopup="true"
+                                                                                            aria-expanded="false">
+                                                                                            <span class="sr-only">Toggle
+                                                                                                Dropdown</span>
+                                                                                        </button>
+                                                                                        <div class="dropdown-menu">
+                                                                                            <a class="dropdown-item"
+                                                                                                href="/admin/order/return-product?action=Pending&orderId=<%= order._id %>">Pending</a>
+                                                                                            <a class="dropdown-item"
+                                                                                                href="/admin/order/return-product?action=Reject&orderId=<%= order._id %>">Reject</a>
+                                                                                            <a class="dropdown-item"
+                                                                                                href="/admin/order/return-product?action=Completed&orderId=<%= order._id %>">Completed</a>
+                                                                                        </div>
+                                                                                    </div>
                                                                         <% } else { %>
-                                                                            <div class="btn-group">
-                                                                                <button type="button"
-                                                                                    class="btn btn-danger">
-                                                                                    <%= order.returnRequest %>
-                                                                                </button>
-                                                                                <button type="button"
-                                                                                    class="btn btn-danger dropdown-toggle dropdown-toggle-split"
-                                                                                    data-toggle="dropdown"
-                                                                                    aria-haspopup="true"
-                                                                                    aria-expanded="false">
-                                                                                    <span class="sr-only">Toggle
-                                                                                        Dropdown</span>
-                                                                                </button>
-                                                                                <div class="dropdown-menu">
-                                                                                    <a class="dropdown-item"
-                                                                                        href="/admin/order/action-update?action=Pending&orderId=<%= order._id %>">Pending</a>
-                                                                                    <a class="dropdown-item"
-                                                                                        href="/admin/order/action-update?action=Approved&orderId=<%= order._id %>">Approved</a>
-                                                                                    <a class="dropdown-item"
-                                                                                        href="/admin/order/action-update?action=Reject&orderId=<%= order._id %>">Reject</a>
-                                                                                    <a class="dropdown-item"
-                                                                                        href="/admin/order/action-update?action=Completed&orderId=<%= order._id %>">Completed</a>
-                                                                                </div>
-                                                                            </div>
-                                                                            <% } %>
+                                                                            <% if (order.orderCanceled==true){ %>
+                                                                                <h6 class="text-danger"> Order Canceled
+                                                                                </h6>
+                                                                                <% } else { %>
+                                                                                    <div class="btn-group">
+                                                                                        <button type="button"
+                                                                                            class="btn btn-danger">
+                                                                                            <%= order.returnRequest %>
+                                                                                        </button>
+                                                                                        <button type="button"
+                                                                                            class="btn btn-danger dropdown-toggle dropdown-toggle-split"
+                                                                                            data-toggle="dropdown"
+                                                                                            aria-haspopup="true"
+                                                                                            aria-expanded="false">
+                                                                                            <span class="sr-only">Toggle
+                                                                                                Dropdown</span>
+                                                                                        </button>
+                                                                                        <div class="dropdown-menu">
+                                                                                            <a class="dropdown-item"
+                                                                                                href="/admin/order/action-update?action=Pending&orderId=<%= order._id %>">Pending</a>
+                                                                                            <a class="dropdown-item"
+                                                                                                href="/admin/order/action-update?action=Approved&orderId=<%= order._id %>">Approved</a>
+                                                                                            <a class="dropdown-item"
+                                                                                                href="/admin/order/action-update?action=Reject&orderId=<%= order._id %>">Reject</a>
+                                                                                            <a class="dropdown-item"
+                                                                                                href="/admin/order/action-update?action=Completed&orderId=<%= order._id %>">Completed</a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <% } %>
+                                                                                        <% } %>
+
 
                                                                 </td>
                                                                 <td>

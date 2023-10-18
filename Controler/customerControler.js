@@ -10,7 +10,8 @@ const jwt = require('jsonwebtoken');
 const crypto = require("crypto")
 require("dotenv").config();
 const Coupon = require("../Models/couponModel")
-
+const Category = require("../Models/productCategory")
+const Swal = require('sweetalert2');
 
 const loadRegister = async (req, res, next) => {
     try {
@@ -21,7 +22,8 @@ const loadRegister = async (req, res, next) => {
 }
 const loadhome = async (req, res) => {
     try {
-        res.render("User/index", { user: req.session.user })
+
+        res.render("User/index", { user: req.session.user, query: "" })
     } catch (error) {
         console.log(error.message);
     }
@@ -124,7 +126,6 @@ const insertUser = async (req, res) => {
         console.log(error);
     }
 }
-
 //send email models
 let transporter = nodemailer.createTransport({
     service: "Gmail",
@@ -136,7 +137,6 @@ let transporter = nodemailer.createTransport({
         pass: process.env.AUTH_PASS,
     }
 });
-
 // Send OTP verification email
 const sendOTPVerificationEmail = async ({ _id, email }, res) => {
     try {
@@ -158,7 +158,7 @@ const sendOTPVerificationEmail = async ({ _id, email }, res) => {
             userId: _id,
             otp: hashedOTP,
             createdAt: Date.now(),
-            expireAt: Date.now() + 3600000,
+            expireAt: Date.now() + 60000,
         });
 
         // Save OTP record
@@ -186,6 +186,8 @@ const loadOTPpage = async (req, res) => {
         const userId = req.query.userId;
         console.log(userId); // Log the userId for debugging
         res.render('User/OTPverificationPage', { message: '', id: userId, user: "" });
+
+
 
     } catch (error) {
         console.log(error.message);
@@ -403,6 +405,19 @@ const validOTPsetPass = async (req, res) => {
         res.status(500).send("Internal Server Error");
     }
 };
+const forgetPassResendOtp = async (req, res) => {
+    try {
+        const { id } = req.body
+        const userData = await Customer.findById(id)
+        await sendOTPVerificationEmail(userData)
+        if (userData) {
+            return res.redirect(`/user/set-new-password?id=${id}`)
+        }
+
+    } catch (error) {
+        console.log(error.message)
+    }
+}
 
 //session destrying User Logouting
 const userLogouting = (req, res, next) => {
@@ -419,7 +434,13 @@ const userLogouting = (req, res, next) => {
     }
 }
 const loadShop = async (req, res) => {
-    console.log(req.query);
+    let page = req.query.page
+    const pageSize = 9
+    page = parseInt(req.query.page) || 1;
+    const skip = ((page - 1) * pageSize);
+    const currentPage = page
+    //pagination coded ^
+
     let products
     const query = req.query.query
     const cate = req.query.category
@@ -429,27 +450,82 @@ const loadShop = async (req, res) => {
     const max = parseInt(req.query.max) || 1000000
 
     try {
-            if(cate && brand){
-                const regex = new RegExp(query, 'i');
-                products = await Product.find({ is_delete: false, in_stock: true, product_name: regex, price: { $gte: min, $lte: max } ,category : cate,brand_name : brand})
-            }else if(brand && !cate){
-                const regex = new RegExp(query, 'i');
-                products = await Product.find({ is_delete: false, in_stock: true, product_name: regex, price: { $gte: min, $lte: max } ,brand_name : brand})
-            }else if(cate && !brand){
-                const regex = new RegExp(query, 'i');
-                products = await Product.find({ is_delete: false, in_stock: true, product_name: regex, price: { $gte: min, $lte: max } ,category : cate})
-            }else{
-                const regex = new RegExp(query, 'i');
-                products = await Product.find({ is_delete: false, in_stock: true, product_name: regex, price: { $gte: min, $lte: max } })
+        if (cate && brand) {
+            const regex = new RegExp(query, 'i');
+            products = await Product.find({ is_delete: false, in_stock: true, product_name: regex, price: { $gte: min, $lte: max }, category: cate, brand_name: brand }).skip(skip).limit(pageSize)
+        } else if (brand && !cate) {
+            const regex = new RegExp(query, 'i');
+            products = await Product.find({ is_delete: false, in_stock: true, product_name: regex, price: { $gte: min, $lte: max }, brand_name: brand }).skip(skip).limit(pageSize)
+        } else if (cate && !brand) {
+            const regex = new RegExp(query, 'i');
+            products = await Product.find({ is_delete: false, in_stock: true, product_name: regex, price: { $gte: min, $lte: max }, category: cate }).skip(skip).limit(pageSize)
+        } else {
+            const regex = new RegExp(query, 'i');
+            products = await Product.find({ is_delete: false, in_stock: true, product_name: regex, price: { $gte: min, $lte: max } }).skip(skip).limit(pageSize)
+        }
+
+
+
+        const brandNames = await Product.aggregate([
+            {
+                $match: {
+                    is_delete: false
+                }
+            },
+            {
+                $group: {
+                    _id: '$brand_name', // Group by brand_name
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    brand_name: '$_id' // Rename the _id field to brand_name
+                }
             }
-   
-        
-        
-        const filter = await Product.find({ is_delete: false }, { _id: 0, brand_name: 1, category: 1 })
-        .populate("category", { _id: 1, categoryName: 1 });
-      
-        console.log(filter)
-        res.render('User/shop', { query: "", products, user: req.session.user, success: req.flash('success') ,filter})
+        ]);
+        console.log(brandNames);
+        const categories = await Product.find({ is_delete: false })
+            .populate({
+                path: 'category',
+                model: 'productCategry', // Assuming this is the model name for the 'productCategry' collection
+                select: 'categoryName' // Select the 'categoryName' field
+            })
+            .select('category')
+            .exec();
+
+        // Create a set to store unique category names
+        const uniqueCategories = new Set();
+
+        // Filter out duplicates and store unique category names in an array
+        const uniqueCategoryArray = categories.filter((item) => {
+            if (item && item.category && item.category.categoryName) {
+                if (!uniqueCategories.has(item.category.categoryName)) {
+                    uniqueCategories.add(item.category.categoryName);
+                    return true;
+                }
+            }
+            return false;
+        });
+
+        // Now, uniqueCategoryArray contains the unique category names
+
+
+
+        const filter = await Product.find({ is_delete: false })
+        console.log(categories)
+
+
+        res.render('User/shop', {
+            query: "",
+            products,
+            user: req.session.user,
+            success: req.flash('success'),
+            brandNames,
+            filter,
+            uniqueCategoryArray,
+            currentPage
+        })
     } catch (error) {
         console.log(error.message);
     }
@@ -659,7 +735,6 @@ const displayProduct = async (req, res) => {
         console.log(error.message);
     }
 }
-
 const loadCart = async (req, res) => {
     try {
         const userId = req.session.user;
@@ -669,22 +744,30 @@ const loadCart = async (req, res) => {
         }
         const cartItems = userWithCart.cart;
 
-        cartItems.forEach((item) => {
-            let productOff = item.product.offerPrice
-            let categoryOff = item.product.categoryOfferPrice
-            const lowoOfferPrice = Math.max(productOff, categoryOff)
-            let actualPrice
-            if (lowoOfferPrice !== 0) {
-                actualPrice = lowoOfferPrice
-            } else {
-                actualPrice = lowoOfferPrice  
-            }
-            const productPrice = actualPrice
-            const quantity = item.quantity;
+        cartItems.forEach(async (item) => {
+            if (item.product) {
+                let productOff = parseInt(item.product.offerPrice) || 0;
+                let categoryOff = parseInt(item.product.categoryOfferPrice) || 0;
+                const lowoOfferPrice = Math.max(productOff, categoryOff);
+                let actualPrice;
+                if (lowoOfferPrice !== 0) {
+                    actualPrice = lowoOfferPrice;
+                } else {
+                    actualPrice = lowoOfferPrice;
+                }
+                const productPrice = actualPrice;
+                const quantity = item.quantity;
 
-            item.total = quantity * productPrice;
+                item.total = quantity * productPrice;
+                await Customer.updateOne(
+                    { _id: userId, "cart._id": item._id },
+                    { $set: { "cart.$.total": item.total } }
+                );
+
+            }
         });
         await userWithCart.save();
+
         return res.render('User/cart', {
             currentUser: userWithCart,
             user: userId,
@@ -696,7 +779,6 @@ const loadCart = async (req, res) => {
         res.status(500).json({ error: 'Failed to load cart' });
     }
 };
-
 const productAddToCart = async (req, res) => {
     try {
         const user = await Customer.findById(req.session.user)
@@ -822,31 +904,52 @@ const loadchekout = async (req, res) => {
 
         const User = await Customer.findById(req.session.user).populate('cart.product');
         const cartItems = User.cart;
+        if (cartItems.length !== 0) {
+            cartItems.forEach((item) => {
 
-        cartItems.forEach((item) => {
-
-            const lowoOfferPrice = Math.max(item.product.offerPrice, item.product.categoryOfferPrice)
-            let regularPrice
-            if (lowoOfferPrice !== 0) {
-                regularPrice = lowoOfferPrice
-            } else {
-                regularPrice = item.product.price
-            }
+                const lowoOfferPrice = Math.max(item.product.offerPrice, item.product.categoryOfferPrice)
+                let regularPrice
+                if (lowoOfferPrice !== 0) {
+                    regularPrice = lowoOfferPrice
+                } else {
+                    regularPrice = item.product.price
+                }
 
 
-            const productPrice = regularPrice
-            const quantity = item.quantity; // Make sure 'quantity' is defined and accurate
-            item.total = quantity * productPrice;
-        });
+                const productPrice = regularPrice
+                const quantity = item.quantity; // Make sure 'quantity' is defined and accurate
+                item.total = quantity * productPrice;
+            });
+            const userdCoupons = User.earnedCoupons.map(earnedCoupon => earnedCoupon.coupon);
 
-        await User.save();
+            console.log(userdCoupons);
+            const notUserCoupons = await Coupon.find({
+                _id: { $nin: userdCoupons },
+                coupon_done: false
+            });
+            console.log(notUserCoupons);
+            await User.save();
 
-        const cart = User.cart
-        const address = await Address.find({ User: user_id })
+            const cart = User.cart
+            const address = await Address.find({ User: user_id })
 
-        const selectAddress = await Address.findOne({ in_use: true, User: user_id })
+            const selectAddress = await Address.findOne({ in_use: true, User: user_id })
 
-        res.render("User/checkout", { User, cart, address, user: req.session.user, selectAddress, message: mess })
+            res.render("User/checkout",
+                {
+                    User,
+                    cart,
+                    address,
+                    user: req.session.user,
+                    selectAddress,
+                    message: "",
+                    notUserCoupons
+                })
+        } else {
+            return res.redirect("/user/cart")
+        }
+
+
     } catch (error) {
         console.log(error.message)
     }
@@ -878,7 +981,7 @@ const placeOrder = async (req, res) => {
     try {
         const paymentOption = req.body.PaymentOption;
         // Validate payment option
-        if (!["COD", "Wallet", "paypal"].includes(paymentOption)) {
+        if (!["COD", "wallet", "paypal"].includes(paymentOption)) {
 
             return res.redirect("/user/checkout?message=Invalid payment option")
         }
@@ -911,7 +1014,7 @@ const placeOrder = async (req, res) => {
 
 
 
-        if (paymentOption == "COD") {
+        if (paymentOption === "COD") {
             const address = usedAddress._id;
             const order = new Order({
                 user: userId,
@@ -971,17 +1074,78 @@ const placeOrder = async (req, res) => {
                 console.log("COD not working properly ");
             }
 
-        } else if (paymentOption == "Wallet") {
-            // Implement wallet payment logic here
+        } else if (paymentOption === "wallet") {
 
-        } else if (paymentOption == "paypal") {
+            if (user.wallet < totalAmount) {
+                return res.redirect("/user/checkout?message=Not enough amount in your wallet")
+            }
+            // Implement wallet payment logic here
+            const address = usedAddress._id;
+            const order = new Order({
+                user: userId,
+                totalAmount, // Assign the correct total amount here
+                paymentOption: paymentOption,
+                deliveryAddress: address,
+            });
+
+            // Update product stock counts and add products to the order
+            for (const cartItem of user.cart) {
+                const productItem = await Product.findById(cartItem.product);
+
+                if (!productItem) {
+                    return res.redirect("/user/checkout?message=Product not found")
+
+                }
+
+                if (cartItem.quantity > productItem.stock_count) {
+                    return res.redirect("/user/checkout?message=Not enough stock for some products")
+
+                }
+
+                // Update stock count and save the product
+                productItem.stock_count -= cartItem.quantity;
+                await productItem.save();
+
+                // Add product to the order
+                order.products.push({
+                    product: cartItem.product,
+                    quantity: cartItem.quantity,
+                    total: cartItem.total,
+                });
+            }
+
+            if (couponDiscount > 0) {
+                await Customer.findByIdAndUpdate(req.session.user, {
+                    $push: { "earnedCoupons": { coupon: couponId } }
+                });
+
+
+
+            }
+
+            // Save the order and remove cart items
+            const orderSave = await order.save();
+
+            if (orderSave) {
+                // Remove cart items from the user's cart
+                const removeCart = await Customer.findByIdAndUpdate(req.session.user, { $unset: { cart: {} } });
+
+                if (removeCart) {
+                    return res.redirect('/user/show-order-details/');
+                } else {
+                    console.log("Cannot find any cart items...");
+                }
+            } else {
+                console.log("COD not working properly ");
+            }
+        } else if (paymentOption === "paypal") {
 
             return res.redirect(`/user/product/online-payment?discount=${couponDiscount}&id=${couponId}`);
 
         }
 
     } catch (error) {
-        console.error(error);
+        console.error(error.message);
         return res
             .status(500)
             .json({ error: 'An error occurred while placing the order' });
@@ -1029,12 +1193,43 @@ const cancelOrder = async (req, res) => {
     const orderId = req.body.orderId
     try {
         const cancel = await Order.findByIdAndUpdate(orderId, { $set: { orderCanceled: true, } })
+        if (cancel.paymentOption == "razorpay") {
+            const updateResult = await Customer.findByIdAndUpdate(
+                cancel.user,
+                {
+                    $inc: { wallet: cancel.totalAmount },
+                    $push: {
+                        walletHistory: {
+                            date: Date.now(),
+                            amount: cancel.totalAmount,
+                            message: "Order canceled and amount credited",
+                        },
+                    },
+                },
+                { new: true } // To get the updated customer document
+            );
+        }
         cancel.products.forEach(async (pro) => {
             const proUpdateQuantity = await product.findById(pro.product)
             proUpdateQuantity.stock_count += pro.quantity
             proUpdateQuantity.save()
         })
         return res.redirect("/user/show-order-details/")
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+const returnProductAction = async (req, res) => {
+    try {
+        console.log(req.body.orderId);
+        const returnOrder = await Order.findByIdAndUpdate(req.body.orderId, {
+            $set: { is_returned: true, return_reason: req.body.reason }
+        });
+        console.log(returnOrder);
+        if (returnOrder) {
+            return res.redirect("/user/show-order-details/")
+        }
+
     } catch (error) {
         console.log(error.message)
     }
@@ -1052,7 +1247,6 @@ const loadWallet = async (req, res) => {
         console.log(error.message);
     }
 }
-
 const loadShopFilter = async (req, res) => {
     console.log(req.body)
     try {
@@ -1061,7 +1255,6 @@ const loadShopFilter = async (req, res) => {
         console.log(error.message)
     }
 }
-
 const loadCoupons = async (req, res) => {
     try {
         const Coupons = await Coupon.find({ coupon_done: false })
@@ -1122,10 +1315,20 @@ const applayingCoupon = async (req, res) => {
     } catch (error) {
         // Handle any errors here
     }
-};
+}
+const resedOtp = async (req, res) => {
+    try {
+        const { userId } = req.body
+        const userDate = await Customer.findById(userId)
 
-
-
+        await sendOTPVerificationEmail(userDate)
+        if (userDate) {
+            return res.redirect(`/user/otpVerification?userId=${userId}`)
+        }
+    } catch (error) {
+        console.log(error.messgae);
+    }
+}
 
 module.exports = {
     loadRegister, loadhome, insertUser, loadOTPpage, checkOTPValid, loadLogin, checkUserValid,
@@ -1133,5 +1336,5 @@ module.exports = {
     userUpdatePassword, loadAddAddressPage, addUserAddress, editAddress, updateAddress, deleteAddress, displayProduct,
     productAddToCart, loadCart, updateCartQuantity, deleteProductCart, loadForgetPage, ForgetPasswordcheckingValid,
     loadChangePass, validOTPsetPass, loadchekout, selectAddress, placeOrder, loadOrder, loadOrderProductDetails,
-    cancelOrder, loadWallet, loadCoupons, applayingCoupon,
+    cancelOrder, loadWallet, loadCoupons, applayingCoupon, returnProductAction, resedOtp, forgetPassResendOtp
 }

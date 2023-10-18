@@ -9,28 +9,24 @@ const Address = require("../Models/userAddress")
 const mongoose = require("mongoose")
 
 
-
+//RAZORPAY ORDER INSTANCE 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_ID_KEY,
   key_secret: process.env.RAZORPAY_SECRET_KEY,
 });
-
-//loadPaymentpage
+//RENDERE THE PAYMENT PAGE
 const loadPaymentPage = async (req, res) => {
   try {
     //if have a coupon then work this 
-
+console.log("ha");
     const couponId = req.query.id || '0';
 
     const userId = req.session.user;
     let couponDiscount = parseInt(req.query.discount) || 0;
-
-
+    
     const user = await Customer.findById(userId)
     const orderDetails = await Order.find({ user: userId });
     // Calculate the total order amount in paise
-
-
     let am = user.totalCartAmount
     let totalPayAmount = (am - couponDiscount)
     console.log(totalPayAmount, couponDiscount);
@@ -46,14 +42,12 @@ const loadPaymentPage = async (req, res) => {
       user: userId,
       couponId: couponId
     });
-
-
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error(error.message);
+
   }
 }
-// checkThePayment 
+//CHECK THE RERAZORPAY SIGNATURE PAYMENT SUCCESS OR NOT 
 const checkRazorpaySignature = async (req, res) => {
   const { razorpay_payment_id, razorpay_order_id, razorpay_signature, order_id, secret, amount, couponId } = req.body;
   console.log(req.body);

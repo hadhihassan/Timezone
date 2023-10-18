@@ -48,6 +48,18 @@ const orderSchema = new mongoose.Schema({
         ref: "Address",
         required:true
     },
+    is_returned:{
+        type:Boolean,
+        default : false
+    },
+    return_reason:{
+        type:String,
+    },
+    return_Status:{
+        type: String,
+        enum: ["Pending", "Reject","Approved","Completed"],
+        default: "Pending"
+    }
 
 });
 

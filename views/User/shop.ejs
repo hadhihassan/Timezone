@@ -1,82 +1,70 @@
-<!-- Preloader Start -->
 <header>
     <!-- Header Start -->
     <%- include('../partials/Customerside/header') %>
 
         <!-- Header End -->
 </header>
+
+
 <main>
 
     <div class="container">
-        <div> <br> <br> <br>
+        <div class="mt-5 mb-5">
             <form id="price-range-form" action="/user/shop" method="get">
-
-            <div class="row filter-box d-flex shadow-sm">
-                <div class="col-md-4">
-                    <div class="filter-box">
-                        <h3 class="filter-title text-center">Category</h3>
-                        <hr>
+                <div class="row filter-box">
+                    <div class="col-md-4">
+                        <div class="filter-box">
+                            <h3 class="filter-title text-center">Category</h3>
+                            <hr>
                             <div class="form-check">
-
-                                <% for( let index = 0; index < filter.length; index++ ) { %>
-                                
-                               
-                                    
-                                    <% if (filter[index].category && filter[index].category._id) { %>
-                                        <input class="form-check-input" type="radio" name="category" value="<%= filter[index].category._id%>">
-                                        
-                                <label class="form-check-label"> <%= filter[index].category.categoryName %>
+                                <% for (let index=0; index < uniqueCategoryArray.length; index++) { %>
+                                    <input class="form-check-input" type="radio" name="category"
+                                        value="<%= uniqueCategoryArray[index].category._id %>">
+                                    <label class="form-check-label">
+                                        <%= uniqueCategoryArray[index].category.categoryName %>
+                                    </label>
+                                    <br>
                                     <% } %>
-                                </label>
-                                <br>
-                                <% } %>
                             </div>
+                        </div>
                     </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="filter-box">
-                        <h3 class="filter-title text-center">Brand Name</h3>
-                        <hr>
-                        <div class="form-check">
-                            <% for( let index = 0; index < filter.length; index++ ) { %>
-                                
-                               
-                                <input class="form-check-input" type="radio" name="brand" value="<%= filter[index].brand_name %>">
-                                <label class="form-check-label">
-                                    
-                                    <%= filter[index].brand_name %>
-                                </label>
-                                <br>
-                                <% } %>
+                    <div class="col-md-4">
+                        <div class="filter-box">
+                            <h3 class="filter-title text-center">Brand Name</h3>
+                            <hr>
+                            <div class="form-check">
+                                <% for( let index=0; index < brandNames.length; index++ ) { %>
+                                    <input class="form-check-input" type="radio" name="brand"
+                                        value="<%= brandNames[0].brand_name %>">
+                                    <label class="form-check-label">
+                                        <%= brandNames[index].brand_name %>
+                                    </label>
+                                    <br>
+                                    <% } %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="filter-box">
+                            <h3 class="filter-title text-center">Price Range</h3>
+                            <hr>
+                            <div class="range-slider">
+                                <label for="min-price" class="form-label">Min price: </label>
+                                <span id="min-price-txt">&#8377;0</span>
+                                <input type="range" class="form-range" name="min" min="0" max="500" id="min-price"
+                                    step="1" value="0">
+                            </div>
+                            <div class="range-slider">
+                                <label for="max-price" class="form-label">Max price: </label>
+                                <span id="max-price-txt">&#8377;0</span>
+                                <input type="range" class="form-range" name="max" min="0" max="5000" id="max-price"
+                                    step="1" value="0">
+                            </div>
+                            <button class="btn btn-primary">Apply</button>
                         </div>
                     </div>
                 </div>
 
-
-                <div class="col-md-4">
-                    <div class="filter-box">
-                        <h3 class="filter-title">text-center Price Range</h3>
-                        <hr>
-
-
-                        <label for="min-price" class="form-label">Min price: </label>
-                        <span id="min-price-txt">$0</span>
-                        <input type="range" class="form-range" name="min" min="0" max="500" id="min-price" step="1"
-                            value="0"> <br> <br>
-                        <label for="max-price" class="form-label">Max price: </label>
-                        <span id="max-price-txt">$0</span>
-                        <input type="range" class="form-range" name="max" min="0" max="5000" id="max-price" step="1"
-                            value="0"> <br> <br>
-                        <button class="btn ">Applay</button>
-                       
-
-
-                    </div>
-
-                </div>
-
-      
         </div>
     </div>
 
@@ -108,13 +96,13 @@
                 </div>
                 <!-- Select items -->
                 <div class="select-this">
-                   
-                        <div class="input-group">
-                            <input type="text" class="form-control " name="query" value="<%= query ?? '' %>"
-                                placeholder="Search products">
-                            <button class="btn_3 btn-sm  btn-search btn-primary" type="submit"
-                                style="height: 10px;">Search</button>
-                        </div>
+
+                    <div class="input-group">
+                        <input type="text" class="form-control " name="query" value="<%= query ?? '' %>"
+                            placeholder="Search products">
+                        <button class="btn_3 btn-sm  btn-search btn-primary" type="submit"
+                            style="height: 10px;">Search</button>
+                    </div>
                     </form>
                 </div>
             </div>
@@ -144,6 +132,7 @@
                         <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
                             aria-labelledby="nav-home-tab">
                             <div class="row">
+
                                 <% if (products.length==0) { %>
                                     <h4 class="text-center text-danger">
                                         No items products..
@@ -154,14 +143,14 @@
                                             <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
                                                 <div class="single-popular-items mb-50 text-center">
                                                     <div class="popular-img">
-                                                        <a
+                                                        <a class="add-to-cart-link"
                                                             href="/user/displayProduct?productId=<%= products[product]._id %>">
                                                             <img src="data:<%= products[product].images[0].contentType %>;base64,<%= products[product].images[0].data.toString('base64') %>"
                                                                 alt="<%= products[product].price %>" </a>
 
                                                             <% if (products[product].stock_count> 0) { %>
                                                                 <div class="img-cap">
-                                                                    <a
+                                                                    <a class="add-to-cart-link"
                                                                         href="/user/product/addcart?productId=<%= products[product]._id %>">
                                                                         <span>Add to cart</span>
                                                                     </a>
@@ -186,32 +175,27 @@
                                                             products[product].categoryOfferPrice > 0) { %>
                                                             <% if (products[product].offerPrice <
                                                                 products[product].categoryOfferPrice) { %>
-
-                                                                <small>$<%= products[product].offerPrice %></small>
-                                                                <small><del class="text-danger">
-                                                                        <%=products[product].price %>
-                                                                    </del></small>
+                                                                    
+                                                                <h1>&#8377;<%= products[product].offerPrice %></h1> <small><del class="text-danger"> <%=products[product].price %> </del></small>
 
                                                                 <% } else { %>
 
-                                                                    <small>$<%= products[product].categoryOfferPrice%>
-                                                                            </small>
-                                                                    <small class="text-danger"><del
-                                                                            class="text-danger">$<%=
-                                                                                products[product].price %></del></small>
+                                                                    <h1>&#8377;<%= products[product].categoryOfferPrice%></h1>
+                                                                    <small class="text-danger"><del class="text-danger">&#8377;<%=products[product].price %></del></small>
 
                                                                     <% } %>
 
-                                                                        <% } else if (products[product].offerPrice> 0) {
+                                                                        <% } else if (products[product].offerPrice>
+                                                                            0) {
                                                                             %>
                                                                             <!-- Display offer price -->
 
-                                                                            <small>$<%= products[product].offerPrice %>
-                                                                                    </small>
+                                                                            <h1>&#8377;<%= products[product].offerPrice %>
+                                                                            </h1>
                                                                             <small class="text-danger"><del
-                                                                                    class="text-danger">$
+                                                                                    class="text-danger">&#8377;
                                                                                     <%=products[product].price %>
-                                                                                        </del></small>
+                                                                                </del></small>
 
 
                                                                             <% } else if
@@ -220,17 +204,17 @@
                                                                                 <!-- Display category offer price -->
 
 
-                                                                                <small>$<%=
+                                                                                <h1>&#8377;<%=
                                                                                         products[product].categoryOfferPrice
-                                                                                        %></small>
+                                                                                        %></h1>
                                                                                 <small class="text-danger"><del
-                                                                                        class="text-danger">$<%=
+                                                                                        class="text-danger">&#8377;<%=
                                                                                             products[product].price %>
-                                                                                            </del></small>
+                                                                                    </del></small>
 
                                                                                 <% } else { %>
                                                                                     <!-- Display original price -->
-                                                                                    <span>$<%= products[product].price
+                                                                                    <span>&#8377;<%= products[product].price
                                                                                             %></span>
                                                                                     <% } %>
 
@@ -254,7 +238,7 @@
 
                                                             <% if (products[product + 1].stock_count> 0) { %>
                                                                 <div class="img-cap">
-                                                                    <a
+                                                                    <a class="add-to-cart-link"
                                                                         href="/user/product/addcart?productId=<%= products[product +1]._id %>">
                                                                         <span>Add to cart</span>
                                                                     </a>
@@ -277,20 +261,20 @@
                                                                 <% if (products[product + 1].offerPrice <
                                                                     products[product + 1].categoryOfferPrice) { %>
 
-                                                                    <small>$<%= products[product + 1].offerPrice %>
-                                                                            </small>
+                                                                    <h1>&#8377;<%= products[product + 1].offerPrice %>
+                                                                    </h1>
                                                                     <small><del class="text-danger">
                                                                             <%=products[product + 1].price %>
                                                                         </del></small>
 
                                                                     <% } else { %>
 
-                                                                        <small>$<%= products[product +
+                                                                        <small>&#8377;<%= products[product +
                                                                                 1].categoryOfferPrice%></small>
                                                                         <small class="text-danger"><del
-                                                                                class="text-danger">$<%=
+                                                                                class="text-danger">&#8377;<%=
                                                                                     products[product + 1].price %>
-                                                                                    </del></small>
+                                                                            </del></small>
 
                                                                         <% } %>
 
@@ -298,12 +282,13 @@
                                                                                 1].offerPrice> 0) { %>
                                                                                 <!-- Display offer price -->
 
-                                                                                <small>$<%= products[product +
+                                                                                <small>&#8377;<%= products[product +
                                                                                         1].offerPrice %></small>
                                                                                 <small class="text-danger"><del
-                                                                                        class="text-danger">$
+                                                                                        class="text-danger">&#8377;
                                                                                         <%=products[product + 1].price
-                                                                                            %></del></small>
+                                                                                            %>
+                                                                                    </del></small>
 
 
                                                                                 <% } else if (products[product +
@@ -311,18 +296,18 @@
                                                                                     <!-- Display category offer price -->
 
 
-                                                                                    <small>$<%= products[product +
+                                                                                    <small>&#8377;<%= products[product +
                                                                                             1].categoryOfferPrice %>
-                                                                                            </small>
+                                                                                    </small>
                                                                                     <small class="text-danger"><del
-                                                                                            class="text-danger">$<%=
+                                                                                            class="text-danger">&#8377;<%=
                                                                                                 products[product +
                                                                                                 1].price %>
-                                                                                                </del></small>
+                                                                                        </del></small>
 
                                                                                     <% } else { %>
                                                                                         <!-- Display original price -->
-                                                                                        <span>$<%= products[product +
+                                                                                        <span>&#8377;<%= products[product +
                                                                                                 1].price %></span>
                                                                                         <% } %>
                                                         </div>
@@ -334,7 +319,7 @@
                                                         <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
                                                             <div class="single-popular-items mb-50 text-center">
                                                                 <div class="popular-img">
-                                                                    <a
+                                                                    <a class="add-to-cart-link"
                                                                         href="/user/displayProduct?productId=<%= products[product + 2]._id %>">
                                                                         <input type="hidden" name="productID"
                                                                             value="<%= product._id %>">
@@ -342,9 +327,10 @@
                                                                             alt="<%= products[product + 2].price %> Image">
                                                                     </a>
 
-                                                                    <% if (products[product + 2].stock_count> 0) { %>
+                                                                    <% if (products[product + 2].stock_count> 0) {
+                                                                        %>
                                                                         <div class="img-cap">
-                                                                            <a id="addToCartLink"
+                                                                            <a class="add-to-cart-link"
                                                                                 href="/user/product/addcart?productId=<%= products[product + 2]._id %>">
                                                                                 <span>Add to cart</span>
                                                                             </a>
@@ -359,30 +345,34 @@
                                                                                 </div>
                                                                 </div>
                                                                 <div class="popular-caption">
-                                                                    <h3><a href="product_details.html">
+                                                                    <h3><a href="product_details.html"
+                                                                            class="add-to-cart-link">
                                                                             <%= products[product + 2].product_name %>
                                                                         </a></h3>
                                                                     <% if (products[product + 2].offerPrice> 0 &&
-                                                                        products[product + 2].categoryOfferPrice > 0) {
+                                                                        products[product + 2].categoryOfferPrice >
+                                                                        0) {
                                                                         %>
                                                                         <% if (products[product + 2].offerPrice <
                                                                             products[product + 2].categoryOfferPrice) {
                                                                             %>
 
-                                                                            <small>$<%= products[product + 2].offerPrice
-                                                                                    %></small>
+                                                                            <p>&#8377;<%= products[product + 2].offerPrice
+                                                                                    %></p>
                                                                             <small><del class="text-danger">
                                                                                     <%=products[product + 2].price %>
                                                                                 </del></small>
 
                                                                             <% } else { %>
 
-                                                                                <small>$<%= products[product +
-                                                                                        2].categoryOfferPrice%></small>
+                                                                                <small>&#8377;<%= products[product +
+                                                                                        2].categoryOfferPrice%>
+                                                                                </small>
                                                                                 <small class="text-danger"><del
-                                                                                        class="text-danger">$<%=
+                                                                                        class="text-danger">&#8377;<%=
                                                                                             products[product + 2].price
-                                                                                            %></del></small>
+                                                                                            %>
+                                                                                    </del></small>
 
                                                                                 <% } %>
 
@@ -390,74 +380,85 @@
                                                                                         2].offerPrice> 0) { %>
                                                                                         <!-- Display offer price -->
 
-                                                                                        <small>$<%= products[product +
-                                                                                                2].offerPrice %></small>
+                                                                                        <small>&#8377;<%= products[product +
+                                                                                                2].offerPrice %>
+                                                                                        </small>
                                                                                         <small class="text-danger"><del
-                                                                                                class="text-danger">$
+                                                                                                class="text-danger">&#8377;
                                                                                                 <%=products[product +
                                                                                                     2].price %>
-                                                                                                    </del></small>
+                                                                                            </del></small>
 
 
                                                                                         <% } else if (products[product +
-                                                                                            2].categoryOfferPrice> 0) {
+                                                                                            2].categoryOfferPrice>
+                                                                                            0) {
                                                                                             %>
                                                                                             <!-- Display category offer price -->
 
 
-                                                                                            <small>$<%= products[product
+                                                                                            <small>&#8377;<%= products[product
                                                                                                     +
                                                                                                     2].categoryOfferPrice
                                                                                                     %></small>
                                                                                             <small
                                                                                                 class="text-danger"><del
-                                                                                                    class="text-danger">$
+                                                                                                    class="text-danger">&#8377;
                                                                                                     <%= products[product
                                                                                                         + 2].price %>
-                                                                                                        </del></small>
+                                                                                                </del></small>
 
                                                                                             <% } else { %>
                                                                                                 <!-- Display original price -->
-                                                                                                <span>$<%=
+                                                                                                <span>&#8377;<%=
                                                                                                         products[product
                                                                                                         + 2].price %>
-                                                                                                        </span>
+                                                                                                </span>
                                                                                                 <% } %>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <% } %>
-                                                            <!-- End of product group -->
+
+
+
                                                             <% } %>
                             </div>
 
                         </div>
 
-                        <!-- Card two -->
 
 
-                        <!-- Card three -->
+                        <div class="text-center">
+                            <nav aria-label="Page navigation" class="pagination">
+                                <ul class="pagination justify-content-end">
 
-                        <!-- End Nav Card -->
+                                    <% const totalPages=Math.max(1, Math.ceil(filter.length / 10)); %>
+                                        <!-- Loop through the total number of pages and create a page link for each -->
+                                        <% for (let page=1; page <=totalPages; page++) { %>
+                                            <li class="page-item <% if (currentPage == page) { %>disabled<% } %>">
+                                                <a class="page-link" href="/user/shop?page=<%= page %>">
+                                                    <%= page %>
+                                                </a>
+                                            </li>
+                                            <% } %>
+
+                                </ul>
+                            </nav>
+                        </div>
+
+
+
                     </div>
     </section>
-    <!-- Latest Products End -->
-    <!--? Shop Method Start-->
+
     <%- include('../partials/Customerside/shopMethods') %>
-        <!-- Shop Method End-->
+
 </main>
 <footer>
-    <!-- Footer Start-->
+
     <%- include('../partials/Customerside/footer') %>
-        <!-- Footer End-->
+
 </footer>
-<!--? Search model Begin -->
-<div class="search-model-box">
-    <div class="h-100 d-flex align-items-center justify-content-center">
-        <div class="search-close-btn">+</div>
-        <form class="search-model-form" action="/user/shop" method="get">
-            <input type="text" id="search-input" name="query" placeholder="Searching key.....">
-        </form>
-    </div>
-</div>
-<!-- Search model end -->
+
+

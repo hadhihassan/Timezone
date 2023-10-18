@@ -28,105 +28,82 @@
                 <br>
             </div>
             <br>
-            <div class="row">
-                <br>
-                <% userOrder.forEach((order,i)=> { %>
-                    <div class="col-md-4">
-                        <div class="shadow card" style="width: 23rem;">
+            <div class="container">
+                <% userOrder.forEach((order, i) => { %>
+                    <div class="card mb-3">
+                        <div class="card-body">
                             <!-- Delivery Address -->
-                            <div class="text-center ">
-                                <br>
-                                <form action="/user/profile/show-product-details/" method="post">
-                                    <input type="hidden" name="Products" value="<%= userOrder[i]._id %>">
-                                    <button class="shadow-lg  btn_1">Show Product details <sup></sup> </button>
-                                </form>
-                                <br>
-                            </div>
-
-                            <hr>
-                            <div class="card-body">
+                            <form action="/user/profile/show-product-details/" method="post">
+                                <input type="hidden" name="Products" value="<%= userOrder[i]._id %>">
+                                <button class="btn_1 btn-sm btn-primary float-end">Show Product Details</button>
+                            </form>
+                            <br>
+                            <h5 class="card-title">
                                 <% if (order.paymentOption == "razorpay") { %>
-                                    <h5>Delivery Address <sup class="text-danger  class="badge bg-primary text-wrap"">(Payment successful)</sup></h5>
+                                    Delivery Address <sup class="text-danger badge bg-white text-wrap">(Payment successful)</sup>
                                 <% } else { %>
-                                    <h5>Delivery Address</h5>
+                                    Delivery Address
                                 <% } %>
-                                
-
-                                <h6 class="card-text">
-                                    <%= order.deliveryAddress.Name %>
-                                </h6>
-                                <p>
-                                    <%= order.deliveryAddress.HouseName %>
-                                        <%= order.deliveryAddress.RoadArea %>
-                                            <%= order.deliveryAddress.City %>
-                                                <%= order.deliveryAddress.Region %>
-                                                    <%= order.deliveryAddress.Country %> <br>
-                                                        <%= order.deliveryAddress.PinCode %> <br>
-                                                            <%= order.deliveryAddress.Mobile %>
-                                </p>
-                            </div>
-                            <ul class="list-group list-group-light list-group-small">
-                                <li class="list-group-item px-4">
-                                    <h5>Delivery Date <sup class="text-success">(expecting)</sup></h5>
-                                    <p>
-                                        <%= order.deliveryDate %>
-                                    </p>
-                                </li>
-                                <% if (order.orderCanceled==false) { %>
-
-
-                                    <li class="list-group-item px-4 ">
-                                        <% if (order.returnRequest==="Pending" ) { %>
-                                            Status : <span class="text-info">
-                                                <%= order.returnRequest %>
-                                            </span>
-                                            <% } else if (order.returnRequest==="Reject" ) { %>
-                                                Status : <span class="text-danger">
-                                                    <%= order.returnRequest %>
-                                                </span>
-                                                <% } else { %>
-                                                    Status : <span class="text-success">
-                                                        <%= order.returnRequest %>
-                                                    </span>
-                                                    <% } %>
-                                    </li>
-                                    <% if (order.returnRequest==="Approved" || order.returnRequest==="Pending" ) { %>
-                                        <!-- Conditional rendering for Order Cancel button -->
-                                        <li class="list-group-item px-4 text-center">
-                                            <form action="/user/order/Cancel/" method="post">
-                                                <input type="hidden" name="orderId" value="<%= order._id %>">
-                                                <button class="btn">Order Cancel</button>
-                                            </form>
-                                        </li>
-                                        <% } %>
-                                            <% if (order.returnRequest==="Completed" ) { %>
-                                                <li class="list-group-item px-4  text-center">
-                                                    <button class="btn">Return Product</button>
-                                                </li>
-                                                <% } %>
-
-                                                    <% } else { %>
-                                                        <div class="text-center">
-                                                        
-                                                            <br>
-                                                            <br>
-                                                            <h3 class="text-center text-danger">Order Canceld</h3>
-                                                            <br>
-                                                            <br>
-
-                                                        </div>
-                                                        <% } %>
-
-
-                            </ul>
+                            </h5>
+                            <h6 class="card-text"><%= order.deliveryAddress.Name %></h6>
+                            <address>
+                                <%= order.deliveryAddress.HouseName %><br>
+                                <%= order.deliveryAddress.RoadArea %><br>
+                                <%= order.deliveryAddress.City %>, <%= order.deliveryAddress.Region %><br>
+                                <%= order.deliveryAddress.Country %> <%= order.deliveryAddress.PinCode %><br>
+                                Mobile: <%= order.deliveryAddress.Mobile %>
+                            </address>
                         </div>
-                        <br>
-                        <br>
+                        <ul class="list-group list-group-light list-group-small">
+                            <% if (order.orderCanceled === false) { %>
+                                <li class="list-group-item">
+                                    <h5>Delivery Date <sup class="text-success">(expecting)</sup></h5>
+                                    <p><%= order.deliveryDate.toLocaleString() %></p>
 
+                                </li>
+                                <% if (order.is_returned === false) { %>
+                                    <li class="list-group-item">
+                                        <% if (order.returnRequest === "Pending") { %>
+                                            Status: <span class="text-info"><%= order.returnRequest %></span>
+                                        <% } else if (order.returnRequest === "Reject") { %>
+                                            Status: <span class="text-danger"><%= order.returnRequest %></span>
+                                        <% } else { %>
+                                            Status: <span class="text-success"><%= order.returnRequest %></span>
+                                        <% } %>
+                                    </li>
+                                <% } %>
+                            <% } %>
+                            <% if (order.orderCanceled === false) { %>
+                                <% if (order.returnRequest === "Approved" || order.returnRequest === "Pending") { %>
+                                    <li class="list-group-item text-center">
+                                        <form action="/user/order/Cancel/" method="post">
+                                            <input type="hidden" name="orderId" value="<%= order._id %>">
+                                            <button class="btn btn-danger">Cancel Order</button>
+                                        </form>
+                                    </li>
+                                <% } else if (order.is_returned === true) { %>
+                                    <li class="list-group-item text-center">
+                                        <h3 class="text-info">Requesting Product Return <sup class="text-danger">(<%= order.return_Status %>)</sup></h3>
+                                    </li>
+                                <% } else if (order.returnRequest === "Completed") { %>
+                                    <li class="list-group-item text-center">
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
+                                            Return Product
+                                        </button>
+                                    </li>
+                                <% } %>
+                            <% } else { %>
+                                <li class="list-group-item text-center">
+                                    <div class="text-center">
+                                        <h3 class="text-danger text-lg">Order Canceled</h3>
+                                    </div>
+                                </li>
+                            <% } %>
+                        </ul>
                     </div>
-                    <hr>
-                    <% }) %>
+                <% }) %>
             </div>
+            
         </div>
 
 
@@ -134,7 +111,7 @@
 
 
 
-
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
             <script src="/Customer/js/vendor/modernizr-3.5.0.min.js"></script>
             <!-- Jquery, Popper, Bootstrap -->
             <script src="/Customer/js/vendor/jquery-1.12.4.min.js"></script>
@@ -167,6 +144,7 @@
             <!-- Jquery Plugins, main Jquery -->
             <script src="/Customer/js/plugins.js"></script>
             <script src="/Customer/js/main.js"></script>
+
 </body>
 
 </html>

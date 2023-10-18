@@ -1,30 +1,3 @@
-<!doctype html>
-<html lang="zxx">
-
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>Watch shop | eCommers</title>
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="manifest" href="site.webmanifest">
-  <link rel="shortcut icon" type="image/x-icon" href="/Customer/img/favicon.ico">
-
-  <!-- CSS here -->
-  <link rel="stylesheet" href="/Customer/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/Customer/css/owl.carousel.min.css">
-  <link rel="stylesheet" href="/Customer/css/flaticon.css">
-  <link rel="stylesheet" href="/Customer/css/slicknav.css">
-  <link rel="stylesheet" href="/Customer/css/animate.min.css">
-  <link rel="stylesheet" href="/Customer/css/magnific-popup.css">
-  <link rel="stylesheet" href="/Customer/css/fontawesome-all.min.css">
-  <link rel="stylesheet" href="/Customer/css/themify-icons.css">
-  <link rel="stylesheet" href="/Customer/css/slick.css">
-  <link rel="stylesheet" href="/Customer/css/nice-select.css">
-  <link rel="stylesheet" href="/Customer/css/style.css">
-</head>
-
-<body>
 
   <header>
     <!-- Header Start -->
@@ -43,14 +16,38 @@
             <div class="check_title">
               <h2>
                 Have a coupon?
-                <a href="/coupon">Click here to then see the you earned coupons</a>
+                <a href="#" id="couponLink">Click here to see your earned coupons</a>
               </h2>
             </div>
+            <div class="d-flex flex-wrap" id="couponDropdown" style="display: block;">
+              <% notUserCoupons.forEach((element, i) => { %>
+                <div class="coupon-card ">
+                  <h5 class="coupon-title"><%= element.coupon_name %></h5>
+                  <p class="coupon-details">
+                    <strong>Minimum Purchase Amount:</strong> <%= element.minimumPurchaseAmount %>
+                  </p>
+                  <p class="coupon-details">
+                    <strong>Code:</strong> <%= element.coupon_done ? 'Available' : element.code %>
+                  </p>
+                  <p class="coupon-details">
+                    <strong>Discount Amount:</strong> <%= element.discount_amount_or_percentage %>
+                  </p>
+                </div>
+                <% if ((i + 1) % 3 === 0) { %>
+                  <div class="line-break"></div> <!-- line break -->
+                <% } %>
+              <% }) %>
+            </div>
+            
+            
+            
+          
             <input type="text" id="couponInput" placeholder="Enter coupon code" />
             <button class="tp_btn" type="button" onclick="applayCoupon()">
               Apply Coupon
             </button>
           </div>
+                    
 
           <div class="billing_details">
             <div class="row">
@@ -62,59 +59,47 @@
                 <% cart.forEach(items=> { %>
 
                   <div class="card mb-4 shadow">
-                    <div class="card-body p-4  rounded-pill">
+                    <div class="card-body p-4 rounded-pill">
                       <div class="row align-items-center">
-                        <div class="col-md-2">
+                        <div class="col-12 col-md-2 mb-4 mb-md-0 text-center">
                           <img
                             src="data:<%= items.product.images[0].contentType %>;base64,<%= items.product.images[0].data.toString('base64') %>"
-                            alt="<%= items.total %> " style="width: 80px;height: 80px;">
-
+                            alt="<%= items.total %>" class="img-fluid rounded-circle" style="max-width: 80px;">
                         </div>
-                        <div class="col-md-2 d-flex justify-content-center">
+                        <div class="col-6 col-md-2 mb-4 mb-md-0 text-center">
                           <div>
-                            <p class="small text-muted mb-4 pb-2">Brand</p>
-                            <p class="lead fw-normal mb-0">
-                              <%=items.product.brand_name %>
-                            </p>
-                          </div>
-
-                        </div>
-                        <div class="col-md-2 d-flex justify-content-center">
-                          <div>
-                            <p class="small text-muted mb-4 pb-2">Color</p>
-                            <p class="lead fw-normal mb-0">
-                              <%= items.product.color %>
-                            </p>
+                            <p class="small text-muted mb-2">Brand</p>
+                            <p class="lead fw-normal mb-0"><%=items.product.brand_name %></p>
                           </div>
                         </div>
-                        <div class="col-md-2 d-flex justify-content-center">
+                        <div class="col-6 col-md-2 mb-4 mb-md-0 text-center">
                           <div>
-                            <p class="small text-muted mb-4 pb-2">Quantity</p>
-                            <p class="lead fw-normal mb-0">
-                              <%= items.quantity %>
-                            </p>
+                            <p class="small text-muted mb-2">Color</p>
+                            <p class="lead fw-normal mb-0"><%= items.product.color %></p>
                           </div>
                         </div>
-                        <div class="col-md-2 d-flex justify-content-center">
+                        <div class="col-6 col-md-2 mb-4 mb-md-0 text-center">
                           <div>
-                            <p class="small text-muted mb-4 pb-2">Price</p>
-                            <p class="lead fw-normal mb-0">
-                              <%= items.product.price %>
-                            </p>
+                            <p class="small text-muted mb-2">Quantity</p>
+                            <p class="lead fw-normal mb-0"><%= items.quantity %></p>
                           </div>
                         </div>
-                        <div class="col-md-2 d-flex justify-content-center">
+                        <div class="col-6 col-md-2 mb-4 mb-md-0 text-center">
                           <div>
-                            <p class="small text-muted mb-4 pb-2">Total</p>
-                            <p class="lead fw-normal mb-0 ">
-                              <%= items.total %>
-                            </p>
+                            <p class="small text-muted mb-2">Price</p>
+                            <p class="lead fw-normal mb-0"><%= items.product.price %></p>
+                          </div>
+                        </div>
+                        <div class="col-12 col-md-2 mb-4 mb-md-0 text-center">
+                          <div>
+                            <p class="small text-muted mb-2">Total</p>
+                            <p class="lead fw-normal mb-0"><%= items.total %></p>
                           </div>
                         </div>
                       </div>
-
                     </div>
                   </div>
+                  
                   <% }) %>
                     <!-- display product end -->
 
@@ -324,7 +309,7 @@
                         <div class="radion_btn">
                           <input type="radio" id="f-option6" name="PaymentOption" value="paypal" />
                           <label for="f-option6">Razorpay </label>
-                          <img src="/Customer/img/product/single-product/card.jpg" alt="" />
+                          <img src="Customer/img/product/single-product/card.jpg" alt="" />
                           <div class="check"></div>
                         </div>
                       </div>
@@ -350,18 +335,7 @@
 
       <!-- Footer End-->
   </footer>
-  <!--? Search model Begin -->
-  <div class="search-model-box">
-    <div class="h-100 d-flex align-items-center justify-content-center">
-      <div class="search-close-btn">+</div>
-      <form class="search-model-form">
-        <input type="text" id="search-input" placeholder="Searching key.....">
-      </form>
-    </div>
-  </div>
-  <!-- Search model end -->
 
-  <!-- JS here -->
 
   <script>
     function applayCoupon() {
@@ -411,14 +385,6 @@
 
     }
 
-
-
-
-
-
-
-
-
     // Function to display the message for 5 seconds
     function displayMessage(message) {
       const messageContainer = document.getElementById("message-container");
@@ -442,46 +408,74 @@
     if (message || message !== undefined) {
       displayMessage(message);
     }
-  </script>
-  <script src="/Customer/js/vendor/modernizr-3.5.0.min.js"></script>
-  <!-- Jquery, Popper, Bootstrap -->
-  <script src="/Customer/js/vendor/jquery-1.12.4.min.js"></script>
-  <script src="/Customer/js/popper.min.js"></script>
-  <script src="/Customer/js/bootstrap.min.js"></script>
-  <!-- Jquery Mobile Menu -->
-  <script src="/Customer/js/jquery.slicknav.min.js"></script>
 
-  <!-- Jquery Slick , Owl-Carousel Plugins -->
-  <script src="/Customer/js/owl.carousel.min.js"></script>
-  <script src="/Customer/js/slick.min.js"></script>
+    document.addEventListener('DOMContentLoaded', function () {
+  // Function to toggle the coupon dropdown
+  function toggleCouponDropdown() {
+    const couponDropdown = document.getElementById('couponDropdown');
+    if (couponDropdown.style.display === 'block') {
+      couponDropdown.style.display = 'none';
+    } else {
+      couponDropdown.style.display = 'block';
+    }
+  }
 
-  <!-- One Page, Animated-HeadLin -->
-  <script src="/Customer/js/wow.min.js"></script>
-  <script src="/Customer/js/animated.headline.js"></script>
-  <script src="/Customer/js/jquery.magnific-popup.js"></script>
+  // Function to handle clicking the coupon link
+  document.getElementById('couponLink').addEventListener('click', function (event) {
+    event.preventDefault(); // Prevent the link from navigating
+    toggleCouponDropdown();
+  });
+});
+</script>
+  <style>
+/* Style for the coupon-card */
+/* Style for the coupon-card */
+.coupon-card {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  width: calc(33.33% - 20px); /* 33.33% width with 20px spacing on each side */
+  max-height: 220px; /* Set a maximum height for responsiveness */
+  overflow: hidden; /* Hide overflow content */
+}
 
-  <!-- Scroll up, nice-select, sticky -->
-  <script src="/Customer/js/jquery.scrollUp.min.js"></script>
-  <script src="/Customer/js/jquery.nice-select.min.js"></script>
-  <script src="/Customer/js/jquery.sticky.js"></script>
+/* Style for coupon title */
+.coupon-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin: 5px 0;
+  line-height: 1.2; /* Decrease line height for text */
+  white-space: nowrap; /* Prevent text from wrapping */
+  text-overflow: ellipsis; /* Show ellipsis (...) for overflow text */
+  overflow: hidden;
+}
 
-  <!-- contact js -->
-  <script src="/Customer/js/contact.js"></script>
-  <script src="/Customer/js/jquery.form.js"></script>
-  <script src="/Customer/js/jquery.validate.min.js"></script>
-  <script src="/Customer/js/mail-script.js"></script>
-  <script src="/Customer/js/jquery.ajaxchimp.min.js"></script>
+/* Style for coupon details */
+.coupon-details {
+  font-size: 14px;
+  color: #666;
+  margin: 5px 0;
+  line-height: 1.4; /* Decrease line height for text */
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-height: 80px; /* Set a maximum height for text area */
+  overflow: hidden;
+}
 
-  <!-- Jquery Plugins, main Jquery -->
-  <script src="/Customer/js/plugins.js"></script>
-  <script src="/Customer/js/main.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+/* Style for strong elements (e.g., Minimum Purchase Amount) */
+.coupon-details strong {
+  font-weight: bold;
+}
 
-
-
-
-
-
-</body>
-
-</html>
+/* Style for line break */
+.line-break {
+  flex-basis: 100%;
+  height: 0;
+  border-top: 1px solid #ccc;
+  margin: 10px 0;
+}
+  </style>

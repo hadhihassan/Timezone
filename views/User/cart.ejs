@@ -1,7 +1,7 @@
 <!-- Header Start -->
 <%- include('../partials/Customerside/header')%>
   <!-- Header End -->
-  </header>
+
   <main>
 
     <!-- Hero Area Start-->
@@ -45,24 +45,15 @@
                     </tr>
                   </thead>
                   <tbody>
-
-
-
                     <% if (!Products || Products.length <=0) { %>
-        
-                              <p>
-                                <strong class="text-danger">
-                                  No items addedd...
-                                </strong>
-                              </p>
-                      
-                   
+                      <p>
+                        <strong class="text-danger">
+                          No items addedd...
+                        </strong>
+                      </p>
                       <% } %>
-
                         <% Products.forEach((product, i)=> { %>
                           <% if ( currentUser.cart[i].quantity !==0 ) { %>
-
-
                             <tr>
                               <td>
                                 <div>
@@ -108,7 +99,31 @@
                               <td>
                                 <p>
 
-                                  $ <%= product.product.price %>
+                                  <% if (product.product.offerPrice> 0 && product.product.categoryOfferPrice > 0) { %>
+                                    <% if (product.product.offerPrice < product.product.categoryOfferPrice) { %>
+                                      <small>$<%= product.product.offerPrice %></small>
+                                      <small><del class="text-danger">
+                                          <%= product.product.price %>
+                                        </del></small>
+                                      <% } else { %>
+                                        <small>$<%= product.categoryOfferPrice %></small>
+                                        <small class="text-danger"><del class="text-danger">&#8377;<%= product.product.price
+                                              %></del></small>
+                                        <% } %>
+                                          <% } else if (product.product.offerPrice> 0) { %>
+                                            <!-- Display offer price -->
+                                            <small>$<%= product.product.offerPrice %></small>
+                                            <small class="text-danger"><del class="text-danger">&#8377;<%=
+                                                  product.product.price %></del></small>
+                                            <% } else if (product.product.categoryOfferPrice> 0) { %>
+                                              <!-- Display category offer price -->
+                                              <small>$<%= product.product.categoryOfferPrice %></small>
+                                              <small class="text-danger"><del class="text-danger">&#8377;<%=
+                                                    product.product.price %></del></small>
+                                              <% } else { %>
+                                                <!-- Display original price -->
+                                                <span>$<%= product.product.price %></span>
+                                                <% } %>
                                 </p>
                               </td>
                               <td>
@@ -126,41 +141,36 @@
                                 </div>
                               </td>
                               <td>
-
                                 <p class="price" id="cart-total-amount_<%= product.product._id %>"
                                   data-cart-total-id="change_total" name="totalAmount">&#8377;
                                   <%=currentUser.cart[i].total %>
                                 </p>
-
-
                               </td>
                             </tr>
                             <% } %>
                               <% }) %>
+                              <tr class="bottom_button">
+                                <td></td>
+                                <td></td>
+                                <td>
+                                  <h5>Subtotal</h5>
+                                </td>
+                                <td>
 
+                                  <% if (Products.length >= 1) { %>
+                                  <span id="subtotalAmount">
 
-
-                                <tr class="bottom_button">
-                                  <td></td>
-                                  <td></td>
-                                  <td>
-                                    <h5>Subtotal</h5>
-                                  </td>
-                                  <td>
-
-
-                                    <span id="subtotalAmount">
-                                      <%= currentUser.totalCartAmount %>
-                                    </span>
-
-                                  </td>
-                                </tr>
-                               
+                                    <%= currentUser.totalCartAmount %>
+                                  </span>
+                                  <% } else {%>
+                                    <span>&#8377 0</span>
+                                    <% } %>
+                                </td>
+                              </tr>
                   </tbody>
                 </table>
                 <div class="checkout_btn_inner float-right d-flex">
                   <a class="btn_1 " href="/user/shop">Continue Shopping</a>
-
                   <form action="/user/Checkout" method="get">
                     &nbsp;
                     <button type="submit" class="btn_1 ">Proceed to checkout</button>
@@ -176,18 +186,3 @@
     <%- include('../partials/Customerside/footer')%>
       <!-- Footer End-->
   </footer>
-  <!--? Search model Begin -->
-  <div class="search-model-box">
-    <div class="h-100 d-flex align-items-center justify-content-center">
-      <div class="search-close-btn">+</div>
-      <form class="search-model-form">
-        <input type="text" id="search-input" placeholder="Searching key.....">
-      </form>
-    </div>
-  </div>
-  <!-- Search model end -->
-
-  <!-- JS here -->
-
-
-

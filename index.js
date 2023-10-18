@@ -1,7 +1,6 @@
 const express = require("express")
 const app = express()
 const mongoose = require('mongoose')
-const PORT = 3000
 const session = require('express-session')
 require("dotenv").config();
 const adminRoute = require('./Route/adminRoute');
@@ -11,7 +10,7 @@ const cookieParser = require("cookie-parser")
 const nocache = require("nocache")
 const multer = require("multer")
 const morgan = require('morgan')
-
+const Swal = require('sweetalert2');
 
 app.use(express.json());
 app.use(morgan('dev'));
@@ -32,15 +31,14 @@ app.use("/", customerRoute)
 app.use("/admin", adminRoute)
 
 mongoose
-    .connect('mongodb://127.0.0.1:27017/WATCH_SHOP_DATABASE')
+    .connect(process.env.MONGODB_URL)
     .then(() => console.log("DATABASE CONNECTED"))
     .catch((error) => console.log(error))
 
-    app.use((err, req, res, next) => {
-        console.error(err.stack);
-        res.status(500).json({ message: 'Internal Server Error' });
-    });
+
     
-app.listen(PORT, () => console.log("Server Running"))
+app.listen(process.env.PORT, () => console.log("Server Running"))
 
-
+app.use(( req, res) => {
+    return res.render("User/404")
+ });

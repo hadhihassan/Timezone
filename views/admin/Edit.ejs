@@ -147,7 +147,7 @@
                                     <label for="category">Category</label>
                                     <select class="form-control form-control-lg text-white" name="category"
                                       id="category">
-
+                                    
                                       <option value="<%= product.category._id %>"  selected > <%= product.category.categoryName %></option>
                                       <% Categories.forEach(category=> { %>
                                         <% if (product.category !==  category.categoryName ) { %>
@@ -180,7 +180,7 @@
                                     <label class="form-check-label" for="inStockRadio">In Stock</label>
                                   </div>
                                   <div class="form-check">
-                                    <input type="radio" class="form-check-input" name="outOfStock" id="outOfStockRadio"
+                                    <input type="radio" class="form-check-input" name="inStock" id="outOfStockRadio"
                                       value="outOfStock">
                                     <label class="form-check-label" for="outOfStockRadio">Out Of Stock</label>
                                   </div>

@@ -1,27 +1,4 @@
-<!doctype html>
-<html lang="zxx">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Watch shop | eCommers</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="manifest" href="site.webmanifest">
-    <link rel="shortcut icon" type="image/x-icon" href="/Customer/img/favicon.ico">
 
-    <!-- CSS here -->
-        <link rel="stylesheet" href="/Customer/css/bootstrap.min.css">
-        <link rel="stylesheet" href="/Customer/css/owl.carousel.min.css">
-        <link rel="stylesheet" href="/Customer/css/flaticon.css">
-        <link rel="stylesheet" href="/Customer/css/slicknav.css">
-        <link rel="stylesheet" href="/Customer/css/animate.min.css">
-        <link rel="stylesheet" href="/Customer/css/magnific-popup.css">
-        <link rel="stylesheet" href="/Customer/css/fontawesome-all.min.css">
-        <link rel="stylesheet" href="/Customer/css/themify-icons.css">
-        <link rel="stylesheet" href="/Customer/css/slick.css">
-        <link rel="stylesheet" href="/Customer/css/nice-select.css">
-        <link rel="stylesheet" href="/Customer/css/style.css">
-</head>
 <body>
     <header>
         <!-- Header Start -->
@@ -51,7 +28,8 @@
                             <div class="login_part_form_iner">
                                 <h3>Welcome Back ! <br>
                                     Please Sign in now</h3>
-                                <form class="row contact_form" action="/user-Login" method="post" novalidate="novalidate">
+                                <form class="row contact_form" id="loginForm" action="/user-Login"  method="post"  >
+                             
                                     <div class="col-md-12 form-group p_star">
                                         <input type="text" class="form-control" id="email" name="email" value=""
                                             placeholder="Email" required>
@@ -91,54 +69,6 @@
     <footer>
         <!-- Footer Start-->
         <%- include('../partials/Customerside/footer') %>
+        <script src="/Customer/js/validate.js"></script>
         <!-- Footer End-->
     </footer>
-    <!--? Search model Begin -->
-    <div class="search-model-box">
-        <div class="h-100 d-flex align-items-center justify-content-center">
-            <div class="search-close-btn">+</div>
-            <form class="search-model-form">
-                <input type="text" id="search-input" placeholder="Searching key.....">
-            </form>
-        </div>
-    </div>
-    <!-- Search model end -->
-    
-    <!-- JS here -->
-
-    <script src="/Customer/js/vendor/modernizr-3.5.0.min.js"></script>
-    <!-- Jquery, Popper, Bootstrap -->
-    <script src="/Customer/js/vendor/jquery-1.12.4.min.js"></script>
-    <script src="/Customer/js/popper.min.js"></script>
-    <script src="/Customer/js/bootstrap.min.js"></script>
-    <!-- Jquery Mobile Menu -->
-    <script src="/Customer/js/jquery.slicknav.min.js"></script>
-
-    <!-- Jquery Slick , Owl-Carousel Plugins -->
-    <script src="/Customer/js/owl.carousel.min.js"></script>
-    <script src="/Customer/js/slick.min.js"></script>
-
-    <!-- One Page, Animated-HeadLin -->
-    <script src="/Customer/js/wow.min.js"></script>
-    <script src="/Customer/js/animated.headline.js"></script>
-    
-    <!-- Scroll up, nice-select, sticky -->
-    <script src="/Customer/js/jquery.scrollUp.min.js"></script>
-    <script src="/Customer/js/jquery.nice-select.min.js"></script>
-    <script src="/Customer/js/jquery.sticky.js"></script>
-    <script src="/Customer/js/jquery.magnific-popup.js"></script>
-
-    <!-- contact js -->
-    <script src="/Customer/js/contact.js"></script>
-    <script src="/Customer/js/jquery.form.js"></script>
-    <script src="/Customer/js/jquery.validate.min.js"></script>
-    <script src="/Customer/js/mail-script.js"></script>
-    <script src="/Customer/js/jquery.ajaxchimp.min.js"></script>
-    
-    <!-- Jquery Plugins, main Jquery -->	
-    <script src="/Customer/js/plugins.js"></script>
-    <script src="/Customer/js/main.js"></script>
-
-</body>
-    
-</html>
