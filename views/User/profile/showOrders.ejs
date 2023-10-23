@@ -1,4 +1,6 @@
 <%- include('../../partials/Customerside/header') %>
+
+
     <div class="container">
         <div class="shadow p-3 mb-5 bg-body rounded text-center">
             <br>
@@ -70,11 +72,77 @@
                                                 <% if (order.returnRequest==="Approved" ||
                                                     order.returnRequest==="Pending" ) { %>
                                                     <li class="list-group-item text-center">
-                                                        <form action="/user/order/Cancel/" method="post">
-                                                            <button type="button" class="btn btn-danger"
-                                                                data-toggle="modal" onclick="cancellOrder('<%= order._id %>')">
+
+                                                        <div class="dropdown">
+                                                            <button type="button" class="btn btn-danger dropdown-toggle"
+                                                                data-toggle="dropdown">
                                                                 Cancel Order
                                                             </button>
+                                                            <div class="dropdown-menu">
+                                                                <form id="returnForm" action="/user/order/Cancel/"
+                                                                    method="post">
+                                                                    <div class="form-group">
+                                                                        <input type="hidden" id="cancellOrder"
+                                                                            name="orderId" value="<%= order._id%>">
+                                                                        <label for="returnReason">Reason for
+                                                                            Return</label>
+
+                                                                        <div class="form-check">
+                                                                            <input class="form-check-input" type="radio"
+                                                                                name="cancellReason" id="damaged"
+                                                                                value="Item out of stock">
+                                                                            <label class="form-check-label"
+                                                                                for="damaged">
+                                                                                Item out of stock
+                                                                            </label>
+                                                                        </div>
+                                                                        <div class="form-check">
+                                                                            <input class="form-check-input" type="radio"
+                                                                                name="cancellReason" id="wrong"
+                                                                                value="Change of plans">
+                                                                            <label class="form-check-label" for="wrong">
+                                                                                Change of plans
+                                                                            </label>
+                                                                        </div>
+                                                                        <div class="form-check">
+                                                                            <input class="form-check-input" type="radio"
+                                                                                name="cancellReason" id="changedMind"
+                                                                                value="changedMind">
+                                                                            <label class="form-check-label"
+                                                                                for="changedMind">
+                                                                                Changed my mind
+                                                                            </label>
+                                                                        </div>
+                                                                        <div class="form-check">
+                                                                            <input class="form-check-input" type="radio"
+                                                                                name="cancellReason" id="other"
+                                                                                value="Personal reasons">
+                                                                            <label class="form-check-label" for "other">
+                                                                                Personal reasons
+                                                                            </label>
+                                                                        </div>
+                                                                        <div class="form-check">
+                                                                            <input class="form-check-input" type="radio"
+                                                                                name="cancellReason" id="other"
+                                                                                value="other">
+                                                                            <label class="form-check-label" for "other">
+                                                                                Other reason
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="additionalComments">Additional
+                                                                            Comments (optional)</label>
+                                                                        <textarea class="form-control"
+                                                                            name="additionalComments"
+                                                                            id="additionalComments" rows="3"></textarea>
+                                                                    </div>
+                                                                    <div class="text-center">
+                                                                        <button type="submit"  class="btn btn-primary">Submit Cancelled</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
 
 
                                                     </li>
@@ -116,7 +184,9 @@
 
     </div>
 
-    
+
+
+
     <div class="modal fade" id="returnModal" tabindex="-1" role="dialog" aria-labelledby="returnModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -132,7 +202,7 @@
                     <form id="returnForm" action="/return-product" method="post">
                         <div class="form-group">
                             <input type="hidden" id="orderIdInput" name="orderId" value="">
-                       
+
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="returnReason" id="damaged"
                                     value="damaged">
@@ -198,77 +268,10 @@
         </div>
     </div>
 
-    
-    <div class="modal fade" id="orderCanceled" tabindex="-1" role="dialog" aria-labelledby="orderCanceledLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="orderCanceledLabel">Select Return Reason</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-
-                    <form id="returnForm" action="/user/order/Cancel/" method="post">
-                        <div class="form-group">
-                            <input type="hidden" id="cancellOrder" name="orderId" value="">
-                            <label for="returnReason">Reason for Return</label>
-                     
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="cancellReason" id="damaged"
-                                    value="Item out of stock">
-                                <label class="form-check-label" for="damaged">
-                                    Item out of stock
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="cancellReason" id="wrong"
-                                    value="Change of plans">
-                                <label class="form-check-label" for="wrong">
-                                    Change of plans
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="cancellReason" id="changedMind"
-                                    value="changedMind">
-                                <label class="form-check-label" for="changedMind">
-                                    Changed my mind
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="cancellReason" id="other"
-                                    value="Personal reasons">
-                                <label class="form-check-label" for "other">
-                                    Personal reasons
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="cancellReason" id="other"
-                                    value="other">
-                                <label class="form-check-label" for "other">
-                                    Other reason
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="additionalComments">Additional Comments (optional)</label>
-                            <textarea class="form-control" name="additionalComments" id="additionalComments"
-                                rows="3"></textarea>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" form="returnForm" class="btn btn-primary">Submit Return</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
 
- 
+
+
 
     <%- include('../../partials/Customerside/footer') %>
 
@@ -279,11 +282,6 @@
                 myModal.show();
             }
 
-            function cancellOrder(orderId) {
-                document.getElementById("cancellOrder").value = orderId;
-                var myModal = new bootstrap.Modal(document.getElementById("orderCanceled"));
-                myModal.show();
-            }
 
 
         </script>

@@ -1039,6 +1039,7 @@ const loadOrder = async (req, res) => {
             .populate("user")
             .populate("products.product")
             .populate("deliveryAddress")
+            .sort({ createdAt: -1 })
             .exec();
         console.log(userOrder)
         return res.render("User/profile/showOrders", {
