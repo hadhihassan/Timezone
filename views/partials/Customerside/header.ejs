@@ -50,26 +50,16 @@
                                
                                 <li><a href="/">Home</a></li>
                                 <li><a href="/user/shop">Shop</a></li>
-                                <li><a href="about.html">About</a></li>
-                                <li class="hot"><a href="#">Latest</a>
+                                <li><a href="#">Other</a>
                                     <ul class="submenu">
-                                        <li><a href="shop.html">Product list</a></li>
-                                        <li><a href="product_details.html">Product Details</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="#">Pages</a>
-                                    <ul class="submenu">
-                                        <li><a href="login.html">Login</a></li>
-                                        <li><a href="cart.html">Cart</a></li>
-                                        <li><a href="elements.html">Element</a></li>
-                                        <li><a href="confirmation.html">Confirmation</a></li>
-                                        <li><a href="checkout.html">Product Checkout</a></li>
+                                        <li><a href="/user-login">Login</a></li>
+                                        <li><a href="/user/cart">Cart</a></li>
                                     </ul>
                                 </li>
                                 <% if (user) { %>
-                                    <li><a href="/user_LogOut">Log Out</a></li>
+                                    <li><a  id="logOutLink"  href="/user_LogOut">Log Out</a></li>
                                 <% } else if (typeof user === "undefined") { %>
-                                    <li><a href="/user-Login">Login</a></li>
+                                    <li><a id="login" href="/user-Login">Login</a></li>
                                 <% } %>
                             </ul>
                         </nav>
@@ -106,14 +96,15 @@
             </div>
         </div>
     </div>
+    <div class="search-model-box">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="search-close-btn">+</div>
+            <form class="search-model-form" method="get" action="/user/shop">
+    
+               <button type="submit"></button>
+            </form>
+        </div>
+    </div>
+    
     <!-- Header End -->
 </header>
-<div class="search-model-box">
-    <div class="h-100 d-flex align-items-center justify-content-center">
-        <div class="search-close-btn">+</div>
-        <form class="search-model-form" method="get" action="/user/shop">
-
-           <button type="submit"></button>
-        </form>
-    </div>
-</div>

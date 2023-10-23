@@ -71,11 +71,9 @@ const authonticateToken = async (req, res, next) => {
     } else if (req.cookies.jwt) {
       token = req.cookies.jwt;
     }
-  
     if(!token){
       return next();
     }
-  
     const decoded = await promisify(jwt.verify)(token, process.env.JWTSECRET);
     const currentUser = await User.findById(decoded.id);
     if(!currentUser){
@@ -85,7 +83,6 @@ const authonticateToken = async (req, res, next) => {
     res.locals.user = req.user
     return next();
   }
-
 module.exports = {
     userAuth, adminAuth, isAdmin, logged,authonticateToken
 }

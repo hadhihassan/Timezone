@@ -39,7 +39,7 @@ const productSchema = new mongoose.Schema({
     },
     product_tags : {
         type:String,
-        required:true
+        
     },
     in_stock : {
         type:Boolean,

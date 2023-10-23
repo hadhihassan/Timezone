@@ -1,0 +1,103 @@
+<%- include('../partials/Customerside/header') %>
+
+    <section style="background-color: #eee;">
+        <div class="container py-5">
+            <div class="row justify-content-center mb-3">
+                <div class="col-md-12 col-xl-10">
+                    <div class="card shadow-0 border rounded-3">
+                        <% items.forEach((pro)=> { %>
+
+
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0">
+                                        <div class="bg-image hover-zoom ripple rounded ripple-surface">
+                                            <img class="w-100"
+                                                src="data:<%= pro.images[0].contentType %>;base64,<%= pro.images[0].data.toString('base64') %>"
+                                                alt="<%= pro.price %> Image">
+
+                                            <a href="#!">
+                                                <div class="hover-overlay">
+                                                    <div class="mask"
+                                                        style="background-color: rgba(253, 253, 253, 0.15);"></div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-xl-6">
+                                        <h5>
+                                            <%= pro.product_name %>
+                                        </h5>
+
+                                        <div class="mt-1 mb-0 text-muted small">
+                                            <span>100% <%= pro.meterial %></span>
+                                            <span class="text-primary"> • </span>
+                                            <span>Light weight</span>
+                                            <span class="text-primary"> • </span>
+                                            <span>
+                                                <%= pro.color %><br />
+                                            </span>
+                                        </div>
+                                        <div class="mb-2 text-muted small">
+                                            <span>Unique design</span>
+                                            <span class="text-primary"> • </span>
+                                            <span>
+                                                <%= pro.meterial %>
+                                            </span>
+                                            <span class="text-primary"> • </span>
+                                            <span>
+                                                <%= pro.category %><br />
+                                            </span>
+                                        </div>
+                                        <p class="text-truncate mb-4 mb-md-0">
+                                            <%= pro.description %>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-center">
+                                        <div class=" test text-center justify-content-center">
+                                            <% if (pro.offerPrice > 0 && pro.categoryOfferPrice > 0) { %>
+                                                <% if (pro.offerPrice < pro.categoryOfferPrice) { %>
+                                                    <h4>&#8377;<%= pro.offerPrice %></h4>
+                                                    <small><del class="text-danger"><%= pro.price %></del></small>
+                                                <% } else { %>
+                                                    <small>&#8377;<%= pro.categoryOfferPrice %></small>
+                                                    <small class="text-danger"><del class="text-danger">&#8377;<%= pro.price %></del></small>
+                                                <% } %>
+                                            <% } else if (pro.offerPrice > 0) { %>
+                                                <!-- Display offer price -->
+                                                <h4>&#8377;<%= pro.offerPrice %></h4>
+                                                <small class="text-danger"><del class="text-danger">&#8377;<%= pro.price %></del></small>
+                                            <% } else if (pro.categoryOfferPrice > 0) { %>
+                                                <!-- Display category offer price -->
+                                                <h4>&#8377;<%= pro.categoryOfferPrice %></h4>
+                                                <small class="text-danger"><del class="text-danger">&#8377;<%= pro.price %></del></small>
+                                            <% } else { %>
+                                                <!-- Display original price -->
+                                                <h4>&#8377;<%= pro.price %></h4>
+                                            <% } %>
+                                            <a href="/delete-item-wishlist?id=<%= pro._id %>" type="button"
+                                            class=" btn-primary btn-sm me-1 mb-2" data-mdb-toggle="tooltip"
+                                            title="Remove item">
+                                            <i class="fas fa-trash"></i>
+                                          </a>
+    
+                                          <a href="/user/product/addcart?productId=<%= pro._id %>" type="button" class=" btn-danger btn-sm mb-2"
+                                            data-mdb-toggle="tooltip" title="Move to the wish list">
+                                            <i class="fas flaticon-shopping-cart"></i>
+                                          </a>
+                                            
+                                        </div>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+
+                            <% }) %>
+                    </div>
+                </div>
+            </div>
+
+    </section>
+
+
+    <%- include('../partials/Customerside/footer') %>

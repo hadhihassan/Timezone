@@ -97,7 +97,11 @@ const CustomerSchema = new mongoose.Schema({
     referredBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Customer',
-    }
+    },
+    wishlist: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'product'
+    }],
 
 })
 
@@ -111,7 +115,6 @@ function generateRandomCode(length) {
     }
     return code;
 }
-
 CustomerSchema.pre('save', async function (next) {
     if (!this.referralCode) {
         let uniqueReferralCode;

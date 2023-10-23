@@ -67,33 +67,42 @@
                     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
                         <div class="single-new-pro mb-30 text-center">
                             <div class="product-img">
-                                <img src="/Customer/img/gallery/new_product1.png" alt="">
+                                <a class="add-to-cart-link"
+                                href="/user/displayProduct?productId=<%= newPro[0]._id %>">
+                                <img src="data:<%= newPro[0].images[0].contentType %>;base64,<%= newPro[0].images[0].data.toString('base64') %>"
+                                alt="<%= newPro[0].price %>" </a>
                             </div>
                             <div class="product-caption">
-                                <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
-                                <span>$ 45,743</span>
+                                <h3><a href=""><%= newPro[0].product_name %></a></h3>
+                                <span><%= newPro[0].price %></span>
                             </div>
                         </div>
                     </div>
                     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
                         <div class="single-new-pro mb-30 text-center">
                             <div class="product-img">
-                                <img src="/Customer/img/gallery/new_product2.png" alt="">
+                                <a class="add-to-cart-link"
+                                href="/user/displayProduct?productId=<%= newPro[1]._id %>">
+                                <img src="data:<%= newPro[1].images[0].contentType %>;base64,<%= newPro[1].images[0].data.toString('base64') %>"
+                                alt="<%= newPro[1].price %>" </a>
                             </div>
                             <div class="product-caption">
-                                <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
-                                <span>$ 45,743</span>
+                                <h3><a href=""><%= newPro[1].product_name %></a></h3>
+                                <span><%= newPro[1].price %></span>
                             </div>
                         </div>
                     </div>
                     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
                         <div class="single-new-pro mb-30 text-center">
                             <div class="product-img">
-                                <img src="/Customer/img/gallery/new_product3.png" alt="">
+                                <a class="add-to-cart-link"
+                                href="/user/displayProduct?productId=<%= newPro[2]._id %>">
+                                <img src="data:<%= newPro[2].images[0].contentType %>;base64,<%= newPro[2].images[0].data.toString('base64') %>"
+                                alt="<%= newPro[2].price %>" </a>
                             </div>
                             <div class="product-caption">
-                                <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
-                                <span>$ 45,743</span>
+                                <h3><a href=""><%= newPro[2].product_name %></a></h3>
+                                <span><%= newPro[2].price %></span>
                             </div>
                         </div>
                     </div>
@@ -147,108 +156,291 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
-                        <div class="single-popular-items mb-50 text-center">
-                            <div class="popular-img">
-                                <img src="/Customer/img/gallery/popular1.png" alt="">
-                                <div class="img-cap">
-                                    <span>Add to cart</span>
+                    <% if (products.length==0) { %>
+                        <h4 class="text-center text-danger">
+                            No items products..
+                        </h4>
+                        <% } %>
+                            <% for (let product=0; product < products.length; product +=3) { %>
+                                <!-- Start of product group -->
+                                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
+                                    <div class="single-popular-items mb-50 text-center">
+                                        <div class="popular-img">
+                                            <a class="add-to-cart-link"
+                                                href="/user/displayProduct?productId=<%= products[product]._id %>">
+                                                <img src="data:<%= products[product].images[0].contentType %>;base64,<%= products[product].images[0].data.toString('base64') %>"
+                                                    alt="<%= products[product].price %>" </a>
+
+                                                <% if (products[product].stock_count> 0) { %>
+                                                    <div class="img-cap">
+                                                        <a class="add-to-cart-link"
+                                                            href="/user/product/addcart?productId=<%= products[product]._id %>">
+                                                            <span>Add to cart</span>
+                                                        </a>
+                                                    </div>
+                                                    <% } else { %>
+                                                        <div class="img-cap">
+                                                            <span>Out Of stock</span>
+                                                        </div>
+                                                        <% } %>
+
+
+                                                            <div class="favorit-items">
+                                                                <a href="/add-wishlist?id=<%= products[product]._id %>"> <span class="flaticon-heart"></span></a>
+                                                               
+                                                            </div>
+                                        </div>
+                                        <div class="popular-caption">
+                                            <p><a>
+                                                    <%= products[product].product_name %>
+                                                </a></p>
+
+                                            <% if (products[product].offerPrice> 0 &&
+                                                products[product].categoryOfferPrice > 0) { %>
+                                                <% if (products[product].offerPrice <
+                                                    products[product].categoryOfferPrice) { %>
+                                                        
+                                                    <h1>&#8377;<%= products[product].offerPrice %></h1> <small><del class="text-danger"> <%=products[product].price %> </del></small>
+
+                                                    <% } else { %>
+
+                                                        <p>&#8377;<%= products[product].categoryOfferPrice%></p>
+                                                        <small class="text-danger"><del class="text-danger">&#8377;<%=products[product].price %></del></small>
+
+                                                        <% } %>
+
+                                                            <% } else if (products[product].offerPrice>
+                                                                0) {
+                                                                %>
+                                                                <!-- Display offer price -->
+
+                                                                <p>&#8377;<%= products[product].offerPrice %>
+                                                                </p>
+                                                                <small class="text-danger"><del
+                                                                        class="text-danger">&#8377;
+                                                                        <%=products[product].price %>
+                                                                    </del></small>
+
+
+                                                                <% } else if
+                                                                    (products[product].categoryOfferPrice>
+                                                                    0) { %>
+                                                                    <!-- Display category offer price -->
+
+
+                                                                    <p>&#8377;<%=
+                                                                            products[product].categoryOfferPrice
+                                                                            %></p>
+                                                                    <small class="text-danger"><del
+                                                                            class="text-danger">&#8377;<%=
+                                                                                products[product].price %>
+                                                                        </del></small>
+
+                                                                    <% } else { %>
+                                                                        <!-- Display original price -->
+                                                                        <span>&#8377;<%= products[product].price
+                                                                                %></span>
+                                                                        <% } %>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="favorit-items">
-                                    <span class="flaticon-heart"></span>
-                                </div>
-                            </div>
-                            <div class="popular-caption">
-                                <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
-                                <span>$ 45,743</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
-                        <div class="single-popular-items mb-50 text-center">
-                            <div class="popular-img">
-                                <img src="/Customer/img/gallery/popular2.png" alt="">
-                                <div class="img-cap">
-                                    <span>Add to cart</span>
-                                </div>
-                                <div class="favorit-items">
-                                    <span class="flaticon-heart"></span>
-                                </div>
-                            </div>
-                            <div class="popular-caption">
-                                <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
-                                <span>$ 45,743</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
-                        <div class="single-popular-items mb-50 text-center">
-                            <div class="popular-img">
-                                <img src="/Customer/img/gallery/popular3.png" alt="">
-                                <div class="img-cap">
-                                    <span>Add to cart</span>
-                                </div>
-                                <div class="favorit-items">
-                                    <span class="flaticon-heart"></span>
-                                </div>
-                            </div>
-                            <div class="popular-caption">
-                                <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
-                                <span>$ 45,743</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
-                        <div class="single-popular-items mb-50 text-center">
-                            <div class="popular-img">
-                                <img src="/Customer/img/gallery/popular4.png" alt="">
-                                <div class="img-cap">
-                                    <span>Add to cart</span>
-                                </div>
-                                <div class="favorit-items">
-                                    <span class="flaticon-heart"></span>
-                                </div>
-                            </div>
-                            <div class="popular-caption">
-                                <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
-                                <span>$ 45,743</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
-                        <div class="single-popular-items mb-50 text-center">
-                            <div class="popular-img">
-                                <img src="/Customer/img/gallery/popular5.png" alt="">
-                                <div class="img-cap">
-                                    <span>Add to cart</span>
-                                </div>
-                                <div class="favorit-items">
-                                    <span class="flaticon-heart"></span>
-                                </div>
-                            </div>
-                            <div class="popular-caption">
-                                <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
-                                <span>$ 45,743</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
-                        <div class="single-popular-items mb-50 text-center">
-                            <div class="popular-img">
-                                <img src="/Customer/img/gallery/popular6.png" alt="">
-                                <div class="img-cap">
-                                    <span>Add to cart</span>
-                                </div>
-                                <div class="favorit-items">
-                                    <span class="flaticon-heart"></span>
-                                </div>
-                            </div>
-                            <div class="popular-caption">
-                                <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
-                                <span>$ 45,743</span>
-                            </div>
-                        </div>
-                    </div>
+                                <% if (product + 1 < products.length) { %>
+                                    <!-- Product 2 (if available) -->
+                                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
+                                        <div class="single-popular-items mb-50 text-center">
+                                            <div class="popular-img">
+                                                <a
+                                                    href="/user/displayProduct?productId=<%= products[product + 1]._id %>">
+                                                    <input type="hidden" name="productID"
+                                                        value="<%= product._id %>">
+                                                    <img src="data:<%= products[product + 1].images[0].contentType %>;base64,<%= products[product + 1].images[0].data.toString('base64') %>"
+                                                        alt="<%= products[product + 1].price %> Image">
+                                                </a>
+
+                                                <% if (products[product + 1].stock_count> 0) { %>
+                                                    <div class="img-cap">
+                                                        <a class="add-to-cart-link"
+                                                            href="/user/product/addcart?productId=<%= products[product +1]._id %>">
+                                                            <span>Add to cart</span>
+                                                        </a>
+                                                    </div>
+                                                    <% } else { %>
+                                                        <div class="img-cap">
+                                                            <span>Out Of stock</span>
+                                                        </div>
+                                                        <% } %>
+                                                            <div class="favorit-items">
+                                                                <a href="/add-wishlist?id=<%= products[product]._id %>"> <span class="flaticon-heart"></span></a>
+                                                            </div>
+                                            </div>
+                                            <div class="popular-caption">
+                                                <p><a>
+                                                        <%= products[product + 1].product_name %>
+                                                    </a></p>
+                                                <% if (products[product + 1].offerPrice> 0 &&
+                                                    products[product + 1].categoryOfferPrice > 0) { %>
+                                                    <% if (products[product + 1].offerPrice <
+                                                        products[product + 1].categoryOfferPrice) { %>
+
+                                                        <h1>&#8377;<%= products[product + 1].offerPrice %>
+                                                        </h1>
+                                                        <small><del class="text-danger">
+                                                                <%=products[product + 1].price %>
+                                                            </del></small>
+
+                                                        <% } else { %>
+
+                                                            <small>&#8377;<%= products[product +
+                                                                    1].categoryOfferPrice%></small>
+                                                            <small class="text-danger"><del
+                                                                    class="text-danger">&#8377;<%=
+                                                                        products[product + 1].price %>
+                                                                </del></small>
+
+                                                            <% } %>
+
+                                                                <% } else if (products[product +
+                                                                    1].offerPrice> 0) { %>
+                                                                    <!-- Display offer price -->
+
+                                                                    <small>&#8377;<%= products[product +
+                                                                            1].offerPrice %></small>
+                                                                    <small class="text-danger"><del
+                                                                            class="text-danger">&#8377;
+                                                                            <%=products[product + 1].price
+                                                                                %>
+                                                                        </del></small>
+
+
+                                                                    <% } else if (products[product +
+                                                                        1].categoryOfferPrice> 0) { %>
+                                                                        <!-- Display category offer price -->
+
+
+                                                                        <small>&#8377;<%= products[product +
+                                                                                1].categoryOfferPrice %>
+                                                                        </small>
+                                                                        <small class="text-danger"><del
+                                                                                class="text-danger">&#8377;<%=
+                                                                                    products[product +
+                                                                                    1].price %>
+                                                                            </del></small>
+
+                                                                        <% } else { %>
+                                                                            <!-- Display original price -->
+                                                                            <span>&#8377;<%= products[product +
+                                                                                    1].price %></span>
+                                                                            <% } %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <% } %>
+                                        <% if (product + 2 < products.length) { %>
+                                            <!-- Product 3 (if available) -->
+                                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
+                                                <div class="single-popular-items mb-50 text-center">
+                                                    <div class="popular-img">
+                                                        <a class="add-to-cart-link"
+                                                            href="/user/displayProduct?productId=<%= products[product + 2]._id %>">
+                                                            <input type="hidden" name="productID"
+                                                                value="<%= product._id %>">
+                                                            <img src="data:<%= products[product + 2].images[0].contentType %>;base64,<%= products[product + 2].images[0].data.toString('base64') %>"
+                                                                alt="<%= products[product + 2].price %> Image">
+                                                        </a>
+
+                                                        <% if (products[product + 2].stock_count> 0) {
+                                                            %>
+                                                            <div class="img-cap">
+                                                                <a class="add-to-cart-link"
+                                                                    href="/user/product/addcart?productId=<%= products[product + 2]._id %>">
+                                                                    <span>Add to cart</span>
+                                                                </a>
+                                                            </div>
+                                                            <% } else { %>
+                                                                <div class="img-cap">
+                                                                    <span>Out Of stock</span>
+                                                                </div>
+                                                                <% } %>
+                                                                    <div class="favorit-items">
+                                                                        <a href="/add-wishlist?id=<%= products[product]._id %>"> <span class="flaticon-heart"></span></a>
+                                                                    </div>
+                                                    </div>
+                                                    <div class="popular-caption">
+                                                        <h3><a href="product_details.html"
+                                                                class="add-to-cart-link">
+                                                                <%= products[product + 2].product_name %>
+                                                            </a></h3>
+                                                        <% if (products[product + 2].offerPrice> 0 &&
+                                                            products[product + 2].categoryOfferPrice >
+                                                            0) {
+                                                            %>
+                                                            <% if (products[product + 2].offerPrice <
+                                                                products[product + 2].categoryOfferPrice) {
+                                                                %>
+
+                                                                <p>&#8377;<%= products[product + 2].offerPrice
+                                                                        %></p>
+                                                                <small><del class="text-danger">
+                                                                        <%=products[product + 2].price %>
+                                                                    </del></small>
+
+                                                                <% } else { %>
+
+                                                                    <small>&#8377;<%= products[product +
+                                                                            2].categoryOfferPrice%>
+                                                                    </small>
+                                                                    <small class="text-danger"><del
+                                                                            class="text-danger">&#8377;<%=
+                                                                                products[product + 2].price
+                                                                                %>
+                                                                        </del></small>
+
+                                                                    <% } %>
+
+                                                                        <% } else if (products[product +
+                                                                            2].offerPrice> 0) { %>
+                                                                            <!-- Display offer price -->
+
+                                                                            <small>&#8377;<%= products[product +
+                                                                                    2].offerPrice %>
+                                                                            </small>
+                                                                            <small class="text-danger"><del
+                                                                                    class="text-danger">&#8377;
+                                                                                    <%=products[product +
+                                                                                        2].price %>
+                                                                                </del></small>
+
+
+                                                                            <% } else if (products[product +
+                                                                                2].categoryOfferPrice>
+                                                                                0) {
+                                                                                %>
+                                                                                <!-- Display category offer price -->
+
+
+                                                                                <small>&#8377;<%= products[product
+                                                                                        +
+                                                                                        2].categoryOfferPrice
+                                                                                        %></small>
+                                                                                <small
+                                                                                    class="text-danger"><del
+                                                                                        class="text-danger">&#8377;
+                                                                                        <%= products[product
+                                                                                            + 2].price %>
+                                                                                    </del></small>
+
+                                                                                <% } else { %>
+                                                                                    <!-- Display original price -->
+                                                                                    <span>&#8377;<%=
+                                                                                            products[product
+                                                                                            + 2].price %>
+                                                                                    </span>
+                                                                                    <% } %>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <% } %>
+                                                <% } %>
                 </div>
                 <!-- Button -->
                 <div class="row justify-content-center">

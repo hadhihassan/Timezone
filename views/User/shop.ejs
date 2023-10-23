@@ -1,13 +1,9 @@
 <header>
     <!-- Header Start -->
     <%- include('../partials/Customerside/header') %>
-
         <!-- Header End -->
 </header>
-
-
 <main>
-
     <div class="container">
         <div class="mt-5 mb-5">
             <form id="price-range-form" action="/user/shop" method="get">
@@ -67,7 +63,6 @@
 
         </div>
     </div>
-
     <!-- Hero Area End-->
     <!-- Latest Products Start -->
     <section class="popular-items latest-padding">
@@ -75,29 +70,15 @@
         <div class="container">
 
 
-            <div class="row product-btn justify-content-between mb-40">
-                <div class="properties__button">
-                    <!--Nav Button  -->
-                    <nav>
-                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home"
-                                role="tab" aria-controls="nav-home" aria-selected="true">NewestArrivals</a>
-                            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab"
-                                href="/user/shop?HLPrice=true" role="tab" aria-controls="nav-profile"
-                                aria-selected="false"> Price high to low</a>
-                            <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact"
-                                role="tab" aria-controls="nav-contact" aria-selected="false"> Most populer </a>
-                        </div>
-                    </nav>
-                    <!--End Nav Button  -->
-                </div>
+            <div class="row product-btn d-flex justify-content-between mb-40">
+               
                 <!-- Grid and List view -->
                 <div class="grid-list-view">
                 </div>
                 <!-- Select items -->
                 <div class="select-this">
 
-                    <div class="input-group">
+                    <div class="input-group col-lg-5">
                         <input type="text" class="form-control " name="query" value="<%= query ?? '' %>"
                             placeholder="Search products">
                         <button class="btn_3 btn-sm  btn-search btn-primary" type="submit"
@@ -107,24 +88,23 @@
                 </div>
             </div>
             <!-- success message -->
-            <% if (success && success.length> 0) { %>
-                <div class="alert alert-succes text-center  " id="success-message">
-                    <% success.forEach(function(message) { %>
-                        <p style="color: rgb(255, 0, 0);">
-                            <%= message %>
-                        </p>
-                        <% }); %>
-                </div>
+            <% if (success && success.length > 0) { %>
                 <script>
-                    // Add a timeout to hide the success message after 3 seconds (adjust as needed)
-                    setTimeout(function () {
-                        var successMessage = document.getElementById('success-message');
-                        if (successMessage) {
-                            successMessage.style.display = 'none';
-                        }
-                    }, 5000); // 3000 milliseconds (3 seconds)
+                  document.addEventListener("DOMContentLoaded", function () {
+                    Swal.fire({
+                      icon: "success",
+                      title: "Success!",
+                      html: "<ul>" +
+                        "<% for (const message of success) { %>" +
+                        "<li><%= message %></li>" +
+                        "<% } %>" +
+                        "</ul>",
+                      showConfirmButton: true,
+                      timer: 1000 // Auto close after 5 seconds
+                    });
+                  });
                 </script>
-                <% } %>
+              <% } %>
                     <!-- Nav Card -->
                     <div class="tab-content" id="nav-tabContent">
 
@@ -163,13 +143,14 @@
 
 
                                                                         <div class="favorit-items">
-                                                                            <span class="flaticon-heart"></span>
+                                                                            <a href="/add-wishlist?id=<%= products[product]._id %>"> <span class="flaticon-heart"></span></a>
+                                                                           
                                                                         </div>
                                                     </div>
                                                     <div class="popular-caption">
-                                                        <h3><a>
+                                                        <p><a>
                                                                 <%= products[product].product_name %>
-                                                            </a></h3>
+                                                            </a></p>
 
                                                         <% if (products[product].offerPrice> 0 &&
                                                             products[product].categoryOfferPrice > 0) { %>
@@ -180,7 +161,7 @@
 
                                                                 <% } else { %>
 
-                                                                    <h1>&#8377;<%= products[product].categoryOfferPrice%></h1>
+                                                                    <p>&#8377;<%= products[product].categoryOfferPrice%></p>
                                                                     <small class="text-danger"><del class="text-danger">&#8377;<%=products[product].price %></del></small>
 
                                                                     <% } %>
@@ -190,8 +171,8 @@
                                                                             %>
                                                                             <!-- Display offer price -->
 
-                                                                            <h1>&#8377;<%= products[product].offerPrice %>
-                                                                            </h1>
+                                                                            <p>&#8377;<%= products[product].offerPrice %>
+                                                                            </p>
                                                                             <small class="text-danger"><del
                                                                                     class="text-danger">&#8377;
                                                                                     <%=products[product].price %>
@@ -204,9 +185,9 @@
                                                                                 <!-- Display category offer price -->
 
 
-                                                                                <h1>&#8377;<%=
+                                                                                <p>&#8377;<%=
                                                                                         products[product].categoryOfferPrice
-                                                                                        %></h1>
+                                                                                        %></p>
                                                                                 <small class="text-danger"><del
                                                                                         class="text-danger">&#8377;<%=
                                                                                             products[product].price %>
@@ -217,9 +198,6 @@
                                                                                     <span>&#8377;<%= products[product].price
                                                                                             %></span>
                                                                                     <% } %>
-
-
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -249,13 +227,13 @@
                                                                     </div>
                                                                     <% } %>
                                                                         <div class="favorit-items">
-                                                                            <span class="flaticon-heart"></span>
+                                                                            <a href="/add-wishlist?id=<%= products[product]._id %>"> <span class="flaticon-heart"></span></a>
                                                                         </div>
                                                         </div>
                                                         <div class="popular-caption">
-                                                            <h3><a>
+                                                            <p><a>
                                                                     <%= products[product + 1].product_name %>
-                                                                </a></h3>
+                                                                </a></p>
                                                             <% if (products[product + 1].offerPrice> 0 &&
                                                                 products[product + 1].categoryOfferPrice > 0) { %>
                                                                 <% if (products[product + 1].offerPrice <
@@ -341,7 +319,7 @@
                                                                             </div>
                                                                             <% } %>
                                                                                 <div class="favorit-items">
-                                                                                    <span class="flaticon-heart"></span>
+                                                                                    <a href="/add-wishlist?id=<%= products[product]._id %>"> <span class="flaticon-heart"></span></a>
                                                                                 </div>
                                                                 </div>
                                                                 <div class="popular-caption">
@@ -419,16 +397,10 @@
                                                             </div>
                                                         </div>
                                                         <% } %>
-
-
-
                                                             <% } %>
                             </div>
 
                         </div>
-
-
-
                         <div class="text-center">
                             <nav aria-label="Page navigation" class="pagination">
                                 <ul class="pagination justify-content-end">
@@ -442,13 +414,9 @@
                                                 </a>
                                             </li>
                                             <% } %>
-
                                 </ul>
                             </nav>
                         </div>
-
-
-
                     </div>
     </section>
 
@@ -461,4 +429,18 @@
 
 </footer>
 
+<script>
+    
+  $("#min-price").on("change mousemove", function () {
+    min_price = parseInt($("#min-price").val());
+    $("#min-price-txt").text("$" + min_price);
+    showItemsFiltered();
+});
 
+$("#max-price").on("change mousemove", function () {
+    max_price = parseInt($("#max-price").val());
+    $("#max-price-txt").text("$" + max_price);
+    showItemsFiltered();
+});
+
+</script>

@@ -1,150 +1,289 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="/Customer/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/Customer/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="/Customer/css/flaticon.css">
-    <link rel="stylesheet" href="/Customer/css/slicknav.css">
-    <link rel="stylesheet" href="/Customer/css/animate.min.css">
-    <link rel="stylesheet" href="/Customer/css/magnific-popup.css">
-    <link rel="stylesheet" href="/Customer/css/fontawesome-all.min.css">
-    <link rel="stylesheet" href="/Customer/css/themify-icons.css">
-    <link rel="stylesheet" href="/Customer/css/slick.css">
-    <link rel="stylesheet" href="/Customer/css/nice-select.css">
-    <link rel="stylesheet" href="/Customer/css/style.css">
-    <link rel="stylesheet" href="/Customer/css/button.css">
-</head>
-
-<body>
-    <%- include('../../partials/Customerside/header') %>
-        <div class="container">
-            <div class="shadow p-3 mb-5 bg-body rounded text-center">
-                <br>
-                <h3 class="text-black">Order Summary</h3>
-                <br>
-            </div>
+<%- include('../../partials/Customerside/header') %>
+    <div class="container">
+        <div class="shadow p-3 mb-5 bg-body rounded text-center">
             <br>
-            <div class="container">
-                <% userOrder.forEach((order, i) => { %>
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <!-- Delivery Address -->
-                            <form action="/user/profile/show-product-details/" method="post">
-                                <input type="hidden" name="Products" value="<%= userOrder[i]._id %>">
-                                <button class="btn_1 btn-sm btn-primary float-end">Show Product Details</button>
-                            </form>
-                            <br>
-                            <h5 class="card-title">
-                                <% if (order.paymentOption == "razorpay") { %>
-                                    Delivery Address <sup class="text-danger badge bg-white text-wrap">(Payment successful)</sup>
+            <h3 class="text-black">Order Summary</h3>
+            <br>
+        </div>
+        <br>
+        <div class="container">
+            <% userOrder.forEach((order, i)=> { %>
+                <div class="card mb-3">
+                    <div class="card-body  border border-4">
+                        <!-- Delivery Address -->
+                        <form action="/user/profile/show-product-details/" method="post">
+                            <input type="hidden" name="Products" value="<%= userOrder[i]._id %>">
+                            <button class="btn_1 btn-sm btn-primary float-end">Show Product Details</button>
+                        </form>
+
+                        <h6>Placed order date ( <small class="text-info">
+                                <%= order.orderDate.toLocaleString() %>
+                            </small> )</h6><br>
+                        <h5 class="card-title">
+                            <% if (order.paymentOption=="razorpay" ) { %>
+                                Delivery Address <sup class="text-danger badge bg-white text-wrap">(Payment
+                                    successful)</sup>
                                 <% } else { %>
                                     Delivery Address
-                                <% } %>
-                            </h5>
-                            <h6 class="card-text"><%= order.deliveryAddress.Name %></h6>
-                            <address>
-                                <%= order.deliveryAddress.HouseName %><br>
+                                    <% } %>
+                        </h5>
+                        <strong class="card-text">
+                            <%= order.deliveryAddress.Name %>
+                        </strong>
+                        <address>
+                            <%= order.deliveryAddress.HouseName %><br>
                                 <%= order.deliveryAddress.RoadArea %><br>
-                                <%= order.deliveryAddress.City %>, <%= order.deliveryAddress.Region %><br>
-                                <%= order.deliveryAddress.Country %> <%= order.deliveryAddress.PinCode %><br>
-                                Mobile: <%= order.deliveryAddress.Mobile %>
-                            </address>
-                        </div>
-                        <ul class="list-group list-group-light list-group-small">
-                            <% if (order.orderCanceled === false) { %>
-                                <li class="list-group-item">
-                                    <h5>Delivery Date <sup class="text-success">(expecting)</sup></h5>
-                                    <p><%= order.deliveryDate.toLocaleString() %></p>
+                                    <%= order.deliveryAddress.City %>, <%= order.deliveryAddress.Region %><br>
+                                            <%= order.deliveryAddress.Country %>
+                                                <%= order.deliveryAddress.PinCode %><br>
+                                                    Mobile: <%= order.deliveryAddress.Mobile %>
+                        </address>
 
-                                </li>
-                                <% if (order.is_returned === false) { %>
+                        <ul class="list-group list-group-light list-group-small">
+                            <% if (order.orderCanceled===false) { %>
+
+                                <h5>Delivery Date <sup class="text-success">(expecting)</sup></h5>
+                                <p>
+                                    <%= order.deliveryDate.toLocaleString() %>
+                                </p>
+
+
+                                <% if (order.is_returned===false) { %>
                                     <li class="list-group-item">
-                                        <% if (order.returnRequest === "Pending") { %>
-                                            Status: <span class="text-info"><%= order.returnRequest %></span>
-                                        <% } else if (order.returnRequest === "Reject") { %>
-                                            Status: <span class="text-danger"><%= order.returnRequest %></span>
-                                        <% } else { %>
-                                            Status: <span class="text-success"><%= order.returnRequest %></span>
+                                        <% if (order.returnRequest==="Pending" ) { %>
+                                            Order Status: <span class="text-info">
+                                                <%= order.returnRequest %>
+                                            </span>
+                                            <% } else if (order.returnRequest==="Reject" ) { %>
+                                                Order Status: <span class="text-danger">
+                                                    <%= order.returnRequest %>
+                                                </span>
+                                                <% } else { %>
+                                                    Order Status: <span class="text-success">
+                                                        <%= order.returnRequest %>
+                                                    </span>
+                                                    <% } %>
+                                    </li>
+                                    <% } %>
                                         <% } %>
-                                    </li>
-                                <% } %>
-                            <% } %>
-                            <% if (order.orderCanceled === false) { %>
-                                <% if (order.returnRequest === "Approved" || order.returnRequest === "Pending") { %>
-                                    <li class="list-group-item text-center">
-                                        <form action="/user/order/Cancel/" method="post">
-                                            <input type="hidden" name="orderId" value="<%= order._id %>">
-                                            <button class="btn btn-danger">Cancel Order</button>
-                                        </form>
-                                    </li>
-                                <% } else if (order.is_returned === true) { %>
-                                    <li class="list-group-item text-center">
-                                        <h3 class="text-info">Requesting Product Return <sup class="text-danger">(<%= order.return_Status %>)</sup></h3>
-                                    </li>
-                                <% } else if (order.returnRequest === "Completed") { %>
-                                    <li class="list-group-item text-center">
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
-                                            Return Product
-                                        </button>
-                                    </li>
-                                <% } %>
-                            <% } else { %>
-                                <li class="list-group-item text-center">
-                                    <div class="text-center">
-                                        <h3 class="text-danger text-lg">Order Canceled</h3>
-                                    </div>
-                                </li>
-                            <% } %>
+                                            <% if (order.orderCanceled===false) { %>
+                                                <% if (order.returnRequest==="Approved" ||
+                                                    order.returnRequest==="Pending" ) { %>
+                                                    <li class="list-group-item text-center">
+                                                        <form action="/user/order/Cancel/" method="post">
+                                                            <button type="button" class="btn btn-danger"
+                                                                data-toggle="modal" onclick="cancellOrder('<%= order._id %>')">
+                                                                Cancel Order
+                                                            </button>
+
+
+                                                    </li>
+                                                    <% } else if (order.is_returned===true) { %>
+                                                        <li class="list-group-item text-center">
+                                                            <h4 class="text-danger">Requesting Product Return <sup
+                                                                    class="text-danger">(<%= order.return_Status %>
+                                                                        )</sup></h4>
+                                                        </li>
+                                                        <% } else if (order.returnRequest==="Completed" ) { %>
+                                                            <li class="list-group-item text-center">
+
+
+
+                                                                <button type="button" class="btn btn-primary"
+                                                                    onclick="openReturnModal('<%= order._id %>')">
+                                                                    Return Product
+                                                                </button>
+
+                                                            </li>
+                                                            <% } %>
+                                                                <% } else { %>
+                                                                    <li class="list-group-item text-center">
+                                                                        <div class="text-center">
+                                                                            <h3 class="text-danger text-lg">Order
+                                                                                Cancelled</h3>
+                                                                        </div>
+                                                                    </li>
+                                                                    <% } %>
                         </ul>
                     </div>
+
+                </div>
+                <br>
+                <br>
                 <% }) %>
-            </div>
-            
+
         </div>
 
+    </div>
 
-        <%- include('../../partials/Customerside/footer') %>
+    
+    <div class="modal fade" id="returnModal" tabindex="-1" role="dialog" aria-labelledby="returnModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="returnModalLabel">Select Return Reason</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <form id="returnForm" action="/return-product" method="post">
+                        <div class="form-group">
+                            <input type="hidden" id="orderIdInput" name="orderId" value="">
+                       
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="returnReason" id="damaged"
+                                    value="damaged">
+                                <label class="form-check-label" for="damaged">
+                                    Item is damaged
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="returnReason" id="wrong"
+                                    value="wrong">
+                                <label class="form-check-label" for="wrong">
+                                    Received the wrong item
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="returnReason" id="changedMind"
+                                    value="changedMind">
+                                <label class="form-check-label" for="changedMind">
+                                    Changed my mind
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="returnReason" id="other"
+                                    value="Quality issues">
+                                <label class="form-check-label" for "other">
+                                    Quality issues
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="returnReason" id="other"
+                                    value="Not as described:">
+                                <label class="form-check-label" for "other">
+                                    Not as described:
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="returnReason" id="other"
+                                    value="Unsatisfactory performance">
+                                <label class="form-check-label" for "other">
+                                    Unsatisfactory performance
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="returnReason" id="other"
+                                    value="other">
+                                <label class="form-check-label" for "other">
+                                    Other reason
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="additionalComments">Additional Comments (optional)</label>
+                            <textarea class="form-control" name="additionalComments" id="additionalComments"
+                                rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" form="returnForm" class="btn btn-primary">Submit Return</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="modal fade" id="orderCanceled" tabindex="-1" role="dialog" aria-labelledby="orderCanceledLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="orderCanceledLabel">Select Return Reason</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <form id="returnForm" action="/user/order/Cancel/" method="post">
+                        <div class="form-group">
+                            <input type="hidden" id="cancellOrder" name="orderId" value="">
+                            <label for="returnReason">Reason for Return</label>
+                     
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="cancellReason" id="damaged"
+                                    value="Item out of stock">
+                                <label class="form-check-label" for="damaged">
+                                    Item out of stock
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="cancellReason" id="wrong"
+                                    value="Change of plans">
+                                <label class="form-check-label" for="wrong">
+                                    Change of plans
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="cancellReason" id="changedMind"
+                                    value="changedMind">
+                                <label class="form-check-label" for="changedMind">
+                                    Changed my mind
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="cancellReason" id="other"
+                                    value="Personal reasons">
+                                <label class="form-check-label" for "other">
+                                    Personal reasons
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="cancellReason" id="other"
+                                    value="other">
+                                <label class="form-check-label" for "other">
+                                    Other reason
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="additionalComments">Additional Comments (optional)</label>
+                            <textarea class="form-control" name="additionalComments" id="additionalComments"
+                                rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" form="returnForm" class="btn btn-primary">Submit Return</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
+ 
 
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-            <script src="/Customer/js/vendor/modernizr-3.5.0.min.js"></script>
-            <!-- Jquery, Popper, Bootstrap -->
-            <script src="/Customer/js/vendor/jquery-1.12.4.min.js"></script>
-            <script src="/Customer/js/popper.min.js"></script>
-            <script src="/Customer/js/bootstrap.min.js"></script>
-            <!-- Jquery Mobile Menu -->
-            <script src="/Customer/js/jquery.slicknav.min.js"></script>
+    <%- include('../../partials/Customerside/footer') %>
 
-            <!-- Jquery Slick , Owl-Carousel Plugins -->
-            <script src="/Customer/js/owl.carousel.min.js"></script>
-            <script src="/Customer/js/slick.min.js"></script>
+        <script>
+            function openReturnModal(orderId) {
+                document.getElementById("orderIdInput").value = orderId;
+                var myModal = new bootstrap.Modal(document.getElementById("returnModal"));
+                myModal.show();
+            }
 
-            <!-- One Page, Animated-HeadLin -->
-            <script src="/Customer/js/wow.min.js"></script>
-            <script src="/Customer/js/animated.headline.js"></script>
-            <script src="/Customer/js/jquery.magnific-popup.js"></script>
+            function cancellOrder(orderId) {
+                document.getElementById("cancellOrder").value = orderId;
+                var myModal = new bootstrap.Modal(document.getElementById("orderCanceled"));
+                myModal.show();
+            }
 
-            <!-- Scrollup, nice-select, sticky -->
-            <script src="/Customer/js/jquery.scrollUp.min.js"></script>
-            <script src="/Customer/js/jquery.nice-select.min.js"></script>
-            <script src="/Customer/js/jquery.sticky.js"></script>
 
-            <!-- contact js -->
-            <script src="/Customer/js/contact.js"></script>
-            <script src="/Customer/js/jquery.form.js"></script>
-            <script src="/Customer/js/jquery.validate.min.js"></script>
-            <script src="/Customer/js/mail-script.js"></script>
-            <script src="/Customer/js/jquery.ajaxchimp.min.js"></script>
-
-            <!-- Jquery Plugins, main Jquery -->
-            <script src="/Customer/js/plugins.js"></script>
-            <script src="/Customer/js/main.js"></script>
-
-</body>
-
-</html>
+        </script>

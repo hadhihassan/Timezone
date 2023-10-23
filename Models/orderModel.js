@@ -18,6 +18,9 @@ const orderSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    orderCancelReason:{
+        type:String,  
+    },
     returnRequest: {
         type: String,
         enum: ["Pending", "Approved","Shipped" ,"Reject", "Completed"],
@@ -59,6 +62,9 @@ const orderSchema = new mongoose.Schema({
         type: String,
         enum: ["Pending", "Reject","Approved","Completed"],
         default: "Pending"
+    },
+    payment_id:{
+        type: String,
     }
 
 });

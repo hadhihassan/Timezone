@@ -11,11 +11,14 @@ const { loadAaminLogin, loginValidation, adminValid, adminLogout, displayCustome
     UnblockTheUser, blockTheUser, addProductCategory, loadCategory, deleteCategory, loadAddCategory,
     loadProductCreate, createProduct,  loadProductPage , editProduct ,loadProductEditPage ,productDeactivate,productActivate,
     deleteImgDelete, loadOrder, updateOrderStatus, EditCategory, loadEditCategory, deleteCategoryImg, loadCouponPage, createCoupon,deleteCoupon,
-    ActiveCoupon, loadAddCoupon,updateReturnRequest
+    ActiveCoupon, loadAddCoupon,updateReturnRequest, loadCouponEdit, addEditCoupon, 
      } = require('../Controler/adminControler')
      
 const { OfferCheckAndDeleteOffer } = require("../utils/OfferExpaireyDateChecker")
-const { createOffer, loadAddOfferPage, loadOffersPage } = require("../Controler/OfferController")
+
+const { createOffer, loadAddOfferPage, loadOffersPage,
+        loadOfferEdit, saveEditOffer,  deleteOffer, activeOffer, } = require("../Controler/OfferController")
+
 const { loadDash } = require("../Controler/dasboard")
 
 
@@ -44,10 +47,10 @@ const { loadDash } = require("../Controler/dasboard")
 
 //PRODUCT MANGEMNT
  admin_Route.get('/product/create', Auth.adminAuth,  loadProductCreate)
-            .post('/product/create', Auth.adminAuth, upload.array('images', 3), createProduct)
+            .post('/product/create', Auth.adminAuth, upload.array('images', 10), createProduct)
             .get('/product', Auth.adminAuth,  loadProductPage)
             .get('/product/:id/Edit', Auth.adminAuth,  loadProductEditPage)
-            .post('/product/Edit', Auth.adminAuth, upload.array('images',5),editProduct)
+            .post('/product/Edit', Auth.adminAuth, upload.array('images',10),editProduct)
             .get('/product/:id/Deactive', Auth.adminAuth, productDeactivate)
             .get('/product/:id/Active', Auth.adminAuth, productActivate)
             .get("/product/:imageId/:id/deleteImg", Auth.adminAuth,  deleteImgDelete)
@@ -63,11 +66,17 @@ const { loadDash } = require("../Controler/dasboard")
             .get("/coupon/add-coupon", Auth.adminAuth, loadAddCoupon)
             .get("/coupon/:id/Delete", Auth.adminAuth, deleteCoupon) 
             .get("/coupon/:id/Active" , Auth.adminAuth, ActiveCoupon) 
+            .get("/coupon/:id/Edit-coupon" , Auth.adminAuth, loadCouponEdit) 
+            .post("/coupon/edited" , Auth.adminAuth, addEditCoupon) 
             
 //OFFER MANAGMENT 
  admin_Route.post("/offer/create/", Auth.adminAuth, createOffer)
             .get("/offer/create/", Auth.adminAuth, loadAddOfferPage)
             .get("/Offer/", Auth.adminAuth, loadOffersPage)
+            .get("/offer/:id/Edit-offer/", Auth.adminAuth, loadOfferEdit)
+            .post("/offer/edit-save/", Auth.adminAuth, saveEditOffer)
+            .get("/offer/:id/Delete-offer/", Auth.adminAuth, deleteOffer)
+            .get("/offer/:id/active-offer/", Auth.adminAuth, activeOffer)
 
 
 //TRIGGER CHECK THE OFFER EXPIRY AND DELETE IT AT evey 12am and 12 pm

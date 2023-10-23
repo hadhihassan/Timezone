@@ -55,8 +55,7 @@ const DailyIncome = async (req, res) => {
         // Send the result as a JSON response
         // res.json({ dailyRevenue: result[0]?.dailyRevenue || 0 });
     } catch (error) {
-        console.error(error.message);
-        // res.status(500).json({ error: 'An error occurred' });
+        res.render("User/404", { message: "An error occurred. Please try again later." });
     }
 };
 //CALCULATING THE MONTHLY INCOME 
@@ -103,7 +102,7 @@ const MonthlyIncome = async (req, res) => {
 
 
     } catch (error) {
-        console.log("error.message")
+        res.render("User/404", { message: "An error occurred. Please try again later." });
     }
 }
 //CALICULATING THE YEARLY INCOME
@@ -145,7 +144,7 @@ const YearlyIncome = async (req, res) => {
         return result
     } catch (error) {
 
-        console.log(error.message);
+        res.render("User/404", { message: "An error occurred. Please try again later." });
     }
 
 }
@@ -186,8 +185,7 @@ const everyMonthIncome = async (req, res) => {
         const result = await Order.aggregate(pipeline);
         return result
     } catch (error) {
-        console.error(error.message);
-        // res.status(500).json({ error: 'An error occurred' });
+        res.render("User/404", { message: "An error occurred. Please try again later." });
     }
 }
 //FIND THE BEST SELLED THREE PRODUCTS
@@ -232,7 +230,7 @@ const findBestSellingProducts = async (req, res) => {
         return result
    
     } catch (error) {
-        console.log(error.message);
+        res.render("User/404", { message: "An error occurred. Please try again later." });
     }
 }
 //RENDERE THE DASHBOARD PAGE
@@ -309,7 +307,7 @@ const loadDash = async (req, res) => {
         })
 
     } catch (error) {
-        console.log(error.message);
+        res.render("User/404", { message: "An error occurred. Please try again later." });
     }
 }
 

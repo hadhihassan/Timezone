@@ -1,32 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Corona Admin</title>
-    <!-- plugins:css -->
-    <link rel="stylesheet" href="../../Admin/vendors/mdi/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="../../Admin/vendors/css/vendor.bundle.base.css">
-    <!-- endinject -->
-    <!-- Plugin css for this page -->
-    <!-- End Plugin css for this page -->
-    <!-- inject:css -->
-    <!-- endinject -->
-    <!-- Layout styles -->
-    <link rel="stylesheet" href="../../Admin/css/style.css">
-    <!-- End layout styles -->
-    <link rel="shortcut icon" href="../../Admin/images/favicon.png" />
-</head>
-
-<body>
+<%- include('../../partials/Adminside/adminNav') %>
     <div class="container-scroller">
-        <%- include('../partials/Adminside/adminsidepanel') %>
+        <%- include('../../partials/Adminside/adminsidepanel') %>
             <!-- partial -->
             <div class="container-fluid page-body-wrapper">
                 <!-- partial:partials/_navbar.html -->
-                <%- include('../partials/Adminside/adminNav') %>
+
                     <!-- partial -->
                     <div class="main-panel">
                         <div class="content-wrapper">
@@ -34,7 +12,7 @@
                                 <div class="col-lg-12 grid-margin stretch-card">
                                     <div class="card">
                                         <div class="card-body">
-                                            <h4 class="card-title">Add Coupon</h4>
+                                            <h4 class="card-title">Edit Coupon</h4>
                                             <a href="/admin/Coupon-management">Back to Coupons</a>
                                             </p>
                                         </div>
@@ -43,12 +21,12 @@
                                 <div class="col-md-12 grid-margin stretch-card">
                                     <div class="card">
                                         <div class="card-body">
-                                            <form action="/admin/coupon/create" method="post">
+                                            <form action="/admin/coupon/edited" method="post">
 
-
+                                                <input type="hidden" name="id" value="<%= findCoupon._id %>">
                                                 <div class="form-group">
                                                     <label for="exampleInputCity1">Coupon Name :</label>
-                                                    <input type="text" class="form-control" name="couponName"
+                                                    <input type="text" class="form-control" value="<%= findCoupon.coupon_name %>" name="couponName"
                                                         id="exampleInputCity1" placeholder="Enter Coupon Name" required>
                                                 </div>
 
@@ -57,28 +35,31 @@
                                                 <div class="form-group">
                                                     <label for="exampleInputCity1">Discount Type : </label>
                                                     <select class="form-control text-white" name="type" id="type">
-                                                        <option value="-1">Select</option>
-                                                        <option>Amount</option>
-                                                        <option>Percentage</option>
-
+                                                        <option  selected disabled><%= findCoupon.discount_type%></option>
+                                                        <% if (findCoupon.discount_type !== "Percentage") { %>
+                                                            <option>Percentage</option>
+                                                        <% } %>
+                                                        <% if (findCoupon.discount_type !=="Amount") { %>
+                                                            <option>Amount</option>
+                                                        <% } %>
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="exampleInputCity1">Minimum Purchase Amount :</label>
                                                     <input type="number" class="form-control"
-                                                        name="MinimumpurchaseAmount" id="exampleInputCity1"
+                                                        name="MinimumpurchaseAmount" value="<%= findCoupon.minimumPurchaseAmount %>" id="exampleInputCity1"
                                                         placeholder="Minimum Purchase Amount" required>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="exampleInputCity1">Discount Amount / Percentage
                                                         :</label>
-                                                    <input type="number" class="form-control" name="amountOrPercentage"
+                                                    <input type="number" class="form-control" value="<%= findCoupon.discount_amount_or_percentage%>" name="amountOrPercentage"
                                                         id="exampleInputCity1" placeholder="Amount Or Percentage"
                                                         required>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="exampleInputCity1">Description:</label>
-                                                    <input type="text" class="form-control" name="Description"
+                                                    <input type="text" class="form-control" value="<%= findCoupon.description %>" name="Description"
                                                         id="exampleInputCity1" placeholder="Enter the Description"
                                                         required>
                                                 </div>
@@ -114,21 +95,4 @@
     </div>
     <!-- page-body-wrapper ends -->
     </div>
-    <!-- container-scroller -->
-    <!-- plugins:js -->
-    <script src="../../Admin/vendors/js/vendor.bundle.base.js"></script>
-    <!-- endinject -->
-    <!-- Plugin js for this page -->
-    <!-- End plugin js for this page -->
-    <!-- inject:js -->
-    <script src="../../Admin/js/off-canvas.js"></script>
-    <script src="../../Admin/js/hoverable-collapse.js"></script>
-    <script src="../../Admin/js/misc.js"></script>
-    <script src="../../Admin/js/settings.js"></script>
-    <script src="../../Admin/js/todolist.js"></script>
-    <!-- endinject -->
-    <!-- Custom js for this page -->
-    <!-- End custom js for this page -->
-</body>
-
-</html>
+    <%- include('../../partials/Adminside/footer') %>

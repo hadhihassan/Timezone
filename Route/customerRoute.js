@@ -7,12 +7,12 @@ const Auth = require("../middleware/Auth")
 const { loadPaymentPage, checkRazorpaySignature } = require("../Controler/order")
 
 const { loadRegister, loadhome, insertUser, loadOTPpage, checkOTPValid, loadLogin, checkUserValid,
-    userLogouting, loadShop, loadShopFilter, loadProfile, loadEditPage, updateUser, addImageProfile, deleteUserProfile,
+    userLogouting, loadShop, loadProfile, loadEditPage, updateUser, addImageProfile, deleteUserProfile,
     userUpdatePassword, loadAddAddressPage, addUserAddress, editAddress, updateAddress, deleteAddress,
     displayProduct, productAddToCart, loadCart, updateCartQuantity, deleteProductCart, loadForgetPage,
     ForgetPasswordcheckingValid, loadChangePass, validOTPsetPass, loadchekout, selectAddress, placeOrder,
     loadOrder, loadOrderProductDetails, cancelOrder, loadWallet, loadCoupons, applayingCoupon, returnProductAction,
-    resedOtp, forgetPassResendOtp
+    resedOtp, forgetPassResendOtp, loadWishlist, addProductInWishlist, deleteItemInWishlist
 } = require('../Controler/customerControler')
     
 
@@ -54,15 +54,15 @@ Customer_Route.get("/user/profile", Auth.logged, loadProfile)
               .post("/user/profile/upadtePassword", Auth.logged, userUpdatePassword)
 
 //add address 
-Customer_Route.post('/user/address/add-user', loadAddAddressPage)
-              .post('/user/address/add', addUserAddress)
-              .post("/user/address/edit", editAddress)
-              .post("/user/address/edit-and-update", updateAddress)
-              .post("/user/address/delete", deleteAddress)
+Customer_Route.post('/user/address/add-user',Auth.logged, loadAddAddressPage)
+              .post('/user/address/add',Auth.logged, addUserAddress)
+              .post("/user/address/edit",Auth.logged, editAddress)
+              .post("/user/address/edit-and-update",Auth.logged, updateAddress)
+              .post("/user/address/delete",Auth.logged, deleteAddress)
 
 // USER PROFILE ORDER DETALS
-Customer_Route.get("/user/show-order-details/", loadOrder)
-              .post("/user/profile/show-product-details/", loadOrderProductDetails)
+Customer_Route.get("/user/show-order-details/",Auth.logged, loadOrder)
+              .post("/user/profile/show-product-details/",Auth.logged, loadOrderProductDetails)
 
 // display product
 Customer_Route.get("/user/displayProduct", displayProduct)
@@ -74,25 +74,30 @@ Customer_Route.get("/user/cart", Auth.logged, loadCart)
               .get('/user/remove-Cart-item', deleteProductCart)
 
 //**CHECKOUT PAGES** 
-Customer_Route.get('/user/Checkout', loadchekout)
+Customer_Route.get('/user/Checkout',Auth.logged, loadchekout)
               .post("/user/address/selsect", selectAddress)
 
-//ORDER PLACE
-//CANCEL ORDER
-Customer_Route.post("/user/order/Cancel/", cancelOrder)
-              .post("/user/place-order", placeOrder)
-              .get("/user/product/online-payment", loadPaymentPage)
-              .post("/return-product", returnProductAction)
+
+//CANCEL ORDER --- ORDER PLACE
+Customer_Route.post("/user/order/Cancel/",Auth.logged, cancelOrder)
+              .post("/user/place-order",Auth.logged, placeOrder)
+              .get("/user/product/online-payment",Auth.logged, loadPaymentPage)
+              .post("/return-product",Auth.logged, returnProductAction)
 
 // ONLINE PAYMENT AND ORDER SAVE 
 Customer_Route.post("/online-payment-order-save", checkRazorpaySignature)
 
 //Coupon 
-Customer_Route.get("/coupon", loadCoupons)
-              .post("/applay-coupon-code", applayingCoupon)
+Customer_Route.get("/coupon",Auth.logged, loadCoupons)
+              .post("/applay-coupon-code",Auth.logged, applayingCoupon)
 
 //Wallet
 Customer_Route.get("/Wallet", loadWallet)
+
+//WISHLIST
+Customer_Route.get("/whishlist",Auth.logged, loadWishlist)
+              .get("/add-wishlist",Auth.logged, addProductInWishlist)
+              .get("/delete-item-wishlist",Auth.logged, deleteItemInWishlist)
 
 
 

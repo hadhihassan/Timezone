@@ -112,15 +112,3 @@ let outOfStock = false
     }, 4000);
   }
 
-
-  $("#min-price").on("change mousemove", function () {
-    min_price = parseInt($("#min-price").val());
-    $("#min-price-txt").text("$" + min_price);
-    showItemsFiltered();
-});
-
-$("#max-price").on("change mousemove", function () {
-    max_price = parseInt($("#max-price").val());
-    $("#max-price-txt").text("$" + max_price);
-    showItemsFiltered();
-});

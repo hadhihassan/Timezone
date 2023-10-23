@@ -1,131 +1,167 @@
+<header>
+    <!-- Header Start -->
+    <%- include('../partials/Customerside/header') %>
+        <!-- Header End -->
+</header>
+
+<!-- Hero Area End-->
+<!--================Single Product Area =================-->
+<div class="product_image_area">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <div class="product_img_slide owl-carousel">
 
 
-    <header>
-        <!-- Header Start -->
-        <%- include('../partials/Customerside/header') %>
-            <!-- Header End -->
-    </header>
-    
-        <!-- Hero Area End-->
-        <!--================Single Product Area =================-->
-        <div class="product_image_area">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-12">
-                        <div class="product_img_slide owl-carousel">
-                            <% product.images.forEach(img=> { %>
-                                <div class="single_product_img d-flex justify-content-center">
-                                    <img src="data:<%= img.contentType %>;base64,<%= img.data.toString('base64') %>"
-                                        alt="<%= product.product_name %>" style="width: 600px; height: 600px;">
-                                </div>
-                                <% }) %>
-                      
+                    <% product.images.forEach(img=> { %>
+                        <div class="single_product_img d-flex justify-content-center">
+                            <img class="zoom-image"
+                                src="data:<%= img.contentType %>;base64,<%= img.data.toString('base64') %>"
+                                alt="User Image" style="width: 300px; height: 300px;">
                         </div>
-                    </div>
-                    <div class="col-lg-8">
-                        <div class="single_product_text text-center">
-                            <div class="product_count_area ">
-                                <div>
-                                    <div>
-                                      
+                        <% }) %>
+
+
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="single_product_text text-center">
+                    <div class="product_count_area ">
+                        <div>
+                            <div>
+
+                            </div>
+                            <div class="col-md-6 col-lg-6 col-xl-12 ">
+
+                                <div class="text-center">
+                                    <div class="text-danger mb-1 me-2 ">
+                                        <div>
+                                            <h3>
+                                                <%= product.product_name %>
+                                            </h3> <br>
+
+                                            <h3>$<%= product.price %>
+                                                    </h4>
+
+
+                                        </div>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
                                     </div>
-                                    <div class="col-md-6 col-lg-6 col-xl-12 ">
-      
-                                      <div class="text-center">
-                                          <div class="text-danger mb-1 me-2 ">
-                                             <div >
-                                                <h3><%= product.product_name %></h3> <br> 
-                                              
-                                                <h3>$<%= product.price %>   </h4>
-
-                                                
-                                             </div>
-                                              <i class="fa fa-star"></i>
-                                              <i class="fa fa-star"></i>
-                                              <i class="fa fa-star"></i>
-                                              <i class="fa fa-star"></i>
-                                          </div>
-                                          <!-- <span>310</span> -->
-                                      </div>
-                                      <div class="mt-1 mb-0 text-truncate small">
-                                          <span>100% <%= product.meterial %></span>
-                                          <span class="text-primary"> • </span>
-                                          <span>Light weight</span>
-                                          <span class="text-primary"> • </span>
-                                          <span>
-                                              <%= product.color %><br />
-                                          </span>
-                                      </div>
-                                      <div class="mb-2 text-truncate small">
-                                          <span>Unique design</span>
-                                          <span class="text-primary"> • </span>
-                                          <span><%= product.meterial %></span>
-                                          <span class="text-primary"> • </span>
-                                          <span>
-                                              <%= product.category %><br />
-                                          </span>
-                                      </div>
+                                    <!-- <span>310</span> -->
                                 </div>
-                                   
-                             
-                             
-                            </div>
-                        </div>
-                              <div>  <hr>
-                                  <p>
-                                      <%= product.description %>
-                                  </p>
-                              </div>
-
-                            <div class="card_area">
-                               
-                               
-                                <div class="add_to_cart">
-                                    <% if (product.stock_count> 0) { %>
-                                        <a href="/user/product/addcart?productId=<%= product._id %>"
-                                            class="add-to-cart-button btn">Add to Cart</a>
-                                        <span class="flaticon-heart btn_1"></span>
-                                        <% } else { %>
-                                            <a href="# %>" class="add-to-cart-button btn">
-                                                <span class="out-of-stock">Out of Stock</span>
-                                            </a>
-                                            <!-- <span class="flaticon-heart btn_1"></span> -->
-                                            <% } %>
+                                <div class="mt-1 mb-0 text-truncate small">
+                                    <span>100% <%= product.meterial %></span>
+                                    <span class="text-primary"> • </span>
+                                    <span>Light weight</span>
+                                    <span class="text-primary"> • </span>
+                                    <span>
+                                        <%= product.color %><br />
+                                    </span>
                                 </div>
-                                <div class="favorit-items">
-                                    <!-- Your favorit-items content here -->
+                                <div class="mb-2 text-truncate small">
+                                    <span>Unique design</span>
+                                    <span class="text-primary"> • </span>
+                                    <span>
+                                        <%= product.meterial %>
+                                    </span>
+                                    <span class="text-primary"> • </span>
+                                    <span>
+                                        <%= product.category %><br />
+                                    </span>
                                 </div>
                             </div>
+
+
+
                         </div>
                     </div>
+                    <div>
+                        <hr>
+                        <p>
+                            <%= success %>
+                                <%= product.description %>
+                        </p>
+                    </div>
 
+                    <div class="card_area">
+
+
+                        <div class="add_to_cart">
+                            <% if (product.stock_count> 0) { %>
+                                <a href="/user/product/addcart?productId=<%= product._id %>"
+                                    class="add-to-cart-button btn">Add to Cart</a>
+                                <a href="/add-wishlist?id=<%= product._id %>"> <span
+                                        class="flaticon-heart btn_1"></span></a>
+                                <% } else { %>
+                                    <a href="# %>" class="add-to-cart-button btn">
+                                        <span class="out-of-stock">Out of Stock</span>
+                                    </a>
+                                    <a href="/add-wishlist?id=<%= product._id %>"> <span
+                                            class="flaticon-heart btn_1"></span></a>
+                                    <% } %>
+                        </div>
+
+                    </div>
                 </div>
             </div>
+
         </div>
+    </div>
+</div>
 
-        <!--================End Single Product Area =================-->
-        <!-- subscribe part here -->
-        <section class="subscribe_part section_padding">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-8">
-                        <div class="subscribe_part_content">
-                            <h2>Get promotions & updates!</h2>
-                            <p>Seamlessly empower fully researched growth strategies and interoperable internal or
-                                “organic” sources credibly innovate granular internal .</p>
-                            <div class="subscribe_form">
-                                <input type="email" placeholder="Enter your mail">
-                                <a href="#" class="btn_1">Subscribe</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- subscribe part end -->
-    </main>
-    <footer>
-        <!-- Footer Start-->
-        <%- include('../partials/Customerside/footer') %>
-            <!-- Footer End-->
-    </footer>
+<!--================End Single Product Area =================-->
+<!-- subscribe part here -->
+
+<% if (success && success.length> 0) { %>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            Swal.fire({
+                icon: "success",
+                title: "Success!",
+                html: "<ul>" +
+                    "<% for (const message of success) { %>" +
+                    "<li><%= message %></li>" +
+                    "<% } %>" +
+                    "</ul>",
+                showConfirmButton: true,
+                timer: 2000 // Auto close after 5 seconds
+            });
+        });
+        const image = document.querySelector('.zoom-image');
+
+        image.addEventListener('mousemove', (e) => {
+            const { offsetX, offsetY, width, height } = e.target.getBoundingClientRect();
+            const centerX = offsetX / width;
+            const centerY = offsetY / height;
+            image.style.transformOrigin = `${centerX * 100}% ${centerY * 100}%`;
+        });
+    </script>
+    <% } %>
+        <style>
+           .image-container {
+            position: relative;
+            width: 400px; /* Adjust the width to your desired size */
+        }
+
+        /* Define CSS for the image */
+        .zoom-image {
+            width: 100%;
+            height: auto;
+            cursor: zoom-in;
+            transition: transform 0.3s;
+        }
+
+        /* On hover, increase the image size */
+        .zoom-image:hover {
+            transform: scale(1.2); /* Adjust the scale factor for zoom level */
+        }
+        </style>
+        </main>
+        <footer>
+            <!-- Footer Start-->
+            <%- include('../partials/Customerside/footer') %>
+                <!-- Footer End-->
+        </footer>

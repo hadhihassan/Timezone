@@ -101,29 +101,50 @@
 
                                   <% if (product.product.offerPrice> 0 && product.product.categoryOfferPrice > 0) { %>
                                     <% if (product.product.offerPrice < product.product.categoryOfferPrice) { %>
-                                      <small>$<%= product.product.offerPrice %></small>
+                                      <small>&#8377;<%= product.product.offerPrice %> </small>
                                       <small><del class="text-danger">
                                           <%= product.product.price %>
                                         </del></small>
                                       <% } else { %>
-                                        <small>$<%= product.categoryOfferPrice %></small>
-                                        <small class="text-danger"><del class="text-danger">&#8377;<%= product.product.price
-                                              %></del></small>
+                                        <small>&#8377;<%= product.categoryOfferPrice %></small>
+                                        <small class="text-danger"><del class="text-danger">&#8377;<%=
+                                              product.product.price %></del></small>
                                         <% } %>
                                           <% } else if (product.product.offerPrice> 0) { %>
                                             <!-- Display offer price -->
-                                            <small>$<%= product.product.offerPrice %></small>
+                                            <small>&#8377;<%= product.product.offerPrice %></small>
                                             <small class="text-danger"><del class="text-danger">&#8377;<%=
                                                   product.product.price %></del></small>
                                             <% } else if (product.product.categoryOfferPrice> 0) { %>
                                               <!-- Display category offer price -->
-                                              <small>$<%= product.product.categoryOfferPrice %></small>
+                                              <small>&#8377;<%= product.product.categoryOfferPrice %></small>
                                               <small class="text-danger"><del class="text-danger">&#8377;<%=
                                                     product.product.price %></del></small>
                                               <% } else { %>
                                                 <!-- Display original price -->
-                                                <span>$<%= product.product.price %></span>
+                                                <span>&#8377;<%= product.product.price %></span>
                                                 <% } %>
+
+                                                  <% let numericValue; %>
+
+                                                    <% if (product.product.offerPrice> 0 &&
+                                                      product.product.categoryOfferPrice > 0) { %>
+                                                      <% if (product.product.offerPrice <
+                                                        product.product.categoryOfferPrice) { %>
+                                                        <% numericValue=Number(product.product.offerPrice); %>
+                                                          <% } else { %>
+                                                            <% numericValue=Number(product.categoryOfferPrice); %>
+                                                              <% } %>
+                                                                <% } else if (product.product.offerPrice> 0) { %>
+                                                                  <% numericValue=Number(product.product.offerPrice); %>
+                                                                    <% } else if (product.product.categoryOfferPrice> 0)
+                                                                      { %>
+                                                                      <% numericValue=Number(product.product.categoryOfferPrice);
+                                                                        %>
+                                                                        <% } else { %>
+                                                                          <% numericValue=Number(product.product.price);
+                                                                            %>
+                                                                            <% } %>
                                 </p>
                               </td>
                               <td>
@@ -142,31 +163,31 @@
                               </td>
                               <td>
                                 <p class="price" id="cart-total-amount_<%= product.product._id %>"
-                                  data-cart-total-id="change_total" name="totalAmount">&#8377;
-                                  <%=currentUser.cart[i].total %>
+                                  data-cart-total-id="change_total" name="totalAmount">
+                                  &#8377; <%= currentUser.cart[i].quantity * numericValue %>
                                 </p>
                               </td>
                             </tr>
                             <% } %>
                               <% }) %>
-                              <tr class="bottom_button">
-                                <td></td>
-                                <td></td>
-                                <td>
-                                  <h5>Subtotal</h5>
-                                </td>
-                                <td>
+                                <tr class="bottom_button">
+                                  <td></td>
+                                  <td></td>
+                                  <td>
+                                    <h5>Subtotal</h5>
+                                  </td>
+                                  <td>
 
-                                  <% if (Products.length >= 1) { %>
-                                  <span id="subtotalAmount">
+                                    <% if (Products.length>= 1) { %>
+                                      <span id="subtotalAmount">
 
-                                    <%= currentUser.totalCartAmount %>
-                                  </span>
-                                  <% } else {%>
-                                    <span>&#8377 0</span>
-                                    <% } %>
-                                </td>
-                              </tr>
+                                        <%= currentUser.totalCartAmount %>
+                                      </span>
+                                      <% } else {%>
+                                        <span>&#8377 0</span>
+                                        <% } %>
+                                  </td>
+                                </tr>
                   </tbody>
                 </table>
                 <div class="checkout_btn_inner float-right d-flex">
@@ -186,3 +207,4 @@
     <%- include('../partials/Customerside/footer')%>
       <!-- Footer End-->
   </footer>
+  <script src="/Customer/js/cartQuantity.js"></script>

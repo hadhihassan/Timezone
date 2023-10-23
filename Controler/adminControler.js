@@ -22,6 +22,7 @@ const loadAaminLogin = async (req, res, next) => {
         }
     } catch (error) {
         console.log(error.message);
+        res.render("User/404", { message: "An error occurred. Please try again later." });
     }
 }//lOGIN VALIDATION
 const loginValidation = async (req, res, next) => {
@@ -47,6 +48,7 @@ const loginValidation = async (req, res, next) => {
         }
     } catch (error) {
         console.log(error.message);
+        res.render("User/404", { message: "An error occurred. Please try again later." });
     }
 }//IF CHECK THE ADMIN IS VALID THEN GIVE ACCCESS  
 const adminValid = async (req, res) => {
@@ -83,6 +85,7 @@ const adminValid = async (req, res) => {
 
     } catch (error) {
         console.log(error.message);
+        res.render("User/404", { message: "An error occurred. Please try again later." });
     }
 }//ADMIN LOGOUT
 const adminLogout = (req, res) => {
@@ -95,6 +98,8 @@ const adminLogout = (req, res) => {
 
     } catch (error) {
         console.log(error.message);
+        res.render("User/404", { message: "An error occurred. Please try again later." });
+
     }
 }
 
@@ -104,7 +109,7 @@ const adminLogout = (req, res) => {
 
 //DISPLAY ALL CUSTOMERS
 const displayCustomers = async (req, res) => {
-    try {   
+    try {
         const page = parseInt(req.query.page) || 1;
         const pageSize = 10;
         const skip = (page - 1) * pageSize;
@@ -123,6 +128,8 @@ const displayCustomers = async (req, res) => {
         });
     } catch (error) {
         console.error(error.message);
+        res.render("User/404", { message: "An error occurred. Please try again later." });
+
     }
 }//CUSTOMER UNBLOCKING
 const UnblockTheUser = async (req, res) => {
@@ -135,6 +142,7 @@ const UnblockTheUser = async (req, res) => {
         }
     } catch (error) {
         console.log(error.message);
+        res.render("User/404", { message: "An error occurred. Please try again later." });
     }
 }//CUSTOMER BLOCKING 
 const blockTheUser = async (req, res) => {
@@ -147,6 +155,7 @@ const blockTheUser = async (req, res) => {
         }
     } catch (error) {
         console.log(error.message);
+        res.render("User/404", { message: "An error occurred. Please try again later." });
     }
 }
 
@@ -213,10 +222,11 @@ const loadCategory = async (req, res) => {
         const Categores = await productCategry.find().sort({ _id: -1 }).skip(skip).limit(pageSize).populate("offer")
 
 
-        res.render("admin/productCategory", { Categores, len, currentPage })
+        res.render("admin/Category/index", { Categores, len, currentPage })
 
     } catch (error) {
         console.log(error.message);
+        
     }
 }//SOFT DELETE
 const deleteCategory = async (req, res) => {
@@ -229,6 +239,7 @@ const deleteCategory = async (req, res) => {
 
     } catch (error) {
         console.log(error.message)
+        res.render("User/404", { message: "An error occurred. Please try again later." });
     }
 }//RENDER THE EDIT CATEGORY PAGE
 const loadEditCategory = async (req, res) => {
@@ -239,7 +250,7 @@ const loadEditCategory = async (req, res) => {
         const EditCategory = await productCategry.findById({ _id: id }).populate("offer")
 
         if (EditCategory) {
-            return res.render("admin/editCategory", { EditCategory, message: "", id, offers })
+            return res.render("admin/Category/edit", { EditCategory, message: "", id, offers })
         }
 
     } catch (error) {
@@ -248,7 +259,7 @@ const loadEditCategory = async (req, res) => {
 }// EDITING THE CATEGORY
 const EditCategory = async (req, res) => {
     console.log(req.body);
-    console.log(req.body.offer.length);
+    console.log(req.body.offer);
     const id = req.query.id
     try {
 
@@ -267,7 +278,7 @@ const EditCategory = async (req, res) => {
             if (req.body.offer === "Delete") {
                 await Product.updateMany({ category: id }, { $set: { categoryOfferPrice: 0 } })
                 await productCategry.findByIdAndUpdate(id, { $unset: { offer: {} } });
-            } else if (req.body.offer.length > 10) {
+            } else if (req.body.offer !== undefined && req.body.offer.length > 10) {
                 const offer = await Offer.findById(req.body.offer);
                 if (offer.is_deleted === false) {
                     await productCategry.findByIdAndUpdate(id, { $set: { offer: req.body.offer } });
@@ -304,7 +315,7 @@ const EditCategory = async (req, res) => {
 const loadAddCategory = async (req, res) => {
     try {
         const offers = await Offer.find({ is_deleted: false })
-        res.render('admin/addCategory', {
+        res.render('admin/Category/add', {
             message: '',
             offers: offers,
             error: req.flash("error")
@@ -334,7 +345,7 @@ const loadProductCreate = async (req, res) => {
         const offers = await Offer.find({ is_deleted: false })
 
 
-        res.render("admin/addproduct", { message: "", Categories, offers, error: req.flash("error") });
+        res.render("admin/Product/addproduct", { message: "", Categories, offers, error: req.flash("error") });
 
     } catch (error) {
         console.log(error.message);
@@ -348,7 +359,7 @@ const createProduct = async (req, res) => {
         offer, releaseDate, stockCount, description, category, tags,
         inStock, outOfStock, images, color, Metrial } = req.body;
 
-       
+
     try {
         if (!productName || !manufacturerName) {
             req.flash('error', 'All fields are required. Please fill in all fields....');
@@ -356,11 +367,11 @@ const createProduct = async (req, res) => {
 
         }
 
-    
-        let stock 
-        if(req.body.inStock == "inStock"){
+
+        let stock
+        if (req.body.inStock == "inStock") {
             stock = true
-        }else if (req.body.inStock == "outOfStock"){
+        } else if (req.body.inStock == "outOfStock") {
             stock = false
         }
         const product = new Product({
@@ -459,7 +470,7 @@ const loadProductPage = async (req, res) => {
         }
 
         if (products) {
-            return res.render('admin/products', { products, len, currentPage, query });
+            return res.render('admin/Product/products', { products, len, currentPage, query });
         } else {
             console.log("Products not found");
         }
@@ -480,7 +491,7 @@ const loadProductEditPage = async (req, res) => {
 
         const Categories = await productCategry.find({ categoryName: { $ne: pro.category } }).populate("offer")
         const offers = await Offer.find({ is_deleted: false })
-        res.render("admin/Edit", { message: "", product, id, Categories, offers })
+        res.render("admin/Product/Edit", { message: "", product, id, Categories, offers })
 
     } catch (error) {
         console.log(error.message);
@@ -493,13 +504,13 @@ const editProduct = async (req, res) => {
         , outOfStock, images, tags, color, Metrial, id, offer } = req.body;
     try {
         console.log(req.body);
-        let stock 
-        if(req.body.inStock == "inStock"){
+        let stock
+        if (req.body.inStock == "inStock") {
             stock = true
-        }else if (req.body.inStock == "outOfStock"){
+        } else if (req.body.inStock == "outOfStock") {
             stock = false
         }
-        
+
         const productId = id;
         const updateFields = {
             product_name: productName,
@@ -679,8 +690,8 @@ const updateReturnRequest = async (req, res) => {
             { $set: { return_Status: action } }
         );
         const referer = req.headers.referer;
-                const originalPage = referer || '/';
-                res.redirect(originalPage)
+        const originalPage = referer || '/';
+        res.redirect(originalPage)
         if (action === "Completed") {
             const updateResult = await Customer.findByIdAndUpdate(
                 order.user,
@@ -696,7 +707,7 @@ const updateReturnRequest = async (req, res) => {
                 },
                 { new: true } // To get the updated customer document
             )
-            if(updateResult){
+            if (updateResult) {
                 const referer = req.headers.referer;
                 const originalPage = referer || '/';
                 res.redirect(originalPage)
@@ -709,15 +720,14 @@ const updateReturnRequest = async (req, res) => {
     }
 }
 
+//**COUPONS MANAGEMENT**//
 
-//**ORDER MANAGEMENT**//
 
-
-//LIST ALL ORDERS
+//LIST ALL COUPONS
 const loadCouponPage = async (req, res) => {
     try {
         const allCoupon = await Coupon.find()
-        return res.render("admin/coupon", { allCoupon })
+        return res.render("admin/Coupon/index", { allCoupon })
 
     } catch (error) {
         console.log(error.message)
@@ -725,7 +735,7 @@ const loadCouponPage = async (req, res) => {
 }//RENDER THE CREATE COUPON PAGE
 const loadAddCoupon = async (req, res) => {
     try {
-        return res.render("admin/addCoupon")
+        return res.render("admin/Coupon/add")
     } catch (error) {
         console.log(error.message);
     }
@@ -768,7 +778,7 @@ const createCoupon = async (req, res) => {
             console.log("not working");
         }
 
-        return res.render("admin/addCoupon", { message: "Please fill in all fields...." });
+        return res.render("admin/Coupon/add", { message: "Please fill in all fields...." });
 
 
     } catch (error) {
@@ -795,7 +805,46 @@ const ActiveCoupon = async (req, res) => {
     } catch (error) {
         console.log(error.message);
     }
-}
+}//RENDER THE COUPON EDIT PAGE
+const loadCouponEdit = async (req, res) => {
+    try {
+        const couponId = req.params.id
+        const findCoupon = await Coupon.findById(couponId)
+        if (findCoupon) {
+            res.render("admin/Coupon/edit", {
+                findCoupon
+            })
+        }
+    } catch (error) {
+        console.log(error.message)
+    }
+}//ADD THE EDITED COUPON INTO DATABASE 
+const addEditCoupon = async (req, res) => {
+    try {
+        const updateData = req.body;
+        const findCouponUpdate = await Coupon.findById(req.body.id);
+
+        if (!findCouponUpdate) {
+            return res.status(404).json({ error: 'Coupon not found' });
+        }
+        console.log(req.body);
+        findCouponUpdate.coupon_name = updateData.couponName;
+        findCouponUpdate.minimumPurchaseAmount = updateData.MinimumpurchaseAmount;
+        findCouponUpdate.discount_amount_or_percentage = updateData.amountOrPercentage;
+        findCouponUpdate.description = updateData.Description;
+
+
+
+        const updatedCoupon = await findCouponUpdate.save();
+        if (updatedCoupon) {
+            console.log(updatedCoupon);
+            return res.redirect("/admin/coupon-management");
+        }
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({ error: 'An error occurred while updating the coupon.' });
+    }
+};
 
 
 module.exports = {
@@ -803,5 +852,5 @@ module.exports = {
     UnblockTheUser, blockTheUser, addProductCategory, loadCategory, deleteCategory, loadAddCategory, loadProductCreate,
     createProduct, loadProductPage, editProduct, loadProductEditPage, productDeactivate, productActivate, deleteImgDelete,
     loadOrder, updateOrderStatus, loadEditCategory, EditCategory, deleteCategoryImg, loadCouponPage, createCoupon, deleteCoupon,
-    ActiveCoupon, loadAddCoupon, updateReturnRequest
+    ActiveCoupon, loadAddCoupon, updateReturnRequest, loadCouponEdit, addEditCoupon, 
 }

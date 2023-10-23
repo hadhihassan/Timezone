@@ -1,155 +1,130 @@
+
 const mbnInput = document.getElementById("mbn");
-const usernameInput = document.getElementById('name')
+const usernameInput = document.getElementById("name");
 const nameErrorMessage = document.getElementById("nameErrorMessgae");
 const mbnErrorMessage = document.getElementById("mbnErrorMessage");
 const emailErrorMessage = document.getElementById("emailErrorMessage");
-const emailInput = document.getElementById('email')
-
-const passwordInput = document.getElementById('password')
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
 const passwordErrorMessage = document.getElementById("passwordErrorMessage");
-
-const conformpasswordInput = document.getElementById('conformpassword')
-const conformpasswordErrorMessage = document.getElementById("conformpasswordErrorMessage");
-
-
+const confirmPasswordInput = document.getElementById("conformpassword");
+const confirmPasswordErrorMessage = document.getElementById("conformpasswordErrorMessage");
 const myForm = document.getElementById("myForm");
-let allFieldsValid = true
 
-
-//mobile number form validation
-function mobile() {
-    let mobileValided = true
-    mbnInput.addEventListener("input", function () {
-        const mobileNumber = this.value.toString(); // Convert the value to a string
-        const zeroCount = (mobileNumber.match(/0/g) || []).length;
-        const mobileNumberPattern = /^\d+$/;
-        if (!mobileNumberPattern.test(mobileNumber)) {
-            mobileValided = false
-            mbnErrorMessage.textContent = 'Invalid mobile number. Please enter number.';
-        } else if (zeroCount > 5) {
-            mobileValided = false
-            mbnErrorMessage.textContent = "too many the mobile number "
-        } else if (mobileNumber.length === 0) {
-            mobileValided = false
-            mbnErrorMessage.textContent = "Mobile number is required"
-        } else {
-            mobileValided = true
-            mbnErrorMessage.textContent = '';
-        }
-        
-    });
-    return mobileValided
-}
-
-//username validation form
-function nameva() {
-    let nameValidated = true
-    usernameInput.addEventListener("input", function () {
-        const name = this.value.trim();
-        if (name === "") {
-            nameValidated = false
-            nameErrorMessage.textContent = "Username is required";
-        } else if (name.length < 3) {
-            nameValidated = false
-            nameErrorMessage.textContent = "Username must be at least 4 characters";
-        } else if (/^\d+$/.test(name)) {
-            nameValidated = false
-            nameErrorMessage.textContent = "Username cannot be all numbers";
-        } else {
-            allFieldsValid = true
-            nameErrorMessage.textContent = "";
-        }
-    })
-    return nameValidated
-
-}
-//email validation form
-function email() {
-    let emailValidated = true
-    emailInput.addEventListener("input", function () {
-        let email = this.value
-        if (!/^\S+@\S+\.\S+$/.test(email)) {
-            emailValidated = false
-            emailErrorMessage.textContent = "The not a valid. please enter the valid email address..."
-        } else {
-            emailValidated = true
-            emailErrorMessage.textContent = ""
-        }
-    })
-    return emailValidated
-
-}
-
-function password (){
-    let passowrdValidated =  true
-    passwordInput.addEventListener("input", function (){
-        let password = this.value
-
-        const hasUppercase = /[A-Z]/.test(password);
-        const hasLowercase = /[a-z]/.test(password);
-        const hasNumbers = /\d/.test(password);
-
-        if(password.length < 8){
-            passowrdValidated = false
-            passwordErrorMessage.textContent = 'Password must have at least 8 characters'
-        }else if(!(hasUppercase && hasLowercase && hasNumbers)){
-            passowrdValidated = false
-            passwordErrorMessage.textContent = 'Password must include at least one uppercase letter, one lowercase letter, and one number';
-        }else{ 
-            passowrdValidated = true
-            passwordErrorMessage.textContent = ""
-        }
-    })
-    return passowrdValidated
-}
-confirmPassword()
-function confirmPassword(){
-    let confirmpassValidated = true
-    conformpasswordInput.addEventListener("input", function (){
-        let confirmpassword = this.value
-        let opassword = passwordInput.value
-        console.log(confirmpassword,opassword);
-        
-        if(confirmpassword !== opassword){
-            confirmpassValidated = false
-            conformpasswordErrorMessage.textContent = "The password is  miss match"
-        }else{
-            confirmpassValidated = true
-            conformpasswordErrorMessage.textContent = ""
-        }
-    })
-    return confirmpassValidated
-
-}  
-
-mobile();
-email();
-password();
-confirmPassword();
-nameva();
-myForm.addEventListener("submit", function (event) {
-    const mbn = mobile();
-    const em = email();
-    const pas = password();
-    const cpass = confirmPassword();
-    const na = nameva();
-
-    if (!(mbn && em && pas && cpass && na)) {
-        event.preventDefault();
+function validateMobile() {
+    const mobileNumber = mbnInput.value.trim();
+    const zeroCount = (mobileNumber.match(/0/g) || []).length;
+    const mobileNumberPattern = /^\d+$/;
+    
+    if (!mobileNumberPattern.test(mobileNumber)) {
+        mbnErrorMessage.textContent = "Invalid mobile number. Please enter numbers only.";
+        return false;
+    } else if (zeroCount > 5) {
+        mbnErrorMessage.textContent = "Too many zeros in the mobile number.";
+        return false;
     } else {
+        mbnErrorMessage.textContent = "";
+        return true;
+    }
+}
+
+function validateName() {
+    const name = usernameInput.value.trim();
+    
+    if (name === "") {
+        nameErrorMessage.textContent = "Username is required";
+        return false;
+    } else if (name.length < 4) {
+        nameErrorMessage.textContent = "Username must be at least 4 characters";
+        return false;
+    } else if (/^\d+$/.test(name)) {
+        nameErrorMessage.textContent = "Username cannot be all numbers";
+        return false;
+    } else {
+        nameErrorMessage.textContent = "";
+        return true;
+    }
+}
+
+function validateEmail() {
+    const email = emailInput.value.trim();
+    
+    if (!/^\S+@\S+\.\S+$/.test(email)) {
+        emailErrorMessage.textContent = "Please enter a valid email address.";
+        return false;
+    } else {
+        emailErrorMessage.textContent = "";
+        return true;
+    }
+}
+
+function validatePassword() {
+    const password = passwordInput.value;
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasLowercase = /[a-z]/.test(password);
+    const hasNumbers = /\d/.test(password);
+    const hasSpecialChars = /[!@#$%^&*()_+[\]{}|\\:;'"<>,.?/~`]/.test(password);
+
+    if (password.length < 8) {
+        passwordErrorMessage.textContent = "Password must have at least 8 characters";
+        return false;
+    } else if (!(hasUppercase && hasLowercase && hasNumbers && hasSpecialChars)) {
+        passwordErrorMessage.textContent = "Password must include at least one uppercase letter, one lowercase letter, one number, and one special character"
+        return false;
+    } else {
+        passwordErrorMessage.textContent = "";
+        return true;
+    }
+}
+
+function validateConfirmPassword() {
+    const confirmPassword = confirmPasswordInput.value;
+    const originalPassword = passwordInput.value;
+
+    if (confirmPassword !== originalPassword) {
+        confirmPasswordErrorMessage.textContent = "The passwords do not match";
+        return false;
+    } else {
+        confirmPasswordErrorMessage.textContent = "";
+        return true;
+    }
+}
+
+myForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const isMobileValid = validateMobile();
+    const isNameValid = validateName();
+    const isEmailValid = validateEmail();
+    const isPasswordValid = validatePassword();
+    const isConfirmPasswordValid = validateConfirmPassword();
+
+    if (isMobileValid && isNameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid) {
+        // Form is valid, you can proceed with form submission
+        console.log("Form submitted successfully.");
+    
+        // Show a success message using SweetAlert
         Swal.fire({
-            title: 'Are you sure you want to sign up?',
-            text: 'This form will be submitted',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Submit',
-            cancelButtonText: 'Cancel'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // If the user confirms, submit the form
-                myForm.submit();
-            }
+            icon: 'success',
+            title: 'Success',
+            text: 'Form submitted successfully!',
+        }).then(() => {
+            // Proceed with form submission
+            myForm.submit();
+        });
+    } else {
+        // Show an error message using SweetAlert
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Please fix the form errors before submitting.',
         });
     }
+    
+});
+const passwordInp = document.getElementById('password');
+const showPasswordCheckbox = document.getElementById('showPasswordCheckbox');
+showPasswordCheckbox.addEventListener('change', () => {
+    passwordInp.type = showPasswordCheckbox.checked ? 'text' : 'password';
 });
 
