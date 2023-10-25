@@ -1,25 +1,33 @@
-// Define the startCountdown function
 function startCountdown() {
-    let time = localStorage.getItem('otp_timer');
-    const timer = document.getElementById('timer');
-    const resendButton = document.getElementById('resendButton');
+    const timerElement = document.getElementById('timer');
+    const resendButton = document.getElementById('resend');
+    const resendContainer = document.getElementById('resendContainer');
 
-    function updateTimer() {
-        if (time > 0) {
-            time--;
-            timer.textContent = time;
-            localStorage.setItem('otp_timer', time);
-            setTimeout(updateTimer, 1000);
-        } else {
-            // Handle the expiration of the OTP here
-            resendButton.style.display = 'block'; // Show the "Resend OTP" button
-        }
+    let timeLeft;
+    const startTime = localStorage.getItem('countdownStart');
+
+    if (startTime) {
+      const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+      timeLeft = Math.max(60 - elapsedTime, 0);
+    } else {
+      timeLeft = 60;
+      localStorage.setItem('countdownStart', Date.now());
     }
 
-    updateTimer();
-}
+    const countdownInterval = setInterval(function () {
+      timeLeft--;
 
-// Check if a timer is already running in local storage
-if (localStorage.getItem('otp_timer')) {
-    startCountdown();
-}
+      if (timeLeft <= 0) {
+        clearInterval(countdownInterval);
+        timerElement.textContent = '0';
+        localStorage.removeItem('countdownStart');
+        // Hide the countdown timer and show the "Resend" button
+        timerElement.style.display = 'none';
+        resendContainer.style.display = 'block';
+      } else {
+        timerElement.textContent = timeLeft;
+      }
+    }, 1000);
+  }
+
+  window.onload = startCountdown;

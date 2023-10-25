@@ -5,12 +5,12 @@ const flash = require("connect-flash");
 const cookieParser = require("cookie-parser");
 const nocache = require("nocache");
 const morgan = require("morgan");
-
+const path = require("path")
 
 require("dotenv").config();
 
 const app = express();
-
+app.set("views", path.join(__dirname, "views"));
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

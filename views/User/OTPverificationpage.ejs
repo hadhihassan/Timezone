@@ -29,12 +29,16 @@
                                         placeholder="Enter your OTP">
                                 </div>
                                 <input type="hidden" id="userId" name="ID" value="<%= id %>">
-                                <div class="text-danger" id="countdown">Time remaining: <span id="timer">60</span>
-                                    seconds</div>
+                                <div class="text-danger" id="countdown">
+                                    Time remaining: <span id="timer">60</span> seconds
+                                  </div>
+
+                                  
+                                  
 
 
                                 <div class="row col-md-12 form-group p_star">
-                                    <button type="submit" value="submit" class="btn_3">
+                                    <button type="submit" value="submit" id="resend" disabled class="btn_3">
                                         Send
                                     </button>
 
@@ -47,10 +51,12 @@
                                     <%} %>
                                         <!--end messages-->
                             </form>
-                            <form action="/resend-otp" method="post">
-                                <input type="hidden" name="userId" value="<%= id %>">
-                                <button type="submit" class="btn" id="resendButton">Resend OTP</button>
-                            </form>
+                            <div id="resendContainer" class="row col-md-12 form-group p_star" style="display: none;">
+                                <form action="/resend-otp" method="post">
+                                  <input type="hidden" name="userId" value="<%= id %>">
+                                  <button type="submit" class="btn" id="resendButton">Resend OTP</button>
+                                </form>
+                              </div>
                         </div>
                     </div>
                 </div>

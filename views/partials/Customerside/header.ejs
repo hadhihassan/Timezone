@@ -100,8 +100,9 @@
         <div class="h-100 d-flex align-items-center justify-content-center">
             <div class="search-close-btn">+</div>
             <form class="search-model-form" method="get" action="/user/shop">
-    
-               <button type="submit"></button>
+                <input type="text" class="form-control " name="query" value="<%= query ?? '' %>"
+                placeholder="Search products">
+               <!-- <button type="submit"></button> -->
             </form>
         </div>
     </div>
