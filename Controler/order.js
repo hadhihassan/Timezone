@@ -110,6 +110,24 @@ const checkRazorpaySignature = async (req, res) => {
   }
 };
 
-module.exports = {
-  loadPaymentPage, checkRazorpaySignature
+//RENDER THE USER ORDER INVOICE PAGE
+const loadInvoice = async (req,res) => {
+  try{
+    const orderId = req.body.id
+    if(orderId){
+      const userOrder = await Order.findById(orderId).populate("user").populate("products.product").populate("deliveryAddress")
+      return res.render("User/profile/invoice",{
+        order : userOrder
+      })
+    }
+  }catch (error){
+    res.render("User/404", { message: "An error occurred. Please try again later." });
+  }
+}
+
+
+
+
+module.exports = { 
+  loadPaymentPage, checkRazorpaySignature, loadInvoice
 };

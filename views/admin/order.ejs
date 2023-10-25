@@ -23,8 +23,29 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <h4 class="card-title">Order Table</h4>
+                                         
                                             <p class="card-description"> All Orders <code>.table</code>
                                             </p>
+                                            <div >
+                                                <button type="button"
+                                                class="btn btn-danger dropdown-toggle dropdown-toggle-split"
+                                                data-toggle="dropdown"
+                                                aria-haspopup="true"
+                                                aria-expanded="false"> Sort
+                                                <span class="sr-only">Toggle
+                                                    Dropdown</span>
+                                            </button>
+                                                <div class="dropdown-menu">
+                                                    <a class="dropdown-item btn-primary"
+                                                    href="/admin/orders?status=Pending">Pendings </a>
+                                                    <a class="dropdown-item"
+                                                    
+                                                    href="/admin/orders?status=return">Return</a>
+                                                    <a class="btn-white dropdown-item" href="/admin/orders?status=Completed">Completed   </a> 
+                                                    <a class="dropdown-item"
+                                                    href="/admin/orders" >All </a>
+                                                </div>
+                                            </div>
                                             <div class="table-responsive">
                                                 <table class="table">
                                                     <thead>

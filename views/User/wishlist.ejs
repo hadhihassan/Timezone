@@ -75,16 +75,14 @@
                                                 <!-- Display original price -->
                                                 <h4>&#8377;<%= pro.price %></h4>
                                             <% } %>
-                                            <a href="/delete-item-wishlist?id=<%= pro._id %>" type="button"
-                                            class=" btn-primary btn-sm me-1 mb-2" data-mdb-toggle="tooltip"
-                                            title="Remove item">
-                                            <i class="fas fa-trash"></i>
-                                          </a>
-    
-                                          <a href="/user/product/addcart?productId=<%= pro._id %>" type="button" class=" btn-danger btn-sm mb-2"
-                                            data-mdb-toggle="tooltip" title="Move to the wish list">
+                                          <button class="btn-primary btn-sm me-1 mb-2 remove-item-btn" data-proid="<%= pro._id %>">
+                                            <i class="fas fa-trash"></i> 
+                                          </button>
+                                          
+                                          <button href="/user/product/addcart?productId=<%= pro._id %>" class="btn-danger btn-sm me-1 mb-2 move-to-wishlist-btn" data-mdb-toggle="tooltip" " data-proid="<%= pro._id %>">
                                             <i class="fas flaticon-shopping-cart"></i>
-                                          </a>
+                                          </button>
+                                          
                                             
                                         </div>
                                        
@@ -101,3 +99,53 @@
 
 
     <%- include('../partials/Customerside/footer') %>
+    <script src="path_to_sweetalert.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
+  // Find all the remove item buttons
+  const removeItemButtons = document.querySelectorAll('.remove-item-btn');
+
+  // Add a click event listener to each button
+  removeItemButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const proId = button.getAttribute('data-proid');
+      Swal.fire({
+        title: 'Confirm Removal',
+        text: 'Are you sure you want to remove this item from your wishlist?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, remove it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Redirect to the "remove" URL when confirmed
+          window.location.href = `/delete-item-wishlist?id=${proId}`;
+        }
+      });
+    });
+  });
+
+
+  const moveButtons = document.querySelectorAll('.move-to-wishlist-btn');
+  // Add a click event listener to each button
+  moveButtons.forEach(button => {
+    button.addEventListener('click', (e) => {
+      e.preventDefault(); // Prevent the link from being immediately followed
+      const proId = button.getAttribute('data-proid');
+      Swal.fire({
+        title: 'Move to Cart',
+        text: 'Are you sure you want to move this item to your Cart?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Redirect to the URL to add to the wishlist when confirmed
+          window.location.href = `/user/product/addcart?productId=${proId}`;
+        }
+      });
+    });
+  });
+</script>

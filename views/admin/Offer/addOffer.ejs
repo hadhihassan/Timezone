@@ -38,41 +38,43 @@
                                                     }, 3000); // 3000 milliseconds (3 seconds)
                                                 </script>
                                             <% } %>
-                                            <form action="/admin/offer/create/" method="post">
+                                            <form action="/admin/offer/create/" method="post" id="Offer-Form">
 
 
                                                 <div class="form-group">
                                                     <label for="exampleInputCity1">Offer Name :</label>
                                                     <input type="text" class="form-control" name="name"
-                                                        id="exampleInputCity1" placeholder="Enter the offer name" required>
+                                                        id="Offername" placeholder="Enter the offer name" >
                                                 </div>
-
+                                                <div id="nameError" style="color: red;"></div>
                                                 <div class="form-group">
                                                     <label for="exampleInputCity1">Discount  : </label>
-                                                    <input type="number" class="form-control" name="discount"
-                                                    id="exampleInputCity1" placeholder="enter the offer Percentage"
-                                                    required>
+                                                    <input type="text" class="form-control" name="discount"
+                                                    id="discount" placeholder="enter the offer Percentage"
+                                                    >
                                                 </div>
-
+                                                <div id="dicountError" style="color: red;"></div>
                                                 <div class="form-group">
                                                     <label for="exampleInputCity1">Starting Date :</label>
                                                     <input type="date" class="form-control"
-                                                        name="startingDate" id="exampleInputCity1"
-                                                        placeholder="set a starting date" required>
+                                                        name="startingDate" id="startingdate"
+                                                        placeholder="set a starting date" >
                                                 </div>
-                                                <div class="form-group">
+                                                <div id="startingError" style="color: red;"></div>                                                <div class="form-group">
                                                     <label for="exampleInputCity1">Expaire Date
                                                         :</label>
                                                     <input type="date" class="form-control" name="expiryDate"
-                                                        id="exampleInputCity1" placeholder="set the expire date"
-                                                        required>
+                                                        id="ExpaireDate" placeholder="set the expire date"
+                                                        >
                                                 </div>
+                                                <div id="expireError" style="color: red;"></div>
                                                 <div class="form-group">
                                                     <label for="exampleInputCity1">Status:</label>
                                                     <input type="text" class="form-control" name="status"
-                                                        id="exampleInputCity1" placeholder="Enter the Description"
-                                                        required>
+                                                        id="Status" placeholder="Enter the Description"
+                                                        >
                                                 </div>
+                                                <div id="status" style="color: red;"></div>
                                         </div>
 
 
@@ -99,4 +101,6 @@
     </div>
     <!-- page-body-wrapper ends -->
     </div>
- 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="/Admin/validation/OfferValidation.js"></script>

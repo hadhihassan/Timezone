@@ -12,3 +12,7 @@ npm-debug.log
 
 # Ignore the build output
 dist/
+
+package.json
+
+package-lock.json

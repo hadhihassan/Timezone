@@ -31,22 +31,24 @@
                                 <input type="hidden" id="userId" name="ID" value="<%= id %>">
                                 <div class="text-danger" id="countdown">Time remaining: <span id="timer">60</span>
                                     seconds</div>
+
+
                                 <div class="row col-md-12 form-group p_star">
                                     <button type="submit" value="submit" class="btn_3">
                                         Send
                                     </button>
-                                 
+
                                 </div>
-                                    <!--error messages-->
-                                    <% if (typeof message !="undefined" ) {%>
-                                        <p class="mt-3 text-danger ">
-                                            <%= message %>
-                                        </p>
-                                        <%} %>
-                                            <!--end messages-->
+                                <!--error messages-->
+                                <% if (typeof message !="undefined" ) {%>
+                                    <p class="mt-3 text-danger ">
+                                        <%= message %>
+                                    </p>
+                                    <%} %>
+                                        <!--end messages-->
                             </form>
                             <form action="/resend-otp" method="post">
-                                <input type="hidden" name="userId" value="<%= id %>" >
+                                <input type="hidden" name="userId" value="<%= id %>">
                                 <button type="submit" class="btn" id="resendButton">Resend OTP</button>
                             </form>
                         </div>
@@ -55,6 +57,7 @@
             </div>
         </div>
     </section>
+
     <!--================login_part end =================-->
 </main>
 <footer>
@@ -64,3 +67,8 @@
 </footer>
 <!-- Otp counter script -->
 <script src="/Customer/js/otpCounter.js"></script>
+<script >
+// Define the startCountdown function
+
+
+</script>

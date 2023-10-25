@@ -21,16 +21,16 @@
                                 <div class="col-md-12 grid-margin stretch-card">
                                     <div class="card">
                                         <div class="card-body">
-                                            <form action="/admin/coupon/create" method="post">
+                                            <form action="/admin/coupon/create" method="post" id="couponForm">
 
 
                                                 <div class="form-group">
                                                     <label for="exampleInputCity1">Coupon Name :</label>
                                                     <input type="text" class="form-control" name="couponName"
-                                                        id="exampleInputCity1" placeholder="Enter Coupon Name" required>
+                                                        id="name" placeholder="Enter Coupon Name" >
                                                 </div>
 
-
+                                                <div id="nameError" style="color: red;"></div>
 
                                                 <div class="form-group">
                                                     <label for="exampleInputCity1">Discount Type : </label>
@@ -41,25 +41,29 @@
 
                                                     </select>
                                                 </div>
+                                                <div id="typeError" style="color: red;"></div>
                                                 <div class="form-group">
                                                     <label for="exampleInputCity1">Minimum Purchase Amount :</label>
-                                                    <input type="number" class="form-control"
-                                                        name="MinimumpurchaseAmount" id="exampleInputCity1"
-                                                        placeholder="Minimum Purchase Amount" required>
+                                                    <input type="text" class="form-control"
+                                                        name="MinimumpurchaseAmount" id="MinimumpurchaseAmount"
+                                                        placeholder="Minimum Purchase Amount" >
                                                 </div>
+                                                <div id="miError" style="color: red;"></div>
                                                 <div class="form-group">
                                                     <label for="exampleInputCity1">Discount Amount / Percentage
                                                         :</label>
-                                                    <input type="number" class="form-control" name="amountOrPercentage"
-                                                        id="exampleInputCity1" placeholder="Amount Or Percentage"
-                                                        required>
+                                                    <input type="text" class="form-control" name="amountOrPercentage"
+                                                        id="dOrp" placeholder="Amount Or Percentage"
+                                                        >
                                                 </div>
+                                                <div id="amountError" style="color: red;"></div>
                                                 <div class="form-group">
                                                     <label for="exampleInputCity1">Description:</label>
                                                     <input type="text" class="form-control" name="Description"
-                                                        id="exampleInputCity1" placeholder="Enter the Description"
-                                                        required>
+                                                        id="Description" placeholder="Enter the Description"
+                                                        >
                                                 </div>
+                                                <div id="descriptionErrorMessgae" style="color: red;"></div>
                                         </div>
 
 
@@ -95,3 +99,4 @@
     <!-- container-scroller -->
     <!-- plugins:js -->
     <%- include('../../partials/Adminside/footer') %>
+    <script src="/Admin/validation/couponValidation.js"></script>

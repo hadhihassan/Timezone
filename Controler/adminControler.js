@@ -6,9 +6,7 @@ const Order = require("../Models/orderModel")
 const Coupon = require("../Models/couponModel")
 const Offer = require("../Models/offerModel")
 const sharp = require("sharp")
-// const webpush = require('web-push');
-// const admin = require('firebase-admin');
-// const webpushConfig = require('../utils/webpush-config');
+
 
 
 
@@ -229,7 +227,7 @@ const loadCategory = async (req, res) => {
 
     } catch (error) {
         console.log(error.message);
-        
+
     }
 }//SOFT DELETE
 const deleteCategory = async (req, res) => {
@@ -647,16 +645,47 @@ const loadOrder = async (req, res) => {
         page = parseInt(req.query.page) || 1;
         const skip = ((page - 1) * pageSize);
         const currentPage = page
+        let orders
+        let len
+        const status = req.body.status
+        if (req.query.status === "Pending") {
+            orders = await Order.find({ returnRequest: "Pending", orderCanceled: false })
+                .skip(skip)
+                .limit(pageSize)
+                .populate("user")
+                .populate("products.product")
+                .populate("deliveryAddress")
+                .exec();
+            len = await Order.find({ returnRequest: "Pending", orderCanceled: false })
+        } else if (req.query.status === "Completed") {
+            orders = await Order.find({ returnRequest: "Completed", orderCanceled: false , is_returned : false})
+                .skip(skip)
+                .limit(pageSize)
+                .populate("user")
+                .populate("products.product")
+                .populate("deliveryAddress")
+                .exec();
+            len = await Order.find({ returnRequest: "Completed", orderCanceled: false })
+        } else if (req.query.status === "return") {
+            orders = await Order.find({ return_Status: "Pending", is_returned: true })
+                .skip(skip)
+                .limit(pageSize)
+                .populate("user")
+                .populate("products.product")
+                .populate("deliveryAddress")
+                .exec();
+            len = await Order.find({ return_Status: "Pending", is_returned: true })
+        } else {
+            orders = await Order.find()
+                .skip(skip)
+                .limit(pageSize)
+                .populate("user")
+                .populate("products.product")
+                .populate("deliveryAddress")
+                .exec();
+            len = await Order.find()
+        }
 
-        const len = await Order.find()
-        const orders = await Order.find()
-            .sort({ returnRequest: -1 }) // Sort by "returnRequest" in descending order
-            .skip(skip)
-            .limit(pageSize)
-            .populate("user")
-            .populate("products.product")
-            .populate("deliveryAddress")
-            .exec();
 
         if (orders) {
             return res.render("admin/order", { orders, len, currentPage })
@@ -664,7 +693,7 @@ const loadOrder = async (req, res) => {
         }
         console.log("GOT ERROR")
     } catch (error) {
-        consoel.log(error.message)
+
     }
 }//UPDATIN ORDER STATUS
 const updateOrderStatus = async (req, res) => {
@@ -855,5 +884,5 @@ module.exports = {
     UnblockTheUser, blockTheUser, addProductCategory, loadCategory, deleteCategory, loadAddCategory, loadProductCreate,
     createProduct, loadProductPage, editProduct, loadProductEditPage, productDeactivate, productActivate, deleteImgDelete,
     loadOrder, updateOrderStatus, loadEditCategory, EditCategory, deleteCategoryImg, loadCouponPage, createCoupon, deleteCoupon,
-    ActiveCoupon, loadAddCoupon, updateReturnRequest, loadCouponEdit, addEditCoupon, 
+    ActiveCoupon, loadAddCoupon, updateReturnRequest, loadCouponEdit, addEditCoupon,
 }

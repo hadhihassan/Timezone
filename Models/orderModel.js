@@ -67,7 +67,9 @@ const orderSchema = new mongoose.Schema({
         type: String,
     }
 
-});
+},{
+    timestamps: true,
+  });
 
 orderSchema.pre("save", function (next) {
     const orderDate = this.orderDate;

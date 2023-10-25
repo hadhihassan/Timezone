@@ -41,7 +41,7 @@ const createOffer = async  (req,res) =>{
             status
         })
         await newOffer.save()
-        return res.redirect("/admin/offer/create/") 
+        return res.redirect("/admin/Offer/") 
     } catch (error) {
         res.render("User/404", { message: "An error occurred. Please try again later." });
     }

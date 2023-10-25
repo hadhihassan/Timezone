@@ -287,7 +287,7 @@
 
 
                   <div class="payment_item">
-                    <form action="/user/place-order" method="post">
+                    <form action="/user/place-order" method="post" id="placeOrderForm">
                       <input type="hidden" id="couponFlag" name="discountAmount">
                       <input type="hidden" id="codeID" name="codeID">
                       <div>
@@ -318,7 +318,7 @@
                         <label for="f-option4">I’ve read and accept the </label>
                         <a href="#">terms & conditions*</a>
                       </div>
-                      <button type="submit" class="order_btn btn_3 col-md-12">Place Order </button>
+                      <button type="submit" id="placeOrderBtn" class="order_btn btn_3 col-md-12">Place Order </button>
                     </form>
                   </div>
                 </div>
@@ -426,6 +426,35 @@
     toggleCouponDropdown();
   });
 });
+document.addEventListener('DOMContentLoaded', function () {
+  const placeOrderButton = document.getElementById('placeOrderBtn');
+
+  placeOrderButton.addEventListener('click', function (e) {
+    e.preventDefault(); // Prevent the default form submission behavior
+
+    console.log('Button clicked'); // Add this for debugging
+
+    Swal.fire({
+      title: 'Confirm Order',
+      text: 'Are you sure you want to place this order?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log('Order confirmed'); // Add this for debugging
+
+        // If confirmed, submit the form
+        const form = placeOrderButton.closest('form');
+        if (form) {
+          form.submit();
+        }
+      }
+    });
+  });
+});
+
 </script>
   <style>
 /* Style for the coupon-card */

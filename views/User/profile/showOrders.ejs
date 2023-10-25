@@ -13,10 +13,20 @@
                 <div class="card mb-3">
                     <div class="card-body  border border-4">
                         <!-- Delivery Address -->
+                        <div class="text-end">
+                            <% if (order.orderCanceled===false && order.orderCanceled===false) { %>
+                                <form action="/order/Invoice" method="post">
+                                    <input type="hidden" name="id" value="<%= order._id %>">
+                                    <button type="submit" class="btn-primary">Invoice</button>
+                                </form>
+                              
+                             <% } %> 
+                         </div> <br> 
                         <form action="/user/profile/show-product-details/" method="post">
                             <input type="hidden" name="Products" value="<%= userOrder[i]._id %>">
                             <button class="btn_1 btn-sm btn-primary float-end">Show Product Details</button>
                         </form>
+                   
 
                         <h6>Placed order date ( <small class="text-info">
                                 <%= order.orderDate.toLocaleString() %>

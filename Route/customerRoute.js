@@ -4,7 +4,7 @@ const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
 const Auth = require("../middleware/Auth")
 
-const { loadPaymentPage, checkRazorpaySignature } = require("../Controler/order")
+const { loadPaymentPage, checkRazorpaySignature, loadInvoice } = require("../Controler/order")
 
 const { loadRegister, loadhome, insertUser, loadOTPpage, checkOTPValid, loadLogin, checkUserValid,
     userLogouting, loadShop, loadProfile, loadEditPage, updateUser, addImageProfile, deleteUserProfile,
@@ -83,6 +83,7 @@ Customer_Route.post("/user/order/Cancel/",Auth.logged, cancelOrder)
               .post("/user/place-order",Auth.logged, placeOrder)
               .get("/user/product/online-payment",Auth.logged, loadPaymentPage)
               .post("/return-product",Auth.logged, returnProductAction)
+              .post("/order/Invoice", loadInvoice)
 
 // ONLINE PAYMENT AND ORDER SAVE 
 Customer_Route.post("/online-payment-order-save", checkRazorpaySignature)
