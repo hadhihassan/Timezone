@@ -3,7 +3,6 @@ const Product = require("../Models/productModel")
 const Offer = require("../Models/offerModel")
 const Category = require("../Models/productCategory")
 
-//EVERY 12 AM AND PM CHECK THE OFFER ENDING TIME DELETE OFFER 
 const OfferCheckAndDeleteOffer = async (req, res) => {
     try {
         const currentDate = new Date();
