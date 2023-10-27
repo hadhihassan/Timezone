@@ -10,7 +10,20 @@ const passwordErrorMessage = document.getElementById("passwordErrorMessage");
 const confirmPasswordInput = document.getElementById("conformpassword");
 const confirmPasswordErrorMessage = document.getElementById("conformpasswordErrorMessage");
 const myForm = document.getElementById("myForm");
+const gender = document.getElementById("gender")
+const genderErrorMessage = document.getElementById("genderErrorMessage")
+function gendervalidtion() {
+    const mobileNumber = gender.value.trim();
 
+    
+  if(mobileNumber === "") {
+    genderErrorMessage.textContent = "gender is required.";
+        return false;
+    } else {
+        genderErrorMessage.textContent = "";
+        return true;
+    }
+}
 function validateMobile() {
     const mobileNumber = mbnInput.value.trim();
     const zeroCount = (mobileNumber.match(/0/g) || []).length;
@@ -98,8 +111,9 @@ myForm.addEventListener("submit", function (event) {
     const isEmailValid = validateEmail();
     const isPasswordValid = validatePassword();
     const isConfirmPasswordValid = validateConfirmPassword();
+    const g = gendervalidtion();
 
-    if (isMobileValid && isNameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid) {
+    if (isMobileValid && isNameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid && g) {
         // Form is valid, you can proceed with form submission
         console.log("Form submitted successfully.");
     

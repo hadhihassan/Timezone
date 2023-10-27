@@ -27,57 +27,52 @@
                                 Please register in now</h3>
                             <form class="row contact_form" action="/register" method="post" id="myForm">
                                 <div class="col-md-12 form-group p_star">
-                                    <input type="text" class="form-control" id="name" name="name" placeholder="Username"
-                                        required>
+                                    <input type="text" class="form-control" id="name" name="name"
+                                        placeholder="Username">
                                 </div>
                                 <div id="nameErrorMessgae" style="color: red;"></div>
 
                                 <div class="col-md-12 form-group p_star">
 
                                     <input type="text" minlength="10" maxlength="10" class="form-control" id="mbn"
-                                        name="mbn" placeholder="Mobile" required>
+                                        name="mbn" placeholder="Mobile">
                                 </div>
                                 <div id="mbnErrorMessage" style="color: red;"></div>
                                 <div class="col-md-12 form-group p_star d-flex">
-                                    <label>Select Gender : </label> &nbsp;
-                                    <div>
-                                        <input type="radio" id="maleRadio" name="gender" value="Male" required>
-                                        <label for="maleRadio">Male</label> &nbsp;
-                                    </div>
-                                    <div>
-                                        <input type="radio" id="femaleRadio" name="gender" value="Female" required>
-                                        <label for="femaleRadio">Female</label> &nbsp;
-                                    </div>
-                                    <div>
-                                        <input type="radio" id="otherRadio" name="gender" value="Other" required>
-                                        <label for="otherRadio">Other</label> &nbsp;
-                                    </div>
+                                    <select name="gender" id="gender" class="col-lg-12" id="gender">
+                                        <option disabled selected value="">Select gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="gender">Other</option>
+                                    </select>
                                 </div>
+                                <div id="genderErrorMessage" style="color: red;"></div>
                                 <div class="col-md-12 form-group p_star">
-                                    <input type="email" class="form-control" id="email" name="email" placeholder="Email"
-                                        required>
+                                    <input type="email" class="form-control" id="email" name="email"
+                                        placeholder="Email">
                                 </div>
                                 <div id="emailErrorMessage" style="color: red;"></div>
                                 <div class="col-md-12 form-group p_star">
-                                    <input required type="password" class="form-control" id="password" name="password"
+                                    <input type="password" class="form-control" id="password" name="password"
                                         placeholder="Password">
                                 </div>
                                 <div id="passwordErrorMessage" style="color: red;"></div>
                                 <div class="col-md-12 form-group p_star">
                                     <input type="password" class="form-control" id="conformpassword"
-                                        name="conformpassword" placeholder="conform Password" required>
+                                        name="conformpassword" placeholder="conform Password">
                                 </div>
                                 <div id="conformpasswordErrorMessage" style="color: red;"></div>
                                 <div class="col-md-12 form-group">
                                     <div class="creat_account d-flex justify-content-between">
                                         <div>
                                             <div class="creat_account d-flex align-items-center">
-                                                <input type="checkbox" id="showPasswordCheckbox"> 
+                                                <input type="checkbox" id="showPasswordCheckbox">
                                                 <label for="f-option">show password</label>
                                             </div>
                                         </div>
                                         <div class="te">
-                                            <p>Already registered ? <a class="text-info" href="/user-Login">Login</a></p>
+                                            <p>Already registered ? <a class="text-info" href="/user-Login">Login</a>
+                                            </p>
                                         </div>
                                     </div>
 
