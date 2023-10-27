@@ -18,30 +18,13 @@
                                     <div class="rounded-top text-white d-flex flex-row" style="height: 200px;">
                                         <div class="ms-4 mt-4 d-flex flex-column" style="width: 150px;">
 
-                                            <% if (user.image && user.image.contentType && user.image.data) { %>
-                                                <% const
-                                                    imageDataUrl=`data:${user.image.contentType};base64,${user.image.data.toString('base64')}`
-                                                    %>
-                                                    <img src="<%= imageDataUrl %>" alt="<%= user.name %> Image"
-                                                        alt="image" alt="Avatar" class="avatar">
-                                                    <hr>
-                                                    <% } else { %>
-                                                        <br>
-                                                        <br>
-                                                        <br>
-
-                                                        <!-- Default image or alternative content -->
-                                                        <div
-                                                            style="background-color: white; width: 150px; height: 200px; display: flex; justify-content: center; align-items: center;">
-                                                            <img src="/Customer/img/blog/popular-post/account-icon-user-icon-vector-graphics_292645-552.avif"
-                                                                alt="image" class=" border border-dark "
-                                                                style="width: 150px; height: 150px;">
-
-                                                            <hr>
-
-                                                        </div>
-
-                                                        <% } %>
+                                            <% if (user.images && user.images.contentType && user.images.data) { %>
+                                                <img src="data:<%= user.images.contentType %>;base64,<%= user.images.data.toString('base64') %>"
+                                                alt="<%= user.images %>" </a>
+                                              <% } else { %>
+                                                <img src="/Customer/img/blog/popular-post/account-icon-user-icon-vector-graphics_292645-552.avif" alt="image" class="border border-dark" style="width: 150px; height: 150px;">
+                                              <% } %>
+                                              
 
 
                                         </div>

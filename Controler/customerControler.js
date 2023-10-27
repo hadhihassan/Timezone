@@ -34,7 +34,7 @@ const loadhome = async (req, res) => {
             user: req.session.user, query: "", success: "",
             error: "",
             newPro,
-            products : pros
+            products: pros
         })
     } catch (error) {
         res.render("User/404", { message: "An error occurred. Please try again later." });
@@ -128,7 +128,7 @@ const sendOTPVerificationEmail = async ({ _id, email }, res) => {
             to: email,
             subject: "Verify Your Email",
             html: `<p>Enter <b>${otp}</b> in the app to verify your email address and complete the verification</p>
-                   <p>This code <b>expires in 1 hour</b>.</p>`
+                   <p>This code <b>expires in 1 minute</b>.</p>`
         };
         // Hash the OTP
         const saltRounds = 10;
@@ -155,7 +155,7 @@ const loadOTPpage = async (req, res) => {
     try {
         const userId = req.query.userId;
         console.log(userId); // Log the userId for debugging
-        res.render('User/OTPverificationPage', {
+        res.render('User/OTPverificationpage', {
             message: '', id: userId, user: "", success: req.flash("success"),
             error: req.flash("error"),
         });
@@ -168,20 +168,20 @@ const checkOTPValid = async (req, res) => {
     try {
         const { OTP, ID } = req.body;
         if (OTP === '') {
-            return res.render("User/OTPverificationPage", { message: "Empty data is not allowed", id: ID, user: "" });
+            return res.render("User/OTPverificationpage", { message: "Empty data is not allowed", id: ID, user: "" });
         }
         const OTPRecord = await UserOTPVerification.findOne({ userId: ID });
         if (!OTPRecord) {
-            return res.render("User/OTPverificationPage", { message: "Enter a valid OTP", id: ID, user: "" });
+            return res.render("User/OTPverificationpage", { message: "Enter a valid OTP", id: ID, user: "" });
         }
         const { expireAt, userId, otp } = OTPRecord;
         if (expireAt < Date.now()) {
             await UserOTPVerification.deleteOne({ userId });
-            return res.render("User/OTPverificationPage", { message: "The code has expired, please try again", id: ID, user: "" });
+            return res.render("User/OTPverificationpage", { message: "The code has expired, please try again", id: ID, user: "" });
         }
         const isValid = await bcrypt.compare(OTP, otp);
         if (!isValid) {
-            return res.render("User/OTPverificationPage", { message: "The entered OTP is invalid", id: ID, user: "" });
+            return res.render("User/OTPverificationpage", { message: "The entered OTP is invalid", id: ID, user: "" });
         }
         await Customer.updateOne({ _id: ID }, { $set: { is_varified: true } });
         await UserOTPVerification.deleteOne({ userId });
@@ -262,7 +262,6 @@ const checkUserValid = async (req, res) => {
     }
 
 }//RENDER THE FORGET PASSWORD PAGE
-
 
 const loadForgetPage = (req, res) => {
     try {
@@ -542,9 +541,22 @@ const updateUser = async (req, res) => {
 const addImageProfile = async (req, res) => {
     const id = req.body.id
     try {
-        await Customer.findByIdAndUpdate(id, { $set: { 'image.data': req.file.buffer, 'image.contentType': req.file.mimetype } })
+        const customer = await Customer.findById(req.session.user);
+
+        if (customer) {
+            // Update the 'images' field
+            customer.images = {
+                data: req.file.buffer,
+                contentType: req.file.mimetype
+            };
+        
+            // Save the updated customer document
+            await customer.save();
+        }
+
         res.redirect('/user/profile')
     } catch (error) {
+        console.log(error.message);
         res.render("User/404", { message: "An error occurred. Please try again later." });
     }
 }//DELETE THE USER PROFILE IMAGE
@@ -552,7 +564,7 @@ const deleteUserProfile = async (req, res) => {
     try {
         const id = req.query.id
         if (id) {
-            await Customer.findByIdAndUpdate(id, { $unset: { image: {} } })
+            await Customer.findByIdAndUpdate(id, { $unset: { images: {} } })
             return res.redirect("/user/profile")
         }
     } catch (error) {

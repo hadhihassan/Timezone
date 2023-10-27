@@ -31,10 +31,10 @@ const CustomerSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    images: [{
+    images: {
         data: Buffer,
         contentType: String
-    }],
+    },
     is_varified: {
         type: Boolean,
         default: false
