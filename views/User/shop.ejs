@@ -148,55 +148,30 @@
                                                                         </div>
                                                     </div>
                                                     <div class="popular-caption">
-                                                        <p><a>
+                                                        <h3><a>
                                                                 <%= products[product].product_name %>
-                                                            </a></p>
+                                                            </a></h3>
 
-                                                        <% if (products[product].offerPrice> 0 &&
-                                                            products[product].categoryOfferPrice > 0) { %>
-                                                            <% if (products[product].offerPrice <
-                                                                products[product].categoryOfferPrice) { %>
-                                                                    
-                                                                <h1>&#8377;<%= products[product].offerPrice %></h1> <small><del class="text-danger"> <%=products[product].price %> </del></small>
-
+                                                        <% if (products[product].offerPrice> 0 && products[product].categoryOfferPrice > 0) { %>
+                                                            <% if (products[product].offerPrice < products[product].categoryOfferPrice) { %>
+                                                                <span>&#8377;<%= products[product].offerPrice %></span> <span><del class="text-danger"> <%=products[product].price %> </del></span>
                                                                 <% } else { %>
-
-                                                                    <p>&#8377;<%= products[product].categoryOfferPrice%></p>
-                                                                    <small class="text-danger"><del class="text-danger">&#8377;<%=products[product].price %></del></small>
-
+                                                                    <span>&#8377;<%= products[product].categoryOfferPrice%></span>
+                                                                    <span class="text-danger"><del class="text-danger">&#8377;<%=products[product].price %></del></span>
                                                                     <% } %>
-
-                                                                        <% } else if (products[product].offerPrice>
-                                                                            0) {
+                                                                        <% } else if (products[product].offerPrice > 0) {
                                                                             %>
                                                                             <!-- Display offer price -->
-
-                                                                            <p>&#8377;<%= products[product].offerPrice %>
-                                                                            </p>
-                                                                            <small class="text-danger"><del
-                                                                                    class="text-danger">&#8377;
-                                                                                    <%=products[product].price %>
-                                                                                </del></small>
-
-
-                                                                            <% } else if
-                                                                                (products[product].categoryOfferPrice>
-                                                                                0) { %>
+                                                                            <span>&#8377;<%= products[product].offerPrice %></span>
+                                                                            <span class="text-danger"><del class="text-danger">&#8377; <%=products[product].price %> </del></span>
+                                                                            <% } else if (products[product].categoryOfferPrice > 0) { %>
                                                                                 <!-- Display category offer price -->
-
-
-                                                                                <p>&#8377;<%=
-                                                                                        products[product].categoryOfferPrice
-                                                                                        %></p>
-                                                                                <small class="text-danger"><del
-                                                                                        class="text-danger">&#8377;<%=
-                                                                                            products[product].price %>
-                                                                                    </del></small>
+                                                                                <span>&#8377;<%=products[product].categoryOfferPrice%></span>
+                                                                                <span class="text-danger"><del class="text-danger">&#8377;<%=products[product].price %></del></span>
 
                                                                                 <% } else { %>
                                                                                     <!-- Display original price -->
-                                                                                    <span>&#8377;<%= products[product].price
-                                                                                            %></span>
+                                                                                    <span>&#8377;<%= products[product].price%></span>
                                                                                     <% } %>
                                                     </div>
                                                 </div>
@@ -231,42 +206,28 @@
                                                                         </div>
                                                         </div>
                                                         <div class="popular-caption">
-                                                            <p><a>
+                                                            <h3><a>
                                                                     <%= products[product + 1].product_name %>
-                                                                </a></p>
-                                                            <% if (products[product + 1].offerPrice> 0 &&
-                                                                products[product + 1].categoryOfferPrice > 0) { %>
-                                                                <% if (products[product + 1].offerPrice <
-                                                                    products[product + 1].categoryOfferPrice) { %>
-
-                                                                    <h1>&#8377;<%= products[product + 1].offerPrice %>
-                                                                    </h1>
-                                                                    <small><del class="text-danger">
-                                                                            <%=products[product + 1].price %>
-                                                                        </del></small>
-
+                                                                </a></h3>
+                                                            <% if (products[product + 1].offerPrice> 0 && products[product + 1].categoryOfferPrice > 0) { %>
+                                                                <% if (products[product + 1].offerPrice < products[product + 1].categoryOfferPrice) { %>
+                                                                    <span>&#8377;<%= products[product + 1].offerPrice %> </span>
+                                                                    <span><del class="text-danger"> <%=products[product + 1].price %> </del></span>
                                                                     <% } else { %>
-
-                                                                        <small>&#8377;<%= products[product +
-                                                                                1].categoryOfferPrice%></small>
-                                                                        <small class="text-danger"><del
-                                                                                class="text-danger">&#8377;<%=
-                                                                                    products[product + 1].price %>
-                                                                            </del></small>
-
+                                                                        <span>&#8377;<%= products[product + 1].categoryOfferPrice%></span>
+                                                                        <span class="text-danger"><del class="text-danger">&#8377;<%=products[product + 1].price %> </del></span>
                                                                         <% } %>
-
                                                                             <% } else if (products[product +
                                                                                 1].offerPrice> 0) { %>
                                                                                 <!-- Display offer price -->
 
-                                                                                <small>&#8377;<%= products[product +
-                                                                                        1].offerPrice %></small>
-                                                                                <small class="text-danger"><del
+                                                                                <span>&#8377;<%= products[product +
+                                                                                        1].offerPrice %></span>
+                                                                                <span class="text-danger"><del
                                                                                         class="text-danger">&#8377;
                                                                                         <%=products[product + 1].price
                                                                                             %>
-                                                                                    </del></small>
+                                                                                    </del></span>
 
 
                                                                                 <% } else if (products[product +
@@ -274,14 +235,14 @@
                                                                                     <!-- Display category offer price -->
 
 
-                                                                                    <small>&#8377;<%= products[product +
+                                                                                    <span>&#8377;<%= products[product +
                                                                                             1].categoryOfferPrice %>
-                                                                                    </small>
-                                                                                    <small class="text-danger"><del
+                                                                                    </span>
+                                                                                    <span class="text-danger"><del
                                                                                             class="text-danger">&#8377;<%=
                                                                                                 products[product +
                                                                                                 1].price %>
-                                                                                        </del></small>
+                                                                                        </del></span>
 
                                                                                     <% } else { %>
                                                                                         <!-- Display original price -->
@@ -327,30 +288,29 @@
                                                                             class="add-to-cart-link">
                                                                             <%= products[product + 2].product_name %>
                                                                         </a></h3>
-                                                                    <% if (products[product + 2].offerPrice> 0 &&
-                                                                        products[product + 2].categoryOfferPrice >
+                                                                    <% if (products[product + 2].offerPrice> 0 && products[product + 2].categoryOfferPrice >
                                                                         0) {
                                                                         %>
                                                                         <% if (products[product + 2].offerPrice <
                                                                             products[product + 2].categoryOfferPrice) {
                                                                             %>
 
-                                                                            <p>&#8377;<%= products[product + 2].offerPrice
-                                                                                    %></p>
-                                                                            <small><del class="text-danger">
+                                                                            <span>&#8377;<%= products[product + 2].offerPrice
+                                                                                    %></span>
+                                                                            <span><del class="text-danger">
                                                                                     <%=products[product + 2].price %>
-                                                                                </del></small>
+                                                                                </del></span>
 
                                                                             <% } else { %>
 
-                                                                                <small>&#8377;<%= products[product +
+                                                                                <span>&#8377;<%= products[product +
                                                                                         2].categoryOfferPrice%>
-                                                                                </small>
-                                                                                <small class="text-danger"><del
+                                                                                </span>
+                                                                                <span class="text-danger"><del
                                                                                         class="text-danger">&#8377;<%=
                                                                                             products[product + 2].price
                                                                                             %>
-                                                                                    </del></small>
+                                                                                    </del></span>
 
                                                                                 <% } %>
 
@@ -358,14 +318,14 @@
                                                                                         2].offerPrice> 0) { %>
                                                                                         <!-- Display offer price -->
 
-                                                                                        <small>&#8377;<%= products[product +
+                                                                                        <span>&#8377;<%= products[product +
                                                                                                 2].offerPrice %>
-                                                                                        </small>
-                                                                                        <small class="text-danger"><del
+                                                                                        </span>
+                                                                                        <span class="text-danger"><del
                                                                                                 class="text-danger">&#8377;
                                                                                                 <%=products[product +
                                                                                                     2].price %>
-                                                                                            </del></small>
+                                                                                            </del></span>
 
 
                                                                                         <% } else if (products[product +
@@ -375,16 +335,16 @@
                                                                                             <!-- Display category offer price -->
 
 
-                                                                                            <small>&#8377;<%= products[product
+                                                                                            <span>&#8377;<%= products[product
                                                                                                     +
                                                                                                     2].categoryOfferPrice
-                                                                                                    %></small>
-                                                                                            <small
+                                                                                                    %></span>
+                                                                                            <span
                                                                                                 class="text-danger"><del
                                                                                                     class="text-danger">&#8377;
                                                                                                     <%= products[product
                                                                                                         + 2].price %>
-                                                                                                </del></small>
+                                                                                                </del></span>
 
                                                                                             <% } else { %>
                                                                                                 <!-- Display original price -->
@@ -423,11 +383,10 @@
     <%- include('../partials/Customerside/shopMethods') %>
 
 </main>
-<footer>
+
 
     <%- include('../partials/Customerside/footer') %>
 
-</footer>
 
 <script>
     

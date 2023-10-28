@@ -471,7 +471,7 @@ const loadShop = async (req, res) => {
 }//RENDER PRODUCT DETAILS PAGE INDIVIDULAY
 const displayProduct = async (req, res) => {
     try {
-        const product = await Product.findById(req.query.productId)
+        const product = await Product.findById(req.query.productId).populate("category")
         const mess = req.flash('success')
         const user = req.session.user
         if (product) {
@@ -549,7 +549,7 @@ const addImageProfile = async (req, res) => {
                 data: req.file.buffer,
                 contentType: req.file.mimetype
             };
-        
+
             // Save the updated customer document
             await customer.save();
         }
@@ -802,27 +802,33 @@ const updateCartQuantity = async (req, res) => {
             return res.json({ stock: product.stock_count, error: "stock limit exceeded!" })
         }
 
-
-        const lowoOfferPrice = Math.max(product.offerPrice, product.categoryOfferPrice)
         let regularPrice
-        if (lowoOfferPrice !== 0) {
-            regularPrice = lowoOfferPrice
+        if (product.offerPrice > 0 && product.categoryOfferPrice > 0) {
+            if (product.offerPrice < product.categoryOfferPrice) {
+                regularPrice = product.offerPrice;
+            } else {
+                regularPrice = product.categoryOfferPrice;
+            }
+        } else if (product.offerPrice > 0) {
+            regularPrice = product.offerPrice;
+        } else if (product.categoryOfferPrice > 0) {
+            regularPrice = product.categoryOfferPrice;
         } else {
-            regularPrice = product.price
+            regularPrice = product.price;
         }
 
 
-        const newTotal = newQuantity * regularPrice
-        cartProduct.quantity = newQuantity
-        cartProduct.total = newTotal
-        let totalCartAmount = 0;
+
+        // Calculate the new total for the cart product that is being updated.
+        const newTotal = newQuantity * regularPrice;
+        cartProduct.quantity = newQuantity;
+        cartProduct.total = newTotal;
+        let totalCartAmount = 0
         user.cart.forEach((item) => {
-            totalCartAmount += item.total;
+                totalCartAmount += item.total; 
         });
-
-        user.totalCartAmount = totalCartAmount
+        user.totalCartAmount = totalCartAmount;
         await user.save();
-
         res.json({ message: 'Cart item quantity updated successfully', totalCartAmount, total: newTotal });
     } catch (error) {
         console.log(error.messgae)

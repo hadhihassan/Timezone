@@ -111,4 +111,3 @@ let outOfStock = false
       flashMessageElement.style.display = 'none'; // Hide the flash message after 3 seconds (adjust as needed)
     }, 4000);
   }
-

@@ -125,26 +125,26 @@
                                                 <span>&#8377;<%= product.product.price %></span>
                                                 <% } %>
 
-                                                  <% let numericValue; %>
+                                                <% let numericValue; %>
+                                                <% if (product.product.offerPrice > 0 && product.product.categoryOfferPrice > 0) { %>
+                                                  <% if (product.product.offerPrice < product.product.categoryOfferPrice) { %>
+                                                    
+                                                    <% numericValue = Number(product.product.offerPrice); %>
+                                                  <% } else { %>
+                                        
+                                                    <% numericValue = Number(product.product.categoryOfferPrice); %>
+                                                  <% } %>
 
-                                                    <% if (product.product.offerPrice> 0 &&
-                                                      product.product.categoryOfferPrice > 0) { %>
-                                                      <% if (product.product.offerPrice <
-                                                        product.product.categoryOfferPrice) { %>
-                                                        <% numericValue=Number(product.product.offerPrice); %>
-                                                          <% } else { %>
-                                                            <% numericValue=Number(product.categoryOfferPrice); %>
-                                                              <% } %>
-                                                                <% } else if (product.product.offerPrice> 0) { %>
-                                                                  <% numericValue=Number(product.product.offerPrice); %>
-                                                                    <% } else if (product.product.categoryOfferPrice> 0)
-                                                                      { %>
-                                                                      <% numericValue=Number(product.product.categoryOfferPrice);
-                                                                        %>
-                                                                        <% } else { %>
-                                                                          <% numericValue=Number(product.product.price);
-                                                                            %>
-                                                                            <% } %>
+                                                <% } else if (product.product.offerPrice > 0) { %>
+                                      
+                                                  <% numericValue = Number(product.product.offerPrice); %>
+                                                <% } else if (product.product.categoryOfferPrice > 0) { %>
+                                      
+                                                  <% numericValue = Number(product.product.categoryOfferPrice); %>
+                                                <% } else { %>
+                                                 
+                                                  <% numericValue = Number(product.product.price); %>
+                                                <% } %>
                                 </p>
                               </td>
                               <td>
@@ -164,7 +164,7 @@
                               <td>
                                 <p class="price" id="cart-total-amount_<%= product.product._id %>"
                                   data-cart-total-id="change_total" name="totalAmount">
-                                  &#8377; <%= currentUser.cart[i].quantity * numericValue %>
+                                  &#8377;<%= currentUser.cart[i].quantity * numericValue %>
                                 </p>
                               </td>
                             </tr>
@@ -180,11 +180,10 @@
 
                                     <% if (Products.length>= 1) { %>
                                       <span id="subtotalAmount">
-
-                                        <%= currentUser.totalCartAmount %>
+                                        &#8377;<%= currentUser.totalCartAmount %>
                                       </span>
                                       <% } else {%>
-                                        <span>&#8377; 0</span>
+                                        <span>&#8377;0</span>
                                         <% } %>
                                   </td>
                                 </tr>
