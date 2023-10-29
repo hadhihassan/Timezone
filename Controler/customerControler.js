@@ -622,7 +622,6 @@ const addUserAddress = async (req, res) => {
             HouseName: req.body.houseno,
             RoadArea: req.body.area,
             City: req.body.city,
-            Region: req.body.region,
             PinCode: req.body.pincode,
             Country: req.body.country
         })
@@ -662,7 +661,6 @@ const updateAddress = async (req, res) => {
                 HouseName: req.body.houseno,
                 RoadArea: req.body.area,
                 City: req.body.city,
-                Region: req.body.region,
                 PinCode: req.body.pincode,
                 Country: req.body.country
             });
@@ -704,14 +702,17 @@ const loadCart = async (req, res) => {
 
         cartItems.forEach(async (item) => {
             if (item.product) {
-                let productOff = parseInt(item.product.offerPrice) || 0;
-                let categoryOff = parseInt(item.product.categoryOfferPrice) || 0;
-                const lowoOfferPrice = Math.max(productOff, categoryOff);
                 let actualPrice;
-                if (lowoOfferPrice !== 0) {
-                    actualPrice = lowoOfferPrice;
-                } else {
-                    actualPrice = lowoOfferPrice;
+                const offerPrice = item.product.offerPrice;
+                const price = item.product.price
+                const categoryOfferPrice = item.product.categoryOfferPrice;
+                
+                if (offerPrice > 0 && (offerPrice < price || price <= 0) && (offerPrice < categoryOfferPrice || categoryOfferPrice <= 0)) {
+                    actualPrice = offerPrice;
+                } else if (price > 0 && (price < offerPrice || offerPrice <= 0) && (price < categoryOfferPrice || categoryOfferPrice <= 0)) {
+                    actualPrice = price;
+                } else if (categoryOfferPrice > 0 && (categoryOfferPrice < offerPrice || offerPrice <= 0) && (categoryOfferPrice < price || price <= 0)) {
+                    actualPrice = categoryOfferPrice;
                 }
                 const productPrice = actualPrice;
                 const quantity = item.quantity;
@@ -722,6 +723,9 @@ const loadCart = async (req, res) => {
                     { $set: { "cart.$.total": item.total } }
                 );
 
+
+            } else {
+                console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>...");
             }
         });
         await userWithCart.save();
@@ -803,18 +807,16 @@ const updateCartQuantity = async (req, res) => {
         }
 
         let regularPrice
-        if (product.offerPrice > 0 && product.categoryOfferPrice > 0) {
-            if (product.offerPrice < product.categoryOfferPrice) {
-                regularPrice = product.offerPrice;
-            } else {
-                regularPrice = product.categoryOfferPrice;
-            }
-        } else if (product.offerPrice > 0) {
-            regularPrice = product.offerPrice;
-        } else if (product.categoryOfferPrice > 0) {
-            regularPrice = product.categoryOfferPrice;
-        } else {
-            regularPrice = product.price;
+        const offerPrice = product.offerPrice;
+        const price = product.price;
+        const categoryOfferPrice = product.categoryOfferPrice;
+
+        if (offerPrice > 0 && (offerPrice < price || price <= 0) && (offerPrice < categoryOfferPrice || categoryOfferPrice <= 0)) {
+            regularPrice = offerPrice;
+        } else if (price > 0 && (price < offerPrice || offerPrice <= 0) && (price < categoryOfferPrice || categoryOfferPrice <= 0)) {
+            regularPrice = price;
+        } else if (categoryOfferPrice > 0 && (categoryOfferPrice < offerPrice || offerPrice <= 0) && (categoryOfferPrice < price || price <= 0)) {
+            regularPrice = categoryOfferPrice;
         }
 
 
@@ -825,7 +827,7 @@ const updateCartQuantity = async (req, res) => {
         cartProduct.total = newTotal;
         let totalCartAmount = 0
         user.cart.forEach((item) => {
-                totalCartAmount += item.total; 
+            totalCartAmount += item.total;
         });
         user.totalCartAmount = totalCartAmount;
         await user.save();

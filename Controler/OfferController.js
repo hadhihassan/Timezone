@@ -102,7 +102,7 @@ const deleteOffer = async (req,res) => {
                 if (OfferCategory.nModified > 0) {
                     for (const cate of OfferCategory) {
                         const categoryId = cate._id;
-                        console.log(categoryId);
+                        console.log(categoryId ,"HHHHHHHHHHHH");
                         await Product.updateMany({ category: categoryId }, { $set: { categoryOfferPrice: 0 } });
                     }
                 }

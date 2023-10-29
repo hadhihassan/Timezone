@@ -72,6 +72,9 @@ const productSchema = new mongoose.Schema({
     categoryOfferPrice: {
         type:Number,
         default:0
+    },
+    orginalPrice :{
+        type : Number,
     }
 })
 
