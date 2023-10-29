@@ -24,6 +24,9 @@ function discountOptionValidation (){
     } if(!ch.test(amount)){
         amountoptionError.innerHTML = "Amount must be number only..."
         return false
+    }else if(amount <= 0){
+        amountoptionError.innerHTML = "Zero not allowd"
+        return false
     }else if(typeInput.value === "Percentage"){
         if(amount > 100){
             amountoptionError.innerHTML = "Percentage must be under 100%..."

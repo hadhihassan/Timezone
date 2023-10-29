@@ -21,7 +21,7 @@
                     <div class="card-body">
                       <h4 class="card-title">Product Information</h4>
                       <p class="card-description text-info">Basic product info</p>
-                      <form action="/admin/product/Edit" method="post" class="forms-sample"
+                      <form action="/admin/product/Edit" id="productForm" method="post" class="forms-sample"
                         enctype="multipart/form-data">
                         <input type="hidden" value="<%= id %>" name="id">
                         <% if (message !=="" ) { %>
@@ -36,7 +36,7 @@
                               <input type="text" class="form-control text-white" value="<%= product.product_name %>"
                                 name="productName" id="productName" placeholder="Name">
                             </div>
-
+                            <div id="pnameErrorMessgae" style="color: red;"></div>
                             <!-- Manufacturer Name -->
                             <div class="form-group">
                               <label for="manufacturerName">Manufacturer Name</label>
@@ -44,27 +44,28 @@
                                 value="<%= product.manufacturer_name %>" name="manufacturerName" id="manufacturerName"
                                 placeholder="Manufacturer">
                             </div>
-
+                            <div id="mnameErrorMessgae" style="color: red;"></div>
                             <!-- Brand Name -->
                             <div class="form-group">
                               <label for="brandName">Brand Name</label>
                               <input type="text" class="form-control text-white" value="<%= product.brand_name %>"
                                 name="brandName" id="brandName" placeholder="Brand Name">
                             </div>
-
+                            <div id="brandNameErrorMessage" style="color: red;"></div>
                             <!-- Identification No -->
                             <div class="form-group">
                               <label for="id_No">Identification No</label>
                               <input type="text" class="form-control text-white"
-                                value="<%= product.idendification_no %>" name="id_No" id="id_No" placeholder="ID">
+                                value="<%= product.idendification_no %>" name="id_No" id="idNo" placeholder="ID">
                             </div>
-
+                            <div id="idErrorMessgae" style="color: red;"></div>
                             <!-- Price -->
                             <div class="form-group">
                               <label for="price">Price</label>
                               <input type="number" class="form-control text-white" value="<%= product.price %>"
-                                name="price" id="price" placeholder="Price">product
+                                name="price" id="price" placeholder="Price">
                             </div>
+                            <div id="priceErrorMessgae" style="color: red;"></div>
                             <!-- Offer  -->
                             <div class="form-group">
                               <label for="price">Offer </label>
@@ -89,21 +90,20 @@
                                 <% } %>
                               </select>
                             </div>
-
                             <!-- Date of Release -->
                             <div class="form-group">
-                              <label for="releaseDate">Date of Release</label>
+                              <label for="releaseDate">Date of Release</label><br>
                               <input type="date" class="form-control text-white" value="<%= product.relese_date %>"
-                                name="releaseDate" id="releaseDate" placeholder="Release Date">
+                                name="releaseDate"  placeholder="Release Date">
                             </div>
-
+                            <div id="dateErrorMessgae" style="color: red;"></div>
                             <!-- Stock Count -->
                             <div class="form-group">
                               <label for="stockCount">Stock Count</label>
                               <input type="number" class="form-control text-white" value="<%= product.stock_count %>"
                                 name="stockCount" id="stockCount" placeholder="Count">
                             </div>
-
+                            <div id="stockErrorMessage" style="color: red;"></div>
                             <!-- Description -->
                             <div class="form-group">
                               <label for="description">Description</label>
@@ -111,7 +111,7 @@
                                  name="description" rows="8"
                                 placeholder="Write about the Product"><%= product.description %></textarea>
                             </div>
-
+                            <div id="descriptionErrorMessgae" style="color: red;"></div>
                             <!-- Product Categories and Tags -->
                             <div class="col-md-12 grid-margin stretch-card">
                               <div class="card">
@@ -134,6 +134,7 @@
 
                                     </select>
                                   </div>
+                                  <div id="categoryErrorMessgae" style="color: red;"></div>
                                   <div class="form-group">
                                     <label for="tags">Product Tags</label>
                                     <input type="text" class="form-control" value="<%= product.product_tags %>"
@@ -142,21 +143,36 @@
                                 </div>
                               </div>
                             </div>
-
+                            <div id="tagsErrorMessgae" style="color: red;"></div>
                             <!-- Availability -->
                             <div class="col-md-12 grid-margin stretch-card">
                               <div class="card">
                                 <div class="card-body">
                                   <h5 class="card-description text-white">Availability</h5>
                                   <div class="form-check">
-                                    <input type="radio" class="form-check-input" name="inStock" id="inStockRadio"
+                                    <% if (product.in_stock === true) { %>
+
+                                      <input type="radio" class="form-check-input" checked name="inStock" id="inStockRadio"
                                       value="inStock">
                                     <label class="form-check-label" for="inStockRadio">In Stock</label>
+                                    <input type="radio" class="form-check-input" name="inStock" id="outOfStockRadio"
+                                    value="outOfStock">
+                                  <label class="form-check-label" for="outOfStockRadio">Out Of Stock</label>
+
+                                    <% } else {%>
+
+                                      <input type="radio" class="form-check-input" name="inStock" id="inStockRadio"
+                                      value="inStock">
+                                    <label class="form-check-label" for="inStockRadio">In Stock</label>
+                                    <input type="radio" class="form-check-input" checked name="inStock" id="outOfStockRadio"
+                                    value="outOfStock">
+                                  <label class="form-check-label" for="outOfStockRadio">Out Of Stock</label>
+
+                                      <% } %>
+                                   
                                   </div>
                                   <div class="form-check">
-                                    <input type="radio" class="form-check-input" name="inStock" id="outOfStockRadio"
-                                      value="outOfStock">
-                                    <label class="form-check-label" for="outOfStockRadio">Out Of Stock</label>
+
                                   </div>
                                 </div>
                               </div>
@@ -174,20 +190,22 @@
                                       <img
                                         src="data:<%= image.contentType %>;base64,<%= image.data.toString('base64') %>"
                                         alt="<%= product.product_name %>" style="width: 180px;height: 180px;">
-
-                                      <a class="btn btn-danger btn-delete-image"
+                                      <% if (product.images.length > 3) { %>
+                                        <a class="btn btn-danger btn-delete-image"
                                         href="/admin/product/<%= image._id %>/<%= id %>/deleteImg">X</a>
-
-
+                                      <% } %>
                                     </div>
                                     <!-- </form> -->
 
                                     <% }) %>
+
                                 </div>
+                                <input type="hidden" id="imagelength" value="<%=  product.images.length%>">
                                 <input type="file" id="images" name="images" multiple
                                   class="form-control file-upload-info">
                               </div>
                             </div>
+                            <div id="imageserrormessage" style="color: red;"></div>
 
                             <!-- Color -->
                             <div class="form-group">
@@ -205,7 +223,7 @@
                                 <option>Pink</option>
                               </select>
                             </div>
-
+                            <div id="colorErrorMessage" style="color: red;"></div>
                             <!-- Material -->
                             <div class="form-group">
                               <label for="Metrial">Material</label>
@@ -224,7 +242,7 @@
                                 <option>Steel</option>
                               </select>
                             </div>
-
+                            <div id="MetrialErrorMessaeg" style="color: red;"></div>
                             <!-- Submit and Clear Buttons -->
                             <button type="submit" class="btn btn-primary mb-2">Submit</button>
                             <button type="reset" class="btn btn-primary mb-2">Clear</button>
@@ -248,3 +266,4 @@
   <!-- plugins:js -->
 
   <%- include('../../partials/Adminside/footer') %>
+  <script src="/Admin/validation/productedit.js"></script>

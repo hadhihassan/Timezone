@@ -25,8 +25,6 @@
                                     0
                                     <% } %>
                             </h3>
-
-                            <p class="text-success ml-2 mb-0 font-weight-medium">+3.5%</p>
                           </div>
                         </div>
                         <div class="col-3">
@@ -59,9 +57,6 @@
                                     0
                                     <% } %>
                             </h3>
-
-
-                            <p class="text-success ml-2 mb-0 font-weight-medium">+11%</p>
                           </div>
                         </div>
                         <div class="col-3">
@@ -88,7 +83,6 @@
                                     <% } %>
 
                             </h3>
-                            <p class="text-success ml-2 mb-0 font-weight-medium">-2.4%</p>
                           </div>
                         </div>
                         <div class="col-3">
@@ -115,7 +109,6 @@
                                     0
                                     <% } %>
                             </h3>
-                            <p class="text-success ml-2 mb-0 font-weight-medium">+3.5%</p>
                           </div>
                         </div>
                         <div class="col-3">
@@ -228,7 +221,6 @@
                                     <% } %>
 
                             </h2>
-                            <p class="text-success ml-2 mb-0 font-weight-medium">+3.5%</p>
                           </div>
                           <h6 class="text-muted font-weight-normal">Since last month</h6>
                         </div>
@@ -255,7 +247,6 @@
                                     <% } %>
 
                             </h2>
-                            <p class="text-success ml-2 mb-0 font-weight-medium">+8.3%</p>
                           </div>
                           <h6 class="text-muted font-weight-normal">Since started </h6>
                         </div>
@@ -276,7 +267,6 @@
                             <h2 class="mb-0">
                               <%= allUsers.length %>
                             </h2>
-                            <!-- <p class="text-danger ml-2 mb-0 font-weight-medium">-2.1% </p> -->
                           </div>
                           <h6 class="text-muted font-weight-normal"> Since started</h6>
                         </div>
@@ -562,13 +552,6 @@
           const amounts = "<%= allMonths.map(item => item.monthlyIncome) %>";
           const amountArray = amounts.split(",").map(item => parseFloat(item)); // Parse as floating-point numbers
           // Now, you can use labelArray and amountArray as needed.
-
-
-          console.log(amountArray); // Log the resulting amountArray
-          console.log(labelArray); // Log the resulting amountArray
-
-
-
 
           // Create a column chart
           const columnChart = new Chart(canvas, {

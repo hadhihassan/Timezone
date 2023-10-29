@@ -34,8 +34,8 @@
                         </div>
                         <% } %>
                           <br>
-                          <form action="/admin/Category/Edit-Category?id=<%= id%>" method="post"
-                            enctype="multipart/form-data">
+                          <form action="/admin/Category/Edit-Category?id=<%= id%>" id="CategoryForm" method="post"
+                            enctype="multipart/form-data" >
 
                             <div class="form-group">
                               <label>images upload :</label>
@@ -45,14 +45,14 @@
                               </div>
 
                             </div>
-
+                            <div id="imageError" style="color: red;"></div>
                             <div class="form-group">
                               <label for="exampleInputCity1">Category Name :</label>
                               <input type="text" class="form-control" name="Categoryname"
-                                value="<%= EditCategory.categoryName %>" id="exampleInputCity1"
-                                placeholder="Category name" required>
+                                value="<%= EditCategory.categoryName %>" id="name"
+                                placeholder="Category name" >
                             </div>
-
+                            <div id="nameError" style="color: red;"></div>
                             <div class="form-group">
                               <label for="exampleInputCity1">Offer :</label>
                               <select class="form-control form-control-lg text-white" name="offer" id="offer">
@@ -83,10 +83,10 @@
                             <div class="form-group">
                               <label for="exampleInputCity1">Description : </label>
                               <input type="text" class="form-control" name="description"
-                                value="<%= EditCategory.description %>" id="exampleInputCity1"
-                                placeholder="enter description" required>
+                                value="<%= EditCategory.description %>" id="description"
+                                placeholder="enter description" >
                             </div>
-
+                            <div id="DescriptionError" style="color: red;"></div>
                             <button type="submit" class="btn btn-primary mb-4">Edit</button>
                             <div>
                               <% if (typeof message !="undefined" ) {%>
@@ -144,3 +144,4 @@
   <!-- Custom js for this page -->
   <script src="/Admin/js/dashboard.js"></script>
   <%- include('../../partials/Adminside/footer') %>
+  <script src="/Admin/validation/CategoryEdit.js"></script>

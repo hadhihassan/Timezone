@@ -38,41 +38,50 @@
                                                     }, 3000); // 3000 milliseconds (3 seconds)
                                                 </script>
                                             <% } %>
-                                            <form action="/admin/offer/edit-save/" method="post">
+                                            <form action="/admin/offer/edit-save/" method="post" id="Offer-Form">
 
                                                 <input type="hidden" name="offerID" value="<%= findOffer._id %>">
                                                 <div class="form-group">
                                                     <label for="exampleInputCity1">Offer Name :</label>
                                                     <input type="text" class="form-control" name="name"
-                                                        id="exampleInputCity1" value="<%= findOffer.name%>" required>
+                                                        id="Offername" value="<%= findOffer.name%>" >
                                                 </div>
 
+                                                <div id="nameError" style="color: red;"></div>
                                                 <div class="form-group">
                                                     <label for="exampleInputCity1">Discount  : </label>
-                                                    <input type="number" class="form-control" name="discount"
-                                                    id="exampleInputCity1" value="<%=findOffer.discount %>"
-                                                    required>
+                                                    <input type="text" class="form-control" name="discount"
+                                                    id="discount" value="<%=findOffer.discount %>"
+                                                    >
                                                 </div>
 
+                                                <div id="dicountError" style="color: red;"></div>
                                                 <div class="form-group">
+                                                  
                                                     <label for="exampleInputCity1">Starting Date :</label>
                                                     <input type="date" class="form-control"
-                                                        name="startingDate" id="exampleInputCity1"
-                                                        value="<%=findOffer.startingDateFormatted%>" required>
+                                                        name="startingDate" id="startingdate"
+                                                        value="<%=findOffer.startingDateFormatted%>" >
                                                 </div>
+
+                                                <div id="startingError" style="color: red;"></div>   
                                                 <div class="form-group">
+
                                                     <label for="exampleInputCity1">Expaire Date
                                                         :</label>
                                                     <input type="date" class="form-control" name="expiryDate"
-                                                        id="exampleInputCity1"  value="<%=findOffer.expDateFormatted%>"
-                                                        required>
+                                                        id="ExpaireDate"  value="<%=findOffer.expDateFormatted%>"
+                                                        >
                                                 </div>
+                                                
+                                                <div id="expireError" style="color: red;"></div>
                                                 <div class="form-group">
                                                     <label for="exampleInputCity1">Status:</label>
                                                     <input type="text" class="form-control" name="status"
-                                                        id="exampleInputCity1" value="<%=findOffer.status%>"
-                                                        required>
+                                                        id="Status" value="<%=findOffer.status%>"
+                                                        >
                                                 </div>
+                                                <div id="status" style="color: red;"></div>
                                         </div>
 
 
@@ -92,3 +101,4 @@
     </div>
     </div>
     <%- include('../../partials/Adminside/footer') %>
+    <script src="/Admin/validation/editOfferValidation.js"></script>
