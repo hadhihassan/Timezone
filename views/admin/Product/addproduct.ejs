@@ -111,7 +111,10 @@
                                 <select class="form-control form-control-lg text-white" name="category" id="category" >
                                   <option value=" " disabled selected>Select a Category </option>
                                   <% Categories.forEach(category => { %>
-                                    <option value="<%= category._id%>"><%= category.categoryName %></option>
+                                    <select name="category">
+                                      <% if (category._id) { %>
+                                          <option value="<%= category._id %>"><%= category.categoryName %></option>
+                                      <% } %>
                                   <% }) %>
                                 </select>
                               </div>

@@ -46,7 +46,7 @@
                                             </span>
                                             <span class="text-primary"> • </span>
                                             <span>
-                                                <%= pro.category %><br />
+                                                <%= pro.category.categoryName %><br />
                                             </span>
                                         </div>
                                         <p class="text-truncate mb-4 mb-md-0">
@@ -55,26 +55,28 @@
                                     </div>
                                     <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-center">
                                         <div class=" test text-center justify-content-center">
+                                          <div class="d-flex text-center justify-content-center" >
                                             <% if (pro.offerPrice > 0 && pro.categoryOfferPrice > 0) { %>
-                                                <% if (pro.offerPrice < pro.categoryOfferPrice) { %>
-                                                    <h4>&#8377;<%= pro.offerPrice %></h4>
-                                                    <small><del class="text-danger"><%= pro.price %></del></small>
-                                                <% } else { %>
-                                                    <small>&#8377;<%= pro.categoryOfferPrice %></small>
-                                                    <small class="text-danger"><del class="text-danger">&#8377;<%= pro.price %></del></small>
-                                                <% } %>
-                                            <% } else if (pro.offerPrice > 0) { %>
-                                                <!-- Display offer price -->
-                                                <h4>&#8377;<%= pro.offerPrice %></h4>
-                                                <small class="text-danger"><del class="text-danger">&#8377;<%= pro.price %></del></small>
-                                            <% } else if (pro.categoryOfferPrice > 0) { %>
-                                                <!-- Display category offer price -->
-                                                <h4>&#8377;<%= pro.categoryOfferPrice %></h4>
-                                                <small class="text-danger"><del class="text-danger">&#8377;<%= pro.price %></del></small>
-                                            <% } else { %>
-                                                <!-- Display original price -->
-                                                <h4>&#8377;<%= pro.price %></h4>
-                                            <% } %>
+                                              <% if (pro.offerPrice < pro.categoryOfferPrice) { %>
+                                                  <p>&#8377;<%= pro.offerPrice %></p> &nbsp;
+                                                  <p><del class="text-danger"><%= pro.price %></del></p>
+                                              <% } else { %>
+                                                  <p>&#8377;<%= pro.categoryOfferPrice %></p> &nbsp;
+                                                  <p class="text-danger"><del class="text-danger">&#8377;<%= pro.price %></del></p>
+                                              <% } %>
+                                          <% } else if (pro.offerPrice > 0) { %>
+                                              <!-- Display offer price -->
+                                              <p>&#8377;<%= pro.offerPrice %></p> &nbsp;
+                                              <p class="text-danger"><del class="text-danger">&#8377;<%= pro.price %></del></p>
+                                          <% } else if (pro.categoryOfferPrice > 0) { %>
+                                              <!-- Display category offer price -->
+                                              <p>&#8377;<%= pro.categoryOfferPrice %></p> &nbsp;
+                                              <p class="text-danger"><del class="text-danger">&#8377;<%= pro.price %></del></p>
+                                          <% } else { %>
+                                              <!-- Display original price -->
+                                              <p>&#8377;<%= pro.price %></p>
+                                          <% } %>
+                                          </div>
                                           <button class="btn-primary btn-sm me-1 mb-2 remove-item-btn" data-proid="<%= pro._id %>">
                                             <i class="fas fa-trash"></i> 
                                           </button>

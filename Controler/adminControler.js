@@ -234,7 +234,10 @@ const deleteCategory = async (req, res) => {
     try {
         const { id } = req.params
         const deleteCategory = await productCategry.findByIdAndDelete({ _id: id })
-        if (deleteCategory) {
+        if(deleteCategory.offer){
+           await Product.updateMany({ category : id },{$set:{categoryOfferPrice : 0}})
+        }
+        if (deleteCategory ) {
             res.redirect("/admin/product/Category-management")
         }
 
@@ -359,16 +362,11 @@ const createProduct = async (req, res) => {
     const { productName, manufacturerName, brandName, id_No, price,
         offer, releaseDate, stockCount, description, category, tags,
         inStock, outOfStock, images, color, Metrial } = req.body;
-
-
     try {
         if (!productName || !manufacturerName) {
             req.flash('error', 'All fields are required. Please fill in all fields....');
             return res.redirect("/admin/product/create")
-
         }
-
-
         let stock
         if (req.body.inStock == "inStock") {
             stock = true
@@ -389,7 +387,6 @@ const createProduct = async (req, res) => {
             color: req.body.color,
             meterial: Metrial,
         });
-
         const croppedImages = await Promise.all(
             req.files.map(async (file, i) => {
                 const filename = `-${Date.now()}test-${i + 1}.jpeg`;

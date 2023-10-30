@@ -121,17 +121,19 @@
                                     <label for="category">Category</label>
                                     <select class="form-control form-control-lg text-white" name="category"
                                       id="category">
-                                    
-                                      <option value="<%= product.category._id %>"  selected > <%= product.category.categoryName %></option>
-                                      <% Categories.forEach(category=> { %>
-                                        <% if (product.category !==  category.categoryName ) { %>
-                                        <option value="<%= category._id %>">
-                                          <%= category.categoryName %>
-                                        </option>
+                                 
+                                        <% if (product.category) { %>
+                                            <option value="<%= product.category._id %>" disabled selected><%= product.category.categoryName %></option>
+                                        <% } else { %>
+                                            <option disabled selected>No Categories</option>
                                         <% } %>
+                                        <% Categories.forEach(category => { %>
+                                            <% if (product.category.categoryName !== category.categoryName) { %>
+                                                <option value="<%= category._id %>"><%= category.categoryName %></option>
+                                            <% } %>
                                         <% }) %>
-
-
+                           
+                                    
                                     </select>
                                   </div>
                                   <div id="categoryErrorMessgae" style="color: red;"></div>

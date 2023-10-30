@@ -471,16 +471,16 @@ const loadShop = async (req, res) => {
 }//RENDER PRODUCT DETAILS PAGE INDIVIDULAY
 const displayProduct = async (req, res) => {
     try {
-        const product = await Product.findById(req.query.productId).populate("category")
-        const mess = req.flash('success')
-        const user = req.session.user
+        const product = await Product.findById(req.query.productId).populate("category");
+        const mess = req.flash('success');
+        const user = req.session.user;
         if (product) {
             res.render("User/product_details", {
                 product,
                 user,
                 success: req.flash("success"),
                 error: req.flash("error"),
-            })
+            });
         }
     } catch (error) {
         res.render("User/404", { message: "An error occurred. Please try again later." });
@@ -605,6 +605,7 @@ const loadAddAddressPage = (req, res) => {
         res.render("User/profile/addAddress", {
             id, back, success: req.flash("success"),
             error: req.flash("error"),
+            user : req.session.user
         })
     } catch (error) {
 
@@ -642,7 +643,7 @@ const editAddress = async (req, res) => {
         const address = await Address.findById(req.body.id)
         const bc = req.body.back
         if (address) {
-            return res.render("User/profile/editAddress", { address, bc })
+            return res.render("User/profile/editAddress", { address, bc, user : req.session.user})
         }
     } catch (error) {
 
@@ -694,6 +695,7 @@ const deleteAddress = async (req, res) => {
 const loadCart = async (req, res) => {
     try {
         const userId = req.session.user;
+        let totalCart = 0
         const userWithCart = await Customer.findById(userId).populate('cart.product');
         if (!userWithCart) {
             return res.status(404).send('User not found');
@@ -702,22 +704,34 @@ const loadCart = async (req, res) => {
 
         cartItems.forEach(async (item) => {
             if (item.product) {
-                let actualPrice;
+                let regularPrice
                 const offerPrice = item.product.offerPrice;
-                const price = item.product.price
+                const price = item.product.price;
                 const categoryOfferPrice = item.product.categoryOfferPrice;
-                
-                if (offerPrice > 0 && (offerPrice < price || price <= 0) && (offerPrice < categoryOfferPrice || categoryOfferPrice <= 0)) {
-                    actualPrice = offerPrice;
-                } else if (price > 0 && (price < offerPrice || offerPrice <= 0) && (price < categoryOfferPrice || categoryOfferPrice <= 0)) {
-                    actualPrice = price;
-                } else if (categoryOfferPrice > 0 && (categoryOfferPrice < offerPrice || offerPrice <= 0) && (categoryOfferPrice < price || price <= 0)) {
-                    actualPrice = categoryOfferPrice;
-                }
-                const productPrice = actualPrice;
-                const quantity = item.quantity;
 
+
+                if (offerPrice > 0 && (offerPrice < price || price <= 0) && (offerPrice < categoryOfferPrice || categoryOfferPrice <= 0)) {
+                    regularPrice = offerPrice;
+                }
+
+                if (price > 0 && (price < offerPrice || offerPrice <= 0) && (price < categoryOfferPrice || categoryOfferPrice <= 0)) {
+                    if (typeof regularPrice === 'undefined' || price < regularPrice) {
+                        regularPrice = price;
+                    }
+                }
+
+                if (categoryOfferPrice > 0 && (categoryOfferPrice < offerPrice || offerPrice <= 0) && (categoryOfferPrice < price || price <= 0)) {
+                    if (typeof regularPrice === 'undefined' || categoryOfferPrice < regularPrice) {
+                        regularPrice = categoryOfferPrice;
+                    }
+                }
+
+                console.log(regularPrice + ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                const productPrice = regularPrice;
+                const quantity = item.quantity;
                 item.total = quantity * productPrice;
+                totalCart += item.total
+                
                 await Customer.updateOne(
                     { _id: userId, "cart._id": item._id },
                     { $set: { "cart.$.total": item.total } }
@@ -728,15 +742,18 @@ const loadCart = async (req, res) => {
                 console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>...");
             }
         });
-        await userWithCart.save();
+        userWithCart.totalCartAmount = totalCart
+        const udpdateCart = await userWithCart.save();
 
-        return res.render('User/cart', {
-            currentUser: userWithCart,
-            user: userId,
-            Products: cartItems,
-            success: req.flash("success"),
-            error: req.flash("error"),
-        });
+        if (udpdateCart) {
+            return res.render('User/cart', {
+                currentUser: userWithCart,
+                user: userId,
+                Products: cartItems,
+                success: req.flash("success"),
+                error: req.flash("error"),
+            });
+        }
     } catch (error) {
         res.render("User/404", { message: "Error loading cart" });
     }
@@ -776,7 +793,6 @@ const productAddToCart = async (req, res) => {
         else if (!existingCartItemIndex) {
             user.cart.push({ product: product._id, quantity, total })
             user.totalCartAmount = (totalCartAmount + total);
-
             await user.save()
             req.flash('success', 'product added to cart successfully')
             res.redirect(originalPage)
@@ -785,7 +801,6 @@ const productAddToCart = async (req, res) => {
             res.redirect(originalPage)
         }
     } catch (error) {
-        ; // Corrected from "cosnole.log(error.message)"
         res.render("User/404", { message: "An error occurred. Please try again later." });
     }
 }//UPDATING THE CART PRODUCT QUANTITY
@@ -1074,7 +1089,7 @@ const loadOrder = async (req, res) => {
 const loadOrderProductDetails = async (req, res) => {
     const orderId = req.body.Products; // Assuming you pass orderId as a route parameter
     try {
-        const order = await Order.findById(orderId).populate("products.product");
+        const order = await Order.findById(orderId).populate({ path : "products.product" , populate : { path : "category"}});
         if (!order) {
             return res.status(404).send("Order not found"); // Handle case where the order is not found
         }
@@ -1204,9 +1219,10 @@ const loadCoupons = async (req, res) => {
 //WISHLIST 
 const loadWishlist = async (req, res) => {
     try {
-        const user = await Customer.findById(req.session.user).populate("wishlist");
-        const wishlistItems = user.wishlist;
-
+        const user = await Customer.findById(req.session.user)
+        .populate({ path: 'wishlist', populate: { path: 'category', },})
+        .exec();
+      const wishlistItems = user.wishlist; // Wishlist items with the "category" field populated
         if (wishlistItems) {
             return res.render("User/wishlist", {
                 items: wishlistItems,
@@ -1216,6 +1232,7 @@ const loadWishlist = async (req, res) => {
             });
         }
     } catch (error) {
+        console.log(error.message);
         res.render("User/404", { message: "An error occurred. Please try again later." });
     }
 };//ADD PRODUCT TO WISHLIST

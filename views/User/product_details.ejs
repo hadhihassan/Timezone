@@ -3,7 +3,6 @@
     <%- include('../partials/Customerside/header') %>
         <!-- Header End -->
 </header>
-
 <!-- Hero Area End-->
 <!--================Single Product Area =================-->
 <div class="product_image_area">
@@ -39,8 +38,11 @@
                                             <h3>
                                                 <%= product.product_name %>
                                             </h3> <br>
-
-                                            <h3>$<%= product.price %>
+                                            <% if (success && success.length > 0) { %>
+                                                <%= success %>
+                                                <% } else %>
+                                                   
+                                            <h3>&#8377;<%= product.price %>
                                                     </h4>
 
 
@@ -88,20 +90,35 @@
 
                     <div class="card_area">
 
-
+                        <% if (success && success.length > 0) { %>
+                            <script>
+                                Swal.fire({
+                                  icon: "success",
+                                  title: "Success!",
+                                  html: "<ul>" +
+                                    "<% for (const message of success) { %>" +
+                                    "<li><%= message %></li>" +
+                                    "<% } %>" +
+                                    "</ul>",
+                                  showConfirmButton: true,
+                                  timer: 5000 // Auto close after 5 seconds
+                                });
+                            </script>
+                            <% } %>
                         <div class="add_to_cart">
-                            <% if (product.stock_count> 0) { %>
+                            <% if (product.stock_count > 0) { %>
                                 <a href="/user/product/addcart?productId=<%= product._id %>"
                                     class="add-to-cart-button btn">Add to Cart</a>
                                 <a href="/add-wishlist?id=<%= product._id %>"> <span
                                         class="flaticon-heart btn_1"></span></a>
                                 <% } else { %>
-                                    <a href="# %>" class="add-to-cart-button btn">
+                                    <a href="" class="add-to-cart-button btn">
                                         <span class="out-of-stock">Out of Stock</span>
                                     </a>
                                     <a href="/add-wishlist?id=<%= product._id %>"> <span
                                             class="flaticon-heart btn_1"></span></a>
                                     <% } %>
+                                
                         </div>
 
                     </div>
@@ -112,24 +129,9 @@
     </div>
 </div>
 
-<!--================End Single Product Area =================-->
-<!-- subscribe part here -->
-
-<% if (success && success.length> 0) { %>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            Swal.fire({
-                icon: "success",
-                title: "Success!",
-                html: "<ul>" +
-                    "<% for (const message of success) { %>" +
-                    "<li><%= message %></li>" +
-                    "<% } %>" +
-                    "</ul>",
-                showConfirmButton: true,
-                timer: 2000 // Auto close after 5 seconds
-            });
-        });
+
+    
         const image = document.querySelector('.zoom-image');
 
         image.addEventListener('mousemove', (e) => {
@@ -139,7 +141,7 @@
             image.style.transformOrigin = `${centerX * 100}% ${centerY * 100}%`;
         });
     </script>
-    <% } %>
+   
         <style>
            .image-container {
             position: relative;

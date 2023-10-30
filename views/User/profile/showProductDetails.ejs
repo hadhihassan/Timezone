@@ -26,15 +26,6 @@
                                         </div>
                                         <div class="col-md-6 col-lg-6 col-xl-6">
                                             <h5><%=  pro.product.product_name %></h5>
-                                            <div class="d-flex flex-row">
-                                                <div class="text-danger mb-1 me-2">
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                </div>
-                                                <span>310</span>
-                                            </div>
                                             <div class="mt-1 mb-0 text-muted small">
                                                 <span>100% <%=  pro.product.meterial %></span>
                                                 <span class="text-primary"> • </span>
@@ -47,19 +38,27 @@
                                                 <span class="text-primary"> • </span>
                                                 <span>  <%=  pro.product.meterial %></span>
                                                 <span class="text-primary"> • </span>
-                                                <span><%=  pro.product.category %><br /></span>
+                                                <span><%=  pro.product.category.categoryName %><br /></span>
                                             </div>
                                             <p class="text-truncate mb-4 mb-md-0">
                                                 <%=  pro.product.description %>
                                             </p>
                                         </div>
-                                        <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start">
+                                        <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start"><br><br><br><br>
                                             <div class="d-flex flex-row align-items-center mb-1">
-                                                <h4 class="mb-1 me-1">$<%=   pro.product.price%></h4>
-                                                <span class="text-danger"><s>$20.99</s></span>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                                                <% if (pro.product.offerPrice > 0 && (pro.product.offerPrice < pro.product.price || pro.product.price <= 0) && (pro.product.offerPrice < pro.product.categoryOfferPrice || pro.product.categoryOfferPrice <= 0)) { %>
+                                                    <h4 class="mb-1 me-1">&#8377;<%= pro.product.offerPrice %> </h4>&nbsp;
+                                                    <span class="text-danger"><s>&#8377;<%= pro.product.price %></s></span>
+                                                 <% } else if (pro.product.price > 0 && (pro.product.price < pro.product.offerPrice || pro.product.offerPrice <= 0) && (pro.product.price < pro.product.categoryOfferPrice || pro.product.categoryOfferPrice <= 0)) { %>
+                                                  <h4 class="mb-1 me-1">&#8377;<%= pro.product.price %> </h4>&nbsp;
+                                                 <% } else if (pro.product.categoryOfferPrice > 0 && (pro.product.categoryOfferPrice < pro.product.offerPrice || pro.product.offerPrice <= 0) && (pro.product.categoryOfferPrice < pro.product.price || pro.product.price <= 0)) { %>
+                                                  <h4 class="mb-1 me-1">&#8377;<%= pro.product.categoryOfferPrice %></h4>&nbsp;
+                                                  <span class="text-danger">&#8377;<s>&#8377;<%=pro.product.price %></s></span>
+                                                 <% } else { %>
+                                                    &#8377;0
+                                                 <% } %>
                                             </div>
-                                            <h6 class="text-success">Free shipping</h6>
-
                                         </div>
                                     </div>
                                 </div>
