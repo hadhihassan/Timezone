@@ -1,13 +1,15 @@
 <%- include('../../partials/Customerside/header') %>
 
-
     <div class="container">
+        
         <div class="shadow p-3 mb-5 bg-body rounded text-center">
             <br>
             <h3 class="text-black">Order Summary</h3>
             <br>
         </div>
+        &nbsp;    <a href="javascript:history.back();" class="btn_1">Go Back</a><br>
         <br>
+      
         <div class="container">
             <% userOrder.forEach((order, i)=> { %>
                 <div class="card mb-3">

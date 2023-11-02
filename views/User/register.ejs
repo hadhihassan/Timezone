@@ -65,14 +65,17 @@
                                 <div class="col-md-12 form-group">
                                     <div class="creat_account d-flex justify-content-between">
                                         <div>
-                                            <div class="creat_account d-flex align-items-center">
+                                            <div class="creat_account  align-items-center ">
                                                 <input type="checkbox" id="showPasswordCheckbox">
-                                                <label for="f-option">show password</label>
+                                                <label for="f-option">show password</label> <br>
+
                                             </div>
                                         </div>
-                                        <div class="te">
-                                            <p>Already registered ? <a class="text-info" href="/user-Login">Login</a>
-                                            </p>
+                                        <div>
+                                            <% if (notUser !== undefined && notUser) { %>
+                                                <p>Already registered ?  <a class="text-info" href="/user/otpVerification?userId<%= notUser %>">Verify</a></p> 
+                                            <% } %>
+                                            <p>Already Account ?  <a class="text-info" href="/user-Login">Login</a></p> 
                                         </div>
                                     </div>
 

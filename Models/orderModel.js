@@ -65,6 +65,10 @@ const orderSchema = new mongoose.Schema({
     },
     payment_id:{
         type: String,
+    },
+    discountAmount : {
+        type:Number,
+        default: 0
     }
 
 },{

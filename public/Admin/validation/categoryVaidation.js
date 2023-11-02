@@ -1,49 +1,47 @@
 const CategoryForm = document.getElementById("CategoryForm")
-
 const imageInput = document.getElementById("image")
 const imageError = document.getElementById("imageError")
-
 const nameInput = document.getElementById("name")
 const nameError = document.getElementById("nameError")
-
 const descriptionInput = document.getElementById("description")
 const descriptionError = document.getElementById("DescriptionError")
 const ch = /^\d+$/;
-function descriptionValidation (){
+
+function descriptionValidation() {
     const sdescriptionValue = descriptionInput.value.trim()
-    if(sdescriptionValue === ""){
+    if (sdescriptionValue === "") {
         descriptionError.innerHTML = "Description is requred.."
         return false
-    }else if(ch.test(sdescriptionValue)) {
+    } else if (ch.test(sdescriptionValue)) {
         descriptionError.innerHTML = "Description only includes the letters.."
         return false
-    }else if(sdescriptionValue.length < 10){
+    } else if (sdescriptionValue.length < 10) {
         descriptionError.innerHTML = "Description must be greater then 10 letters.."
         return false
-    }else{
+    } else {
         descriptionError.innerHTML = ""
         return true
     }
 }
-function nameValidation (){    
+function nameValidation() {
     const nameValue = nameInput.value.trim()
-    if(nameValue === ""){
+    if (nameValue === "") {
         nameError.innerHTML = "name is required.."
         return false
-    }else if(ch.test(nameValue)){
+    } else if (ch.test(nameValue)) {
         nameError.innerHTML = "number not allowed, only letters"
         return false
-    }else{
+    } else {
         nameError.innerHTML = ""
         return true
     }
 }
-function imageValidation (){
+function imageValidation() {
     const lenimages = imageInput.files.length
-    if(lenimages === 0){
+    if (lenimages === 0) {
         imageError.innerHTML = "One image is requried.."
         return false
-    }else{
+    } else {
         imageError.innerHTML = ""
         return true
     }

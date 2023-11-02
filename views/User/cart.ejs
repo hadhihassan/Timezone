@@ -116,8 +116,9 @@
                                     data-cart-item-id="<%= product.product._id %>">
                                     <i class="fas fa-minus"></i>
                                   </button>
+                                  <input class="product-count" type="hidden" value="<%= product.product.stock_count%>" >
                                   <input class="input-number" type="number" value="<%= currentUser.cart[i].quantity %>"
-                                    min="0" max="10" step="1" readonly>
+                                    min="1" maxlength="10" step="1" readonly>
                                   <button class="input-number-increment btn btn-primary btn-sm" data-action="increment"
                                     data-cart-item-id="<%= product.product._id %>">
                                     <i class="fas fa-plus"></i>

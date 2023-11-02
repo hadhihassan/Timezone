@@ -23,11 +23,12 @@
                 <!-- Page title -->
                 <div class="my-5">
                     <h3>My Profile</h3>
+                    &nbsp;    <a href="javascript:history.back();" class="text-danger btn">Go Back</a>
                     <hr>
 
                 </div>
                 <!-- Form START -->
-                <form action="/user/Update-profile" method="post" class="file-upload">
+                <form action="/user/Update-profile" method="post" id="profile" class="file-upload">
                     <div class="row mb-5 gx-5">
                         <!-- Contact detail -->
                         <div class="col-xxl-8 mb-5 mb-xxl-0">
@@ -38,67 +39,80 @@
                                     <div class="col-md-6">
                                         <label class="form-label">First Name *</label>
                                         <input type="text" class="form-control" placeholder="" name="name"
-                                            aria-label="First name" value="<%= user.name %>">
+                                            aria-label="First name" id="namevalue" value="<%= user.name %>"">
                                     </div>
                                    <div>
+                                    <div id="nameErrorMessgae" style="color: red;"></div>
                                     <input type="hidden" name="id" value="<%= user._id %>">
                                     
                                    </div>
                                     <!-- Mobile number -->
                                     <div class="col-md-6">
                                         <label class="form-label">Mobile number *</label>
-                                        <input type="text" class="form-control" placeholder="" name="mbn"
-                                            aria-label="Phone number" value="<%= user.mobile %>">
+                                        <input type="text" class="form-control" id="mbn" placeholder="" name="mbn"
+                                            aria-label="Phone number" maxlength="10" value="<%= user.mobile %>">
                                     </div>
+                                    <div id="mbnErrorMessage" style="color: red;"></div>
                                     <!-- Email -->
                                     <div class="col-md-6">
                                         <label for="inputEmail4" class="form-label">Email *</label>
-                                        <input type="email" class="form-control" id="inputEmail4" name="email"
+                                        <input type="email" class="form-control" id="email" name="email"
                                             value="<%= user.email %>">
                                     </div>
+                                    <div id="emailErrorMessage" style="color: red;"></div>
                                     <!-- Gender -->
                                     <div class="col-md-6">
                                         <label class="form-label">Gender *</label>
 
-                                        <select class="form-control" name="gender" id="">
-                                            <option value="<%= user.gender %>">
-                                                <%= user.gender %>
-                                            </option>
-                                            <option value="Male">Male</option>
-                                            <option value="Female">Female</option>
-                                        </select>
+                                        <select class="form-control" name="gender" id="gender">
+                                            <option selected disabled value="<%= user.gender %>"><%= user.gender %></option>
+                                            <% if (user.gender !== "Male") { %>
+                                                <option value="Male">Male</option>
+                                            <% } %>
+                                            <% if (user.gender  !==  "Female") { %>
+                                                <option value="Female">Female</option>
+                                            <% } %>
+                                            <% if (user.gender !== "Other") { %>
+                                                <option value="Other">Other</option>
+                                            <% } %>
+                                        </select>                                        
                                     </div>
+                                    <div id="genderErrorMessage" style="color: red;"></div>
                                     <div>
 
                                         <button class="btn btn-danger-soft"> Update</button>
                                     </div>
                 </form>
-                <form action="/user/profile/upadtePassword" method="post">
+                <form action="/user/profile/upadtePassword" method="post" id="password-form">
                     <input type="hidden" name="id" value="<%= user._id %>">
                     <div class="row g-3">
                         <h4 class="my-4">Change Password</h4>
                         <!-- Old password -->
+                        <% if (typeof message !== "undefined") { %>
+                            <p class="text-danger"><%= message %></p>
+                           <% } %>
                         <div class="col-md-6">
                             <label for="exampleInputPassword1" class="form-label">Old password *</label>
-                            <input type="password" name="oldpassword" class="form-control" id="exampleInputPassword1">
+                            <input type="password" name="oldpassword" class="form-control" id="oldpassword">
                         </div>
+                        <div id="oldpasswordErrorMessage" style="color: red;"></div>
                         <!-- New password -->
                         <div class="col-md-6">
                             <label for="exampleInputPassword2" class="form-label">New password *</label>
-                            <input type="password" class="form-control" name="newpassword" id="exampleInputPassword2">
+                            <input type="password" class="form-control" name="newpassword" id="password">
                         </div>
+                        <div id="passwordErrorMessage" style="color: red;"></div>
                         <!-- Confirm password -->
                         <div class="col-md-12">
                             <label for="exampleInputPassword3" class="form-label">Confirm Password *</label>
                             <input type="password" name="confirmpassword" class="form-control"
-                                id="exampleInputPassword3">
+                                id="conformpassword">
                         </div>
+                        <div id="conformpasswordErrorMessage" style="color: red;"></div>
                         <div>
                             <button class="btn btn-danger-soft"> Update</button>
                         </div>
-                        <% if (typeof message !== "undefined") { %>
-                         <p class="text-danger"><%= message %></p>
-                        <% } %>
+                       
                     </div>
                 </form>
             </div> <!-- Row END -->
@@ -242,5 +256,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
     integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
     crossorigin="anonymous"></script>
-
+    <script src="https://unpkg.com/sweetalert2@11.6.9/dist/sweetalert2.all.min.js"></script>
+<script src="/Customer/validation/profileValidation.js"></script>
 </html>

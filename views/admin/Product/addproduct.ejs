@@ -109,9 +109,9 @@
                               <div class="form-group">
                                 <label for="category">Category</label>
                                 <select class="form-control form-control-lg text-white" name="category" id="category" >
-                                  <option value=" " disabled selected>Select a Category </option>
+                                  <option value="" disabled selected>Select a Category </option>
                                   <% Categories.forEach(category => { %>
-                                    <select name="category">
+                                 
                                       <% if (category._id) { %>
                                           <option value="<%= category._id %>"><%= category.categoryName %></option>
                                       <% } %>
@@ -190,8 +190,12 @@
                         </div>
                         <div id="MetrialErrorMessaeg" style="color: red;"></div>
                         <!-- Submit and Clear Buttons -->
-                        <button type="submit" class="btn btn-primary mb-2">Submit</button>
-                        <button type="reset" class="btn btn-primary mb-2">Clear</button>
+                        <div class="text-center">
+                          <button type="submit" class="btn btn-danger btn-icon-text">
+                            <i class="mdi mdi-upload btn-icon-prepend"></i> Upload </button>
+                            <button type="reset" class="btn btn-warning btn-icon-text">
+                              <i class="mdi mdi-reload btn-icon-prepend"></i> Reset </button>
+                        </div>
                       </form>
                     </div>
                   </div>

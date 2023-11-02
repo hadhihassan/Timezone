@@ -10,84 +10,84 @@ const ch = /^\d+$/;
 const typeInput = document.getElementById("type")
 const typeError = document.getElementById("typeError")
 
-const  amountInput = document.getElementById("MinimumpurchaseAmount")
-const  amountError = document.getElementById("miError")
+const amountInput = document.getElementById("MinimumpurchaseAmount")
+const amountError = document.getElementById("miError")
 
-const  amountoptioInput = document.getElementById("dOrp")
-const  amountoptionError = document.getElementById("amountError")
+const amountoptioInput = document.getElementById("dOrp")
+const amountoptionError = document.getElementById("amountError")
 
-function discountOptionValidation (){
+function discountOptionValidation() {
     const amount = amountoptioInput.value
-    if(amount === ""){
+    if (amount === "") {
         amountoptionError.innerHTML = "this fiels is required.."
         return false
-    } if(!ch.test(amount)){
+    } if (!ch.test(amount)) {
         amountoptionError.innerHTML = "Amount must be number only..."
         return false
-    }else if(amount <= 0){
+    } else if (amount <= 0) {
         amountoptionError.innerHTML = "Zero not allowd"
         return false
-    }else if(typeInput.value === "Percentage"){
-        if(amount > 100){
+    } else if (typeInput.value === "Percentage") {
+        if (amount > 100) {
             amountoptionError.innerHTML = "Percentage must be under 100%..."
             return false
-        }else{
+        } else {
             amountoptionError.innerHTML = ""
             return true
         }
-    }else {
+    } else {
         amountoptionError.innerHTML = ""
         return true
     }
 }
-function MinimumpurchaseAmountValidation (){
+function MinimumpurchaseAmountValidation() {
     const amount = amountInput.value.trim()
-     if(amount === ""){
+    if (amount === "") {
         amountError.innerHTML = "Amount is required.."
         return false
-    }else if(!ch.test(amount)){
+    } else if (!ch.test(amount)) {
         amountError.innerHTML = "Amount must be number only..."
         return false
-    }else {
+    } else {
         amountError.innerHTML = ""
         return true
     }
 }
-function typeVaidation (){
+function typeVaidation() {
     const value = typeInput.value
-    if(value === "-1"){
+    if (value === "-1") {
         typeError.innerHTML = "Discount Type is requried.."
         return false
-    }else{
+    } else {
         typeError.innerHTML = ""
         return true
     }
 }
-function descriptionValidation (){
+function descriptionValidation() {
     const sdescriptionValue = descriptionInput.value.trim()
-    if(sdescriptionValue === ""){
+    if (sdescriptionValue === "") {
         descriptionError.innerHTML = "Description is requred.."
         return false
-    }else if(ch.test(sdescriptionValue)) {
+    } else if (ch.test(sdescriptionValue)) {
         descriptionError.innerHTML = "Description only includes the letters.."
         return false
-    }else if(sdescriptionValue.length < 10){
+    } else if (sdescriptionValue.length < 10) {
         descriptionError.innerHTML = "Description must be greater then 10 letters.."
         return false
-    }else{
+    } else {
         descriptionError.innerHTML = ""
         return true
     }
 }
-function nameValidation (){    
+function nameValidation() {
     const nameValue = nameInput.value.trim()
-    if(nameValue === ""){
-        nameError.innerHTML = "name is required.."
+    if (nameValue === "") {
+        nameError.innerHTML = "Name is required.."
         return false
-    }else if(ch.test(nameValue)){
-        nameError.innerHTML = "number not allowed, only letters"
+    } else if (ch.test(nameValue)) {
+        nameError.innerHTML = "Number not allowed, only letters"
         return false
-    }else{
+    } else {
         nameError.innerHTML = ""
         return true
     }

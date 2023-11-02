@@ -13,7 +13,7 @@ const app = express();
 app.set("views", path.join(__dirname,"views"));
 // Middleware
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ limit: '100mb', extended: true }));
 app.use(morgan("dev"));
 app.use(flash());
 app.use(nocache());

@@ -1,42 +1,40 @@
 
   // Get all input elements and increment/decrement buttons
   const inputNumbers = document.querySelectorAll(".input-number");
+  const count = document.querySelectorAll(".product-count");
   const incrementButtons = document.querySelectorAll(".input-number-increment");
   const decrementButtons = document.querySelectorAll(".input-number-decrement");
-let outOfStock = false
+
   // Add click event listeners for all increment and decrement buttons
   incrementButtons.forEach((button, index) => {
     button.addEventListener("click", () => {
-      updateCartItemQuantity(inputNumbers[index], "increment");
+      updateCartItemQuantity(inputNumbers[index],count[index], "increment");
     });
   });
 
   decrementButtons.forEach((button, index) => {
     button.addEventListener("click", () => {
       // outOfStock = index
-      updateCartItemQuantity(inputNumbers[index], "decrement");
+      updateCartItemQuantity(inputNumbers[index],count[index] ,"decrement");
     });
   });
 
-  function updateCartItemQuantity(inputElement, action) {
+  function updateCartItemQuantity(inputElement,count, action) {
     
     const cartItemId = inputElement.parentElement
       .querySelector(".input-number-increment")
       .getAttribute("data-cart-item-id");
-
+console.log(count.value);
     let currentValue = parseInt(inputElement.value);
 
     if (!isNaN(currentValue)) {
       if (action === "increment" && currentValue < 100) {
-        if(!outOfStock){
-         
-          currentValue++;
-        }
-    
-       
+    if(count.value > currentValue){
+      currentValue++;
+    }
       } else if (action === "decrement" && currentValue > 1) {
         
-        outOfStock = false
+     
           currentValue--;
         
        
@@ -62,7 +60,6 @@ let outOfStock = false
 
         success: function (response) {
           if (response.stock) {
-            outOfStock = true
             // inputNumbers[outOfStock].value = currentValue-1
             displayFlashMessage(response.error)
           } else {

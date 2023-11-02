@@ -11,7 +11,7 @@
                 <div class="col-lg-6 col-md-6">
                     <div class="login_part_text text-center">
                         <div class="login_part_text_iner">
-                            <h2>Add new address     q</h2>
+                            <h2>Add new address</h2>
                             <p>There are advances being made in science and technology
                                 everyday, and a good example of this is the</p>
                                 <a href="javascript:history.back();" class="btn_3">Go Back</a>
@@ -22,50 +22,51 @@
                 <div class="col-lg-6 col-md-6">
                     <div class="login_part_form">
                         <div class="login_part_form_iner">
-                                <form action="/user/address/add" method="post">
+                                <form action="/user/address/add" method="post" id="addressForm">
                                     <input type="hidden" name="id" value="<%= id %>">
                                     <input type="hidden" name="back" value="<%= back %>">
                                     <div class="mb-3">
                                         <label for="name" class="form-label">Name</label>
-                                        <input type="text" id="name" name="name" class="form-control" placeholder="Full Name*" required />
+                                        <input type="text" id="name" name="name" class="form-control" placeholder="Full Name*"  />
                                     </div>
-                                
+                                <div style="color: red;"id="nameErrorMessage"></div>
                                     <div class="mb-3">
                                         <label for="mbn" class="form-label">Contact details</label>
-                                        <input type="number" id="mbn" name="mbn" class="form-control" placeholder="Mobile number*" required />
+                                        <input type="text"  minlength="10" maxlength="10"  id="mbn" name="mbn" class="form-control" placeholder="Mobile number*"  />
                                     </div>
-                                
+                                    <div style="color: red;" id="mobileErrorMessage"></div>
                                     <div class="mb-3">
                                         <label for="email" class="form-label">Email</label>
-                                        <input type="email" id="email" name="email" class="form-control" placeholder="Email address*" required />
+                                        <input type="email" id="email" name="email" class="form-control" placeholder="Email address*"  />
                                     </div>
-                                
+                                    <div style="color: red;" id="emailErrorMessage"></div>
                                     <div class="mb-3">
                                         <label for="houseno" class="form-label">Address</label>
-                                        <input type="text" id="houseno" name="houseno" class="form-control" placeholder="House Name, Building Name*" required />
+                                        <input type="text" id="houseno" name="houseno" class="form-control" placeholder="House Name, Building Name*"  />
                                     </div>
-                                
+                                    <div style="color: red;" id="houseErrorMessage"></div>
                                     <div class="mb-3">
-                                        <input type="text" id="area" name="area" class="form-control" placeholder="Road name, Area*" required />
+                                        <input type="text" id="area" name="area" class="form-control" placeholder="Road name, Area*"  />
                                     </div>
-                                
+                                    <div style="color: red;" id="areaErrorMessage"></div>
                                     <div class="row mb-3">
                                         <div class="col-md-12">
                                             <input type="text" id="city" name="city" class="form-control" placeholder="City" />
                                         </div>
                                     </div>
-                                
+                                    <div style="color: red;" id="cityErrorMessage"></div>
                                     <div class="row mb-3">
                                         <div class="col-md-6">
-                                            <input type="number" id="pincode" name="pincode" class="form-control" placeholder="Postal / Zip Code / Pin Code" />
+                                            <input type="text" id="pincode" name="pincode" class="form-control" placeholder="Postal / Zip Code / Pin Code" />
                                         </div>
+                                        <div style="color: red;" id="pincodeErrorMessage"></div>
                                         <div class="col-md-6">
                                             <input type="text" id="country" name="country" class="form-control" placeholder="Country" />
                                         </div>
                                     </div>
-                                
+                                    <div style="color: red;" id="countryErrorMessage"></div>
                                     <div class="form-check mb-3">
-                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" required />
+                                        <input class="form-check-input" type="checkbox" id="flexCheckDefault" required />
                                         <label class="form-check-label" for="flexCheckDefault">I confirm this address.</label>
                                     </div>
                                 
@@ -87,3 +88,4 @@
         <%- include('../../partials/Customerside/footer') %>
             <!-- Footer End-->
     </footer>
+    <script src="/Customer/validation/addressValidation.js"></script>

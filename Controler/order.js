@@ -38,7 +38,8 @@ const loadPaymentPage = async (req, res) => {
       key_id: process.env.RAZORPAY_ID_KEY,
       user: userId,
       couponId: couponId,
-      secretKey : process.env.RAZORPAY_SECRET_KEY
+      secretKey : process.env.RAZORPAY_SECRET_KEY,
+       couponDiscount
     });
   } catch (error) {
     res.render("User/404", { message: "An error occurred. Please try again later." });
@@ -46,7 +47,7 @@ const loadPaymentPage = async (req, res) => {
 }
 //CHECK THE RERAZORPAY SIGNATURE PAYMENT SUCCESS OR NOT 
 const checkRazorpaySignature = async (req, res) => {
-  const { razorpay_payment_id, razorpay_order_id, razorpay_signature, order_id, secret, amount, couponId } = req.body;
+  const { razorpay_payment_id, razorpay_order_id, razorpay_signature, order_id, secret, amount, couponId,couponDiscount } = req.body;
   const userId = req.session.user;
 
   try {
@@ -61,13 +62,14 @@ const checkRazorpaySignature = async (req, res) => {
       });
 
       const User = await Customer.findById(userId).populate("cart.product");
-
+      const discount = couponDiscount ? parseInt(couponDiscount) : 0;
       const userOrder = new Order({
         user: userId,
         totalAmount: (amount / 100),
         paymentOption: "razorpay",
         deliveryAddress: usedAddress,
-        payment_id : razorpay_payment_id
+        payment_id : razorpay_payment_id,
+        discountAmount : discount
       });
 
       for (const cartItem of User.cart) {

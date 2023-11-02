@@ -1,0 +1,604 @@
+<%- include('../partials/Adminside/adminNav') %>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.0/html2pdf.bundle.min.js"></script>
+  <div class="container-scroller">
+    <!-- partial:../../partials/_sidebar.html -->
+    <%- include('../partials/Adminside/adminsidepanel') %>
+
+      <div class="col-12 grid-margin">
+        <div class="card">
+          <div class="card-body">
+            <br><br>
+
+
+
+            <br><br>
+            <h4 class="card-title">Report Managment</h4>
+            <div class="col-md-12">
+              <form action="/admin/Report-managment" method="post">
+                <div class="form-group row">
+                  <label class="col-sm-3 col-form-label">Staring Date</label>
+                  <div class="col-sm-9">
+                    <% if (starting && starting !==undefined) { %>
+
+                      <input name="starting" value="<%= starting %>" class="form-control col-md-3"
+                        placeholder="yyyy/mm/dd" />
+                      <% } else {%>
+                        <input name="starting" class="form-control col-md-3" placeholder="yyyy/mm/dd" />
+                        <% } %>
+                  </div>
+                  <br>
+                  <br>
+                  <label class="col-sm-3 col-form-label">Ending Date</label>
+                  <div class="col-sm-9">
+                    <% if (ending && ending !==undefined) { %>
+
+                      <input name="ending" value="<%= ending %>" class="form-control col-md-3"
+                        placeholder="yyyy/mm/dd" />
+                      <% } else {%>
+                        <input name="ending" class="form-control col-md-3" placeholder="yyyy/mm/dd" />
+                        <% } %>
+                          <br>
+                          <button type="submit" class="btn-info">Submit</button>
+                  </div>
+              </form>
+              <!-- <div>
+                    <td><label class="badge badge-warning">Cancelled Orders</label> : </td> <br>
+                    <td><label class="badge badge-danger">Pending</label> : </td>
+                  </div> -->
+
+            </div><br><br><br>
+            <% if (data===1) { %>
+              <% if (data===1) { %>
+                <button id="openModalBtn">Download</button>
+                <% } %>
+
+
+                  <div id="headingReport">
+                    <h4>Report <small>(<%= starting %> &nbsp; to &nbsp; <%= ending %>) </small></h4>
+                    <br><br><br>
+                  </div>
+                  <div class="col-md-10">
+                    <h4>Total Revenue:
+                      <% if (totalRevenue && totalRevenue[0] && totalRevenue[0].totalRevenue !==undefined) { %>
+                        <%= totalRevenue[0].totalRevenue %>
+                          <% } else { %>
+                            Data not available
+                            <% } %>
+                    </h4>
+
+                    <% var numberPro=0; %>
+                      <% deliveredOrders.forEach(order=> { %>
+                        <% order.products.forEach(product=> { %>
+                          <% numberPro +=product.quantity; %>
+                            <% }) %>
+                              <% }) %>
+
+                                <h4>No of products sold: <%= numberPro %>
+                                </h4>
+
+                                <p>
+                                  <label class="badge badge-success">Completed Orders</label>: <%=
+                                    deliveredOrders.length %>
+                                </p>
+                                <p>
+                                  <label class="badge badge-danger">Return Products</label>: <%= canceledOrders.length
+                                    %>
+                                </p>
+                                <p>
+                                  <label class="badge badge-warning">Cancelled Orders</label>: <%= returnedOrders.length
+                                    %>
+                                </p>
+                  </div>
+                  <hr class="text-white">
+                  <div class="table-responsive">
+                    <% if (deliveredOrders.length===0) { %>
+                      <div class="text-danger">
+                        <h3>No items..</h3>
+                      </div>
+                      <% } else { %>
+
+
+                        <table class="table col-md-10">
+
+                          <thead>
+                            <label class="badge badge-success col-md-10">Completed Orders</label>
+                            <tr>
+                              <th>No</th>
+                              <th>User</th>
+                              <th>Orders</th>
+                              <th>Created</th>
+                              <th>Payment Option</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <% deliveredOrders.forEach((order,i)=> { %>
+                              <tr>
+                                <td>
+                                  <%= i +1%>
+                                </td>
+                                <td>
+                                  Name: <%= order.user.name %> <br><br>Email: <%= order.user.email %>
+                                </td>
+                                <td>
+                                  <% order.products.forEach(element=> { %>
+                                    Name: <%= element.product.product_name %>
+                                      <br>
+                                      Q/T: <%= element.quantity %>
+                                        <br>
+                                        Total: <%= element.total %>
+                                          <hr>
+                                          <% }) %>
+                                            <label class="badge badge-danger">Total Order Amount</label> : <%=
+                                              order.totalAmount %>
+                                </td>
+                                <td>
+                                  <%= order.orderDate.toLocaleString() %>
+                                </td>
+                                <td>
+                                  <% if (order.paymentOption==="razorpay" ) { %>
+                                    <label class="badge badge-danger">
+                                      <%= order.paymentOption%>
+                                    </label>
+                                    <% } else if (order.paymentOption==="COD" ) {%>
+                                      <label class="badge badge-warning">
+                                        <%= order.paymentOption%>
+                                      </label>
+                                      <% } else { %>
+                                        <label class="badge badge-success">
+                                          <%= order.paymentOption%>
+                                        </label>
+                                        <% } %>
+                                </td>
+                              </tr>
+                              <% }) %>
+                          </tbody>
+                        </table>
+                        <% } %>
+                          <label class="badge badge-danger col-md-10">Return Products</label> <br>
+                          <% if (returnedOrders.length===0) { %>
+                            <div class="text-danger">
+                              <h3>No items..</h3>
+                            </div>
+                            <% } else { %>
+                              <table class="table col-md-10">
+
+                                <thead>
+                                  <tr>
+                                    <th>No</th>
+                                    <th>User</th>
+                                    <th>Orders</th>
+                                    <th>Created</th>
+                                    <th>Payment Option</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+
+                                  <% returnedOrders.forEach((order,i)=> { %>
+                                    <tr>
+                                      <td>
+                                        <%= i + 1 %>
+                                      </td>
+                                      <td>
+                                        Name: <%= order.user.name %> <br><br>Email: <%= order.user.email %>
+                                      </td>
+                                      <td>
+                                        <% order.products.forEach(element=> { %>
+                                          Name: <%= element.product.product_name %>
+                                            <br>
+                                            Q/T: <%= element.quantity %>
+                                              <br>
+                                              Total: <%= element.total %>
+                                                <hr>
+                                                <% }) %>
+                                                  <label class="badge badge-danger">Total Order Amount</label>: <%=
+                                                    order.totalAmount %>
+                                      </td>
+                                      <td>
+                                        <%= order.orderDate.toLocaleString() %>
+                                      </td>
+                                      <td>
+                                        <% if (order.paymentOption==="razorpay" ) { %>
+                                          <label class="badge badge-danger">
+                                            <%= order.paymentOption%>
+                                          </label>
+                                          <% } else if (order.paymentOption==="COD" ) {%>
+                                            <label class="badge badge-warning">
+                                              <%= order.paymentOption%>
+                                            </label>
+                                            <% } else { %>
+                                              <label class="badge badge-success">
+                                                <%= order.paymentOption%>
+                                              </label>
+                                              <% } %>
+                                      </td>
+                                    </tr>
+                                    <% }) %>
+                                </tbody>
+                              </table>
+                              <% } %>
+
+                                <label class="badge badge-warning col-md-10">Cancelled Products</label>
+                                <% if (canceledOrders.length===0) { %>
+                                  <div class="text-danger">
+                                    <h3>No items..</h3>
+                                  </div>
+                                  <% } else { %>
+                                    <table class="table col-md-10">
+                                      <thead>
+                                        <tr>
+                                          <th>No</th>
+                                          <th>User</th>
+                                          <th>Orders</th>
+                                          <th>Created</th>
+                                          <th>Payment Option</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <% canceledOrders.forEach((order,i)=> { %>
+                                          <tr>
+                                            <td>
+                                              <%= i + 1 %>
+                                            </td>
+                                            <td>
+                                              Name: <%= order.user.name %> <br><br>Email: <%= order.user.email %>
+                                            </td>
+                                            <td>
+                                              <% order.products.forEach(element=> { %>
+                                                Name: <%= element.product.product_name %>
+                                                  <br>
+                                                  Q/T: <%= element.quantity %>
+                                                    <br>
+                                                    Total: <%= element.total %>
+                                                      <hr>
+                                                      <% }) %>
+                                                        <label class="badge badge-danger">Total Order Amount</label>:
+                                                        <%= order.totalAmount %>
+                                            </td>
+                                            <td>
+                                              <%= order.orderDate.toLocaleString() %>
+                                            </td>
+                                            <td>
+                                              <% if (order.paymentOption==="razorpay" ) { %>
+                                                <label class="badge badge-danger">
+                                                  <%= order.paymentOption%>
+                                                </label>
+                                                <% } else if (order.paymentOption==="COD" ) {%>
+                                                  <label class="badge badge-warning">
+                                                    <%= order.paymentOption%>
+                                                  </label>
+                                                  <% } else { %>
+                                                    <label class="badge badge-success">
+                                                      <%= order.paymentOption%>
+                                                    </label>
+                                                    <% } %>
+                                            </td>
+                                          </tr>
+                                          <% }) %>
+                                      </tbody>
+                                    </table>
+                                    <% } %>
+                  </div>
+          </div>
+
+        </div>
+        <div id="myModal" class="modal">
+          <div class="modal-content">
+            <span class="close" id="closeModalBtn">&times;</span>
+            <button id="downloadButton" onclick="generatePDF()">Download PDF</button>
+            <div id="invoice">
+              <div id="headingReport">
+
+                <h4 class="text-info">Report <small class="text-info">(<%= starting %> &nbsp; to &nbsp; <%= ending %>)
+                  </small></h4>
+
+              </div>
+              <div class="col-md-10">
+                <h4 class="text-info">Total Revenue:
+                  <% if (totalRevenue && totalRevenue[0] && totalRevenue[0].totalRevenue !==undefined) { %>
+                    <%= totalRevenue[0].totalRevenue %>
+                      <% } else { %>
+                        Data not available
+                        <% } %>
+                </h4>
+
+                <% var numberPro=0; %>
+                  <% deliveredOrders.forEach(order=> { %>
+                    <% order.products.forEach(product=> { %>
+                      <% numberPro +=product.quantity; %>
+                        <% }) %>
+                          <% }) %>
+
+                            <h4 class="text-info">No of products sold: <%= numberPro %>
+                            </h4>
+
+                            <p class="text-info">
+                              <label class="badge badge-success">Completed Orders</label>: <%= deliveredOrders.length %>
+                            </p>
+                            <p class="text-info">
+                              <label class="badge badge-danger">Return Products</label>: <%= canceledOrders.length %>
+                            </p>
+                            <p class="text-info">
+                              <label class="badge badge-warning">Cancelled Orders</label>: <%= returnedOrders.length %>
+                            </p>
+              </div>
+              <hr class="text-white">
+              <div class="table-responsive">
+                <% if (deliveredOrders.length===0) { %>
+                  <div class="text-danger">
+                    <h3>No items..</h3>
+                  </div>
+                  <% } else { %>
+
+
+                    <table class="table col-md-10">
+
+                      <thead>
+                        <label class="badge badge-success col-md-10">Completed Orders</label>
+                        <tr>
+                          <th>No</th>
+                          <th>User</th>
+                          <th>Orders</th>
+                          <th>Created</th>
+                          <th>Payment Option</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% deliveredOrders.forEach((order,i)=> { %>
+                          <tr>
+                            <td>
+                              <%= i +1%>
+                            </td>
+                            <td>
+                              Name: <%= order.user.name %> <br><br>Email: <%= order.user.email %>
+                            </td>
+                            <td>
+                              <% order.products.forEach(element=> { %>
+                                Name: <%= element.product.product_name %>
+                                  <br>
+                                  Q/T: <%= element.quantity %>
+                                    <br>
+                                    Total: <%= element.total %>
+                                      <hr>
+                                      <% }) %>
+                                        <label class="badge badge-danger">Total Order Amount</label>: <%=
+                                          order.totalAmount %>
+                            </td>
+                            <td>
+                              <%= order.orderDate.toLocaleString() %>
+                            </td>
+                            <td>
+                              <% if (order.paymentOption==="razorpay" ) { %>
+                                <label class="badge badge-danger">
+                                  <%= order.paymentOption%>
+                                </label>
+                                <% } else if (order.paymentOption==="COD" ) {%>
+                                  <label class="badge badge-warning">
+                                    <%= order.paymentOption%>
+                                  </label>
+                                  <% } else { %>
+                                    <label class="badge badge-success">
+                                      <%= order.paymentOption%>
+                                    </label>
+                                    <% } %>
+                            </td>
+                          </tr>
+                          <% }) %>
+                      </tbody>
+                    </table>
+                    <% } %>
+                      <label class="badge badge-danger col-md-10">Return Products</label> <br>
+                      <% if (returnedOrders.length===0) { %>
+                        <div class="text-danger">
+                          <h3>No items..</h3>
+                        </div>
+                        <% } else { %>
+                          <table class="table col-md-10">
+
+                            <thead>
+                              <tr>
+                                <th>No</th>
+                                <th>User</th>
+                                <th>Orders</th>
+                                <th>Created</th>
+                                <th>Payment Option</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+
+                              <% returnedOrders.forEach((order,i)=> { %>
+                                <tr>
+                                  <td>
+                                    <%= i + 1 %>
+                                  </td>
+                                  <td>
+                                    Name: <%= order.user.name %> <br><br>Email: <%= order.user.email %>
+                                  </td>
+                                  <td>
+                                    <% order.products.forEach(element=> { %>
+                                      Name: <%= element.product.product_name %>
+                                        <br>
+                                        Q/T: <%= element.quantity %>
+                                          <br>
+                                          Total: <%= element.total %>
+                                            <hr>
+                                            <% }) %>
+                                              <label class="badge badge-danger">Total Order Amount</label>: <%=
+                                                order.totalAmount %>
+                                  </td>
+                                  <td>
+                                    <%= order.orderDate.toLocaleString() %>
+                                  </td>
+                                  <td>
+                                    <% if (order.paymentOption==="razorpay" ) { %>
+                                      <label class="badge badge-danger">
+                                        <%= order.paymentOption%>
+                                      </label>
+                                      <% } else if (order.paymentOption==="COD" ) {%>
+                                        <label class="badge badge-warning">
+                                          <%= order.paymentOption%>
+                                        </label>
+                                        <% } else { %>
+                                          <label class="badge badge-success">
+                                            <%= order.paymentOption%>
+                                          </label>
+                                          <% } %>
+                                  </td>
+                                </tr>
+                                <% }) %>
+                            </tbody>
+                          </table>
+                          <% } %>
+
+                            <label class="badge badge-warning col-md-10">Cancelled Products</label>
+                            <% if (canceledOrders.length===0) { %>
+                              <div class="text-danger">
+                                <h3>No items..</h3>
+                              </div>
+                              <% } else { %>
+                                <table class="table col-md-10">
+                                  <thead>
+                                    <tr>
+                                      <th>No</th>
+                                      <th>User</th>
+                                      <th>Orders</th>
+                                      <th>Created</th>
+                                      <th>Payment Option</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <% canceledOrders.forEach((order,i)=> { %>
+                                      <tr>
+                                        <td>
+                                          <%= i + 1 %>
+                                        </td>
+                                        <td>
+                                          Name: <%= order.user.name %> <br><br>Email: <%= order.user.email %>
+                                        </td>
+                                        <td>
+                                          <% order.products.forEach(element=> { %>
+                                            Name: <%= element.product.product_name %>
+                                              <br>
+                                              Q/T: <%= element.quantity %>
+                                                <br>
+                                                Total: <%= element.total %>
+                                                  <hr>
+                                                  <% }) %>
+                                                    <label class="badge badge-danger">Total Order Amount</label>:
+                                                    <%= order.totalAmount %>
+                                        </td>
+                                        <td>
+                                          <%= order.orderDate.toLocaleString() %>
+                                        </td>
+                                        <td>
+                                          <% if (order.paymentOption==="razorpay" ) { %>
+                                            <label class="badge badge-danger">
+                                              <%= order.paymentOption%>
+                                            </label>
+                                            <% } else if (order.paymentOption==="COD" ) {%>
+                                              <label class="badge badge-warning">
+                                                <%= order.paymentOption%>
+                                              </label>
+                                              <% } else { %>
+                                                <label class="badge badge-success">
+                                                  <%= order.paymentOption%>
+                                                </label>
+                                                <% } %>
+                                        </td>
+                                      </tr>
+                                      <% }) %>
+                                  </tbody>
+                                </table>
+                                <% } %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% } else if (data===0) {%>
+          <p></p>
+          <% } %>
+      </div>
+
+  </div>
+  </div>
+  </div>
+  </div>
+  <style>
+    #headingReport {
+      margin-left: 30%;
+    }
+
+    /* CSS for the modal */
+    .modal {
+      display: none;
+      /* position: fixed; */
+      top: 100px;
+      left: 350px;
+      width: 70%;
+      height: 90%;
+      background-color: rgba(0, 0, 0, 0.7);
+      /* z-index: 1; */
+    }
+
+    .modal-content {
+      background-color: #000000;
+      margin: 10% auto;
+      padding: 20px;
+      width: 75%;
+      max-height: 100%;
+      /* Adjust the max height as needed */
+      overflow: auto;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    /* Close button for the modal */
+    .close {
+      color: #000000;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+  <script>
+    // Get references to the modal and close button
+    const modal = document.getElementById('myModal');
+    const openModalBtn = document.getElementById('openModalBtn');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+
+    // Show the modal when the "Open Modal" button is clicked
+    openModalBtn.addEventListener('click', () => {
+      modal.style.display = 'block';
+    });
+
+    // Close the modal when the close button is clicked
+    closeModalBtn.addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
+
+    // Close the modal if the user clicks outside of it
+    window.addEventListener('click', (event) => {
+      if (event.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
+
+
+    function generatePDF() {
+      const downloadButton = document.getElementById('downloadButton');
+      downloadButton.style.display = 'none';
+      // const abtn = document.getElementById('abtn');
+      // abtn.style.display = 'none';
+      setTimeout(function () {
+        downloadButton.style.display = 'block';
+        // abtn.style.display = 'block';
+      }, 1000);
+      const element = document.getElementById('invoice');
+      html2pdf()
+        .from(element)
+        .save();
+
+
+    }
+
+  </script>
+  <%- include('../partials/Adminside/footer') %>

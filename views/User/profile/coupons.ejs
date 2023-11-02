@@ -26,9 +26,14 @@
                 <br>
                 <h3 class="text-black">Collected Coupons</h3>
                 <br>
-            </div> <br>
+            </div> 
+            &nbsp;    <a href="javascript:history.back();" class="btn_1">Go Back</a>
+            <br><br>
             <div class="container">
                 <div class="row">
+                  <% if (Coupons.length <= 0) { %>
+                   <h3 class="text-danger">No Coupons</h3>
+                  <% } %>
                   <% Coupons.forEach((element, i) => { %>
                     <div class="col-md-4 mb-4">
                       <div class="card text-center">

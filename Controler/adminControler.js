@@ -6,6 +6,8 @@ const Order = require("../Models/orderModel")
 const Coupon = require("../Models/couponModel")
 const Offer = require("../Models/offerModel")
 const sharp = require("sharp")
+const PDFDocument = require('pdfkit');
+const fs = require('fs');
 
 
 
@@ -875,11 +877,122 @@ const addEditCoupon = async (req, res) => {
     }
 };
 
+const loadReportManagemnt = async (req,res) => {
+    try{  let data = 0 
+        let deliveredOrders
+        let canceledOrders
+        let returnedOrder
+        let totalRevenue
+        let starting
+        let  ending
+        res.render("admin/Report",{data,deliveredOrders,canceledOrders,returnedOrder,totalRevenue,starting, ending})
+    } catch(error){
+
+    }
+}
+
+const calculateReport = async (req,res) => {
+    try{
+        const { starting, ending } = req.body;
+        const startDate = new Date(starting);
+        startDate.setUTCHours(0, 0, 0, 0);
+        const endDate = new Date(ending);
+        endDate.setUTCHours(23, 59, 59, 999);
+        // Successfully delivered orders
+        const deliveredOrdersPromise = Order.find({
+          updatedAt: { $gte: startDate, $lte: endDate },
+          orderCanceled: false,
+          is_returned: false,
+          returnRequest: 'Completed'
+        }).populate("user").populate("products.product").populate('deliveryAddress').exec();
+        // Canceled Orders
+        const canceledOrdersPromise = Order.find({
+          updatedAt: { $gte: startDate, $lte: endDate },
+          orderCanceled: true
+        }).populate("user").populate("products.product").populate('deliveryAddress').exec()
+        // Returned Orders
+          const returnedOrdersPromise = Order.find({
+            updatedAt: { $gte: startDate, $lte: endDate },
+            is_returned : true
+          }).populate("user").populate("products.product").populate('deliveryAddress').exec()
+        // Calculate total revenue for "Delivered" orders
+        const totalRevenuePromise = Order.aggregate([
+          {
+            $match: {
+              updatedAt: { $gte: startDate, $lte: endDate },
+              orderCanceled: false,
+              is_returned: false,
+              returnRequest: 'Completed'
+            }
+          },
+          {
+            $group: {
+              _id: null,
+              totalRevenue: { $sum: '$totalAmount' }
+            }
+          }
+        ]).exec();
+        // Handling promises
+        Promise.all([deliveredOrdersPromise, canceledOrdersPromise, returnedOrdersPromise, totalRevenuePromise])
+          .then(([deliveredOrders, canceledOrders, returnedOrders, totalRevenue]) => {
+            // Here, you have the results for each type of order and total revenue
+            console.log('Delivered Orders:', deliveredOrders);
+            console.log('Canceled Orders:', canceledOrders);
+            console.log('Returned Orders:', returnedOrders);
+            console.log('Total Revenue for "Delivered" Orders:', totalRevenue.length > 0 ? totalRevenue[0].totalRevenue : 0);
+            let data  = 1 
+            return res.render("admin/Report",{
+              deliveredOrders,
+              canceledOrders,
+              returnedOrders,
+              totalRevenue,
+              data,
+              starting, ending
+            })
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+          });
+       
+    } catch(error){
+        console.log(error.message);
+    }
+}
+
+const reportDownload = async (req,res) => {
+    try{
+        const { totalRevenue, deliveredOrders, returnedOrders, canceledOrders, starting , ending } = req.body;
+
+        // Create a PDF document
+        const doc = new PDFDocument();
+      
+        // Set response headers to indicate a PDF file download
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', 'attachment; filename="report.pdf"');
+      
+        // Pipe the PDF output to the response stream
+        doc.pipe(res);
+      
+        // Add content to the PDF based on the form data
+        doc.fontSize(20).text(`Report (${starting} to ${ending})`, 200, 50);
+        doc.text(`Total Revenue: ${totalRevenue}`, 50, 100);
+        doc.text(`Delivered Orders: ${deliveredOrders.length}`, 50, 150);
+        doc.text(`Returned Orders: ${returnedOrders.length}`, 50, 200);
+        doc.text(`Canceled Orders: ${canceledOrders.length}`, 50, 250);
+      
+        // Finalize the PDF and end the response
+        doc.end();
+    } catch(error){
+        console.log(error.message)
+    }
+} 
+
+
 
 module.exports = {
     loadAaminLogin, loginValidation, adminValid, adminLogout, displayCustomers,
     UnblockTheUser, blockTheUser, addProductCategory, loadCategory, deleteCategory, loadAddCategory, loadProductCreate,
     createProduct, loadProductPage, editProduct, loadProductEditPage, productDeactivate, productActivate, deleteImgDelete,
     loadOrder, updateOrderStatus, loadEditCategory, EditCategory, deleteCategoryImg, loadCouponPage, createCoupon, deleteCoupon,
-    ActiveCoupon, loadAddCoupon, updateReturnRequest, loadCouponEdit, addEditCoupon,
+    ActiveCoupon, loadAddCoupon, updateReturnRequest, loadCouponEdit, addEditCoupon, loadReportManagemnt, calculateReport, reportDownload
 }

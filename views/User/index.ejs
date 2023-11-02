@@ -191,16 +191,16 @@
                                                             </div>
                                         </div>
                                         <div class="popular-caption">
-                                            <p><a>
+                                            <h3><a>
                                                     <%= products[product].product_name %>
-                                                </a></p>
+                                                </a></h3>
 
                                             <% if (products[product].offerPrice> 0 &&
                                                 products[product].categoryOfferPrice > 0) { %>
                                                 <% if (products[product].offerPrice <
                                                     products[product].categoryOfferPrice) { %>
                                                         
-                                                    <h1>&#8377;<%= products[product].offerPrice %></h1> <small><del class="text-danger"> <%=products[product].price %> </del></small>
+                                                    <span>&#8377;<%= products[product].offerPrice %></span> <small><del class="text-danger"> <%=products[product].price %> </del></small>
 
                                                     <% } else { %>
 
@@ -274,9 +274,9 @@
                                                             </div>
                                             </div>
                                             <div class="popular-caption">
-                                                <p><a>
+                                                <h3><a>
                                                         <%= products[product + 1].product_name %>
-                                                    </a></p>
+                                                    </a></h3>
                                                 <% if (products[product + 1].offerPrice> 0 &&
                                                     products[product + 1].categoryOfferPrice > 0) { %>
                                                     <% if (products[product + 1].offerPrice <
@@ -370,19 +370,11 @@
                                                                 class="add-to-cart-link">
                                                                 <%= products[product + 2].product_name %>
                                                             </a></h3>
-                                                        <% if (products[product + 2].offerPrice> 0 &&
-                                                            products[product + 2].categoryOfferPrice >
-                                                            0) {
-                                                            %>
-                                                            <% if (products[product + 2].offerPrice <
-                                                                products[product + 2].categoryOfferPrice) {
-                                                                %>
+                                                        <% if (products[product + 2].offerPrice> 0 && products[product + 2].categoryOfferPrice > 0) {%>
+                                                            <% if (products[product + 2].offerPrice < products[product + 2].categoryOfferPrice) { %>
 
-                                                                <p>&#8377;<%= products[product + 2].offerPrice
-                                                                        %></p>
-                                                                <small><del class="text-danger">
-                                                                        <%=products[product + 2].price %>
-                                                                    </del></small>
+                                                                <span>&#8377;<%= products[product + 2].offerPrice%></span>
+                                                                <small><del class="text-danger"><%=products[product + 2].price %></del></small>
 
                                                                 <% } else { %>
 

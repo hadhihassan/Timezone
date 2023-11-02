@@ -15,12 +15,19 @@ const Category = require("../Models/productCategory")
 
 //RENDER THE SIGNUP PAGE
 const loadRegister = async (req, res, next) => {
+    let notUser
     try {
-        res.render("User/register", {
-            user: "sad",
-            success: req.flash("success"),
-            error: req.flash("error"),
-        })
+       if(req.session.notUser){
+        notUser = req.session.notUser
+       }
+            res.render("User/register", {
+                user: "sad",
+                success: req.flash("success"),
+                error: req.flash("error"),
+                notUser
+            })
+       
+        
     } catch (error) {
         ;
         res.render("User/404", { message: "An error occurred. Please try again later." });
@@ -49,6 +56,7 @@ const secrePassword = async (password) => {
     }
 }//USER SIGN UP AND ADD USER INTO DATABASE
 const insertUser = async (req, res) => {
+    let notUser
     const { name, mbn, gender, email, password, conformpassword, rafferalcode } = req.body
     try {
         const sPassword = await secrePassword(password)
@@ -61,7 +69,7 @@ const insertUser = async (req, res) => {
         })
         const userExist = await Customer.findOne({ email })
         if (userExist) {
-            res.render("User/register", { message: "This accound alredy existed", user: req.session.user })
+            res.render("User/register", { message: "This accound alredy existed", user: req.session.user , notUser})
         } else {
             const code = rafferalcode.trim()
             const refferedUser = await Customer.findOne({ referralCode: code });
@@ -90,6 +98,7 @@ const insertUser = async (req, res) => {
                 });
             }
             const userData = await user.save()
+            req.session.notUser = userData._id
             if (userData) {
                 //send the verification email 
                 sendOTPVerificationEmail(userData, res)
@@ -97,7 +106,7 @@ const insertUser = async (req, res) => {
                 res.redirect(`/user/otpVerification?userId=${user_id}`);
             } else {
                 console.log("ccount creation has been failed");
-                res.render('User/register', { message: "Account creation has been failed", user: req.session.user, })
+                res.render('User/register', { message: "Account creation has been failed", user: req.session.user,notUser })
             }
         }
     } catch (error) {
@@ -248,6 +257,7 @@ const checkUserValid = async (req, res) => {
                     res.cookie('token', token, { httpOnly: true })
                     res.cookie.user = verifiedUser._id
                     req.session.user = verifiedUser._id
+                    req.session.notUser = verifiedUser._id
                     req.u = verifiedUser._id
 
                     return res.redirect('/')
@@ -589,7 +599,7 @@ const userUpdatePassword = async (req, res) => {
                     return res.render('User/profile/editProfile', { user, messgae: "try again the confirm password is not matching ...." })
                 }
             } else {
-                return res.render("User/profile/editProfile", { user, message: "Password is miss match try again..." })
+                return res.render("User/profile/editProfile", { user, message: "Enterd old password is miss match try again..." })
             }
         } else {
             return res.render("User/profile/editProfile", { user, message: "Fill the all field please.." })
@@ -807,7 +817,7 @@ const productAddToCart = async (req, res) => {
 const updateCartQuantity = async (req, res) => {
     try {
         const user = await Customer.findById(req.session.user)
-
+        console.log("hai")
         const cartProductId = req.body.cartItemId
         const newQuantity = req.body.quantity
 
@@ -817,10 +827,11 @@ const updateCartQuantity = async (req, res) => {
         }
         const product = await Product.findById(cartProduct.product);
 
-        if (newQuantity > product.stock_count) {
-            return res.json({ stock: product.stock_count, error: "stock limit exceeded!" })
+        if (newQuantity > product.stock_count - 1) {
+            
+            return res.json({ stock: product.stock_count, error: "Stock limit exceeded..!" })
         }
-
+        console.log("haiHia")
         let regularPrice
         const offerPrice = product.offerPrice;
         const price = product.price;
@@ -846,6 +857,7 @@ const updateCartQuantity = async (req, res) => {
         });
         user.totalCartAmount = totalCartAmount;
         await user.save();
+        console.log("hai!@!@")
         res.json({ message: 'Cart item quantity updated successfully', totalCartAmount, total: newTotal });
     } catch (error) {
         console.log(error.messgae)
@@ -976,6 +988,7 @@ const placeOrder = async (req, res) => {
                 totalAmount, // Assign the correct total amount here
                 paymentOption: paymentOption,
                 deliveryAddress: address,
+                discountAmount : couponDiscount
             });
             // Update product stock counts and add products to the order
             for (const cartItem of user.cart) {
@@ -1022,6 +1035,7 @@ const placeOrder = async (req, res) => {
                 totalAmount, // Assign the correct total amount here
                 paymentOption: paymentOption,
                 deliveryAddress: address,
+                discountAmount : couponDiscount
             });
             // Update product stock counts and add products to the order
             for (const cartItem of user.cart) {
@@ -1046,6 +1060,28 @@ const placeOrder = async (req, res) => {
                 await Customer.findByIdAndUpdate(req.session.user, {
                     $push: { "earnedCoupons": { coupon: couponId } }
                 })
+                const customerId = req.session.user;
+
+                // Create a new wallet history entry
+                const walletHistoryEntry = {
+                  date: Date.now(),
+                  amount: couponDiscount,
+                  message: 'Products purchased using wallet amount'
+                };
+                
+                Customer.findByIdAndUpdate(customerId, {
+                  $push: { walletHistory: walletHistoryEntry }
+                })
+                  .then((customer) => {
+                    if (!customer) {
+                      // Customer not found, handle this case as needed
+                      return res.status(404).send('Customer not found');
+                    }
+                  })
+                  .catch((err) => {
+                    console.error('Error updating walletHistory:', err);
+                    return res.status(500).send('Error updating walletHistory');
+                  }); 
             }
             // Save the order and remove cart items
             const orderSave = await order.save();
