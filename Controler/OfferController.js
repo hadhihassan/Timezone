@@ -78,29 +78,74 @@ const loadOfferEdit = async (req, res) => {
     }
 }//SAVE THE EDIT OFFER
 const saveEditOffer = async (req, res) => {
-    try {
-        console.log(req.body);
-        const updateData = req.body;
+    console.log(req.body);
+    const updateData = req.body;
 
-        if (updateData) {
-            const findOffer = await Offer.findOne({ _id: req.body.offerID });
+    if (updateData) {
+        try {
+            // Find the offer by its ID
+            const findOffer = await Offer.findOne({ _id: updateData.offerID });
 
             if (!findOffer) {
                 return res.status(404).send('Offer not found');
             }
 
+            // Update offer details
             findOffer.name = updateData.name;
             findOffer.discount = updateData.discount;
             findOffer.startingDate = updateData.startingDate;
             findOffer.expiryDate = updateData.expiryDate;
             findOffer.status = updateData.status;
+
+            // Save the updated offer
             await findOffer.save();
+
+            // Find related categories using the offer ID
+            const categories = await Category.find({ offer: updateData.offerID }, { _id: 1 });
+
+            // Update products with the new prices
+            const products = await Product.find({ offer: updateData.offerID });
+
+            for (let i = 0; i < products.length; i++) {
+                const price = products[i].price;
+                const newPrice = price - Math.floor((updateData.discount / 100) * price);
+                products[i].offerPrice = newPrice;
+
+                // Check if the product's category is in the related categories
+                if (categories.some(category => category._id.equals(products[i].category))) {
+                    products[i].categoryOfferPrice = newPrice;
+                }
+
+                // Save the updated product
+                await products[i].save();
+            }
+
+            // Update category-related products
+            for (let i = 0; i < categories.length; i++) {
+                const categoryProducts = await Product.find({ category: categories[i] });
+
+                for (let j = 0; j < categoryProducts.length; j++) {
+                    const product = categoryProducts[j];
+                    const newPrice = product.price - Math.floor((updateData.discount / 100) * product.price);
+                    product.categoryOfferPrice = newPrice;
+
+                    // Save the updated product
+                    await product.save();
+                }
+            }
+
+            // Save the offer once more
+            await findOffer.save();
+            
+            // Redirect to the Offer page
             return res.redirect("/admin/Offer/");
+        } catch (error) {
+            console.error(error);
+            res.render("User/404", { message: "An error occurred. Please try again later." });
         }
-    } catch (error) {
-        res.render("User/404", { message: " Server Error" });
     }
-};//DELETE  THE OFFER
+};
+//DELETE  THE OFFER
 const deleteOffer = async (req, res) => {
     try {
         const offerId = req.params.id
