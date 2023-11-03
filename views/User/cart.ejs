@@ -98,12 +98,12 @@
                               </td>
                               <td>
                                 <p>
-                                  <% if (product.product.offerPrice > 0 && (product.product.offerPrice < product.product.price || product.product.price <= 0) && (product.product.offerPrice < product.product.categoryOfferPrice || product.product.categoryOfferPrice <= 0)) { %>
+                                  <% if (product.product.offerPrice > 0 && (product.product.offerPrice <= product.product.price || product.product.price <= 0) && (product.product.offerPrice <= product.product.categoryOfferPrice || product.product.categoryOfferPrice <= 0)) { %>
                                     <small>&#8377;<%= product.product.offerPrice %> </small>
                                     <small><del class="text-danger"><%= product.product.price %></del></small>
-                                 <% } else if (product.product.price > 0 && (product.product.price < product.product.offerPrice || product.product.offerPrice <= 0) && (product.product.price < product.product.categoryOfferPrice || product.product.categoryOfferPrice <= 0)) { %>
+                                 <% } else if (product.product.price > 0 && (product.product.price <= product.product.offerPrice || product.product.offerPrice <= 0) && (product.product.price <= product.product.categoryOfferPrice || product.product.categoryOfferPrice <= 0)) { %>
                                   <span>&#8377;<%= product.product.price %></span>
-                                 <% } else if (product.product.categoryOfferPrice > 0 && (product.product.categoryOfferPrice < product.product.offerPrice || product.product.offerPrice <= 0) && (product.product.categoryOfferPrice < product.product.price || product.product.price <= 0)) { %>
+                                 <% } else if (product.product.categoryOfferPrice > 0 && (product.product.categoryOfferPrice <= product.product.offerPrice || product.product.offerPrice <= 0) && (product.product.categoryOfferPrice <= product.product.price || product.product.price <= 0)) { %>
                                   <small>&#8377;<%= product.product.categoryOfferPrice %></small>
                                   <small class="text-danger"><del class="text-danger">&#8377;<%=product.product.price %></del></small>
                                  <% } else { %>

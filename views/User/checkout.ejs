@@ -16,7 +16,7 @@
             <div class="check_title">
               <h2>
                 Have a coupon?
-                <a href="#" id="couponLink">Click here to see your earned coupons</a>
+                <a href="/coupon" id="">Click here to see your earned coupons</a>
               </h2>
             </div>
             <div class="d-flex flex-wrap" id="couponDropdown" style="display: block;">
@@ -30,7 +30,12 @@
                     <strong>Code:</strong> <%= element.coupon_done ? 'Available' : element.code %>
                   </p>
                   <p class="coupon-details">
-                    <strong>Discount Amount:</strong> <%= element.discount_amount_or_percentage %>
+                    <% if (element.discount_type === "Percentage") { %>
+                      <strong>Discount : %</strong> <%= element.discount_amount_or_percentage %>
+                    <% } else { %>
+                      <strong>Discount :</strong> &#8377; <%= element.discount_amount_or_percentage %>
+                    <% } %>
+                    
                   </p>
                 </div>
                 <% if ((i + 1) % 3 === 0) { %>
@@ -53,9 +58,6 @@
             <div class="row">
               <div class="col-lg-8">
                 <div id="message-container"></div>
-
-
-
                 <% cart.forEach(items=> { %>
 
                   <div class="card mb-4 shadow">
@@ -84,16 +86,10 @@
                             <p class="lead fw-normal mb-0"><%= items.quantity %></p>
                           </div>
                         </div>
-                        <div class="col-6 col-md-2 mb-4 mb-md-0 text-center">
-                          <div>
-                            <p class="small text-muted mb-2">Price</p>
-                            <p class="lead fw-normal mb-0"><%=  items.total  /  items.quantity  %></p>
-                          </div>
-                        </div>
                         <div class="col-12 col-md-2 mb-4 mb-md-0 text-center">
                           <div>
                             <p class="small text-muted mb-2">Total</p>
-                            <p class="lead fw-normal mb-0"><%= items.total %></p>
+                            <p class="lead fw-normal mb-0">&#8377;<%= items.total %></p>
                           </div>
                         </div>
                       </div>
@@ -141,9 +137,18 @@
                         <% } %>
                           <br>
 
-                          <button type="button" class="btn_1 " data-toggle="modal" data-target="#productDetailsModal">
+                      <div class="d-flex">
+                        <div>
+                          <button type="button" class="btn_1 rounded-pill" data-toggle="modal" data-target="#productDetailsModal">
                             Select Address
                           </button>
+                        </div>                    &nbsp;
+                        <form action="/user/address/add-user" method="post">
+                          <input type="hidden" name="id" value="<%= User._id %>">
+                          <input type="hidden" name="back" value="true">
+                          <button type="submit " class="btn_1 rounded-pill">Add</button>
+                        </form>
+                      </div>
                           <!-- Modal -->
                           <div class="modal fade" id="productDetailsModal" tabindex="-1" role="dialog"
                             aria-labelledby="productDetailsModalLabel" aria-hidden="true">
@@ -190,7 +195,7 @@
                                                           <input type="hidden" name="id" value="<%= item._id %>">
                                                           <input type="hidden" name="back" value="true">
 
-                                                          <button type="submit" class="btn_1 btn-primary">Edit</a>
+                                                          <button type="submit" class="btn_1 btn-primary rounded-pill">Edit</button>
                                                         </form>
                                                         <form action="/user/address/selsect" method="post">
                                                           <input type="hidden" name="addressId" value="<%= item._id %>">
@@ -235,7 +240,7 @@
                         <a href="/user/cart">
                           <%= item.product.product_name %>
                             <span class="middle">x<%= item.quantity %></span>
-                            <span class="last">$<%= item.total %></span>
+                            <span class="last"> &#8377;<%= item.total %></span>
                         </a>
                       </li>
                       <% }) %>
@@ -323,7 +328,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div>  
           </div>
         </div>
     </section>

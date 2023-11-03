@@ -12,9 +12,10 @@
                         <div class="content-wrapper">
                             <ul class="navbar-nav w-100">
                                 <li class="nav-item w-100">
-                                    <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
-                                        <input type="text" class="form-control" placeholder="Search products">
-                                    </form>
+                                    <form action="/admin/Offer/" method="get" class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
+                                        <input id="searchInput" type="text" name="query" value="<%= query || '' %>" class="form-control" placeholder="Search user by name" />
+                                        <button class="btn btn-info" type="submit" id="searchButton">Search by name</button>
+                                      </form>
                                 </li>
                             </ul>
 
@@ -71,6 +72,7 @@
                                                                     </td>
                                                                     <td>
                                                                         <%= offer.status %>
+                                                                        
                                                                     </td>
                                                                     <td>
                                                                         <% if (offer.is_deleted===true) { %>
@@ -88,13 +90,12 @@
                                                                 <% }) %>
                                                         </tbody>
                                                     </table>
-
                                                     <% } else { %>
                                                         <p>No Offers..!</p>
                                                         <% } %>
 
 
-
+                                                       
 
 
 

@@ -113,21 +113,54 @@ const adminLogout = (req, res) => {
 //DISPLAY ALL CUSTOMERS
 const displayCustomers = async (req, res) => {
     try {
+
         const page = parseInt(req.query.page) || 1;
         const pageSize = 10;
         const skip = (page - 1) * pageSize;
-        const users = await Customer.find({
-            is_varified: true,
-            is_Admin: false,
-        });
-        const len = await Customer.find({
-            is_admin: false,
-            is_varified: true,
-        })
+        let users;
+        let len;
+
+        const query = req.query.query; // Get the search query from the request
+
+        if (query) {
+            // When there's a search query, use it to filter users
+            // Use a regular expression to perform a case-insensitive search
+            const nameRegex = new RegExp(query, 'i');
+            users = await Customer.find({
+               
+                is_Admin: false,
+                name: nameRegex,
+            })
+                .skip(skip)
+                .limit(pageSize);
+
+            // Get the count of filtered users
+            len = await Customer.countDocuments({
+                is_admin: false,
+               
+                name: nameRegex,
+            });
+        } else {
+            // When there's no search query, retrieve all users
+            users = await Customer.find({
+               
+                is_Admin: false,
+            })
+                .skip(skip)
+                .limit(pageSize);
+
+            // Get the count of all users
+            len = await Customer.countDocuments({
+                is_admin: false,
+               
+            });
+        }
+
         return res.render("admin/user", {
             users,
             len,
             currentPage: page,
+            query, // Pass the query back to the view for rendering
         });
     } catch (error) {
         console.error(error.message);
@@ -213,19 +246,38 @@ const addProductCategory = async (req, res) => {
     }
 }//LIST ALL THE CATEGORIES
 const loadCategory = async (req, res) => {
-    let page = req.query.page
-    const pageSize = 10
-
     try {
-        page = parseInt(req.query.page) || 1;
-        const skip = ((page - 1) * pageSize);
-        const currentPage = page
+        const page = parseInt(req.query.page) || 1;
+        const pageSize = 10;
+        const skip = (page - 1) * pageSize;
+        const currentPage = page;
+        let search = req.query.search;
+        let len;
+        let Categores;
+        let categoryName  // Define it here with an empty object by default.
+        
+        len = await productCategry.countDocuments();
+        
+        if (search && search !== "") {
+          // If a search query is provided, use it to filter categories
+          categoryName = { $regex: new RegExp(search, 'i') };
 
-        const len = await productCategry.find().sort({ _id: -1 })
-        const Categores = await productCategry.find().sort({ _id: -1 }).skip(skip).limit(pageSize).populate("offer")
+          Categores = await productCategry.find({ categoryName: { $regex: search, $options: 'i' }})
+            .sort({ _id: -1 })
+            .skip(skip)
+            .limit(pageSize)
+            .populate("offer");
+          len = await productCategry.countDocuments({ categoryName: { $regex: search, $options: 'i' }});
+        } else {
+          // No search query, retrieve all categories
+          Categores = await productCategry.find()
+            .sort({ _id: -1 })
+            .skip(skip)
+            .limit(pageSize)
+            .populate("offer");
+        }
+        res.render("admin/Category/index", { Categores, len, currentPage, search });
 
-
-        res.render("admin/Category/index", { Categores, len, currentPage })
 
     } catch (error) {
         console.log(error.message);
@@ -236,10 +288,10 @@ const deleteCategory = async (req, res) => {
     try {
         const { id } = req.params
         const deleteCategory = await productCategry.findByIdAndDelete({ _id: id })
-        if(deleteCategory.offer){
-           await Product.updateMany({ category : id },{$set:{categoryOfferPrice : 0}})
+        if (deleteCategory.offer) {
+            await Product.updateMany({ category: id }, { $set: { categoryOfferPrice: 0 } })
         }
-        if (deleteCategory ) {
+        if (deleteCategory) {
             res.redirect("/admin/product/Category-management")
         }
 
@@ -657,7 +709,7 @@ const loadOrder = async (req, res) => {
                 .exec();
             len = await Order.find({ returnRequest: "Pending", orderCanceled: false })
         } else if (req.query.status === "Completed") {
-            orders = await Order.find({ returnRequest: "Completed", orderCanceled: false , is_returned : false})
+            orders = await Order.find({ returnRequest: "Completed", orderCanceled: false, is_returned: false })
                 .skip(skip)
                 .limit(pageSize)
                 .populate("user")
@@ -757,9 +809,14 @@ const updateReturnRequest = async (req, res) => {
 //LIST ALL COUPONS
 const loadCouponPage = async (req, res) => {
     try {
-        const allCoupon = await Coupon.find()
-        return res.render("admin/Coupon/index", { allCoupon })
-
+        let allCoupon = await Coupon.find();
+        let search = req.query.search;
+        if (search && search !== "") {
+            allCoupon = await Coupon.find({
+                coupon_name: { $regex: new RegExp(search, 'i') }
+            });
+        }
+        return res.render("admin/Coupon/index", { allCoupon, search });
     } catch (error) {
         console.log(error.message)
     }
@@ -877,22 +934,23 @@ const addEditCoupon = async (req, res) => {
     }
 };
 
-const loadReportManagemnt = async (req,res) => {
-    try{  let data = 0 
+const loadReportManagemnt = async (req, res) => {
+    try {
+        let data = 0
         let deliveredOrders
         let canceledOrders
         let returnedOrder
         let totalRevenue
         let starting
-        let  ending
-        res.render("admin/Report",{data,deliveredOrders,canceledOrders,returnedOrder,totalRevenue,starting, ending})
-    } catch(error){
+        let ending
+        res.render("admin/Report", { data, deliveredOrders, canceledOrders, returnedOrder, totalRevenue, starting, ending })
+    } catch (error) {
 
     }
 }
 
-const calculateReport = async (req,res) => {
-    try{
+const calculateReport = async (req, res) => {
+    try {
         const { starting, ending } = req.body;
         const startDate = new Date(starting);
         startDate.setUTCHours(0, 0, 0, 0);
@@ -900,92 +958,92 @@ const calculateReport = async (req,res) => {
         endDate.setUTCHours(23, 59, 59, 999);
         // Successfully delivered orders
         const deliveredOrdersPromise = Order.find({
-          updatedAt: { $gte: startDate, $lte: endDate },
-          orderCanceled: false,
-          is_returned: false,
-          returnRequest: 'Completed'
+            updatedAt: { $gte: startDate, $lte: endDate },
+            orderCanceled: false,
+            is_returned: false,
+            returnRequest: 'Completed'
         }).populate("user").populate("products.product").populate('deliveryAddress').exec();
         // Canceled Orders
         const canceledOrdersPromise = Order.find({
-          updatedAt: { $gte: startDate, $lte: endDate },
-          orderCanceled: true
+            updatedAt: { $gte: startDate, $lte: endDate },
+            orderCanceled: true
         }).populate("user").populate("products.product").populate('deliveryAddress').exec()
         // Returned Orders
-          const returnedOrdersPromise = Order.find({
+        const returnedOrdersPromise = Order.find({
             updatedAt: { $gte: startDate, $lte: endDate },
-            is_returned : true
-          }).populate("user").populate("products.product").populate('deliveryAddress').exec()
+            is_returned: true
+        }).populate("user").populate("products.product").populate('deliveryAddress').exec()
         // Calculate total revenue for "Delivered" orders
         const totalRevenuePromise = Order.aggregate([
-          {
-            $match: {
-              updatedAt: { $gte: startDate, $lte: endDate },
-              orderCanceled: false,
-              is_returned: false,
-              returnRequest: 'Completed'
+            {
+                $match: {
+                    updatedAt: { $gte: startDate, $lte: endDate },
+                    orderCanceled: false,
+                    is_returned: false,
+                    returnRequest: 'Completed'
+                }
+            },
+            {
+                $group: {
+                    _id: null,
+                    totalRevenue: { $sum: '$totalAmount' }
+                }
             }
-          },
-          {
-            $group: {
-              _id: null,
-              totalRevenue: { $sum: '$totalAmount' }
-            }
-          }
         ]).exec();
         // Handling promises
         Promise.all([deliveredOrdersPromise, canceledOrdersPromise, returnedOrdersPromise, totalRevenuePromise])
-          .then(([deliveredOrders, canceledOrders, returnedOrders, totalRevenue]) => {
-            // Here, you have the results for each type of order and total revenue
-            console.log('Delivered Orders:', deliveredOrders);
-            console.log('Canceled Orders:', canceledOrders);
-            console.log('Returned Orders:', returnedOrders);
-            console.log('Total Revenue for "Delivered" Orders:', totalRevenue.length > 0 ? totalRevenue[0].totalRevenue : 0);
-            let data  = 1 
-            return res.render("admin/Report",{
-              deliveredOrders,
-              canceledOrders,
-              returnedOrders,
-              totalRevenue,
-              data,
-              starting, ending
+            .then(([deliveredOrders, canceledOrders, returnedOrders, totalRevenue]) => {
+                // Here, you have the results for each type of order and total revenue
+                console.log('Delivered Orders:', deliveredOrders);
+                console.log('Canceled Orders:', canceledOrders);
+                console.log('Returned Orders:', returnedOrders);
+                console.log('Total Revenue for "Delivered" Orders:', totalRevenue.length > 0 ? totalRevenue[0].totalRevenue : 0);
+                let data = 1
+                return res.render("admin/Report", {
+                    deliveredOrders,
+                    canceledOrders,
+                    returnedOrders,
+                    totalRevenue,
+                    data,
+                    starting, ending
+                })
             })
-          })
-          .catch((error) => {
-            console.error('Error:', error);
-          });
-       
-    } catch(error){
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+
+    } catch (error) {
         console.log(error.message);
     }
 }
 
-const reportDownload = async (req,res) => {
-    try{
-        const { totalRevenue, deliveredOrders, returnedOrders, canceledOrders, starting , ending } = req.body;
+const reportDownload = async (req, res) => {
+    try {
+        const { totalRevenue, deliveredOrders, returnedOrders, canceledOrders, starting, ending } = req.body;
 
         // Create a PDF document
         const doc = new PDFDocument();
-      
+
         // Set response headers to indicate a PDF file download
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', 'attachment; filename="report.pdf"');
-      
+
         // Pipe the PDF output to the response stream
         doc.pipe(res);
-      
+
         // Add content to the PDF based on the form data
         doc.fontSize(20).text(`Report (${starting} to ${ending})`, 200, 50);
         doc.text(`Total Revenue: ${totalRevenue}`, 50, 100);
         doc.text(`Delivered Orders: ${deliveredOrders.length}`, 50, 150);
         doc.text(`Returned Orders: ${returnedOrders.length}`, 50, 200);
         doc.text(`Canceled Orders: ${canceledOrders.length}`, 50, 250);
-      
+
         // Finalize the PDF and end the response
         doc.end();
-    } catch(error){
+    } catch (error) {
         console.log(error.message)
     }
-} 
+}
 
 
 

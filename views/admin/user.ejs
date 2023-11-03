@@ -2,8 +2,7 @@
     <div class="container-scroller">
       <!-- partial:../../partials/_sidebar.html -->
       <%- include('../partials/Adminside/adminsidepanel') %>
-      <!-- partial -->
-        <!-- partial -->
+
         <div class="container-fluid page-body-wrapper">
       
 
@@ -14,10 +13,10 @@
             <ul class="navbar-nav w-100">
               <li class="nav-item w-100">
 
-                 <form action="/admin/Customers" method="get" class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
-                   <input id="searchInput" type="text"  name="query"   class="form-control" placeholder="Search user by name">
-                   <button class="btn btn-info" type="submit" id="searchButton">Search</button>
-                </form> 
+                <form action="/admin/customers" method="get" class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
+                  <input id="searchInput" type="text" name="query" value="<%= query || '' %>" class="form-control" placeholder="Search user by name" />
+                  <button class="btn btn-info" type="submit" id="searchButton">Search by name</button>
+                </form>
               </li>
             </ul>
            
@@ -40,6 +39,8 @@
                               <th>Email</th>
                               <th>Status</th>
                               <th>action</th>
+                              <th>Verified</th>
+                              
                             </tr>
                           </thead>
                           <tbody>
@@ -67,6 +68,13 @@
                                 <a href="/admin/Customers/Unblock-theUser?id=<%= user._id %>" class="btn btn-success">Unblock</a>
 
                               </td>
+                              <td>
+                                <% if (user.is_varified === true) { %>
+                                 <label class="text-success">varified</label>
+                                <% } else { %>
+                                  <label class="text-danger">Not varified</label>
+                                <% } %>
+                               </td>
                             <% } else if (user.is_block === false) { %>
                               <td>
                                 <p class="text-success">Active</p>
@@ -74,7 +82,15 @@
                               <td>
                                 <a href="/admin/Customers/block-theUser?id=<%= user._id %>" class="btn btn-danger">Block</i></a>
                               </td>
+                              <td>
+                              <% if (user.is_varified === true) { %>
+                               <label class="text-success">varified</label>
+                              <% } else { %>
+                                <label class="text-danger">Not varified</label>
+                              <% } %>
+                             </td>
                             </tr>
+                            
                             <% } %>
                             <% }) %>
                           </tbody>
@@ -86,31 +102,30 @@
                       <br>
                       <nav aria-label="Page navigation">
                           <ul class="pagination justify-content-end">
-                            <% if (currentPage !== 1) { %>
+                            <% if (currentPage > 1) { %>
                               <li class="page-item">
-                                <a class="page-link" href="/admin/product?page=<%= currentPage-1 %>" aria-label="Previous">
+                                <a class="page-link" href="/admin/customers?page=<%= currentPage - 1 %>" aria-label="Previous">
                                   <span aria-hidden="true">&laquo;</span>
                                 </a>
                               </li>
                             <% } %>
-                            <!-- Calculate the total number of pages -->
-                            <% const totalPages = Math.max(1, Math.ceil(len.length / 10)); %>
-
-                            <!-- Loop through the total number of pages and create a page link for each -->
+                            
+                            <% const totalPages = Math.max(1, Math.ceil(len / 10)); %>
+                            
                             <% for (let page = 1; page <= totalPages; page++) { %>
-                              <li class="page-item <% if (currentPage == page) { %>active<% } %>">
-                                <a class="page-link" href="/admin/Customers?page=<%= page %>"><%= page %></a>
+                              <li class="page-item <%= currentPage === page ? 'active' : '' %>">
+                                <a class="page-link" href="/admin/customers?page=<%= page %>"><%= page %></a>
                               </li>
                             <% } %>
-                            <% if (currentPage !== totalPages ) { %>
+                            
+                            <% if (currentPage < totalPages) { %>
                               <li class="page-item">
-                                <% const nextPage = currentPage + 1; %>
-                                <a class="page-link" href="/admin/product?page=<%= nextPage %>" aria-label="Next">
+                                <a class="page-link" href="/admin/customers?page=<%= currentPage + 1 %>" aria-label="Next">
                                   <span aria-hidden="true">&raquo;</span>
                                 </a>
-                                
                               </li>
                             <% } %>
+                            
                           </ul>
                         </nav>
                         

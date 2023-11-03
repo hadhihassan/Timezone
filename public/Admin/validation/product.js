@@ -1,3 +1,5 @@
+const { document } = require("pdfkit/js/page")
+
 const prouctInput = document.getElementById("productName")
 const pnameErrorMessgae = document.getElementById("pnameErrorMessgae")
 const manufacturerNameInput = document.getElementById("manufacturerName")
@@ -25,6 +27,7 @@ const colorInput = document.getElementById("color")
 const colorError = document.getElementById("colorErrorMessage")
 const meterialInput = document.getElementById("Metrial")
 const meterialErrorMessage = document.getElementById("MetrialErrorMessaeg")
+const offerinput = document.getElementById("category")
 
 function meterialValidation() {
     const col = meterialInput.value

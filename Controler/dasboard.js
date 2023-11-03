@@ -276,7 +276,7 @@ const loadDash = async (req, res) => {
             }
         ];
 
-        const outofstock = await Product.find({ stock_count: { $lte: 0 } });
+        const outofstock = await Product.find({ stock_count: { $lte: 1 } });
 
         console.log(outofstock);
         const allMonths = await everyMonthIncome()

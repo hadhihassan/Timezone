@@ -7,7 +7,7 @@
                     <div class="col-md-12 col-xl-10">
                         <div class="card shadow-0 border rounded-3">
                          
-                            <% products.forEach((pro)=> { %>
+                            <% order.products.forEach((pro)=> { %>
 
 
                                 <div class="card-body">
@@ -44,26 +44,32 @@
                                                 <%=  pro.product.description %>
                                             </p>
                                         </div>
-                                        <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start"><br><br><br><br>
-                                            <div class="d-flex flex-row align-items-center mb-1">
-                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                                        <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start"><br><br>
+                                            <div class="mb-1">
+                                                <h6>Quantity : <%= pro.quantity %></h6> 
+                                                <h6>price
                                                 <% if (pro.product.offerPrice > 0 && (pro.product.offerPrice < pro.product.price || pro.product.price <= 0) && (pro.product.offerPrice < pro.product.categoryOfferPrice || pro.product.categoryOfferPrice <= 0)) { %>
-                                                    <h4 class="mb-1 me-1">&#8377;<%= pro.product.offerPrice %> </h4>&nbsp;
-                                                    <span class="text-danger"><s>&#8377;<%= pro.product.price %></s></span>
+                                                 <%= pro.product.offerPrice %>
+                                                    <s class="text-danger text-sm">&#8377;<%= pro.product.price %></s>
                                                  <% } else if (pro.product.price > 0 && (pro.product.price < pro.product.offerPrice || pro.product.offerPrice <= 0) && (pro.product.price < pro.product.categoryOfferPrice || pro.product.categoryOfferPrice <= 0)) { %>
-                                                  <h4 class="mb-1 me-1">&#8377;<%= pro.product.price %> </h4>&nbsp;
+                                                <%= pro.product.price %> </h4>
                                                  <% } else if (pro.product.categoryOfferPrice > 0 && (pro.product.categoryOfferPrice < pro.product.offerPrice || pro.product.offerPrice <= 0) && (pro.product.categoryOfferPrice < pro.product.price || pro.product.price <= 0)) { %>
-                                                  <h4 class="mb-1 me-1">&#8377;<%= pro.product.categoryOfferPrice %></h4>&nbsp;
-                                                  <span class="text-danger">&#8377;<s>&#8377;<%=pro.product.price %></s></span>
+                                                  <%= pro.product.categoryOfferPrice %>
+                                                 <s class="text-danger">&#8377;<%=pro.product.price %></s>
                                                  <% } else { %>
                                                     &#8377;0
                                                  <% } %>
+                                                </h6>
+                                                <h5>total : <%= pro.total %></h5>
                                             </div>
                                         </div>
                                     </div>
+                                    <hr>
                                 </div>
 
                             <% }) %>
+                            <h3 class="text-danger">&nbsp;&nbsp;Grand Total : <%= order.totalAmount %></h3>
+                            <h4 class="text-danger">&nbsp;&nbsp;Dicount : <%= order.discountAmount %></h4>
                         </div>
                     </div>
                 </div>

@@ -277,18 +277,17 @@
                               </div>
                             </th>
                             <th> Client Name </th>
-                            <th> Order No </th>
-                            <th> Products Cost </th>
-                            <th> Project </th>
+                            <th> Order Id </th>
                             <th> Payment Mode </th>
-                            <th> Start Date </th>
-                            <th> Payment Status </th>
+                            <th> Payment Option </th>
+                            <th>Order Date </th>
+                            <th>Order Status</th>
                           </tr>
                         </thead>
 
 
                         <tbody>
-                          <% orders.forEach(order=> { %>
+                          <% orders.forEach((order)=> { %>
                             <tr>
                               <td>
                                 <div class="form-check form-check-muted m-0">
@@ -305,6 +304,9 @@
                                   <img
                                     src="/Customer/img/blog/popular-post/account-icon-user-icon-vector-graphics_292645-552.avif"
                                     alt="image" class="rounded-circle">
+                                    <span class="pl-2">
+                                          <%= order.user.name %>
+                                        </span>
                                   <% } else { %>
                                     <% if (order.user.image && order.user.image.contentType && order.user.image.data) {
                                       %>
@@ -318,11 +320,10 @@
                                         <% } %>
                                           <% } %>
                               </td>
-                              <td>------</td>
+                              <td><%= order._id%></td>
                               <td>
                                 <%= order.totalAmount %>
                               </td>
-                              <td> Dashboard </td>
                               <td>
                                 <%= order.paymentOption %>
                               </td>
@@ -452,7 +453,7 @@
 
                                       <!-- <p class="text-muted text-small">5 minutes ago</p> -->
                               </div>
-                              <p class="text-danger">This product have no stock..</p>
+                              <p class="text-danger">This product have no 1 stock..</p>
                             </div>
                             <div class="text-center">
                               <a href=""><span>Go</span></a>

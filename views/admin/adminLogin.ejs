@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Required meta tags -->
+    <!--  meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Corona Admin</title>
@@ -27,19 +27,21 @@
               <div class="card-body px-5 py-5">
                
                 <h3 class="card-title text-left mb-3">Login</h3>
-                <form action="/admin/login" method="post">
+                <form action="/admin/login" method="post" id="loginForm">
                   <div class="form-group">
                     <label> Email *</label>
-                    <input type="email" placeholder="Enter Your vald emiail" name="email" class="form-control p_input" required>
+                    <input type="email" id="email"  placeholder="Enter Your vald emiail" name="email" class="form-control p_input" >
                   </div>
+                  <div id="emailErrorMessage" style="color: red;"></div>
                   <div class="form-group">
                     <label>Password *</label>
-                    <input type="password" class="form-control p_input" name="password" placeholder="Enter your Password" required>
+                    <input type="password" id="password" class="form-control p_input" name="password" placeholder="Enter your Password" >
                   </div>
+                  <div id="passwordErrorMessage" style="color: red;"></div>
                   <div class="form-group d-flex align-items-center justify-content-between">
                     <div class="form-check">
                       <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input"> Remember me </label>
+                        <input type="checkbox" id="showPasswordCheckbox" class="form-check-input"> Remember me </label>
                     </div>
                 
                   </div>
@@ -68,3 +70,4 @@
       <!-- page-body-wrapper ends -->
     </div>
     <%- include('../partials/Adminside/footer') %>
+    <script src="/Admin/validation/loginValidation.js"></script>

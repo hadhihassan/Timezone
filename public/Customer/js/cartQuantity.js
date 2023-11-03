@@ -29,15 +29,13 @@ console.log(count.value);
 
     if (!isNaN(currentValue)) {
       if (action === "increment" && currentValue < 100) {
-    if(count.value > currentValue){
+    if(count.value-1 > currentValue){
       currentValue++;
+    }else{
+      displayFlashMessage("Product stock was exeeded")
     }
       } else if (action === "decrement" && currentValue > 1) {
-        
-     
           currentValue--;
-        
-       
       }
     }
 
@@ -70,7 +68,7 @@ console.log(count.value);
 
               const newTotal = response.total;
               const cartTotal = document.querySelector(`#cart-total-amount_${cartItemId}`);
-              cartTotal.textContent = newTotal;
+              cartTotal.textContent = `₹${newTotal}`;
 
 
               const subtotalAmount = response.totalCartAmount;

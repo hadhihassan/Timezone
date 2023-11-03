@@ -128,7 +128,7 @@
                                                             <img src="data:<%= products[product].images[0].contentType %>;base64,<%= products[product].images[0].data.toString('base64') %>"
                                                                 alt="<%= products[product].price %>" </a>
 
-                                                            <% if (products[product].stock_count> 0) { %>
+                                                            <% if (products[product].stock_count-1 > 0) { %>
                                                                 <div class="img-cap">
                                                                     <a class="add-to-cart-link"
                                                                         href="/user/product/addcart?productId=<%= products[product]._id %>">
@@ -189,7 +189,7 @@
                                                                     alt="<%= products[product + 1].price %> Image">
                                                             </a>
 
-                                                            <% if (products[product + 1].stock_count> 0) { %>
+                                                            <% if (products[product + 1].stock_count-1 > 0) { %>
                                                                 <div class="img-cap">
                                                                     <a class="add-to-cart-link"
                                                                         href="/user/product/addcart?productId=<%= products[product +1]._id %>">
@@ -266,7 +266,7 @@
                                                                             alt="<%= products[product + 2].price %> Image">
                                                                     </a>
 
-                                                                    <% if (products[product + 2].stock_count> 0) {
+                                                                    <% if (products[product + 2].stock_count-1 > 0) {
                                                                         %>
                                                                         <div class="img-cap">
                                                                             <a class="add-to-cart-link"

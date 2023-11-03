@@ -14,37 +14,33 @@
             <br><br>
             <h4 class="card-title">Report Managment</h4>
             <div class="col-md-12">
-              <form action="/admin/Report-managment" method="post">
+              <form action="/admin/Report-managment" id="Reportmanagment"  method="post">
                 <div class="form-group row">
                   <label class="col-sm-3 col-form-label">Staring Date</label>
                   <div class="col-sm-9">
-                    <% if (starting && starting !==undefined) { %>
 
-                      <input name="starting" value="<%= starting %>" class="form-control col-md-3"
-                        placeholder="yyyy/mm/dd" />
-                      <% } else {%>
-                        <input name="starting" class="form-control col-md-3" placeholder="yyyy/mm/dd" />
-                        <% } %>
+
+                    <input name="starting" id="string" class="form-control col-md-3" placeholder="yyyy/mm/dd" />
+
                   </div>
+                  <div id="startingDateError" style="color: red;"></div>
                   <br>
                   <br>
                   <label class="col-sm-3 col-form-label">Ending Date</label>
                   <div class="col-sm-9">
-                    <% if (ending && ending !==undefined) { %>
 
-                      <input name="ending" value="<%= ending %>" class="form-control col-md-3"
-                        placeholder="yyyy/mm/dd" />
-                      <% } else {%>
-                        <input name="ending" class="form-control col-md-3" placeholder="yyyy/mm/dd" />
-                        <% } %>
-                          <br>
-                          <button type="submit" class="btn-info">Submit</button>
+                    <input name="ending" id="ending" class="form-control col-md-3" placeholder="yyyy/mm/dd" />
+
+                    <br>
+                    <button type="submit" class="btn-info">Submit</button>
                   </div>
+                  <div id="endingError" style="color: red;"></div>
               </form>
               <!-- <div>
                     <td><label class="badge badge-warning">Cancelled Orders</label> : </td> <br>
                     <td><label class="badge badge-danger">Pending</label> : </td>
                   </div> -->
+
 
             </div><br><br><br>
             <% if (data===1) { %>
@@ -60,7 +56,7 @@
                   <div class="col-md-10">
                     <h4>Total Revenue:
                       <% if (totalRevenue && totalRevenue[0] && totalRevenue[0].totalRevenue !==undefined) { %>
-                        <%= totalRevenue[0].totalRevenue %>
+                        &#8377; <%= totalRevenue[0].totalRevenue %>
                           <% } else { %>
                             Data not available
                             <% } %>
@@ -128,7 +124,7 @@
                                         Total: <%= element.total %>
                                           <hr>
                                           <% }) %>
-                                            <label class="badge badge-danger">Total Order Amount</label> : <%=
+                                            <label class="badge badge-danger">Total Order Amount</label> :&#8377; <%=
                                               order.totalAmount %>
                                 </td>
                                 <td>
@@ -190,8 +186,8 @@
                                               Total: <%= element.total %>
                                                 <hr>
                                                 <% }) %>
-                                                  <label class="badge badge-danger">Total Order Amount</label>: <%=
-                                                    order.totalAmount %>
+                                                  <label class="badge badge-danger">Total Order Amount</label>:&#8377;
+                                                  <%= order.totalAmount %>
                                       </td>
                                       <td>
                                         <%= order.orderDate.toLocaleString() %>
@@ -251,7 +247,8 @@
                                                     Total: <%= element.total %>
                                                       <hr>
                                                       <% }) %>
-                                                        <label class="badge badge-danger">Total Order Amount</label>:
+                                                        <label class="badge badge-danger">Total Order
+                                                          Amount</label>:&#8377;
                                                         <%= order.totalAmount %>
                                             </td>
                                             <td>
@@ -295,7 +292,7 @@
               <div class="col-md-10">
                 <h4 class="text-info">Total Revenue:
                   <% if (totalRevenue && totalRevenue[0] && totalRevenue[0].totalRevenue !==undefined) { %>
-                    <%= totalRevenue[0].totalRevenue %>
+                    &#8377; <%= totalRevenue[0].totalRevenue %>
                       <% } else { %>
                         Data not available
                         <% } %>
@@ -333,7 +330,7 @@
                     <table class="table col-md-10">
 
                       <thead>
-                        <label class="badge badge-success col-md-10">Completed Orders</label>
+                        <label class="badge badge-success col-md-12">Completed Orders</label>
                         <tr>
                           <th>No</th>
                           <th>User</th>
@@ -360,7 +357,7 @@
                                     Total: <%= element.total %>
                                       <hr>
                                       <% }) %>
-                                        <label class="badge badge-danger">Total Order Amount</label>: <%=
+                                        <label class="badge badge-danger">Total Order Amount</label>:&#8377; <%=
                                           order.totalAmount %>
                             </td>
                             <td>
@@ -386,7 +383,7 @@
                       </tbody>
                     </table>
                     <% } %>
-                      <label class="badge badge-danger col-md-10">Return Products</label> <br>
+                      <label class="badge badge-danger col-md-12">Return Products</label> <br>
                       <% if (returnedOrders.length===0) { %>
                         <div class="text-danger">
                           <h3>No items..</h3>
@@ -422,7 +419,7 @@
                                           Total: <%= element.total %>
                                             <hr>
                                             <% }) %>
-                                              <label class="badge badge-danger">Total Order Amount</label>: <%=
+                                              <label class="badge badge-danger">Total Order Amount</label>:&#8377; <%=
                                                 order.totalAmount %>
                                   </td>
                                   <td>
@@ -449,7 +446,7 @@
                           </table>
                           <% } %>
 
-                            <label class="badge badge-warning col-md-10">Cancelled Products</label>
+                            <label class="badge badge-warning col-md-12">Cancelled Products</label>
                             <% if (canceledOrders.length===0) { %>
                               <div class="text-danger">
                                 <h3>No items..</h3>
@@ -483,7 +480,7 @@
                                                 Total: <%= element.total %>
                                                   <hr>
                                                   <% }) %>
-                                                    <label class="badge badge-danger">Total Order Amount</label>:
+                                                    <label class="badge badge-danger">Total Order Amount</label>:&#8377;
                                                     <%= order.totalAmount %>
                                         </td>
                                         <td>
@@ -599,6 +596,48 @@
 
 
     }
+
+    const form = document.getElementById("Reportmanagment");
+    const startingDate = document.getElementById("starting");
+    const startingErrro = document.getElementById("startingDateError");
+    const Endingdate = document.getElementById("ending");
+    const Endingerro = document.getElementById("endingError");
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const value = startingDate.value;
+      const endingvalue = Endingdate.value;
+      const currentDate = new Date();
+
+      if (value === "") {
+        startingErrro.innerHTML = "Starting date is required";
+      } else if (new Date(value) > currentDate) {
+        startingErrro.innerHTML = "Starting date must be a valid date";
+      } else {
+        startingErrro.innerHTML = "";
+      }
+
+      if (endingvalue === "") {
+        Endingerro.innerHTML = "Ending date is required";
+      } else if (new Date(endingvalue) > currentDate) {
+        Endingerro.innerHTML = "Ending date must be a valid date";
+      } else {
+        Endingerro.innerHTML = "";
+      }
+
+      if (value && endingvalue) {
+        if (new Date(endingvalue) < new Date(value)) {
+          Endingerro.innerHTML = "Ending date must be after the starting date";
+        }
+      }
+
+      if (!startingErrro.innerHTML && !Endingerro.innerHTML) {
+        // Proceed with form submission
+        form.submit();
+      }
+    });
+
 
   </script>
   <%- include('../partials/Adminside/footer') %>

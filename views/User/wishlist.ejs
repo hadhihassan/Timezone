@@ -104,6 +104,7 @@
     <script src="path_to_sweetalert.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
+  const id = "<%= cart%>"
   // Find all the remove item buttons
   const removeItemButtons = document.querySelectorAll('.remove-item-btn');
 
@@ -127,15 +128,23 @@
       });
     });
   });
-
-
+  
   const moveButtons = document.querySelectorAll('.move-to-wishlist-btn');
   // Add a click event listener to each button
   moveButtons.forEach(button => {
     button.addEventListener('click', (e) => {
       e.preventDefault(); // Prevent the link from being immediately followed
       const proId = button.getAttribute('data-proid');
-      Swal.fire({
+      if(id.includes(proId)){
+        Swal.fire({
+        title: 'Item already in Cart',
+        text: 'Item already in your Cart?',
+        icon: 'question',
+        showCancelButton: true,
+      }).then((result) => {
+      });
+      }else{
+        Swal.fire({
         title: 'Move to Cart',
         text: 'Are you sure you want to move this item to your Cart?',
         icon: 'question',
@@ -148,6 +157,8 @@
           window.location.href = `/user/product/addcart?productId=${proId}`;
         }
       });
+      }
+ 
     });
   });
 </script>

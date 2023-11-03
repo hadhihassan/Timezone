@@ -9,8 +9,9 @@
             <div class="content-wrapper">
               <ul class="navbar-nav w-100">
                 <li class="nav-item w-100">
-                  <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
-                    <input type="text" class="form-control" placeholder="Search products">
+                  <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search" action="/admin/coupon-management" method="get">
+                    <input type="text" class="form-control" name="search" placeholder="Search coupons">
+                    <button class="btn-info">Search</button>
                   </form>
                 </li>
               </ul>
@@ -56,9 +57,14 @@
                             }
                             %>
                           </td>
-                          <td><%= coupon.minimumPurchaseAmount %></td>
+                          <td>&#8377;<%= coupon.minimumPurchaseAmount %></td>
                           <td><%= coupon.expaire_date.toLocaleDateString() %></td>
-                          <td><%= coupon.discount_amount_or_percentage %></td>
+                          <% if(coupon.discount_type === "Percentage") {%>
+                            <td><%= coupon.discount_amount_or_percentage %> %</td>
+                          <% } else { %>
+                            <td><%= coupon.discount_amount_or_percentage %> &#8377;</td>
+                            <%} %>
+                         
                           <td><%= coupon.code %></td>
                           <td>
                             <% if (coupon.coupon_done === true) { %>
