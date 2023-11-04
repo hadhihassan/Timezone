@@ -933,7 +933,7 @@ const addEditCoupon = async (req, res) => {
         return res.status(500).json({ error: 'An error occurred while updating the coupon.' });
     }
 };
-
+//RENDER THE REPORT MANAGMENT PAGE
 const loadReportManagemnt = async (req, res) => {
     try {
         let data = 0
@@ -948,7 +948,7 @@ const loadReportManagemnt = async (req, res) => {
 
     }
 }
-
+//CALCULATE THE GIVEN DATE REPORT 
 const calculateReport = async (req, res) => {
     try {
         const { starting, ending } = req.body;
@@ -1016,7 +1016,7 @@ const calculateReport = async (req, res) => {
         console.log(error.message);
     }
 }
-
+//DOWNLOAD THE REPORT INTO PDF
 const reportDownload = async (req, res) => {
     try {
         const { totalRevenue, deliveredOrders, returnedOrders, canceledOrders, starting, ending } = req.body;

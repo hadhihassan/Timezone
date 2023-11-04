@@ -71,7 +71,11 @@
                                     </span>
                                     <span class="text-primary"> • </span>
                                     <span>
-                                        <%= product.category.categoryName %><br />
+                                        <% if (product.category) { %>
+                                            <%= product.category.categoryName %><br />
+                                        <% } else { %>
+                                            No category
+                                          <% } %>
                                     </span>
                                 </div>
                             </div>

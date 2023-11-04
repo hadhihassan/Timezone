@@ -17,7 +17,11 @@
                                     <input class="form-check-input" type="radio" name="category"
                                         value="<%= uniqueCategoryArray[index].category._id %>">
                                     <label class="form-check-label">
-                                        <%= uniqueCategoryArray[index].category.categoryName %>
+                                        <% if (uniqueCategoryArray[index].category) { %>
+                                            <%= uniqueCategoryArray[index].category.categoryName %>
+                                        <% } else {%>
+                                            No Category
+                                            <% } %>
                                     </label>
                                     <br>
                                     <% } %>

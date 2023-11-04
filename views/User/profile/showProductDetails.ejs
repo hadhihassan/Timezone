@@ -38,7 +38,13 @@
                                                 <span class="text-primary"> • </span>
                                                 <span>  <%=  pro.product.meterial %></span>
                                                 <span class="text-primary"> • </span>
-                                                <span><%=  pro.product.category.categoryName %><br /></span>
+                                                <span>
+                                                    <% if (pro.product.category) { %>
+                                                        <%=  pro.product.category.categoryName %><br />
+                                                    <% } else {%>
+                                                        No Category
+                                                        <% }%>
+                                                </span>
                                             </div>
                                             <p class="text-truncate mb-4 mb-md-0">
                                                 <%=  pro.product.description %>

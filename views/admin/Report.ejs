@@ -20,22 +20,23 @@
                   <div class="col-sm-9">
 
 
-                    <input name="starting" id="string" class="form-control col-md-3" placeholder="yyyy/mm/dd" />
-
+                    <input name="starting" id="starting" class="form-control col-md-3" placeholder="yyyy/mm/dd" />
+                    <p id="startingDateError" style="color: red;"></p>
                   </div>
-                  <div id="startingDateError" style="color: red;"></div>
+                 
                   <br>
                   <br>
                   <label class="col-sm-3 col-form-label">Ending Date</label>
                   <div class="col-sm-9">
 
                     <input name="ending" id="ending" class="form-control col-md-3" placeholder="yyyy/mm/dd" />
-
+                    <p id="endingError" style="color: red;"></p>
                     <br>
                     <button type="submit" class="btn-info">Submit</button>
                   </div>
-                  <div id="endingError" style="color: red;"></div>
+                 
               </form>
+              
               <!-- <div>
                     <td><label class="badge badge-warning">Cancelled Orders</label> : </td> <br>
                     <td><label class="badge badge-danger">Pending</label> : </td>
@@ -528,10 +529,10 @@
     .modal {
       display: none;
       /* position: fixed; */
-      top: 100px;
-      left: 350px;
-      width: 70%;
-      height: 90%;
+      /* top: 100px; */
+      left: 230px;
+      width: 80%;
+      height: 100%;
       background-color: rgba(0, 0, 0, 0.7);
       /* z-index: 1; */
     }
@@ -539,7 +540,7 @@
     .modal-content {
       background-color: #000000;
       margin: 10% auto;
-      padding: 20px;
+      /* padding: 20px; */
       width: 75%;
       max-height: 100%;
       /* Adjust the max height as needed */
@@ -596,43 +597,43 @@
 
 
     }
-
     const form = document.getElementById("Reportmanagment");
-    const startingDate = document.getElementById("starting");
-    const startingErrro = document.getElementById("startingDateError");
-    const Endingdate = document.getElementById("ending");
-    const Endingerro = document.getElementById("endingError");
+const startingDate = document.getElementById("starting");
+const startingError = document.getElementById("startingDateError");
+const endingDate = document.getElementById("ending");
+const endingError = document.getElementById("endingError");
 
-    form.addEventListener("submit", function (event) {
-      event.preventDefault();
+form.addEventListener("submit", function (event) {
+  event.preventDefault();
 
-      const value = startingDate.value;
-      const endingvalue = Endingdate.value;
-      const currentDate = new Date();
+  const value = startingDate.value;
+  const endingvalue = endingDate.value;
+  const currentDate = new Date();
 
+      console.log("workign somthing other probem herer ");
       if (value === "") {
-        startingErrro.innerHTML = "Starting date is required";
+        startingError.innerHTML = "Starting date is required";
       } else if (new Date(value) > currentDate) {
-        startingErrro.innerHTML = "Starting date must be a valid date";
+        startingError.innerHTML = "Starting date must be a valid date";
       } else {
-        startingErrro.innerHTML = "";
+        startingError.innerHTML = "";
       }
 
       if (endingvalue === "") {
-        Endingerro.innerHTML = "Ending date is required";
+        endingError.innerHTML = "Ending date is required";
       } else if (new Date(endingvalue) > currentDate) {
-        Endingerro.innerHTML = "Ending date must be a valid date";
+        endingError.innerHTML = "Ending date must be a valid date";
       } else {
-        Endingerro.innerHTML = "";
+        endingError.innerHTML = "";
       }
 
       if (value && endingvalue) {
         if (new Date(endingvalue) < new Date(value)) {
-          Endingerro.innerHTML = "Ending date must be after the starting date";
+          endingError.innerHTML = "Ending date must be after the starting date";
         }
       }
 
-      if (!startingErrro.innerHTML && !Endingerro.innerHTML) {
+      if (!startingError.innerHTML && !endingError.innerHTML) {
         // Proceed with form submission
         form.submit();
       }

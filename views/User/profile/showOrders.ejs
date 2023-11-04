@@ -41,17 +41,22 @@
                                     Delivery Address
                                     <% } %>
                         </h5>
-                        <strong class="card-text">
-                            <%= order.deliveryAddress.Name %>
-                        </strong>
-                        <address>
-                            <%= order.deliveryAddress.HouseName %><br>
+                        <% if (order.deliveryAddress && order.deliveryAddress.Name !== null) { %>
+                            <strong class="card-text">
+                                <%= order.deliveryAddress.Name %>
+                            </strong>
+                            <address>
+                                <%= order.deliveryAddress.HouseName %><br>
                                 <%= order.deliveryAddress.RoadArea %><br>
-                                    <%= order.deliveryAddress.City %>, <%= order.deliveryAddress.Region %><br>
-                                            <%= order.deliveryAddress.Country %>
-                                                <%= order.deliveryAddress.PinCode %><br>
-                                                    Mobile: <%= order.deliveryAddress.Mobile %>
-                        </address>
+                                <%= order.deliveryAddress.City %>, <%= order.deliveryAddress.Region %><br>
+                                <%= order.deliveryAddress.Country %>
+                                <%= order.deliveryAddress.PinCode %><br>
+                                Mobile: <%= order.deliveryAddress.Mobile %>
+                            </address>
+                        <% } else { %>
+                            <strong>Address not available</strong>
+                        <% } %>
+                   
 
                         <ul class="list-group list-group-light list-group-small">
                             <% if (order.orderCanceled===false) { %>

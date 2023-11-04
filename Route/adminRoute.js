@@ -77,10 +77,10 @@ const { loadDash } = require("../Controler/dasboard")
             .post("/offer/edit-save/", Auth.adminAuth, saveEditOffer)
             .get("/offer/:id/Delete-offer/", Auth.adminAuth, deleteOffer)
             .get("/offer/:id/active-offer/", Auth.adminAuth, activeOffer)
-
-admin_Route.get("/Report-managment",loadReportManagemnt)
-           .post('/Report-managment', calculateReport)
-           .post('/Report-managment-download', reportDownload)
+//REPORT MANAGMENT
+admin_Route.get("/Report-managment", Auth.adminAuth, loadReportManagemnt)
+           .post('/Report-managment', Auth.adminAuth, calculateReport)
+           .post('/Report-managment-download', Auth.adminAuth, reportDownload)
 
 
 //TRIGGER CHECK THE OFFER EXPIRY AND DELETE IT AT evey 12am and 12 pm

@@ -103,7 +103,8 @@
 
                                                                 </td>
                                                                 <td>
-                                                                    <h6>
+                                                                    <% if (order.deliveryAddress ) { %>
+                                                                        <h6>
                                                                         <%= order.deliveryAddress.HouseName %>
                                                                             <%= order.deliveryAddress.RoadArea %>
                                                                                 <%= order.deliveryAddress.City %>
@@ -117,6 +118,10 @@
                                                                                                 <%=
                                                                                                     order.deliveryAddress.Mobile%>
                                                                     </h6>
+                                                                        <% }else { %> 
+                                                                            <h6>address not available</h6>
+                                                                            <% } %>
+                                                              
                                                                 </td>
                                                                 <td>
                                                                     <h6>
