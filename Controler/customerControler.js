@@ -11,6 +11,8 @@ const crypto = require("crypto")
 require("dotenv").config();
 const Coupon = require("../Models/couponModel")
 const Category = require("../Models/productCategory")
+const sharp = require('sharp');
+
 
 
 //RENDER THE SIGNUP PAGE
@@ -549,14 +551,19 @@ const updateUser = async (req, res) => {
     }
 }//ADD USER PROFILE IMAGE  
 const addImageProfile = async (req, res) => {
-    const id = req.body.id
+    const id = req.body.id;
     try {
         const customer = await Customer.findById(req.session.user);
 
         if (customer) {
-            // Update the 'images' field
+            // Perform image cropping and resizing
+            const croppedImageBuffer = await sharp(req.file.buffer)
+                .resize(210, 330)  // Adjust the dimensions as needed
+                .toBuffer();
+
+            // Update the 'images' field with the cropped image
             customer.images = {
-                data: req.file.buffer,
+                data: croppedImageBuffer,
                 contentType: req.file.mimetype
             };
 
@@ -564,12 +571,13 @@ const addImageProfile = async (req, res) => {
             await customer.save();
         }
 
-        res.redirect('/user/profile')
+        res.redirect('/user/profile');
     } catch (error) {
-        console.log(error.message);
+        console.error(error.message);
         res.render("User/404", { message: "An error occurred. Please try again later." });
     }
-}//DELETE THE USER PROFILE IMAGE
+};
+//DELETE THE USER PROFILE IMAGE
 const deleteUserProfile = async (req, res) => {
     try {
         const id = req.query.id
