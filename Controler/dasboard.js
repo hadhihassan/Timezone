@@ -292,6 +292,7 @@ const loadDash = async (req, res) => {
         const blockUsers = await Customer.find({ is_block: true })
         const allUsers = await Customer.find()    
         console.log(allMonths)
+     let a ="dashboard"
         res.render("admin/index", {
             daily: DailyI,
             monthly: MonthlyI,
@@ -303,7 +304,8 @@ const loadDash = async (req, res) => {
             allMonths,
             bestProducts,
             allUsers,
-            outofstock
+            outofstock,
+           a
         })
 
     } catch (error) {

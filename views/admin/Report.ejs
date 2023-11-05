@@ -9,34 +9,46 @@
           <div class="card-body">
             <br><br>
 
+            <div id="loader" class="loader">
+              Loading...
+          </div>
+          <style>
+            .loader {
+    display: none; /* Initially hidden */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    text-align: center;
+    padding-top: 20%;
+    z-index: 9999; /* High z-index to ensure it's on top of everything */
+}
 
+          </style>
 
             <br><br>
             <h4 class="card-title">Report Managment</h4>
             <div class="col-md-12">
-              <form action="/admin/Report-managment" id="Reportmanagment"  method="post">
+              <form action="/admin/Report-managment" id="Reportmanagment"  method="post" onsubmit="submitForm(event)">
                 <div class="form-group row">
                   <label class="col-sm-3 col-form-label">Staring Date</label>
                   <div class="col-sm-9">
-
-
                     <input name="starting" id="starting" class="form-control col-md-3" placeholder="yyyy/mm/dd" />
                     <p id="startingDateError" style="color: red;"></p>
                   </div>
-                 
                   <br>
                   <br>
                   <label class="col-sm-3 col-form-label">Ending Date</label>
                   <div class="col-sm-9">
-
                     <input name="ending" id="ending" class="form-control col-md-3" placeholder="yyyy/mm/dd" />
                     <p id="endingError" style="color: red;"></p>
                     <br>
                     <button type="submit" class="btn-info">Submit</button>
                   </div>
-                 
-              </form>
-              
+              </form>              
               <!-- <div>
                     <td><label class="badge badge-warning">Cancelled Orders</label> : </td> <br>
                     <td><label class="badge badge-danger">Pending</label> : </td>
@@ -46,7 +58,8 @@
             </div><br><br><br>
             <% if (data===1) { %>
               <% if (data===1) { %>
-                <button id="openModalBtn">Download</button>
+                <!-- <button id="openModalBtn">Download</button> -->
+                <a href="/admin/reportDownload">Report Download</a>
                 <% } %>
 
 
@@ -283,6 +296,10 @@
           <div class="modal-content">
             <span class="close" id="closeModalBtn">&times;</span>
             <button id="downloadButton" onclick="generatePDF()">Download PDF</button>
+        
+         
+           
+
             <div id="invoice">
               <div id="headingReport">
 
@@ -557,6 +574,7 @@
       cursor: pointer;
     }
   </style>
+    <script src="/Admin/validation/a.js"></script>
   <script>
     // Get references to the modal and close button
     const modal = document.getElementById('myModal');
@@ -597,48 +615,8 @@
 
 
     }
-    const form = document.getElementById("Reportmanagment");
-const startingDate = document.getElementById("starting");
-const startingError = document.getElementById("startingDateError");
-const endingDate = document.getElementById("ending");
-const endingError = document.getElementById("endingError");
-
-form.addEventListener("submit", function (event) {
-  event.preventDefault();
-
-  const value = startingDate.value;
-  const endingvalue = endingDate.value;
-  const currentDate = new Date();
-
-      console.log("workign somthing other probem herer ");
-      if (value === "") {
-        startingError.innerHTML = "Starting date is required";
-      } else if (new Date(value) > currentDate) {
-        startingError.innerHTML = "Starting date must be a valid date";
-      } else {
-        startingError.innerHTML = "";
-      }
-
-      if (endingvalue === "") {
-        endingError.innerHTML = "Ending date is required";
-      } else if (new Date(endingvalue) > currentDate) {
-        endingError.innerHTML = "Ending date must be a valid date";
-      } else {
-        endingError.innerHTML = "";
-      }
-
-      if (value && endingvalue) {
-        if (new Date(endingvalue) < new Date(value)) {
-          endingError.innerHTML = "Ending date must be after the starting date";
-        }
-      }
-
-      if (!startingError.innerHTML && !endingError.innerHTML) {
-        // Proceed with form submission
-        form.submit();
-      }
-    });
-
 
   </script>
   <%- include('../partials/Adminside/footer') %>
+  <script src="/Customer/validation/a.js"></script>
+  

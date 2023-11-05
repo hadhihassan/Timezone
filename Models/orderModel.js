@@ -26,21 +26,21 @@ const orderSchema = new mongoose.Schema({
         enum: ["Pending", "Approved","Shipped" ,"Reject", "Completed"],
         default: "Pending"
     },
-    products: [{
-        product: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "product",
-            required: true
-        },
-        quantity: {
-            type: Number,
-            required: true
-        },
-        total: {
-            type: Number,
-            required: true
-        }
-    }],
+        products: [{
+            product: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "product",
+                required: true
+            },
+            quantity: {
+                type: Number,
+                required: true
+            },
+            total: {
+                type: Number,
+                required: true
+            }
+        }],
     paymentOption: {
         type: String,
         required:true

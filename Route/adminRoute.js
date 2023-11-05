@@ -11,7 +11,7 @@ const { loadAaminLogin, loginValidation, adminValid, adminLogout, displayCustome
     UnblockTheUser, blockTheUser, addProductCategory, loadCategory, deleteCategory, loadAddCategory,
     loadProductCreate, createProduct,  loadProductPage , editProduct ,loadProductEditPage ,productDeactivate,productActivate,
     deleteImgDelete, loadOrder, updateOrderStatus, EditCategory, loadEditCategory, deleteCategoryImg, loadCouponPage, createCoupon,deleteCoupon,
-    ActiveCoupon, loadAddCoupon,updateReturnRequest, loadCouponEdit, addEditCoupon, loadReportManagemnt, calculateReport, reportDownload
+    ActiveCoupon, loadAddCoupon,updateReturnRequest, loadCouponEdit, addEditCoupon, loadReportManagemnt,reportDownload, calculateReport, reportDownloadinExecle
      } = require('../Controler/adminControler')
      
 const { OfferCheckAndDeleteOffer } = require("../utils/OfferExpaireyDateChecker")
@@ -81,6 +81,7 @@ const { loadDash } = require("../Controler/dasboard")
 admin_Route.get("/Report-managment", Auth.adminAuth, loadReportManagemnt)
            .post('/Report-managment', Auth.adminAuth, calculateReport)
            .post('/Report-managment-download', Auth.adminAuth, reportDownload)
+           .get('/reportDownload', Auth.adminAuth, reportDownloadinExecle)
 
 
 //TRIGGER CHECK THE OFFER EXPIRY AND DELETE IT AT evey 12am and 12 pm

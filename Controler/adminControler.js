@@ -8,6 +8,9 @@ const Offer = require("../Models/offerModel")
 const sharp = require("sharp")
 const PDFDocument = require('pdfkit');
 const fs = require('fs');
+const { log } = require("console")
+const excelJs = require('exceljs');
+const Swal = require('sweetalert2');
 
 
 
@@ -113,6 +116,8 @@ const adminLogout = (req, res) => {
 //DISPLAY ALL CUSTOMERS
 const displayCustomers = async (req, res) => {
     try {
+        // Show a loading alert while fetching data
+        let a ="Customers"
 
         const page = parseInt(req.query.page) || 1;
         const pageSize = 10;
@@ -127,7 +132,6 @@ const displayCustomers = async (req, res) => {
             // Use a regular expression to perform a case-insensitive search
             const nameRegex = new RegExp(query, 'i');
             users = await Customer.find({
-               
                 is_Admin: false,
                 name: nameRegex,
             })
@@ -137,13 +141,11 @@ const displayCustomers = async (req, res) => {
             // Get the count of filtered users
             len = await Customer.countDocuments({
                 is_admin: false,
-               
                 name: nameRegex,
             });
         } else {
             // When there's no search query, retrieve all users
             users = await Customer.find({
-               
                 is_Admin: false,
             })
                 .skip(skip)
@@ -152,22 +154,26 @@ const displayCustomers = async (req, res) => {
             // Get the count of all users
             len = await Customer.countDocuments({
                 is_admin: false,
-               
             });
         }
 
-        return res.render("admin/user", {
+        // Close the loading alert once the data is fetched
+     
+
+        res.render("admin/user", {
             users,
             len,
             currentPage: page,
             query, // Pass the query back to the view for rendering
+            a
         });
     } catch (error) {
         console.error(error.message);
         res.render("User/404", { message: "An error occurred. Please try again later." });
-
     }
-}//CUSTOMER UNBLOCKING
+};
+
+//CUSTOMER UNBLOCKING
 const UnblockTheUser = async (req, res) => {
     try {
         const { id } = req.query
@@ -737,9 +743,9 @@ const loadOrder = async (req, res) => {
             len = await Order.find()
         }
 
-
+let a = true
         if (orders) {
-            return res.render("admin/order", { orders, len, currentPage })
+            return res.render("admin/order", { orders, len, currentPage,a })
 
         }
         console.log("GOT ERROR")
@@ -936,6 +942,7 @@ const addEditCoupon = async (req, res) => {
 //RENDER THE REPORT MANAGMENT PAGE
 const loadReportManagemnt = async (req, res) => {
     try {
+        const  a ="Report";
         let data = 0
         let deliveredOrders
         let canceledOrders
@@ -943,7 +950,7 @@ const loadReportManagemnt = async (req, res) => {
         let totalRevenue
         let starting
         let ending
-        res.render("admin/Report", { data, deliveredOrders, canceledOrders, returnedOrder, totalRevenue, starting, ending })
+        res.render("admin/Report", { data, deliveredOrders, canceledOrders, returnedOrder, totalRevenue, starting,a, ending })
     } catch (error) {
 
     }
@@ -951,11 +958,14 @@ const loadReportManagemnt = async (req, res) => {
 //CALCULATE THE GIVEN DATE REPORT 
 const calculateReport = async (req, res) => {
     try {
+        const  a ="Report";
         const { starting, ending } = req.body;
         const startDate = new Date(starting);
         startDate.setUTCHours(0, 0, 0, 0);
         const endDate = new Date(ending);
         endDate.setUTCHours(23, 59, 59, 999);
+        req.session.startDate = startDate
+        req.session.endingDate = endDate
         // Successfully delivered orders
         const deliveredOrdersPromise = Order.find({
             updatedAt: { $gte: startDate, $lte: endDate },
@@ -994,18 +1004,17 @@ const calculateReport = async (req, res) => {
         Promise.all([deliveredOrdersPromise, canceledOrdersPromise, returnedOrdersPromise, totalRevenuePromise])
             .then(([deliveredOrders, canceledOrders, returnedOrders, totalRevenue]) => {
                 // Here, you have the results for each type of order and total revenue
-                console.log('Delivered Orders:', deliveredOrders);
-                console.log('Canceled Orders:', canceledOrders);
-                console.log('Returned Orders:', returnedOrders);
-                console.log('Total Revenue for "Delivered" Orders:', totalRevenue.length > 0 ? totalRevenue[0].totalRevenue : 0);
+
                 let data = 1
                 return res.render("admin/Report", {
+                    a,
                     deliveredOrders,
                     canceledOrders,
                     returnedOrders,
                     totalRevenue,
                     data,
-                    starting, ending
+                    starting,
+                     ending,
                 })
             })
             .catch((error) => {
@@ -1044,6 +1053,72 @@ const reportDownload = async (req, res) => {
         console.log(error.message)
     }
 }
+const reportDownloadinExecle = async (req, res) => {
+    try {
+        let salesReport;
+        if (req.session.startDate) {
+            const startDate = req.session.startDate;
+            const endDate = req.session.endingDate;
+            const deliveredOrders = await Order.find({
+                updatedAt: { $gte: startDate, $lte: endDate },
+                orderCanceled: false,
+                is_returned: false,
+                returnRequest: 'Completed'
+            }).populate("products.product").exec();
+            const workbook = new excelJs.Workbook();
+            const worksheet = workbook.addWorksheet('sales Report');
+            worksheet.columns = [
+                {
+                    header: 'S no.',
+                    key: 's_no',
+                    width: 10,
+                },
+                { header: 'OrderID', key: '_id', width: 30 },
+                { header: 'Date', key: 'orderDate', width: 20 },
+                { header: 'Products', key: 'product_name', width: 30 },
+                { header: 'Method', key: 'paymentOption', width: 10 },
+                { header: 'Amount', key: 'totalAmount' },
+            ];
+            let counter = 1;
+            console.log(deliveredOrders[0].products);
+            console.log(deliveredOrders);
+            deliveredOrders.forEach((product) => {
+                console.log(product);
+                product.s_no = counter;
+                product.orderDate =product.orderDate
+                product.paymentOption =product.paymentOption
+                product.products.forEach((pro) => {
+                    // Assuming 'product.product' is an object containing 'productName'
+                    product.products.forEach((pro) => {
+                        // Check if 'pro.product' exists and contains 'product_name' property
+                       
+                            if (pro.product && pro.product.product_name !== undefined) {
+                                product.product_name += pro.product.product_name + ', ';
+                            }
+                        
+                    });
+                    
+                });
+                // product.product_name = product.product.product_name
+                worksheet.addRow(product);
+                counter++;
+            });
+           
+            
+            
+            
+            worksheet.getRow(1).eachCell((cell) => {
+                cell.font = { bold: true };
+            });
+            res.header('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            res.header('Content-Disposition', 'attachment; filename=report.xlsx');
+
+            workbook.xlsx.write(res);
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 
 
@@ -1052,5 +1127,5 @@ module.exports = {
     UnblockTheUser, blockTheUser, addProductCategory, loadCategory, deleteCategory, loadAddCategory, loadProductCreate,
     createProduct, loadProductPage, editProduct, loadProductEditPage, productDeactivate, productActivate, deleteImgDelete,
     loadOrder, updateOrderStatus, loadEditCategory, EditCategory, deleteCategoryImg, loadCouponPage, createCoupon, deleteCoupon,
-    ActiveCoupon, loadAddCoupon, updateReturnRequest, loadCouponEdit, addEditCoupon, loadReportManagemnt, calculateReport, reportDownload
+    ActiveCoupon, loadAddCoupon, updateReturnRequest, loadCouponEdit, addEditCoupon, loadReportManagemnt, calculateReport, reportDownload, reportDownloadinExecle
 }

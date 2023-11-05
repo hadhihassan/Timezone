@@ -41,11 +41,14 @@ function mobileValidation (){
     const mobileNumber = mobileInput.value.trim();
     const zeroCount = (mobileNumber.match(/0/g) || []).length;
     const mobileNumberPattern = /^\d+$/;
-    if(mobileNumber.length !== 10){
-        mbnError.textContent = "Invalid mobile.. mobile number must be 10 digits";
+    if(mobileNumber === ""){
+        mbnError.textContent = "mobile number is required...";
         return false;
     }else if(!mobileNumberPattern.test(mobileNumber)) {
         mbnError.textContent = "Invalid mobile number. Please enter numbers only.";
+        return false;
+    }else if(mobileNumber.length !== 10){
+        mbnError.textContent = "Invalid mobile.. mobile number must be 10 digits";
         return false;
     } else if (zeroCount > 5) {
         mbnError.textContent = "Too many zeros in the mobile number.";
@@ -58,7 +61,7 @@ function mobileValidation (){
 function emailValidation (){
     const email = emailInput.value.trim();
     if(email === ""){
-        emailError.textContent = "Please enter a valid email address.";
+        emailError.textContent = "Email is required....";
         return false;
     }else if(!/^\S+@\S+\.\S+$/.test(email)) {
         emailError.textContent = "Please enter a valid email address.";
@@ -113,8 +116,10 @@ function pincodeValidation (){
     const mobileNumber = pincodeInput.value.trim();
     const zeroCount = (mobileNumber.match(/0/g) || []).length;
     const mobileNumberPattern = /^\d+$/;
-    
-    if (!mobileNumberPattern.test(mobileNumber)) {
+    if(mobileNumber === ""){
+        pincodeError.textContent = "Pin code id required.";
+        return false;
+    }else if(!mobileNumberPattern.test(mobileNumber)) {
         pincodeError.textContent = "Invalid pincode . Please enter numbers only.";
         return false;
     } else if (zeroCount > 5) {
