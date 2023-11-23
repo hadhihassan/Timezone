@@ -19,7 +19,6 @@ const { loadRegister, loadhome, insertUser, loadOTPpage, checkOTPValid, loadLogi
 
 //home page render
 Customer_Route.get('/', loadhome)
-
 //login and logout
 Customer_Route.get('/user-Login', Auth.userAuth, loadLogin)
               .post('/user-Login', checkUserValid)
