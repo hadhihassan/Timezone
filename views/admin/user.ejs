@@ -56,7 +56,9 @@
                               
                                
                                 </td>
-                              <td><%= user.name %></td>
+                              <td>
+                                <%= user.name %>
+                              </td>
                               <td><%= user.mobile %></td>
                               <td><%= user.email %></td>
                          <!--if User Block then this display -->
@@ -143,3 +145,6 @@
       <!-- page-body-wrapper ends -->
     </div>
     <%- include('../partials/Adminside/footer') %>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+
+

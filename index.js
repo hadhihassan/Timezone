@@ -5,25 +5,27 @@ const flash = require("connect-flash");
 const cookieParser = require("cookie-parser");
 const nocache = require("nocache");
 const morgan = require("morgan");
-const path = require("path")
-
+const path = require("path");
+const Customer = require('./Models/customerModel')
 require("dotenv").config();
 
 const app = express();
-app.set("views", path.join(__dirname,"views"));
+const server = http.createServer(app); // Create an HTTP server using the express app
+const io = socketIO(server); // Attach Socket.IO to the HTTP server
+
+app.set("views", path.join(__dirname, "views"));
+
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ limit: '100mb', extended: true }));
-app.use(morgan("dev"));
 app.use(flash());
 app.use(nocache());
 app.use(cookieParser());
 app.use(session({
-    secret: process.env.SESSION_SECRET, 
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
 }));
-
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
@@ -34,6 +36,8 @@ const adminRoute = require("./Route/adminRoute");
 app.use("/", customerRoute);
 app.use("/admin", adminRoute);
 
+
+
 // Database connection
 mongoose
     .connect(process.env.MONGODB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -41,10 +45,9 @@ mongoose
     .catch(error => console.error("Error connecting to the database:", error));
 
 // Start the server
-const PORT = process.env.PORT || 3000; 
-app.listen(PORT, () => console.log("Server is running on port", PORT));
-
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => console.log("Server is running on port", PORT));
 
 app.use((req, res) => {
-    res.status(404).render("User/404",{message:""});
+    res.status(404).render("User/404", { message: "" });
 });

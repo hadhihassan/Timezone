@@ -43,7 +43,8 @@ const loadhome = async (req, res) => {
             user: req.session.user, query: "", success: "",
             error: "",
             newPro,
-            products: pros
+            products: pros,
+            userId : req.session.user
         })
     } catch (error) {
         res.render("User/404", { message: "An error occurred. Please try again later." });
@@ -219,6 +220,7 @@ const loadLogin = async (req, res) => {
         res.render("User/login", {
             user: req.session.user, success: req.flash("success"),
             error: req.flash("error"),
+            userId : req.session.user
         })
     } catch (error) {
         res.render("User/404", { message: "An error occurred. Please try again later." });

@@ -165,11 +165,12 @@ const displayCustomers = async (req, res) => {
             len,
             currentPage: page,
             query, // Pass the query back to the view for rendering
-            a
+            a,
+            userId : req.session.admin
         });
     } catch (error) {
         console.error(error.message);
-        res.render("User/404", { message: "An error occurred. Please try again later." });
+        res.render("User/404", { message: "An error occurred. Please try again later." })
     }
 };
 
@@ -253,6 +254,7 @@ const addProductCategory = async (req, res) => {
 }//LIST ALL THE CATEGORIES
 const loadCategory = async (req, res) => {
     try {
+        let a ="d"
         const page = parseInt(req.query.page) || 1;
         const pageSize = 10;
         const skip = (page - 1) * pageSize;
@@ -282,7 +284,7 @@ const loadCategory = async (req, res) => {
             .limit(pageSize)
             .populate("offer");
         }
-        res.render("admin/Category/index", { Categores, len, currentPage, search });
+        res.render("admin/Category/index", { Categores, len, currentPage, search ,a});
 
 
     } catch (error) {
@@ -378,11 +380,14 @@ const EditCategory = async (req, res) => {
 };//RENDER THE ADD CATEGORY PAGE
 const loadAddCategory = async (req, res) => {
     try {
+        let a = "cate"
         const offers = await Offer.find({ is_deleted: false })
         res.render('admin/Category/add', {
             message: '',
             offers: offers,
-            error: req.flash("error")
+            a,
+            error: req.flash("error"),
+            
         });
     } catch (error) {
         console.log(error.message)
@@ -762,7 +767,7 @@ const updateOrderStatus = async (req, res) => {
             { $set: { returnRequest: action } }
         );
         console.log(order);
-        return res.redirect("/admin/orders");
+        return res.redirect("/admin/orders")
     } catch (error) {
         console.error(error.message);
         // Handle the error appropriately (e.g., send an error response)
@@ -1004,7 +1009,6 @@ const calculateReport = async (req, res) => {
         Promise.all([deliveredOrdersPromise, canceledOrdersPromise, returnedOrdersPromise, totalRevenuePromise])
             .then(([deliveredOrders, canceledOrders, returnedOrders, totalRevenue]) => {
                 // Here, you have the results for each type of order and total revenue
-
                 let data = 1
                 return res.render("admin/Report", {
                     a,
@@ -1091,7 +1095,7 @@ const reportDownloadinExecle = async (req, res) => {
                     // Assuming 'product.product' is an object containing 'productName'
                     product.products.forEach((pro) => {
                         // Check if 'pro.product' exists and contains 'product_name' property
-                       
+                        product.product_name = " "
                             if (pro.product && pro.product.product_name !== undefined) {
                                 product.product_name += pro.product.product_name + ', ';
                             }
