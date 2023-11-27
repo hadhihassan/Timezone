@@ -117,7 +117,7 @@ const adminLogout = (req, res) => {
 const displayCustomers = async (req, res) => {
     try {
         // Show a loading alert while fetching data
-        let a ="Customers"
+        let a = "Customers"
 
         const page = parseInt(req.query.page) || 1;
         const pageSize = 10;
@@ -158,7 +158,7 @@ const displayCustomers = async (req, res) => {
         }
 
         // Close the loading alert once the data is fetched
-     
+
 
         res.render("admin/user", {
             users,
@@ -166,7 +166,7 @@ const displayCustomers = async (req, res) => {
             currentPage: page,
             query, // Pass the query back to the view for rendering
             a,
-            userId : req.session.admin
+            userId: req.session.admin
         });
     } catch (error) {
         console.error(error.message);
@@ -254,7 +254,7 @@ const addProductCategory = async (req, res) => {
 }//LIST ALL THE CATEGORIES
 const loadCategory = async (req, res) => {
     try {
-        let a ="d"
+        let a = "d"
         const page = parseInt(req.query.page) || 1;
         const pageSize = 10;
         const skip = (page - 1) * pageSize;
@@ -263,28 +263,28 @@ const loadCategory = async (req, res) => {
         let len;
         let Categores;
         let categoryName  // Define it here with an empty object by default.
-        
-        len = await productCategry.countDocuments();
-        
-        if (search && search !== "") {
-          // If a search query is provided, use it to filter categories
-          categoryName = { $regex: new RegExp(search, 'i') };
 
-          Categores = await productCategry.find({ categoryName: { $regex: search, $options: 'i' }})
-            .sort({ _id: -1 })
-            .skip(skip)
-            .limit(pageSize)
-            .populate("offer");
-          len = await productCategry.countDocuments({ categoryName: { $regex: search, $options: 'i' }});
+        len = await productCategry.countDocuments();
+
+        if (search && search !== "") {
+            // If a search query is provided, use it to filter categories
+            categoryName = { $regex: new RegExp(search, 'i') };
+
+            Categores = await productCategry.find({ categoryName: { $regex: search, $options: 'i' } })
+                .sort({ _id: -1 })
+                .skip(skip)
+                .limit(pageSize)
+                .populate("offer");
+            len = await productCategry.countDocuments({ categoryName: { $regex: search, $options: 'i' } });
         } else {
-          // No search query, retrieve all categories
-          Categores = await productCategry.find()
-            .sort({ _id: -1 })
-            .skip(skip)
-            .limit(pageSize)
-            .populate("offer");
+            // No search query, retrieve all categories
+            Categores = await productCategry.find()
+                .sort({ _id: -1 })
+                .skip(skip)
+                .limit(pageSize)
+                .populate("offer");
         }
-        res.render("admin/Category/index", { Categores, len, currentPage, search ,a});
+        res.render("admin/Category/index", { Categores, len, currentPage, search, a });
 
 
     } catch (error) {
@@ -316,7 +316,7 @@ const loadEditCategory = async (req, res) => {
         const EditCategory = await productCategry.findById({ _id: id }).populate("offer")
 
         if (EditCategory) {
-            return res.render("admin/Category/edit", { EditCategory, message: "", id, offers })
+            return res.render("admin/Category/edit", { EditCategory, message: "", id, offers, a: "" })
         }
 
     } catch (error) {
@@ -380,14 +380,14 @@ const EditCategory = async (req, res) => {
 };//RENDER THE ADD CATEGORY PAGE
 const loadAddCategory = async (req, res) => {
     try {
-        let a = "cate"
+        let a = "category"
         const offers = await Offer.find({ is_deleted: false })
         res.render('admin/Category/add', {
             message: '',
             offers: offers,
             a,
             error: req.flash("error"),
-            
+
         });
     } catch (error) {
         console.log(error.message)
@@ -414,7 +414,7 @@ const loadProductCreate = async (req, res) => {
         const offers = await Offer.find({ is_deleted: false })
 
 
-        res.render("admin/Product/addproduct", { message: "", Categories, offers, error: req.flash("error") });
+        res.render("admin/Product/addproduct", { message: "", Categories, offers, error: req.flash("error"), a: "" });
 
     } catch (error) {
         console.log(error.message);
@@ -533,7 +533,7 @@ const loadProductPage = async (req, res) => {
         }
 
         if (products) {
-            return res.render('admin/Product/products', { products, len, currentPage, query });
+            return res.render('admin/Product/products', { products, len, currentPage, query, a: "" });
         } else {
             console.log("Products not found");
         }
@@ -554,7 +554,7 @@ const loadProductEditPage = async (req, res) => {
 
         const Categories = await productCategry.find({ categoryName: { $ne: pro.category } }).populate("offer")
         const offers = await Offer.find({ is_deleted: false })
-        res.render("admin/Product/Edit", { message: "", product, id, Categories, offers })
+        res.render("admin/Product/Edit", { message: "", product, id, Categories, offers, a: "" })
 
     } catch (error) {
         console.log(error.message);
@@ -748,9 +748,9 @@ const loadOrder = async (req, res) => {
             len = await Order.find()
         }
 
-let a = true
+        let a = true
         if (orders) {
-            return res.render("admin/order", { orders, len, currentPage,a })
+            return res.render("admin/order", { orders, len, currentPage, a })
 
         }
         console.log("GOT ERROR")
@@ -827,14 +827,14 @@ const loadCouponPage = async (req, res) => {
                 coupon_name: { $regex: new RegExp(search, 'i') }
             });
         }
-        return res.render("admin/Coupon/index", { allCoupon, search });
+        return res.render("admin/Coupon/index", { allCoupon, search, a: "" });
     } catch (error) {
         console.log(error.message)
     }
 }//RENDER THE CREATE COUPON PAGE
 const loadAddCoupon = async (req, res) => {
     try {
-        return res.render("admin/Coupon/add")
+        return res.render("admin/Coupon/add", { a: "" })
     } catch (error) {
         console.log(error.message);
     }
@@ -947,7 +947,7 @@ const addEditCoupon = async (req, res) => {
 //RENDER THE REPORT MANAGMENT PAGE
 const loadReportManagemnt = async (req, res) => {
     try {
-        const  a ="Report";
+        const a = "Report";
         let data = 0
         let deliveredOrders
         let canceledOrders
@@ -955,7 +955,7 @@ const loadReportManagemnt = async (req, res) => {
         let totalRevenue
         let starting
         let ending
-        res.render("admin/Report", { data, deliveredOrders, canceledOrders, returnedOrder, totalRevenue, starting,a, ending })
+        res.render("admin/Report", { data, deliveredOrders, canceledOrders, returnedOrder, totalRevenue, starting, a, ending })
     } catch (error) {
 
     }
@@ -963,7 +963,7 @@ const loadReportManagemnt = async (req, res) => {
 //CALCULATE THE GIVEN DATE REPORT 
 const calculateReport = async (req, res) => {
     try {
-        const  a ="Report";
+        const a = "Report";
         const { starting, ending } = req.body;
         const startDate = new Date(starting);
         startDate.setUTCHours(0, 0, 0, 0);
@@ -1018,7 +1018,7 @@ const calculateReport = async (req, res) => {
                     totalRevenue,
                     data,
                     starting,
-                     ending,
+                    ending,
                 })
             })
             .catch((error) => {
@@ -1089,28 +1089,28 @@ const reportDownloadinExecle = async (req, res) => {
             deliveredOrders.forEach((product) => {
                 console.log(product);
                 product.s_no = counter;
-                product.orderDate =product.orderDate
-                product.paymentOption =product.paymentOption
+                product.orderDate = product.orderDate
+                product.paymentOption = product.paymentOption
                 product.products.forEach((pro) => {
                     // Assuming 'product.product' is an object containing 'productName'
                     product.products.forEach((pro) => {
                         // Check if 'pro.product' exists and contains 'product_name' property
                         product.product_name = " "
-                            if (pro.product && pro.product.product_name !== undefined) {
-                                product.product_name += pro.product.product_name + ', ';
-                            }
-                        
+                        if (pro.product && pro.product.product_name !== undefined) {
+                            product.product_name += pro.product.product_name + ', ';
+                        }
+
                     });
-                    
+
                 });
                 // product.product_name = product.product.product_name
                 worksheet.addRow(product);
                 counter++;
             });
-           
-            
-            
-            
+
+
+
+
             worksheet.getRow(1).eachCell((cell) => {
                 cell.font = { bold: true };
             });

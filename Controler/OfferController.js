@@ -10,6 +10,7 @@ const Category = require("../Models/productCategory")
 //LIST THE ALL OFFERS
 const loadOffersPage = async (req, res) => {
     try {
+        const a = "offer"
         let page = req.query.page
         const pageSize = 10
         page = parseInt(req.query.page) || 1;
@@ -26,7 +27,7 @@ const loadOffersPage = async (req, res) => {
         } else {
              Offers = await Offer.find().sort({ is_deleted: -1 })
              len = await Offer.find().sort({ is_deleted: -1 })
-            return res.render("admin/Offer/offer", { Offers, query, currentPage,len })
+            return res.render("admin/Offer/offer", { Offers, query, currentPage,len,a })
         }
     } catch (error) {
         res.render("User/404", { message: "An error occurred. Please try again later." });
@@ -34,7 +35,7 @@ const loadOffersPage = async (req, res) => {
 }//RENDERE THE ADD OFFERE PAGE 
 const loadAddOfferPage = async (req, res) => {
     try {
-        return res.render("admin/Offer/addOffer", { error: req.flash('error') })
+        return res.render("admin/Offer/addOffer", { error: req.flash('error'), a : "offer" })
     } catch (error) {
         res.render("User/404", { message: "An error occurred. Please try again later." });
     }

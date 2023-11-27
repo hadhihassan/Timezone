@@ -10,8 +10,6 @@ const Customer = require('./Models/customerModel')
 require("dotenv").config();
 
 const app = express();
-const server = http.createServer(app); // Create an HTTP server using the express app
-const io = socketIO(server); // Attach Socket.IO to the HTTP server
 
 app.set("views", path.join(__dirname, "views"));
 
@@ -45,8 +43,8 @@ mongoose
     .catch(error => console.error("Error connecting to the database:", error));
 
 // Start the server
-const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => console.log("Server is running on port", PORT));
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => console.log("Server is running on port", PORT));
 
 app.use((req, res) => {
     res.status(404).render("User/404", { message: "" });
