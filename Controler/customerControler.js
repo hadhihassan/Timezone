@@ -44,7 +44,7 @@ const loadhome = async (req, res) => {
             error: "",
             newPro,
             products: pros,
-            userId : req.session.user
+            userId: req.session.user
         })
     } catch (error) {
         res.render("User/404", { message: "An error occurred. Please try again later." });
@@ -220,7 +220,7 @@ const loadLogin = async (req, res) => {
         res.render("User/login", {
             user: req.session.user, success: req.flash("success"),
             error: req.flash("error"),
-            userId : req.session.user
+            userId: req.session.user
         })
     } catch (error) {
         res.render("User/404", { message: "An error occurred. Please try again later." });
@@ -1263,7 +1263,7 @@ const loadWishlist = async (req, res) => {
             .exec();
         const wishlistItems = user.wishlist; // Wishlist items with the "category" field populated
         const cart = []
-        for(let id of user.cart){
+        for (let id of user.cart) {
             cart.push(id.product)
         }
         console.log(cart);

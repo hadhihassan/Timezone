@@ -18,16 +18,16 @@ const loadOffersPage = async (req, res) => {
         const currentPage = page
         let Offers
         let len
-      
+
         let query = req.query.query || ""
         if (query !== "") {
-             Offers = await Offer.find({ name: { $regex: query, $options: 'i' } }).sort({ is_deleted: -1 });
-             len = await Offer.find({ name: { $regex: query, $options: 'i' } }).sort({ is_deleted: -1 });
-            return res.render("admin/Offer/offer", { Offers, query, currentPage,len })
+            Offers = await Offer.find({ name: { $regex: query, $options: 'i' } }).sort({ is_deleted: -1 });
+            len = await Offer.find({ name: { $regex: query, $options: 'i' } }).sort({ is_deleted: -1 });
+            return res.render("admin/Offer/offer", { Offers, query, currentPage, len })
         } else {
-             Offers = await Offer.find().sort({ is_deleted: -1 })
-             len = await Offer.find().sort({ is_deleted: -1 })
-            return res.render("admin/Offer/offer", { Offers, query, currentPage,len,a })
+            Offers = await Offer.find().sort({ is_deleted: -1 })
+            len = await Offer.find().sort({ is_deleted: -1 })
+            return res.render("admin/Offer/offer", { Offers, query, currentPage, len, a })
         }
     } catch (error) {
         res.render("User/404", { message: "An error occurred. Please try again later." });
@@ -35,7 +35,7 @@ const loadOffersPage = async (req, res) => {
 }//RENDERE THE ADD OFFERE PAGE 
 const loadAddOfferPage = async (req, res) => {
     try {
-        return res.render("admin/Offer/addOffer", { error: req.flash('error'), a : "offer" })
+        return res.render("admin/Offer/addOffer", { error: req.flash('error'), a: "offer" })
     } catch (error) {
         res.render("User/404", { message: "An error occurred. Please try again later." });
     }
@@ -137,7 +137,7 @@ const saveEditOffer = async (req, res) => {
 
             // Save the offer once more
             await findOffer.save();
-            
+
             // Redirect to the Offer page
             return res.redirect("/admin/Offer/");
         } catch (error) {

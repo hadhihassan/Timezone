@@ -109,6 +109,9 @@ function priceVAlidation() {
     } else if (!mobileNumberPattern.test(price)) {
         priceErrorMessgae.innerHTML = "Enter numbers only.."
         return false
+    } else if (price > 0) {
+        priceErrorMessgae.innerHTML = "Price must be positive number.."
+        return false
     } else {
         priceErrorMessgae.innerHTML = ""
         return true

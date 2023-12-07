@@ -17,11 +17,11 @@ const razorpay = new Razorpay({
 //RENDERE THE PAYMENT PAGE
 const loadPaymentPage = async (req, res) => {
   try {
- 
+
     const couponId = req.query.id || '0';
     const userId = req.session.user;
     let couponDiscount = parseInt(req.query.discount) || 0;
-    
+
     const user = await Customer.findById(userId)
     const orderDetails = await Order.find({ user: userId });
     // Calculate the total order amount in paise
@@ -38,8 +38,8 @@ const loadPaymentPage = async (req, res) => {
       key_id: process.env.RAZORPAY_ID_KEY,
       user: userId,
       couponId: couponId,
-      secretKey : process.env.RAZORPAY_SECRET_KEY,
-       couponDiscount
+      secretKey: process.env.RAZORPAY_SECRET_KEY,
+      couponDiscount
     });
   } catch (error) {
     res.render("User/404", { message: "An error occurred. Please try again later." });
@@ -47,7 +47,7 @@ const loadPaymentPage = async (req, res) => {
 }
 //CHECK THE RERAZORPAY SIGNATURE PAYMENT SUCCESS OR NOT 
 const checkRazorpaySignature = async (req, res) => {
-  const { razorpay_payment_id, razorpay_order_id, razorpay_signature, order_id, secret, amount, couponId,couponDiscount } = req.body;
+  const { razorpay_payment_id, razorpay_order_id, razorpay_signature, order_id, secret, amount, couponId, couponDiscount } = req.body;
   const userId = req.session.user;
 
   try {
@@ -68,8 +68,8 @@ const checkRazorpaySignature = async (req, res) => {
         totalAmount: (amount / 100),
         paymentOption: "razorpay",
         deliveryAddress: usedAddress,
-        payment_id : razorpay_payment_id,
-        discountAmount : discount
+        payment_id: razorpay_payment_id,
+        discountAmount: discount
       });
 
       for (const cartItem of User.cart) {
@@ -105,7 +105,7 @@ const checkRazorpaySignature = async (req, res) => {
 
       if (orderSave) {
         return res.redirect("/user/show-order-details/");
-      } 
+      }
     }
   } catch (error) {
     res.render("User/404", { message: "An error occurred. Please try again later." });
@@ -113,16 +113,16 @@ const checkRazorpaySignature = async (req, res) => {
 };
 
 //RENDER THE USER ORDER INVOICE PAGE
-const loadInvoice = async (req,res) => {
-  try{
+const loadInvoice = async (req, res) => {
+  try {
     const orderId = req.body.id
-    if(orderId){
+    if (orderId) {
       const userOrder = await Order.findById(orderId).populate("user").populate("products.product").populate("deliveryAddress")
-      return res.render("User/profile/invoice",{
-        order : userOrder
+      return res.render("User/profile/invoice", {
+        order: userOrder
       })
     }
-  }catch (error){
+  } catch (error) {
     res.render("User/404", { message: "An error occurred. Please try again later." });
   }
 }
@@ -130,6 +130,6 @@ const loadInvoice = async (req,res) => {
 
 
 
-module.exports = { 
+module.exports = {
   loadPaymentPage, checkRazorpaySignature, loadInvoice
 };

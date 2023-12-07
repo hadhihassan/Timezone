@@ -5,103 +5,105 @@
       <div class="container-fluid page-body-wrapper">
         <!-- partial:partials/_navbar.html -->
 
-          <!-- partial -->
-          <div class="main-panel">
-            <div class="content-wrapper">
-              <div class="row">
-                <div class="col-lg-12 grid-margin stretch-card">
-                  <div class="card">
-                   
-                    <div class="card-body">
-                      <% if (error && error.length > 0  ) { %>
-                        <div class="alert alert-danger text-center" id="error-message">
-                            <% error.forEach(function(message) { %>
-                                <p><%= message %></p>
-                            <% }); %>
-                        </div>
-                        <script>
-                            // Add a timeout to hide the error message after 3 seconds (adjust as needed)
-                            setTimeout(function() {
-                                var errorMessage = document.getElementById('error-message');
-                                if (errorMessage) {
-                                    errorMessage.style.display = 'none';
-                                }
-                            }, 3000); // 3000 milliseconds (3 seconds)
-                        </script>
-                    <% } %>
-                      <h4 class="card-title">Add Category</h4>
-                      <a href="/admin/product/Category-management">Back to Category</a>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-12 grid-margin stretch-card">
-                  <div class="card">
-                    <div class="card-body">
-                      <form action="/admin/product/add-category" method="post" id="CategoryForm" enctype="multipart/form-data">
-                        <div class="form-group">
-                          <label>images upload :</label>
-                          <div class="input-group col-xs-12">
-                            <input type="file" name="image" class="form-control" id="image"
-                              placeholder="Brand name of the product"  />
-                          </div>
-                          <div id="imageError" style="color: red;"></div>
-                        </div>
+        <!-- partial -->
+        <div class="main-panel">
+          <div class="content-wrapper">
+            <div class="row">
+              <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
 
-                        <div class="form-group">
-                          <label for="exampleInputCity1">Category Name :</label>
-                          <input type="text" class="form-control" name="Categoryname" id="name"
-                            placeholder="Category name" >
-                        </div>
-
-                        <div id="nameError" style="color: red;"></div>
-                        <div class="form-group">
-                          <label for="exampleInputCity1">Description : </label>
-                          <input type="text" class="form-control" name="description" id="description"
-                            placeholder="enter description" >
-                        </div>
-                        <div id="DescriptionError" style="color: red;"></div>
-                        <div class="form-group">
-                          <label for="exampleInputCity1">Offer : </label>
-                          <select class="form-control form-control-lg text-white" name="offer" id="offer">
-                            <option value="-1" disabled selected>Select an offer</option>
-                            <% offers.forEach(offer=> { %>
-                              <option value="<%= offer._id %>">
-                                <%= offer.name %>
-                              </option>
-                              <% }) %>
-                          </select>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary mb-4">Add</button>
-                        <div>
-                          <% if (typeof message !="undefined" ) {%>
-
-                            <p class="mt-3 text-info ">
-                              <%= message %>
-                            </p>
-
-                            <%} %>
-                        </div>
-                      </form>
-                    </div>
+                  <div class="card-body">
+                    <% if (error && error.length> 0 ) { %>
+                      <div class="alert alert-danger text-center" id="error-message">
+                        <% error.forEach(function(message) { %>
+                          <p>
+                            <%= message %>
+                          </p>
+                          <% }); %>
+                      </div>
+                      <script>
+                        // Add a timeout to hide the error message after 3 seconds (adjust as needed)
+                        setTimeout(function () {
+                          var errorMessage = document.getElementById('error-message');
+                          if (errorMessage) {
+                            errorMessage.style.display = 'none';
+                          }
+                        }, 3000); // 3000 milliseconds (3 seconds)
+                      </script>
+                      <% } %>
+                        <h4 class="card-title">Add Category</h4>
+                        <a href="/admin/product/Category-management">Back to Category</a>
+                        </p>
                   </div>
                 </div>
               </div>
+              <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <form action="/admin/product/add-category" method="post" id="CategoryForm"
+                      enctype="multipart/form-data">
+                      <div class="form-group">
+                        <label>images upload :</label>
+                        <div class="input-group col-xs-12">
+                          <input type="file" name="image" class="form-control" id="image"
+                            placeholder="Brand name of the product" />
+                        </div>
+                        <div id="imageError" style="color: red;"></div>
+                      </div>
 
+                      <div class="form-group">
+                        <label for="exampleInputCity1">Category Name :</label>
+                        <input type="text" class="form-control" name="Categoryname" id="name"
+                          placeholder="Category name">
+                      </div>
+
+                      <div id="nameError" style="color: red;"></div>
+                      <div class="form-group">
+                        <label for="exampleInputCity1">Description : </label>
+                        <input type="text" class="form-control" name="description" id="description"
+                          placeholder="enter description">
+                      </div>
+                      <div id="DescriptionError" style="color: red;"></div>
+                      <div class="form-group">
+                        <label for="exampleInputCity1">Offer : </label>
+                        <select class="form-control form-control-lg text-white" name="offer" id="offer">
+                          <option value="-1" disabled selected>Select an offer</option>
+                          <% offers.forEach(offer=> { %>
+                            <option value="<%= offer._id %>">
+                              <%= offer.name %>
+                            </option>
+                            <% }) %>
+                        </select>
+                      </div>
+
+                      <button type="submit" class="btn btn-primary mb-4">Add</button>
+                      <div>
+                        <% if (typeof message !="undefined" ) {%>
+
+                          <p class="mt-3 text-info ">
+                            <%= message %>
+                          </p>
+
+                          <%} %>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <!-- content-wrapper ends -->
-            <!-- partial:../../partials/_footer.html -->
-
-            <!-- partial -->
           </div>
-          <!-- main-panel ends -->
+
+          <!-- content-wrapper ends -->
+          <!-- partial:../../partials/_footer.html -->
+
+          <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
       </div>
       <!-- page-body-wrapper ends -->
   </div>
   <!-- container-scroller -->
   <%- include('../../partials/Adminside/footer') %>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="/Admin/validation/categoryVaidation.js"></script>
-  
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/Admin/validation/categoryVaidation.js"></script>

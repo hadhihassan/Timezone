@@ -225,10 +225,10 @@ const findBestSellingProducts = async (req, res) => {
                 }
             }
         ];
-        
+
         const result = await Order.aggregate(pipeline);
         return result
-   
+
     } catch (error) {
         res.render("User/404", { message: "An error occurred. Please try again later." });
     }
@@ -290,9 +290,9 @@ const loadDash = async (req, res) => {
         const paymentoptins = await Order.aggregate(paymentOptionsPipeline)
         //FINDING THE BLOCKED USERD
         const blockUsers = await Customer.find({ is_block: true })
-        const allUsers = await Customer.find()    
+        const allUsers = await Customer.find()
         console.log(allMonths)
-     let a ="dashboard"
+        let a = "dashboard"
         res.render("admin/index", {
             daily: DailyI,
             monthly: MonthlyI,
@@ -305,7 +305,7 @@ const loadDash = async (req, res) => {
             bestProducts,
             allUsers,
             outofstock,
-           a
+            a
         })
 
     } catch (error) {

@@ -8,7 +8,7 @@ showPasswordCheckbox.addEventListener('change', () => {
     passwordInput.type = showPasswordCheckbox.checked ? 'text' : 'password';
 });
 showPasswordCheckbox.addEventListener('change', () => {
-passwordInput.type = showPasswordCheckbox.checked ? 'text' : 'password';
+    passwordInput.type = showPasswordCheckbox.checked ? 'text' : 'password';
 });
 function validatePassword() {
     const password = passwordInput.value;

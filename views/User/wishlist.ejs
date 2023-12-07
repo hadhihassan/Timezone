@@ -45,9 +45,7 @@
                                                 <%= pro.meterial %>
                                             </span>
                                             <span class="text-primary"> • </span>
-                                            <span>
-                                                <%= pro.category.categoryName %><br />
-                                            </span>
+                                            <span><%= pro.category ? pro.category.categoryName : "No-Category-available"%><br/></span>
                                         </div>
                                         <p class="text-truncate mb-4 mb-md-0">
                                             <%= pro.description %>

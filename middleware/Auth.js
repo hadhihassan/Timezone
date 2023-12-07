@@ -23,7 +23,7 @@ const userAuth = (req, res, next) => {
 //USER  THIS IS ADMIN OR NOT
 const logged = (req, res, next) => {
     try {
-        if (req.session.user ||  req.cookie) {
+        if (req.session.user || req.cookie) {
             next()
         } else {
             res.redirect('/user-login')
@@ -61,28 +61,28 @@ const isAdmin = (req, res, next) => {
 }
 //JWT USER HAVE TOKEN
 const authonticateToken = async (req, res, next) => {
-    
+
     let token
     if (
-      req.headers.authorization &&
-      req.headers.authorization.startsWith("Bearer")
+        req.headers.authorization &&
+        req.headers.authorization.startsWith("Bearer")
     ) {
-      token = req.headers.authorization.split(" ")[1];
+        token = req.headers.authorization.split(" ")[1];
     } else if (req.cookies.jwt) {
-      token = req.cookies.jwt;
+        token = req.cookies.jwt;
     }
-    if(!token){
-      return next();
+    if (!token) {
+        return next();
     }
     const decoded = await promisify(jwt.verify)(token, process.env.JWTSECRET);
     const currentUser = await User.findById(decoded.id);
-    if(!currentUser){
-      return next();
+    if (!currentUser) {
+        return next();
     }
     req.user = currentUser;
     res.locals.user = req.user
     return next();
-  }
+}
 module.exports = {
-    userAuth, adminAuth, isAdmin, logged,authonticateToken
+    userAuth, adminAuth, isAdmin, logged, authonticateToken
 }

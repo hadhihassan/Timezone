@@ -15,32 +15,32 @@ const startingError = document.getElementById("startingError")
 const statusInput = document.getElementById("Status")
 const statusError = document.getElementById("status")
 
-function stausValidation (){
+function stausValidation() {
     const ch = /^\d+$/;
     const statusValue = statusInput.value.trim()
-    if(statusValue === ""){
+    if (statusValue === "") {
         statusError.innerHTML = "status is requried.."
         return false
-    }else if(ch.test(statusValue)){
+    } else if (ch.test(statusValue)) {
         statusError.innerHTML = "Staus not a number only letters.."
         return false
-    }else{
+    } else {
         statusError.innerHTML = ""
         return true
     }
 }
 function startingdateValidation() {
     const strtingvalue = startingInput.value
-    if(strtingvalue === ""){
+    if (strtingvalue === "") {
         startingError.innerHTML = "Offer starting date is requred.. "
         return false
-    }else if(strtingvalue === expireInput.value|| strtingvalue > expireInput.value ){
+    } else if (strtingvalue === expireInput.value || strtingvalue > expireInput.value) {
         startingError.innerHTML = "Offer starting date not equal to the expire date OR starting date not greater than the expire date .. "
         return false
-    }else{
+    } else {
         startingError.innerHTML = ""
         return true
-        
+
     }
 }
 function expireDateValidation() {
@@ -79,7 +79,7 @@ function nameValidation() {
     if (nameValue === "") {
         nameError.innerHTML = "Offer name is requires..."
         return false
-    }else if(namePattern.test(nameValue)){
+    } else if (namePattern.test(nameValue)) {
         nameError.innerHTML = "Offer name must be letters ..."
         return false
     } else {
@@ -87,12 +87,6 @@ function nameValidation() {
         return true
     }
 }
-
-
-
-
-
-
 OfferForm.addEventListener("submit", function (event) {
     event.preventDefault();
 
