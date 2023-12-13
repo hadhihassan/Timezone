@@ -6,6 +6,10 @@ const upload = multer({ storage: storage })
 const cron = require('node-cron')
 
 const Auth = require('../middleware/Auth')
+
+const {     loadCouponPage, createCoupon, deleteCoupon,
+    ActiveCoupon, loadAddCoupon, loadCouponEdit, addEditCoupon }  = require('../Controler/admin/couponManagment.Contoller')
+
 const { addProductCategory, loadCategory, deleteCategory, loadEditCategory, EditCategory, loadAddCategory, deleteCategoryImg } = require('../Controler/admin/categoryMangmentController')
 
 const { loadAaminLogin, loginValidation, adminValid, adminLogout,} = require('../Controler/admin/adminControler')

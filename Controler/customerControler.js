@@ -13,9 +13,12 @@ const Coupon = require("../Models/couponModel")
 const Category = require("../Models/productCategory")
 const sharp = require('sharp');
 
+// const client = require("twilio")( process.env.accountSid, process.env.authToken);
 
 
-//RENDER THE SIGNUP PAGE
+
+
+//RENDER THE SIGNUP PAGE    
 const loadRegister = async (req, res, next) => {
     let notUser
     try {
@@ -133,6 +136,23 @@ let transporter = nodemailer.createTransport({
 // SEND EMAIL TO USER FOR VERFICATION 
 const sendOTPVerificationEmail = async ({ _id, email }, res) => {
     try {
+        // client.verify
+        // .services(serviceId)
+        // .verifications.create({
+        //     to:'+919744845762',
+        //     channel: 'sms'
+        // })
+        // .then((res)=>{
+        //         console.log(res);
+        // })
+        
+        // client.messages
+        //     .create({
+        //         body: 'This is the ship that made the Kessel Run in fourteen parsecs?',
+        //         from: twilioPhoneNumber,
+        //         to: '+919895388508'
+        //     })
+        //     .then(message => console.log(message.sid));
         const otp = `${Math.floor(1000 + Math.random() * 9000)}`;
         // Mail options
         const mailOption = {
