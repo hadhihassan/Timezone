@@ -8,7 +8,6 @@ const morgan = require("morgan");
 const path = require("path");
 const Customer = require('./Models/customerModel')
 require("dotenv").config();
-
 const app = express();
 
 app.set("views", path.join(__dirname, "views"));

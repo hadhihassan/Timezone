@@ -2,7 +2,7 @@ const cron = require('node-cron')
 const Product = require("../Models/productModel")
 const Offer = require("../Models/offerModel")
 const Category = require("../Models/productCategory")
-
+//offerchecking 
 const OfferCheckAndDeleteOffer = async (req, res) => {
     try {
         const currentDate = new Date();

@@ -13,7 +13,8 @@ const { loadRegister, loadhome, insertUser, loadOTPpage, checkOTPValid, loadLogi
     ForgetPasswordcheckingValid, loadChangePass, validOTPsetPass, loadchekout, selectAddress, placeOrder,
     loadOrder, loadOrderProductDetails, cancelOrder, loadWallet, loadCoupons, applayingCoupon, returnProductAction,
     resedOtp, forgetPassResendOtp, loadWishlist, addProductInWishlist, deleteItemInWishlist
-} = require('../Controler/customerControler')
+} = require('../Controler/customerControler');
+const Customer = require('../Models/customerModel');
 
 
 
@@ -98,8 +99,5 @@ Customer_Route.get("/Wallet", loadWallet)
 Customer_Route.get("/whishlist", Auth.logged, loadWishlist)
     .get("/add-wishlist", Auth.logged, addProductInWishlist)
     .get("/delete-item-wishlist", Auth.logged, deleteItemInWishlist)
-
-
-
 
 module.exports = Customer_Route
