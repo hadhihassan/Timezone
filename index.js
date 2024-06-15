@@ -37,35 +37,38 @@ app.use("/admin", adminRoute);
 
 // Database connection
 const url = `mongodb+srv://timezone_admin:timezone_admin@cluster0.a2fqu5o.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
-
 const connectionParams = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 };
 
-let isConnected = false;
+let cachedDb = null;
 
 async function connectToDatabase() {
-    if (!isConnected) {
-        try {
-            await mongoose.connect(url, connectionParams);
-            isConnected = true;
-            console.log('Connected to database');
-        } catch (err) {
-            console.error(`Error connecting to the database. \n${err}`);
-        }
+    if (cachedDb) {
+        return cachedDb;
+    }
+    console.log('Connecting to database...');
+    try {
+        const db = await mongoose.connect(url, connectionParams);
+        cachedDb = db;
+        console.log('Connected to database');
+        return db;
+    } catch (err) {
+        console.error('Database connection error:', err);
+        throw err;
     }
 }
 
-// Start the server
-const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => console.log("Server is running on port", PORT));
-
+// Vercel handler
 module.exports = async (req, res) => {
-    await connectToDatabase();
-    app(req, res);
+    try {
+        await connectToDatabase();
+        app(req, res);
+    } catch (err) {
+        res.status(500).send('Internal Server Error');
+    }
 };
-
 
 app.use((req, res) => {
     res.status(404).render("User/404", { message: "" });
