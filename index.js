@@ -60,15 +60,10 @@ async function connectToDatabase() {
     }
 }
 
-// Vercel handler
-module.exports = async (req, res) => {
-    try {
-        await connectToDatabase();
-        app(req, res);
-    } catch (err) {
-        res.status(500).send('Internal Server Error');
-    }
-};
+connectToDatabase()
+// Start the server
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => console.log("Server is running on port", PORT));
 
 app.use((req, res) => {
     res.status(404).render("User/404", { message: "" });
