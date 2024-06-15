@@ -36,28 +36,36 @@ app.use("/admin", adminRoute);
 
 
 // Database connection
-// const url = `mongodb+srv://timezone_admin:timezone_admin@cluster0.a2fqu5o.mongodb.net/<dbname>?retryWrites=true&w=majority&appName=Cluster0`;
 const url = `mongodb+srv://timezone_admin:timezone_admin@cluster0.a2fqu5o.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 const connectionParams = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    // useCreateIndex: true
 };
 
-// Connect to MongoDB Atlas
-mongoose.connect(url, connectionParams)
-    .then(() => {
-        console.log('Connected to database');
-    })
-    .catch((err) => {
-        console.error(`Error connecting to the database. \n${err}`);
-    });
+let isConnected = false;
 
+async function connectToDatabase() {
+    if (!isConnected) {
+        try {
+            await mongoose.connect(url, connectionParams);
+            isConnected = true;
+            console.log('Connected to database');
+        } catch (err) {
+            console.error(`Error connecting to the database. \n${err}`);
+        }
+    }
+}
 
 // Start the server
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log("Server is running on port", PORT));
+
+module.exports = async (req, res) => {
+    await connectToDatabase();
+    app(req, res);
+};
+
 
 app.use((req, res) => {
     res.status(404).render("User/404", { message: "" });
