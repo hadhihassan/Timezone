@@ -36,10 +36,24 @@ app.use("/admin", adminRoute);
 
 
 // Database connection
-mongoose
-    .connect(process.env.MONGODB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log("DATABASE CONNECTED"))
-    .catch(error => console.error("Error connecting to the database:", error));
+// const url = `mongodb+srv://timezone_admin:timezone_admin@cluster0.a2fqu5o.mongodb.net/<dbname>?retryWrites=true&w=majority&appName=Cluster0`;
+const url = `mongodb+srv://timezone_admin:timezone_admin@cluster0.a2fqu5o.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+
+const connectionParams = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    // useCreateIndex: true
+};
+
+// Connect to MongoDB Atlas
+mongoose.connect(url, connectionParams)
+    .then(() => {
+        console.log('Connected to database');
+    })
+    .catch((err) => {
+        console.error(`Error connecting to the database. \n${err}`);
+    });
+
 
 // Start the server
 const PORT = process.env.PORT || 4000;
