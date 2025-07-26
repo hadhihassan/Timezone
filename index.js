@@ -38,7 +38,7 @@
 
 
     // Database connection
-    const url = `mongodb+srv://timezone_admin:timezone_admin@cluster0.a2fqu5o.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+    const url = `mongodb+srv://HADHI:KCv3WzklCckxhEB8@devcluster.u8o7ney.mongodb.net/timezone?retryWrites=true&w=majority`;
 
     const connectionParams = {
         useNewUrlParser: true,
