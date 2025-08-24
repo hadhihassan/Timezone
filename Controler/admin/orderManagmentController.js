@@ -1,10 +1,6 @@
 const Customer = require('../../Models/customerModel')
 const Order = require("../../Models/orderModel")
 
-
-//**ORDER MANAGEMENT**//
-
-
 //LIST ALL ORDERS
 const loadOrder = async (req, res) => {
     let page = req.query.page
@@ -119,6 +115,7 @@ const updateReturnRequest = async (req, res) => {
         console.log(error.message);
     }
 }
+
 module.exports = {
     loadOrder,
     updateOrderStatus,

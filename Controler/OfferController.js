@@ -3,10 +3,6 @@ const Customer = require("../Models/customerModel")
 const Product = require("../Models/productModel")
 const Category = require("../Models/productCategory")
 
-
-
-//**OFFER MANAGEMNT**//
-
 //LIST THE ALL OFFERS
 const loadOffersPage = async (req, res) => {
     try {
@@ -14,7 +10,6 @@ const loadOffersPage = async (req, res) => {
         let page = req.query.page
         const pageSize = 10
         page = parseInt(req.query.page) || 1;
-        const skip = ((page - 1) * pageSize);
         const currentPage = page
         let Offers
         let len
@@ -32,7 +27,8 @@ const loadOffersPage = async (req, res) => {
     } catch (error) {
         res.render("User/404", { message: "An error occurred. Please try again later." });
     }
-}//RENDERE THE ADD OFFERE PAGE 
+}
+//RENDERE THE ADD OFFERE PAGE 
 const loadAddOfferPage = async (req, res) => {
     try {
         return res.render("admin/Offer/addOffer", { error: req.flash('error'), a: "offer" })
@@ -79,7 +75,6 @@ const loadOfferEdit = async (req, res) => {
     }
 }//SAVE THE EDIT OFFER
 const saveEditOffer = async (req, res) => {
-    console.log(req.body);
     const updateData = req.body;
 
     if (updateData) {
@@ -160,7 +155,7 @@ const deleteOffer = async (req, res) => {
             });
             let categoryIds = await Category.find({ offer: offerId });
             const OfferCategory = await Category.updateMany({ offer: offerId }, { $unset: { offer: 1 } });
-            console.log(OfferCategory);
+            
             if (OfferCategory.modifiedCount > 0) {
 
                 await Product.updateMany(
@@ -188,8 +183,6 @@ const activeOffer = async (req, res) => {
         res.render("User/404", { message: "An error occurred. Please try again later." });
     }
 }
-
-
 
 module.exports = {
     createOffer, loadAddOfferPage, loadOffersPage, loadOfferEdit, saveEditOffer, deleteOffer, activeOffer

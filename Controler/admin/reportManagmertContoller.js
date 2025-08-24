@@ -1,10 +1,6 @@
 const PDFDocument = require('pdfkit');
 const excelJs = require('exceljs');
 
-
-
-
-
 //RENDER THE REPORT MANAGMENT PAGE
 const loadReportManagemnt = async (req, res) => {
     try {

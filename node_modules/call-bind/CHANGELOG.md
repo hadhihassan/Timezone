@@ -5,6 +5,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.0.8](https://github.com/ljharb/call-bind/compare/v1.0.7...v1.0.8) - 2024-12-05
+
+### Commits
+
+- [Refactor] extract out some helpers and avoid get-intrinsic usage [`407fd5e`](https://github.com/ljharb/call-bind/commit/407fd5eec34ec58394522a6ce3badfa4788fd5ae)
+- [Refactor] replace code with extracted `call-bind-apply-helpers` [`81018fb`](https://github.com/ljharb/call-bind/commit/81018fb78902ff5acbc6c09300780e97f0db6a34)
+- [Tests] use `set-function-length/env` [`0fc311d`](https://github.com/ljharb/call-bind/commit/0fc311de0e115cfa6b02969b23a42ad45aadf224)
+- [actions] split out node 10-20, and 20+ [`77a0cad`](https://github.com/ljharb/call-bind/commit/77a0cad75f83f5b8050dc13baef4fa2cff537fa3)
+- [Dev Deps] update `@ljharb/eslint-config`, `auto-changelog`, `es-value-fixtures`, `gopd`, `object-inspect`, `tape` [`a145d10`](https://github.com/ljharb/call-bind/commit/a145d10fe847f350e11094f8541848b028ee8c91)
+- [Tests] replace `aud` with `npm audit` [`30ca3dd`](https://github.com/ljharb/call-bind/commit/30ca3dd7234648eb029947477d06b17879e10727)
+- [Deps] update `set-function-length` [`57c79a3`](https://github.com/ljharb/call-bind/commit/57c79a3666022ea797cc2a4a3b43fe089bc97d1b)
+- [Dev Deps] add missing peer dep [`601cfa5`](https://github.com/ljharb/call-bind/commit/601cfa5540066b6206039ceb9496cecbd134ff7b)
+
+## [v1.0.7](https://github.com/ljharb/call-bind/compare/v1.0.6...v1.0.7) - 2024-02-12
+
+### Commits
+
+- [Refactor] use `es-define-property` [`09b76a0`](https://github.com/ljharb/call-bind/commit/09b76a01634440461d44a80c9924ec4b500f3b03)
+- [Deps] update `get-intrinsic`, `set-function-length` [`ad5136d`](https://github.com/ljharb/call-bind/commit/ad5136ddda2a45c590959829ad3dce0c9f4e3590)
+
+## [v1.0.6](https://github.com/ljharb/call-bind/compare/v1.0.5...v1.0.6) - 2024-02-05
+
+### Commits
+
+- [Dev Deps] update `aud`, `npmignore`, `tape` [`d564d5c`](https://github.com/ljharb/call-bind/commit/d564d5ce3e06a19df4d499c77f8d1a9da44e77aa)
+- [Deps] update `get-intrinsic`, `set-function-length` [`cfc2bdc`](https://github.com/ljharb/call-bind/commit/cfc2bdca7b633df0e0e689e6b637f668f1c6792e)
+- [Refactor] use `es-errors`, so things that only need those do not need `get-intrinsic` [`64cd289`](https://github.com/ljharb/call-bind/commit/64cd289ae5862c250a4ca80aa8d461047c166af5)
+- [meta] add missing `engines.node` [`32a4038`](https://github.com/ljharb/call-bind/commit/32a4038857b62179f7f9b7b3df2c5260036be582)
+
 ## [v1.0.5](https://github.com/ljharb/call-bind/compare/v1.0.4...v1.0.5) - 2023-10-19
 
 ### Commits

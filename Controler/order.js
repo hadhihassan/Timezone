@@ -8,7 +8,6 @@ const Product = require("../Models/productModel")
 const Address = require("../Models/userAddress")
 const mongoose = require("mongoose")
 
-
 //RAZORPAY ORDER INSTANCE 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_ID_KEY,
@@ -126,9 +125,6 @@ const loadInvoice = async (req, res) => {
     res.render("User/404", { message: "An error occurred. Please try again later." });
   }
 }
-
-
-
 
 module.exports = {
   loadPaymentPage, checkRazorpaySignature, loadInvoice

@@ -1,6 +1,5 @@
 const Customer = require('../../Models/customerModel')
 
-
 //DSIPLAY ALL COUSTOMERS
 const displayCustomers = async (req, res) => {
     try {

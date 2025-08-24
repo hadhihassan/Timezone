@@ -1,10 +1,6 @@
 const bcrypt = require("bcrypt")
 const Customer = require('../../Models/customerModel')
 
-
-//**ADMIN LOGIN AND LOGOUT**//
-
-
 //RENDER ADMIN LOGIN
 const loadAaminLogin = async (req, res, next) => {
     try {
@@ -32,12 +28,7 @@ const loginValidation = async (req, res, next) => {
             res.render("admin/adminLogin", { message: "Password is required" });
 
         } else {
-
-            // Handle the case where both email and password are provided
-
-            // You might want to continue processing the login here
             next()
-
         }
     } catch (error) {
         console.log(error.message);
@@ -48,7 +39,6 @@ const adminValid = async (req, res) => {
     try {
         const { email, password } = req.body
         const validEmail = await Customer.findOne({ email })
-
 
         if (!validEmail || validEmail === "undefined" || validEmail === null || validEmail === "") {
 
@@ -73,9 +63,6 @@ const adminValid = async (req, res) => {
                 }
             }
         }
-
-
-
     } catch (error) {
         console.log(error.message);
         res.render("User/404", { message: "An error occurred. Please try again later." });
@@ -95,14 +82,6 @@ const adminLogout = (req, res) => {
 
     }
 }
-
-
-
-
-
-
-
-
 
 module.exports = {
     loadAaminLogin, loginValidation, adminValid, adminLogout, 

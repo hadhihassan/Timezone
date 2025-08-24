@@ -2,12 +2,6 @@ const productCategry = require("../../Models/productCategory")
 const Product = require("../../Models/productModel")
 const Offer = require("../../Models/offerModel")
 
-
-
-//**CATEGORY MANAGEMNT**//
-
-
-
 //CREATE A CATEGORIES
 const addProductCategory = async (req, res) => {
     const catename = req.body.Categoryname
@@ -117,7 +111,6 @@ const loadEditCategory = async (req, res) => {
     try {
         const offers = await Offer.find({ is_deleted: false })
         const { id } = req.params
-        console.log(id + "HHHHHHHHHHHHHHHHHHHHHH")
         const EditCategory = await productCategry.findById({ _id: id }).populate("offer")
 
         if (EditCategory) {
@@ -130,13 +123,10 @@ const loadEditCategory = async (req, res) => {
 }
 // EDITING THE CATEGORY
 const EditCategory = async (req, res) => {
-    console.log(req.body);
-    console.log(req.body.offer);
     const id = req.query.id
     try {
 
         const editedCategory = await productCategry.findById(id);
-        console.log(req.body)
         if (editedCategory) {
 
             editedCategory.categoryName = req.body.Categoryname
@@ -171,8 +161,6 @@ const EditCategory = async (req, res) => {
                     }
 
                 }
-
-
             }
             await editedCategory.save();
             return res.redirect("/admin/product/Category-management");

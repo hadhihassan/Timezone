@@ -3,11 +3,6 @@ const Product = require("../../Models/productModel")
 const Offer = require("../../Models/offerModel")
 const sharp = require("sharp")
 
-
-
-//**PRODUCT MANAGEMENT**//
-
-
 // RENDER THE PRODUCT CREATE PAGE
 const loadProductCreate = async (req, res) => {
     try {
@@ -291,7 +286,6 @@ const deleteImgDelete = async (req, res) => {
         console.log(error.message)
     }
 }
-
 
 module.exports = {
     loadProductCreate,

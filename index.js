@@ -1,74 +1,71 @@
-    const express = require("express");
-    const mongoose = require("mongoose");
-    const session = require("express-session");
-    const flash = require("connect-flash");
-    const cookieParser = require("cookie-parser");
-    const nocache = require("nocache");
-    const path = require("path");
-    const app = express();
+const express = require("express");
+const mongoose = require("mongoose");
+const session = require("express-session");
+const flash = require("connect-flash");
+const cookieParser = require("cookie-parser");
+const nocache = require("nocache");
+const path = require("path");
+const morgan = require("morgan");
+const app = express();
 
+require("dotenv").config();
 
-    require("dotenv").config();
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+}));
+app.use(express.static("public"));
 
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
 
+app.use(flash());
+app.use(nocache());
+app.use(morgan('tiny'));
 
-    // Middleware
-    app.use(express.json());
-    app.use(express.urlencoded({ limit: '100mb', extended: true }));
-    app.use(cookieParser());
-    app.use(session({
-        secret: process.env.SESSION_SECRET,
-        resave: false,
-        saveUninitialized: true,
-    }));
-    app.use(express.static("public"));
+// Routes
+const customerRoute = require("./Route/customerRoute");
+const adminRoute = require("./Route/adminRoute");
+app.use("/", customerRoute);
+app.use("/admin", adminRoute);
 
-    app.set("views", path.join(__dirname, "views"));
-    app.set("view engine", "ejs");
+// Database connection
+const url = `mongodb+srv://HADHI:KCv3WzklCckxhEB8@devcluster.u8o7ney.mongodb.net/timezone?retryWrites=true&w=majority`;
 
-    app.use(flash());
-    app.use(nocache());
+const connectionParams = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+};
 
-    // Routes
-    const customerRoute = require("./Route/customerRoute");
-    const adminRoute = require("./Route/adminRoute");
-    app.use("/", customerRoute);
-    app.use("/admin", adminRoute);
+let isConnected = false;
 
-
-
-    // Database connection
-    const url = `mongodb+srv://HADHI:KCv3WzklCckxhEB8@devcluster.u8o7ney.mongodb.net/timezone?retryWrites=true&w=majority`;
-
-    const connectionParams = {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    };
-
-    let isConnected = false;
-
-    async function connectToDatabase() {
-        if (!isConnected) {
-            try {
-                await mongoose.connect(url, connectionParams);
-                isConnected = true;
-                console.log('Connected to database');
-            } catch (err) {
-                console.error(`Error connecting to the database. \n${err}`);
-            }
+async function connectToDatabase() {
+    if (!isConnected) {
+        try {
+            await mongoose.connect(url, connectionParams);
+            isConnected = true;
+            console.log('Connected to database');
+        } catch (err) {
+            console.error(`Error connecting to the database. \n${err}`);
         }
     }
+}
 
-    app.use((err, req, res, next) => {
-        console.error(err.stack);
-        res.status(500).render('User/error', { error: err });
-    });
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).render('User/error', { error: err });
+});
 
-    app.use((req, res) => {
-        res.status(404).render("User/404", { message: "" });
-    });
+app.use((req, res) => {
+    res.status(404).render("User/404", { message: "" });
+});
 
-    connectToDatabase()
-    // Start the server
-    const PORT = process.env.PORT || 4000;
-    app.listen(PORT, () => console.log("Server is running on port", PORT));
+connectToDatabase()
+// Start the server
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, (e) => console.log(`Server is running on port => ${'http://localhost:'+PORT}`));

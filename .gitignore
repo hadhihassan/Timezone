@@ -1,18 +1,8 @@
-# .env file
 plaintext
 Copy code
-# Ignore node_modules directory
 node_modules/
-
-# Ignore npm's debugging logs
 npm-debug.log
-
-# Ignore the local development environment
 .env
-
-# Ignore the build output
 dist/
-
 package.json
-
 package-lock.json

@@ -6,34 +6,71 @@ const upload = multer({ storage: storage })
 const cron = require('node-cron')
 
 const Auth = require('../middleware/Auth')
-
-const {     loadCouponPage, createCoupon, deleteCoupon,
-    ActiveCoupon, loadAddCoupon, loadCouponEdit, addEditCoupon }  = require('../Controler/admin/couponManagment.Contoller')
-
-const { addProductCategory, loadCategory, deleteCategory, loadEditCategory, EditCategory, loadAddCategory, deleteCategoryImg } = require('../Controler/admin/categoryMangmentController')
-
-const { loadAaminLogin, loginValidation, adminValid, adminLogout,} = require('../Controler/admin/adminControler')
-
-const { OfferCheckAndDeleteOffer } = require("../utils/OfferExpaireyDateChecker")
-
-const { createOffer, loadAddOfferPage, loadOffersPage,
-    loadOfferEdit, saveEditOffer, deleteOffer, activeOffer, } = require("../Controler/OfferController")
-
-const { loadDash } = require("../Controler/dasboard")
-
-const { displayCustomers, UnblockTheUser, blockTheUser } = require('../Controler/admin/userMangmentController')
-
-
-const { loadProductCreate, createProduct, loadProductPage, editProduct, loadProductEditPage, productDeactivate, productActivate, deleteImgDelete,
+const {
+    loadCouponPage,
+    createCoupon,
+    deleteCoupon,
+    ActiveCoupon,
+    loadAddCoupon,
+    loadCouponEdit,
+    addEditCoupon
+} = require('../Controler/admin/couponManagment.Contoller')
+const {
+    addProductCategory,
+    loadCategory,
+    deleteCategory,
+    loadEditCategory,
+    EditCategory,
+    loadAddCategory,
+    deleteCategoryImg
+} = require('../Controler/admin/categoryMangmentController')
+const {
+    loadAaminLogin,
+    loginValidation,
+    adminValid,
+    adminLogout,
+} = require('../Controler/admin/adminControler')
+const {
+    OfferCheckAndDeleteOffer
+} = require("../utils/OfferExpaireyDateChecker")
+const {
+    createOffer,
+    loadAddOfferPage,
+    loadOffersPage,
+    loadOfferEdit,
+    saveEditOffer,
+    deleteOffer,
+    activeOffer,
+} = require("../Controler/OfferController")
+const {
+    loadDash
+} = require("../Controler/dasboard")
+const {
+    displayCustomers,
+    UnblockTheUser,
+    blockTheUser
+} = require('../Controler/admin/userMangmentController')
+const {
+    loadProductCreate,
+    createProduct,
+    loadProductPage,
+    editProduct,
+    loadProductEditPage,
+    productDeactivate,
+    productActivate,
+    deleteImgDelete,
 } = require('../Controler/admin/productManagmentController')
-
-
-const { loadOrder,
+const {
+    loadOrder,
     updateOrderStatus,
-    updateReturnRequest } = require('../Controler/admin/orderManagmentController')
-
-
-const { loadReportManagemnt, calculateReport, reportDownload, reportDownloadinExecle } = require('../Controler/admin/reportManagmertContoller')
+    updateReturnRequest
+} = require('../Controler/admin/orderManagmentController')
+const {
+    loadReportManagemnt,
+    calculateReport,
+    reportDownload,
+    reportDownloadinExecle
+} = require('../Controler/admin/reportManagmertContoller')
 
 //HOME PAGE DASHBOARD  
 admin_Route.get("/dashboard", Auth.adminAuth, loadDash)

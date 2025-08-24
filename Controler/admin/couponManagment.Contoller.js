@@ -1,9 +1,5 @@
 const Coupon = require("../../Models/couponModel")
 
-
-//**COUPONS MANAGEMENT**//
-
-
 //LIST ALL COUPONS
 const loadCouponPage = async (req, res) => {
     try {
@@ -27,7 +23,6 @@ const loadAddCoupon = async (req, res) => {
     }
 }//CREATE THE NEW COUPON 
 const createCoupon = async (req, res) => {
-    console.log(req.body)
     const { couponName, type, MinimumpurchaseAmount, amountOrPercentage, Description } = req.body;
     try {
 
@@ -131,7 +126,6 @@ const addEditCoupon = async (req, res) => {
         return res.status(500).json({ error: 'An error occurred while updating the coupon.' });
     }
 };
-
 
 module.exports = {
     loadCouponPage, createCoupon, deleteCoupon,

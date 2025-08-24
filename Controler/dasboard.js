@@ -313,7 +313,6 @@ const loadDash = async (req, res) => {
     }
 }
 
-
 module.exports = {
     loadDash
 }

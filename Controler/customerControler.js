@@ -13,11 +13,6 @@ const Coupon = require("../Models/couponModel")
 const Category = require("../Models/productCategory")
 const sharp = require('sharp');
 
-// const client = require("twilio")( process.env.accountSid, process.env.authToken);
-
-
-
-
 //RENDER THE SIGNUP PAGE    
 const loadRegister = async (req, res, next) => {
     let notUser
@@ -136,23 +131,6 @@ let transporter = nodemailer.createTransport({
 // SEND EMAIL TO USER FOR VERFICATION 
 const sendOTPVerificationEmail = async ({ _id, email }, res) => {
     try {
-        // client.verify
-        // .services(serviceId)
-        // .verifications.create({
-        //     to:'+919744845762',
-        //     channel: 'sms'
-        // })
-        // .then((res)=>{
-        //         console.log(res);
-        // })
-        
-        // client.messages
-        //     .create({
-        //         body: 'This is the ship that made the Kessel Run in fourteen parsecs?',
-        //         from: twilioPhoneNumber,
-        //         to: '+919895388508'
-        //     })
-        //     .then(message => console.log(message.sid));
         const otp = `${Math.floor(1000 + Math.random() * 9000)}`;
         // Mail options
         const mailOption = {
@@ -186,7 +164,7 @@ const sendOTPVerificationEmail = async ({ _id, email }, res) => {
 const loadOTPpage = async (req, res) => {
     try {
         const userId = req.query.userId;
-        console.log(userId); // Log the userId for debugging
+
         res.render('User/OTPverificationpage', {
             message: '', id: userId, user: "", success: req.flash("success"),
             error: req.flash("error"),
@@ -521,9 +499,7 @@ const displayProduct = async (req, res) => {
     }
 }
 
-
 // *USER PROFILE*
-
 
 //RENDER THE USER PROFILE 
 const loadProfile = async (req, res) => {
@@ -727,9 +703,7 @@ const deleteAddress = async (req, res) => {
     }
 }
 
-
 // *CART*
-
 
 //RENDER THE CART
 const loadCart = async (req, res) => {
@@ -908,9 +882,7 @@ const deleteProductCart = async (req, res) => {
     }
 }
 
-
 // *ORDER*
-
 
 //RENDER THE CEHKOUT PAGE
 const loadchekout = async (req, res) => {
@@ -1243,7 +1215,6 @@ const applayingCoupon = async (req, res) => {
         res.render("User/404", { message: "An error occurred. Please try again later." });
     }
 }
-
 
 //RENDER THE WALLET PAGE
 const loadWallet = async (req, res) => {

@@ -4,18 +4,59 @@ const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
 const Auth = require("../middleware/Auth")
 
-const { loadPaymentPage, checkRazorpaySignature, loadInvoice } = require("../Controler/order")
+const {
+    loadPaymentPage,
+    checkRazorpaySignature,
+    loadInvoice
+} = require("../Controler/order")
 
-const { loadRegister, loadhome, insertUser, loadOTPpage, checkOTPValid, loadLogin, checkUserValid,
-    userLogouting, loadShop, loadProfile, loadEditPage, updateUser, addImageProfile, deleteUserProfile,
-    userUpdatePassword, loadAddAddressPage, addUserAddress, editAddress, updateAddress, deleteAddress,
-    displayProduct, productAddToCart, loadCart, updateCartQuantity, deleteProductCart, loadForgetPage,
-    ForgetPasswordcheckingValid, loadChangePass, validOTPsetPass, loadchekout, selectAddress, placeOrder,
-    loadOrder, loadOrderProductDetails, cancelOrder, loadWallet, loadCoupons, applayingCoupon, returnProductAction,
-    resedOtp, forgetPassResendOtp, loadWishlist, addProductInWishlist, deleteItemInWishlist
+const {
+    loadRegister,
+    loadhome,
+    insertUser,
+    loadOTPpage,
+    checkOTPValid,
+    loadLogin,
+    checkUserValid,
+    userLogouting,
+    loadShop,
+    loadProfile,
+    loadEditPage,
+    updateUser,
+    addImageProfile,
+    deleteUserProfile,
+    userUpdatePassword,
+    loadAddAddressPage,
+    addUserAddress,
+    editAddress,
+    updateAddress,
+    deleteAddress,
+    displayProduct,
+    productAddToCart,
+    loadCart,
+    updateCartQuantity,
+    deleteProductCart,
+    loadForgetPage,
+    ForgetPasswordcheckingValid,
+    loadChangePass,
+    validOTPsetPass,
+    loadchekout,
+    selectAddress,
+    placeOrder,
+    loadOrder,
+    loadOrderProductDetails,
+    cancelOrder,
+    loadWallet,
+    loadCoupons,
+    applayingCoupon,
+    returnProductAction,
+    resedOtp,
+    forgetPassResendOtp,
+    loadWishlist,
+    addProductInWishlist,
+    deleteItemInWishlist
 } = require('../Controler/customerControler');
 const Customer = require('../Models/customerModel');
-
 
 
 //home page render
