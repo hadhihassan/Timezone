@@ -62,7 +62,10 @@
                                 <div class="media">
                                   <div class="d-flex">
                                     <img
-                                      src="data:<%= product.product.images[0].contentType %>;base64,<%= product.product.images[0].data.toString('base64') %>"
+                                      src="<%= 
+                                      product.product && product.product[0] && product.product.images[0] && product.product.images[0] 
+                                      ? product.product.images[0]
+                                      : '/public/Customer/img/gallery/3.png' %>"
                                       alt="<%= product.price %>">
                                   </div>
                                   <div>
