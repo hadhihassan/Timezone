@@ -4327,3 +4327,20 @@ readers do not read off random characters that represent icons */
 .fas {
   font-family: 'Font Awesome 5 Free';
   font-weight: 900; }
+
+  .responsive-image-container {
+  width: 300px;   /* Or 100% to fill parent */
+  height: 200px;  /* Or any fixed/relative size */
+  border: 1px solid black;
+  position: relative;
+  overflow: hidden; /* Prevents overflow when using cover */
+}
+
+.responsive-image-container img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Options: cover | contain | fill | none | scale-down */
+}

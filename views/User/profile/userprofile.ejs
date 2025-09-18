@@ -16,17 +16,14 @@
                                     <!-- Header with user image and edit profile button -->
                                     <br>
                                     <div class="rounded-top text-white d-flex flex-row" style="height: 200px;">
-                                        <div class="ms-4 mt-4 d-flex flex-column" style="width: 150px;">
-
-                                            <% if (user.images && user.images.contentType && user.images.data) { %>
-                                                <img src="data:<%= user.images.contentType %>;base64,<%= user.images.data.toString('base64') %>"
+                                        <div class="ms-4 mt-4 d-flex flex-column responsive-image-container" style="width: 150px;">
+                                            <% if (user.images) { %>
+                                                <img src="<%= user.images%>"
+                                                style="object-fit: cover;"
                                                 alt="<%= user.images %>" </a>
                                               <% } else { %>
                                                 <img src="/Customer/img/blog/popular-post/account-icon-user-icon-vector-graphics_292645-552.avif" alt="image" class="border border-dark" style="width: 150px; height: 150px;">
                                               <% } %>
-                                              
-
-
                                         </div>
 
                                         <div class="ms-3" style="margin-top: 130px;">

@@ -1,614 +1,539 @@
 <%- include('../partials/Adminside/adminNav') %>
-  <div class="container-scroller">
-    <!-- partial:partials/_sidebar.html -->
-    <%- include('../partials/Adminside/adminsidepanel') %>
-      <!-- partial -->
-      <div class="container-fluid page-body-wrapper">
-        <!-- partial:partials/_navbar.html -->
+<div class="container-scroller">
+  <!-- partial:partials/_sidebar.html -->
+  <%- include('../partials/Adminside/adminsidepanel') %>
+  <!-- partial -->
+  <div class="container-fluid page-body-wrapper">
+    <!-- partial:partials/_navbar.html -->
 
-        <!-- partial -->
-        <div class="main-panel">
-          <div class="content-wrapper">
-
-            <div class="row">
-
-              <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
-                <div class="card">
-                  <div class="card-body">
-                    <div class="row">
-                      <div class="col-9">
-                        <div class="d-flex align-items-center align-self-start">
-                          <h3 class="mb-0" id="dailyRevenueValue">
-                            <% if (daily && daily.length> 0) { %>
-                              <%= daily[0].dailyRevenue %>
-                                <% } else { %>
-                                  0
-                                  <% } %>
-                          </h3>
-                        </div>
-                      </div>
-
+    <!-- partial -->
+    <div class="main-panel">
+      <div class="content-wrapper">
+        <div class="row">
+          <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-9">
+                    <div class="d-flex align-items-center align-self-start">
+                      <h3 class="mb-0" id="dailyRevenueValue">
+                        <% if (daily && daily.length> 0) { %> <%=
+                        daily[0].dailyRevenue %> <% } else { %> 0 <% } %>
+                      </h3>
                     </div>
-                    <h6 class="text-muted font-weight-normal">Daily Income</h6>
-
-
                   </div>
                 </div>
-              </div>
-
-
-
-
-
-              <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
-                <div class="card">
-                  <div class="card-body">
-                    <div class="row">
-                      <div class="col-9">
-                        <div class="d-flex align-items-center align-self-start">
-                          <h3 class="mb-0">
-                            <% if (monthly && monthly.length> 0) { %>
-                              <%= monthly[0].monthlyRevenue %>
-                                <% } else { %>
-                                  0
-                                  <% } %>
-                          </h3>
-                        </div>
-                      </div>
-
-                    </div>
-                    <h6 class="text-muted font-weight-normal">Monthly Income</h6>
-                  </div>
-                </div>
-              </div>
-              <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
-                <div class="card">
-                  <div class="card-body">
-                    <div class="row">
-                      <div class="col-9">
-                        <div class="d-flex align-items-center align-self-start">
-                          <h3 class="mb-0">
-                            <% if (yearly && yearly.length> 0) { %>
-                              <%= yearly[0].yearlyIncome %>
-                                <% } else { %>
-                                  0
-                                  <% } %>
-
-                          </h3>
-                        </div>
-                      </div>
-
-                    </div>
-                    <h6 class="text-muted font-weight-normal">Yearly Income</h6>
-                  </div>
-                </div>
-              </div>
-              <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
-                <div class="card">
-                  <div class="card-body">
-                    <div class="row">
-                      <div class="col-9">
-                        <div class="d-flex align-items-center align-self-start">
-                          <h3 class="mb-0">
-
-                            <% if (lifeTime && lifeTime.length> 0) { %>
-                              <%= lifeTime[0].lifeTimeRevenue %>
-                                <% } else { %>
-                                  0
-                                  <% } %>
-                          </h3>
-                        </div>
-                      </div>
-
-                    </div>
-                    <h6 class="text-muted font-weight-normal"> Life Time Income</h6>
-                  </div>
-                </div>
+                <h6 class="text-muted font-weight-normal">Daily Income</h6>
               </div>
             </div>
-            <div class="row">
-              <div class="col-md-4 grid-margin stretch-card">
-                <div class="card">
-                  <div class="card-body">
-                    <h4 class="card-title">Most used payment options </h4><br>
-                    <canvas id="transaction"></canvas>
-                    <br><br><br>
-                    <div
-                      class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3">
-                      <div class="text-md-center text-xl-left">
-                        <h6 class="mb-1"> Total Transfer to Paypal</h6>
-                        <!-- <p class="text-muted mb-0">07 Jan 2019, 09:12AM</p> -->
-                      </div>
-                      <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
-                        <h6 class="font-weight-bold mb-0">
-
-                          <% if (paymentoptins && paymentoptins.length> 0) { %>
-                            <%= paymentoptins[0].totalAmount %>
-                              <% } else { %>
-                                No payment information available.
-                                <% } %>
-
-                        </h6>
-                      </div>
-                    </div>
-                    <div
-                      class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3">
-                      <div class="text-md-center text-xl-left">
-                        <h6 class="mb-1">Total Tranfer to COD</h6>
-                        <!-- <p class="text-muted mb-0">07 Jan 2019, 09:12AM</p> -->
-                      </div>
-                      <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
-                        <h6 class="font-weight-bold mb-0">
-                          <% if (paymentoptins && paymentoptins.length> 1) { %>
-                            <%= paymentoptins[1].totalAmount %>
-                              <% } else { %>
-                                No second payment information available.
-                                <% } %>
-
-                        </h6>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-8 grid-margin stretch-card">
-                <div class="card">
-                  <div class="card-body">
-
-                    <h4 class="card-title">Best selled products</h4> <br>
-                    <div class="row">
-                      <canvas id="bestSellingProducts" width="400" height="300"></canvas>
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-            </div>
-
-
-
-
-            <div class="row">
-              <div class="col-12">
-                <div class="card">
-                  <div class="card-body">
-                    <div class="d-flex flex-row justify-content-between">
-                      <h4 class="card-title mb-1">Monthly Revenue</h4>
-                      <p class="text-muted mb-1">Your data status</p>
-                    </div>
-                    <div class="row">
-                      <div class="col-12">
-                        <canvas id="monthlyRevenueChart"></canvas>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <br>
-            <div class="row">
-           
-              <div class="col-sm-6 grid-margin">
-                <div class="card">
-                  <div class="card-body">
-                    <h5>Total count of Sales</h5>
-                    <div class="row">
-                      <div class="col-8 col-sm-12 col-xl-8 my-auto">
-                        <div class="d-flex d-sm-block d-md-flex align-items-center">
-                          <h2 class="mb-0">
-                            <% if (paymentoptins && paymentoptins.length> 1 && typeof paymentoptins[0].count ===
-                              'number' && typeof paymentoptins[1].count === 'number') { %>
-                              <%= paymentoptins[0].count + paymentoptins[1].count %>
-                                <% } else { %>
-                                  Unable to calculate the sum of counts.
-                                  <% } %>
-
-                          </h2>
-                        </div>
-                        <h6 class="text-muted font-weight-normal">Since started </h6>
-                      </div>
-                      <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
-                        <i class="icon-lg mdi mdi-wallet-travel text-danger ml-auto"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-6 grid-margin">
-                <div class="card">
-                  <div class="card-body">
-                    <h5>Total Customers</h5>
-                    <div class="row">
-                      <div class="col-8 col-sm-12 col-xl-8 my-auto">
-                        <div class="d-flex d-sm-block d-md-flex align-items-center">
-                          <h2 class="mb-0">
-                            <%= allUsers.length %>
-                          </h2>
-                        </div>
-                        <h6 class="text-muted font-weight-normal"> Since started</h6>
-                      </div>
-                      <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
-                        <i class="icon-lg mdi mdi-wallet-travel text-success ml-auto"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row ">
-              <div class="col-12 grid-margin">
-                <div class="card">
-                  <div class="card-body">
-                    <h4 class="card-title">Pending Orders </h4>
-                    <div class="table-responsive">
-                      <table class="table">
-                        <thead>
-                          <tr>
-                            <th>
-                              <div class="form-check form-check-muted m-0">
-                                <label class="form-check-label">
-                                  <input type="checkbox" class="form-check-input">
-                                </label>
-                              </div>
-                            </th>
-                            <th> Client Name </th>
-                            <th> Order Id </th>
-                            <th> Payment Mode </th>
-                            <th> Payment Option </th>
-                            <th>Order Date </th>
-                            <th>Order Status</th>
-                          </tr>
-                        </thead>
-
-
-                        <tbody>
-                          <% orders.forEach((order)=> { %>
-                            <tr>
-                              <td>
-                                <div class="form-check form-check-muted m-0">
-                                  <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input">
-                                  </label>
-                                </div>
-                              </td>
-                              <td>
-
-
-
-                                <% if (!order.user.image) { %>
-                                  <img
-                                    src="/Customer/img/blog/popular-post/account-icon-user-icon-vector-graphics_292645-552.avif"
-                                    alt="image" class="rounded-circle">
-                                    <span class="pl-2">
-                                          <%= order.user.name %>
-                                        </span>
-                                  <% } else { %>
-                                    <% if (order.user.image && order.user.image.contentType && order.user.image.data) {
-                                      %>
-                                      <img
-                                        src="data:<%= order.user.image.contentType %>;base64,<%= order.user.image.data.toString('base64') %>"
-                                        alt="<%= order.user.name %>">
-                                      <% } else { %>
-                                        <span class="pl-2">
-                                          <%= order.user.name %>
-                                        </span>
-                                        <% } %>
-                                          <% } %>
-                              </td>
-                              <td><%= order._id%></td>
-                              <td>
-                                <%= order.totalAmount %>
-                              </td>
-                              <td>
-                                <%= order.paymentOption %>
-                              </td>
-                              <td>
-                                <%= order.orderDate.toLocaleDateString() %>
-                              </td>
-
-                              <td>
-                                <div class="badge badge-outline-primary">Pending</div>
-                              </td>
-                              <td>
-                                <a href="/admin/orders"><span>Go</span></a>
-                              </td>
-                            </tr>
-
-                            <% }) %>
-                        </tbody>
-
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-6 col-xl-6 grid-margin stretch-card">
-                <div class="card">
-                  <div class="card-body">
-                    <div class="d-flex flex-row justify-content-between">
-                      <h4 class="card-title">Blocked Users</h4>
-                      <p class="text-muted mb-1 small">View all</p>
-                    </div>
-                    <div class="preview-list">
-                      <% BlockedUsers.forEach(user=> { %>
-
-
-
-
-                        <div class="preview-item border-bottom">
-                          <div class="preview-thumbnail">
-                            <% if (user.image && user.image.contentType) { %>
-                              <img
-                                src="data:<%= user.image.contentType %>;base64,<%= user.image.data.toString('base64') %>"
-                                alt="<%= user.name %>">
-                              <% } else { %>
-                                <img
-                                  src="/Customer/img/blog/popular-post/account-icon-user-icon-vector-graphics_292645-552.avif"
-                                  alt="image" class="rounded-circle">
-                                <% } %>
-
-
-                          </div>
-                          <div class="preview-item-content d-flex flex-grow">
-                            <div class="flex-grow">
-                              <div class="d-flex d-md-block d-xl-flex justify-content-between">
-                                <h6 class="preview-subject">
-                                  <%= user.name %>
-                                </h6>
-                                <!-- <p class="text-muted text-small">5 minutes ago</p> -->
-                              </div>
-                              <p class="text-muted">This account got a block list now..</p>
-                            </div>
-                            <div class="text-center">
-                              <a href="/admin/Customers"><span>Go</span></a>
-                            </div>
-
-                          </div>
-                        </div>
-
-                        <% }) %>
-
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-6 col-xl-6 grid-margin stretch-card">
-                <div class="card">
-                  <div class="card-body">
-                    <div class="d-flex flex-row justify-content-between">
-                      <h4 class="card-title">Out of stock products</h4>
-                      <p class="text-muted mb-1 small">View all</p>
-                    </div>
-                    <div class="preview-list">
-                      <% outofstock.forEach((pro)=> { %>
-
-
-
-
-                        <div class="preview-item border-bottom">
-                          <div class="preview-thumbnail">
-                            <% if (!pro.images.contentType ) { %>
-
-                              <img
-                                src="/Customer/img/blog/popular-post/account-icon-user-icon-vector-graphics_292645-552.avif"
-                                alt="image" class="rounded-circle">
-                              <% } else { %>
-                                <img
-                                  src="data:<%= pro.images.contentType %>;base64,<%=pro.images.data.toString('base64') %>"
-                                  alt="<%= pro.product_name%>">
-
-                                <% } %>
-
-                          </div>
-                          <div class="preview-item-content d-flex flex-grow">
-                            <div class="flex-grow">
-                              <div class="d-flex d-md-block">
-
-                                <% if (pro.is_delete) { %>
-                                  <h6 class="text-danger badge ">
-                                    deactive
-                                  </h6>
-                                  <% } else { %>
-                                    <h6 class="text-success badge ">
-                                      active
-                                    </h6>
-                                    <% } %>
-
-
-                                      <h6 class="preview-subject"> name :
-                                        <%=pro.product_name%>
-                                      </h6>
-                                      <!-- <p class="text-muted text-small">5 minutes ago</p> -->
-                                      <h6 class="preview-subject"> Category :
-                                        <%=pro.category%>
-                                      </h6>
-
-                                      <!-- <p class="text-muted text-small">5 minutes ago</p> -->
-                              </div>
-                              <p class="text-danger">This product have no 1 stock..</p>
-                            </div>
-                            <div class="text-center">
-                              <a href=""><span>Go</span></a>
-                            </div>
-
-                          </div>
-                        </div>
-
-                        <% }) %>
-
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-
-            </div>
-
           </div>
 
+          <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-9">
+                    <div class="d-flex align-items-center align-self-start">
+                      <h3 class="mb-0">
+                        <% if (monthly && monthly.length> 0) { %> <%=
+                        monthly[0].monthlyRevenue %> <% } else { %> 0 <% } %>
+                      </h3>
+                    </div>
+                  </div>
+                </div>
+                <h6 class="text-muted font-weight-normal">Monthly Income</h6>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-9">
+                    <div class="d-flex align-items-center align-self-start">
+                      <h3 class="mb-0">
+                        <% if (yearly && yearly.length> 0) { %> <%=
+                        yearly[0].yearlyIncome %> <% } else { %> 0 <% } %>
+                      </h3>
+                    </div>
+                  </div>
+                </div>
+                <h6 class="text-muted font-weight-normal">Yearly Income</h6>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-9">
+                    <div class="d-flex align-items-center align-self-start">
+                      <h3 class="mb-0">
+                        <% if (lifeTime && lifeTime.length> 0) { %> <%=
+                        lifeTime[0].lifeTimeRevenue %> <% } else { %> 0 <% } %>
+                      </h3>
+                    </div>
+                  </div>
+                </div>
+                <h6 class="text-muted font-weight-normal">Life Time Income</h6>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Most used payment options</h4>
+                <br />
+                <canvas id="transaction"></canvas>
+                <br /><br /><br />
+                <div
+                  class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3"
+                >
+                  <div class="text-md-center text-xl-left">
+                    <h6 class="mb-1">Total Transfer to Paypal</h6>
+                    <!-- <p class="text-muted mb-0">07 Jan 2019, 09:12AM</p> -->
+                  </div>
+                  <div
+                    class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0"
+                  >
+                    <h6 class="font-weight-bold mb-0">
+                      <% if (paymentoptins && paymentoptins.length> 0) { %> <%=
+                      paymentoptins[0].totalAmount %> <% } else { %> No payment
+                      information available. <% } %>
+                    </h6>
+                  </div>
+                </div>
+                <div
+                  class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3"
+                >
+                  <div class="text-md-center text-xl-left">
+                    <h6 class="mb-1">Total Tranfer to COD</h6>
+                    <!-- <p class="text-muted mb-0">07 Jan 2019, 09:12AM</p> -->
+                  </div>
+                  <div
+                    class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0"
+                  >
+                    <h6 class="font-weight-bold mb-0">
+                      <% if (paymentoptins && paymentoptins.length> 1) { %> <%=
+                      paymentoptins[1].totalAmount %> <% } else { %> No second
+                      payment information available. <% } %>
+                    </h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-8 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Best selled products</h4>
+                <br />
+                <div class="row">
+                  <canvas
+                    id="bestSellingProducts"
+                    width="400"
+                    height="300"
+                  ></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex flex-row justify-content-between">
+                  <h4 class="card-title mb-1">Monthly Revenue</h4>
+                  <p class="text-muted mb-1">Your data status</p>
+                </div>
+                <div class="row">
+                  <div class="col-12">
+                    <canvas id="monthlyRevenueChart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-sm-6 grid-margin">
+            <div class="card">
+              <div class="card-body">
+                <h5>Total count of Sales</h5>
+                <div class="row">
+                  <div class="col-8 col-sm-12 col-xl-8 my-auto">
+                    <div class="d-flex d-sm-block d-md-flex align-items-center">
+                      <h2 class="mb-0">
+                        <% if (paymentoptins && paymentoptins.length> 1 &&
+                        typeof paymentoptins[0].count === 'number' && typeof
+                        paymentoptins[1].count === 'number') { %> <%=
+                        paymentoptins[0].count + paymentoptins[1].count %> <% }
+                        else { %> Unable to calculate the sum of counts. <% } %>
+                      </h2>
+                    </div>
+                    <h6 class="text-muted font-weight-normal">Since started</h6>
+                  </div>
+                  <div
+                    class="col-4 col-sm-12 col-xl-4 text-center text-xl-right"
+                  >
+                    <i
+                      class="icon-lg mdi mdi-wallet-travel text-danger ml-auto"
+                    ></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 grid-margin">
+            <div class="card">
+              <div class="card-body">
+                <h5>Total Customers</h5>
+                <div class="row">
+                  <div class="col-8 col-sm-12 col-xl-8 my-auto">
+                    <div class="d-flex d-sm-block d-md-flex align-items-center">
+                      <h2 class="mb-0"><%= allUsers.length %></h2>
+                    </div>
+                    <h6 class="text-muted font-weight-normal">Since started</h6>
+                  </div>
+                  <div
+                    class="col-4 col-sm-12 col-xl-4 text-center text-xl-right"
+                  >
+                    <i
+                      class="icon-lg mdi mdi-wallet-travel text-success ml-auto"
+                    ></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 grid-margin">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Pending Orders</h4>
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Client Name</th>
+                        <th>Order Id</th>
+                        <th>Payment Mode</th>
+                        <th>Payment Option</th>
+                        <th>Order Date</th>
+                        <th>Order Status</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <% orders.forEach((order)=> { %>
+                      <tr>
+                        <td class="responsive-image-container">
+                          <img
+                            src="<%= order.user.images %>"
+                            alt="image"
+                            class="rounded-circle"
+                            style="object-fit: cover"
+                          />
+                        </td>
+                        <td class="responsive-image-container">
+                          <span class="pl-2"> <%= order.user.name %> </span>
+                        </td>
+                        <td><%= order._id%></td>
+                        <td><%= order.totalAmount %></td>
+                        <td><%= order.paymentOption %></td>
+                        <td><%= order.orderDate.toLocaleDateString() %></td>
+
+                        <td>
+                          <div class="badge badge-outline-primary">Pending</div>
+                        </td>
+                        <td>
+                          <a href="/admin/orders"><span>Go</span></a>
+                        </td>
+                      </tr>
+
+                      <% }) %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-xl-6 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex flex-row justify-content-between">
+                  <h4 class="card-title">Blocked Users</h4>
+                  <p class="text-muted mb-1 small">View all</p>
+                </div>
+                <div class="preview-list">
+                  <% BlockedUsers.forEach(user=> { %>
+
+                  <div class="preview-item border-bottom">
+                    <div class="preview-thumbnail">
+                      <!-- <% if (user.image && user.image.contentType) { %> -->
+                      <!-- <img -->
+                      <!-- src="data:<%= user.image.contentType %>;base64,<%= user.image.data.toString('base64') %>" -->
+                      <!-- alt="<%= user.name %>" -->
+                      <!-- /> -->
+                      <!-- <% } else { %> -->
+                      <img
+                        src="/Customer/img/blog/popular-post/account-icon-user-icon-vector-graphics_292645-552.avif"
+                        alt="image"
+                        class="rounded-circle"
+                      />
+                      <!-- <% } %> -->
+                    </div>
+                    <div class="preview-item-content d-flex flex-grow">
+                      <div class="flex-grow">
+                        <div
+                          class="d-flex d-md-block d-xl-flex justify-content-between"
+                        >
+                          <h6 class="preview-subject"><%= user.name %></h6>
+                          <!-- <p class="text-muted text-small">5 minutes ago</p> -->
+                        </div>
+                        <p class="text-muted">
+                          This account got a block list now..
+                        </p>
+                      </div>
+                      <div class="text-center">
+                        <a href="/admin/Customers"><span>Go</span></a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <% }) %>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-xl-6 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex flex-row justify-content-between">
+                  <h4 class="card-title">Out of stock products</h4>
+                  <p class="text-muted mb-1 small">View all</p>
+                </div>
+                <div class="preview-list">
+                  <% outofstock.forEach((pro)=> { %>
+
+                  <div class="preview-item border-bottom">
+                    <div class="preview-thumbnail">
+                      <!-- <% if (!pro.images.contentType ) { %> -->
+
+                      <img
+                        src="/Customer/img/blog/popular-post/account-icon-user-icon-vector-graphics_292645-552.avif"
+                        alt="image"
+                        class="rounded-circle"
+                      />
+                      <!-- <% } else { %> -->
+                      <!-- <img -->
+                      <!-- src="data:<%= pro.images.contentType %>;base64,<%=pro.images.data.toString('base64') %>" -->
+                      <!-- alt="<%= pro.product_name%>" -->
+                      <!-- /> -->
+
+                      <!-- <% } %> -->
+                    </div>
+                    <div class="preview-item-content d-flex flex-grow">
+                      <div class="flex-grow">
+                        <div class="d-flex d-md-block">
+                          <% if (pro.is_delete) { %>
+                          <h6 class="text-danger badge">deactive</h6>
+                          <% } else { %>
+                          <h6 class="text-success badge">active</h6>
+                          <% } %>
+
+                          <h6 class="preview-subject">
+                            name : <%=pro.product_name%>
+                          </h6>
+                          <!-- <p class="text-muted text-small">5 minutes ago</p> -->
+                          <h6 class="preview-subject">
+                            Category : <%=pro.category%>
+                          </h6>
+
+                          <!-- <p class="text-muted text-small">5 minutes ago</p> -->
+                        </div>
+                        <p class="text-danger">
+                          This product have no 1 stock..
+                        </p>
+                      </div>
+                      <div class="text-center">
+                        <a href=""><span>Go</span></a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <% }) %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <input type="hidden" name="mo" value="<%= allMonths %>" id="months">
-      <script>
+    </div>
+  </div>
+  <input type="hidden" name="mo" value="<%= allMonths %>" id="months" />
+  <script>
+    const pro1 = " <%= bestProducts[0]?.count %>" || 0;
+    const pro2 = " <%= bestProducts[1]?.count %>" || 0;
+    const pro3 = " <%= bestProducts[2]?.count %>" || 0;
 
-        const pro1 = " <%= bestProducts[0].count %>";
-        const pro2 = " <%= bestProducts[1].count %>";
-        const pro3 = " <%= bestProducts[2].count %>";
+    const name1 = "<%= bestProducts[0]?.name %>" || 0;
+    const name2 = "<%= bestProducts[1]?.name %>" || 0;
+    const name3 = "<%= bestProducts[2]?.name %>" || 0;
 
-        const name1 = "<%= bestProducts[0].name %>";
-        const name2 = "<%= bestProducts[1].name %>";
-        const name3 = "<%= bestProducts[2].name %>";
+    // Sample data for the bar graph
+    var data = {
+      labels: [name1, name2, name3], // This will be populated with product names
+      datasets: [
+        {
+          label: "Best selling products",
+          backgroundColor: "rgba(75, 192, 192, 0.2)",
+          borderColor: "rgba(75, 192, 192, 1)",
+          borderWidth: 1,
+          data: [pro1, pro2, pro3], // This will be populated with product counts
+        },
+      ],
+    };
 
-        // Sample data for the bar graph
-        var data = {
-          labels: [name1, name2, name3], // This will be populated with product names
-          datasets: [{
-            label: 'Best selling products',
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderColor: 'rgba(75, 192, 192, 1)',
-            borderWidth: 1,
-            data: [pro1, pro2, pro3], // This will be populated with product counts
-          }]
-        };
+    // Perform an AJAX request to fetch data from the server
 
-        // Perform an AJAX request to fetch data from the server
+    // Get the canvas element and create the bar graph
+    var ctx = document.getElementById("bestSellingProducts").getContext("2d");
+    var myBarChart = new Chart(ctx, {
+      type: "bar",
+      data: data,
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      },
+    });
+  </script>
+  <!-- End custom js for this page -->
+  <script>
+    // big chart
+    document.addEventListener("DOMContentLoaded", function () {
+      const canvas = document.getElementById("monthlyRevenueChart");
+      const label = "<%= allMonths.map(item => item._id) %>";
+      const labelArray = label.split(","); // Split the label string into an array
 
+      const amounts = "<%= allMonths.map(item => item.monthlyIncome) %>";
+      const amountArray = amounts.split(",").map((item) => parseFloat(item)); // Parse as floating-point numbers
+      // Now, you can use labelArray and amountArray as needed.
 
-
-        // Get the canvas element and create the bar graph
-        var ctx = document.getElementById('bestSellingProducts').getContext('2d');
-        var myBarChart = new Chart(ctx, {
-          type: 'bar',
-          data: data,
-          options: {
-            scales: {
-              y: {
-                beginAtZero: true
-              }
-            }
-          }
-        });
-
-
-      </script>
-      <!-- End custom js for this page -->
-      <script>
-
-
-        // big chart 
-        document.addEventListener("DOMContentLoaded", function () {
-
-          const canvas = document.getElementById("monthlyRevenueChart");
-          const label = "<%= allMonths.map(item => item._id) %>";
-          const labelArray = label.split(","); // Split the label string into an array
-
-          const amounts = "<%= allMonths.map(item => item.monthlyIncome) %>";
-          const amountArray = amounts.split(",").map(item => parseFloat(item)); // Parse as floating-point numbers
-          // Now, you can use labelArray and amountArray as needed.
-
-          // Create a column chart
-          const columnChart = new Chart(canvas, {
-            type: "bar", // Specify chart type as "bar" for a column chart
-            data: {
-              labels: labelArray,
-              datasets: [
-                {
-                  label: "Monthly Revenue",
-                  data: amountArray,
-                  backgroundColor: [
-                    "rgba(75, 192, 192, 0.7)",
-                    "rgba(255, 99, 132, 0.7)",
-                    "rgba(255, 205, 86, 0.7)",
-                    "rgba(54, 162, 235, 0.7)",
-                    "rgba(153, 102, 255, 0.7)",
-                    "rgba(134, 102, 255, 0.7)",
-                    "rgba(153, 10, 55, 0.7)",
-                    "rgba(153, 10, 55, 0.7)",
-                    "rgba(255, 159, 64, 0.7)",
-                    "rgba(255, 159, 64, 0.7)",
-                    "rgba(75, 192, 192, 0.7)",
-                    "rgba(255, 192, 192, 0.5)",
-                  ],
-                  borderColor: [
-                    "rgba(75, 192, 192, 1)",
-                    "rgba(75, 192, 102, 1)",
-                    "rgba(75, 192, 142, 1)",
-                    "rgba(255, 99, 132, 1)",
-                    "rgba(255, 99, 132, 1)",
-                    "rgba(255, 205, 86, 1)",
-                    "rgba(54, 162, 235, 1)",
-                    "rgba(54, 162, 235, 9)",
-                    "rgba(153, 102, 255, 1)",
-                    "rgba(255, 159, 64, 1)",
-                    "rgba(255, 160, 64, 5)",
-                  ],
-                  // borderWidth: 1,
-                  barPercentage: 0.1
-                },
-              ],
-            },
-            options: {
-              scales: {
-                y: {
-                  beginAtZero: true,
-                  // Adjust the bar width as a percentage (e.g., 50%)
-                },
-
-              },
-            },
-          });
-        });
-
-
-
-        // JavaScript code to create the ring graph
-        var ctx = document.getElementById('transaction').getContext('2d');
-        var cod = "<%= paymentoptins[0].count %>" ? " <%= paymentoptins[0].count %>" : 0;
-        var razorpay = " <%= paymentoptins[1].count %>" ? " <%= paymentoptins[1].count %> " : 0;
-
-
-
-        var myRingChart = new Chart(ctx, {
-          type: 'doughnut', // Use 'doughnut' for a ring graph
-          data: {
-            labels: ['COD', 'Zaropay', 'Wallet'],
-            datasets: [{
-              data: [cod, razorpay, 0], // Replace with your data values
+      // Create a column chart
+      const columnChart = new Chart(canvas, {
+        type: "bar", // Specify chart type as "bar" for a column chart
+        data: {
+          labels: labelArray,
+          datasets: [
+            {
+              label: "Monthly Revenue",
+              data: amountArray,
               backgroundColor: [
-                'rgba(255, 99, 132, 0.5)',
-                'rgba(54, 162, 235, 0.5)',
-                'rgba(255, 206, 86, 0.5)'
+                "rgba(75, 192, 192, 0.7)",
+                "rgba(255, 99, 132, 0.7)",
+                "rgba(255, 205, 86, 0.7)",
+                "rgba(54, 162, 235, 0.7)",
+                "rgba(153, 102, 255, 0.7)",
+                "rgba(134, 102, 255, 0.7)",
+                "rgba(153, 10, 55, 0.7)",
+                "rgba(153, 10, 55, 0.7)",
+                "rgba(255, 159, 64, 0.7)",
+                "rgba(255, 159, 64, 0.7)",
+                "rgba(75, 192, 192, 0.7)",
+                "rgba(255, 192, 192, 0.5)",
               ],
               borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)'
+                "rgba(75, 192, 192, 1)",
+                "rgba(75, 192, 102, 1)",
+                "rgba(75, 192, 142, 1)",
+                "rgba(255, 99, 132, 1)",
+                "rgba(255, 99, 132, 1)",
+                "rgba(255, 205, 86, 1)",
+                "rgba(54, 162, 235, 1)",
+                "rgba(54, 162, 235, 9)",
+                "rgba(153, 102, 255, 1)",
+                "rgba(255, 159, 64, 1)",
+                "rgba(255, 160, 64, 5)",
               ],
-              borderWidth: 1
-            }]
+              // borderWidth: 1,
+              barPercentage: 0.1,
+            },
+          ],
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+              // Adjust the bar width as a percentage (e.g., 50%)
+            },
           },
-          options: {
-            cutoutPercentage: 60, // Customize the cutout percentage to create a ring
-            // Customize other chart options here
-          }
-        });
-      </script>
-      <style>
-        /* Add CSS for hover effect */
-        .hover-info {
-          display: none;
-          font-size: 12px;
-          margin-top: 10px;
-          color: #333;
-        }
+        },
+      });
+    });
 
-        .card:hover .hover-info {
-          display: block;
-        }
-      </style>
-      <%- include('../partials/Adminside/footer') %>
+    // JavaScript code to create the ring graph
+    var ctx = document.getElementById("transaction").getContext("2d");
+    var cod = "<%= paymentoptins[0]?.count %>"
+      ? " <%= paymentoptins[0]?.count %>"
+      : 0;
+    var razorpay = " <%= paymentoptins[1]?.count %>"
+      ? " <%= paymentoptins[1]?.count %> "
+      : 0;
+
+    var myRingChart = new Chart(ctx, {
+      type: "doughnut", // Use 'doughnut' for a ring graph
+      data: {
+        labels: ["COD", "Zaropay", "Wallet"],
+        datasets: [
+          {
+            data: [cod, razorpay, 0], // Replace with your data values
+            backgroundColor: [
+              "rgba(255, 99, 132, 0.5)",
+              "rgba(54, 162, 235, 0.5)",
+              "rgba(255, 206, 86, 0.5)",
+            ],
+            borderColor: [
+              "rgba(255, 99, 132, 1)",
+              "rgba(54, 162, 235, 1)",
+              "rgba(255, 206, 86, 1)",
+            ],
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        cutoutPercentage: 60, // Customize the cutout percentage to create a ring
+        // Customize other chart options here
+      },
+    });
+  </script>
+  <style>
+    /* Add CSS for hover effect */
+    .hover-info {
+      display: none;
+      font-size: 12px;
+      margin-top: 10px;
+      color: #333;
+    }
+
+    .card:hover .hover-info {
+      display: block;
+    }
+  </style>
+  <%- include('../partials/Adminside/footer') %>
+</div>

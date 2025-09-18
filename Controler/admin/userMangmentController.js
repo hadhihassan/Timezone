@@ -3,16 +3,16 @@ const Customer = require('../../Models/customerModel')
 //DSIPLAY ALL COUSTOMERS
 const displayCustomers = async (req, res) => {
     try {
-        // Show a loading alert while fetching data
         let a = "Customers"
+        const query = req.query.query; // Get the search query from the request
 
         const page = parseInt(req.query.page) || 1;
         const pageSize = 10;
         const skip = (page - 1) * pageSize;
+
         let users;
         let len;
 
-        const query = req.query.query; // Get the search query from the request
 
         if (query) {
             // When there's a search query, use it to filter users
@@ -22,8 +22,8 @@ const displayCustomers = async (req, res) => {
                 is_Admin: false,
                 name: nameRegex,
             })
-                .skip(skip)
-                .limit(pageSize);
+            .skip(skip)
+            .limit(pageSize);
 
             // Get the count of filtered users
             len = await Customer.countDocuments({
@@ -35,8 +35,8 @@ const displayCustomers = async (req, res) => {
             users = await Customer.find({
                 is_Admin: false,
             })
-                .skip(skip)
-                .limit(pageSize);
+            .skip(skip)
+            .limit(pageSize);
 
             // Get the count of all users
             len = await Customer.countDocuments({
@@ -44,19 +44,15 @@ const displayCustomers = async (req, res) => {
             });
         }
 
-        // Close the loading alert once the data is fetched
-
-
         res.render("admin/user", {
             users,
             len,
             currentPage: page,
-            query, // Pass the query back to the view for rendering
+            query,
             a,
             userId: req.session.admin
         });
     } catch (error) {
-        console.error(error.message);
         res.render("User/404", { message: "An error occurred. Please try again later." })
     }
 }
@@ -70,7 +66,6 @@ const UnblockTheUser = async (req, res) => {
             return res.redirect('/admin/Customers')
         }
     } catch (error) {
-        console.log(error.message);
         res.render("User/404", { message: "An error occurred. Please try again later." });
     }
 }
@@ -80,18 +75,17 @@ const blockTheUser = async (req, res) => {
 
         const { id } = req.query
         const userUpdated = await Customer.updateOne({ _id: id }, { $set: { is_block: true } })
+
         if (userUpdated) {
             return res.redirect('/admin/Customers')
         }
     } catch (error) {
-        console.log(error.message);
         res.render("User/404", { message: "An error occurred. Please try again later." });
     }
 }
 
-module.exports =  {
+module.exports = {
     displayCustomers,
     UnblockTheUser,
     blockTheUser
 }
-

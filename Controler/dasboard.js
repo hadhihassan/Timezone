@@ -235,6 +235,8 @@ const findBestSellingProducts = async (req, res) => {
 }
 //RENDERE THE DASHBOARD PAGE
 const loadDash = async (req, res) => {
+    console.log('dashboard loaded');
+    
     try {
         const pipeline = [
             {
@@ -278,20 +280,21 @@ const loadDash = async (req, res) => {
 
         const outofstock = await Product.find({ stock_count: { $lte: 1 } });
 
-        console.log(outofstock);
         const allMonths = await everyMonthIncome()
         const alltime = await Order.aggregate(pipeline);
         const DailyI = await DailyIncome()
         const MonthlyI = await MonthlyIncome()
         const yearlyI = await YearlyIncome()
         const bestProducts = await findBestSellingProducts()
+
         //FINDING THE PENDING ORDERS
         const PendingOrders = await Order.find({ returnRequest: "Pending", orderCanceled: false }).populate("user")
         const paymentoptins = await Order.aggregate(paymentOptionsPipeline)
+
         //FINDING THE BLOCKED USERD
         const blockUsers = await Customer.find({ is_block: true })
         const allUsers = await Customer.find()
-        console.log(allMonths)
+        
         let a = "dashboard"
         res.render("admin/index", {
             daily: DailyI,
@@ -309,6 +312,7 @@ const loadDash = async (req, res) => {
         })
 
     } catch (error) {
+        console.log(error);
         res.render("User/404", { message: "An error occurred. Please try again later." });
     }
 }

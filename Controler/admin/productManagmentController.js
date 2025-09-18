@@ -2,38 +2,39 @@ const productCategry = require("../../Models/productCategory")
 const Product = require("../../Models/productModel")
 const Offer = require("../../Models/offerModel")
 const sharp = require("sharp")
+const uploadToCloudinary = require('../../utils/upload');
 
 // RENDER THE PRODUCT CREATE PAGE
 const loadProductCreate = async (req, res) => {
     try {
+
         const Categories = await productCategry.find()
         const offers = await Offer.find({ is_deleted: false })
 
-
         res.render("admin/Product/addproduct", { message: "", Categories, offers, error: req.flash("error"), a: "" });
-
     } catch (error) {
-        console.log(error.message);
+        return res.status(500).send("Error loading the product create page.");
     }
-}//ADD THE NEW PRODUCT INTO THE DATABASE
+}
+//ADD THE NEW PRODUCT INTO THE DATABASE
 const createProduct = async (req, res) => {
 
+    const { productName, manufacturerName, brandName, id_No, releaseDate, stockCount, category, Metrial } = req.body;
 
-
-    const { productName, manufacturerName, brandName, id_No, price,
-        offer, releaseDate, stockCount, description, category, tags,
-        inStock, outOfStock, images, color, Metrial } = req.body;
+    let stock
     try {
+
         if (!productName || !manufacturerName) {
             req.flash('error', 'All fields are required. Please fill in all fields....');
             return res.redirect("/admin/product/create")
         }
-        let stock
+
         if (req.body.inStock == "inStock") {
             stock = true
         } else if (req.body.inStock == "outOfStock") {
             stock = false
         }
+
         const product = new Product({
             product_name: productName,
             manufacturer_name: manufacturerName,
@@ -48,21 +49,22 @@ const createProduct = async (req, res) => {
             color: req.body.color,
             meterial: Metrial,
         });
-        const croppedImages = await Promise.all(
+
+        await Promise.all(
             req.files.map(async (file, i) => {
-                const filename = `-${Date.now()}test-${i + 1}.jpeg`;
                 const croppedImageBuffer = await sharp(file.buffer)
                     .resize(540, 560)
                     .toFormat('jpeg')
                     .jpeg({ quality: 90 })
                     .toBuffer();
-                product.images.push({ data: croppedImageBuffer, contentType: 'image/jpeg' });
-                return {
-                    filename: filename,
-                    buffer: croppedImageBuffer,
-                };
+
+                const imageUrl = await uploadToCloudinary(croppedImageBuffer, 'product_images');
+
+                product.images.push(imageUrl);
+                return imageUrl
             })
         );
+
         if (req.body.offer) {
             product.offer = req.body.offer
             const offerm = await Offer.findById(req.body.offer)
@@ -73,10 +75,7 @@ const createProduct = async (req, res) => {
             } else {
                 product.offerPrice = 0
             }
-
-
         }
-
 
         const CategoryOffer = await productCategry.findById(category)
 
@@ -95,7 +94,6 @@ const createProduct = async (req, res) => {
         await product.save();
         return res.redirect("/admin/product");
     } catch (error) {
-        console.log(error.message);
         return res.status(500).send("Error creating the product.");
     }
 }//LIST THE ALL PRODUCT 
@@ -130,13 +128,12 @@ const loadProductPage = async (req, res) => {
 
         if (products) {
             return res.render('admin/Product/products', { products, len, currentPage, query, a: "" });
-        } else {
-            console.log("Products not found");
         }
     } catch (error) {
-        console.log(error.message);
+        return res.status(500).send("Error loading the products.");
     }
-}//RENDER THE PRODUCT EDIT PAGE
+}
+//RENDER THE PRODUCT EDIT PAGE
 const loadProductEditPage = async (req, res) => {
     try {
         const id = req.params.id
@@ -158,11 +155,12 @@ const loadProductEditPage = async (req, res) => {
 }//EDITING THE PRODUCT DETAILS
 const editProduct = async (req, res) => {
 
-    const { productName, manufacturerName, brandName, id_No,
-        price, releaseDate, description, stockCount, category
-        , outOfStock, images, tags, color, Metrial, id, offer } = req.body;
+    const {
+        productName, manufacturerName, brandName, id_No,
+        releaseDate, stockCount, tags, Metrial, id,
+    } = req.body;
     try {
-        console.log(req.body);
+
         let stock
         if (req.body.inStock == "inStock") {
             stock = true
@@ -217,19 +215,18 @@ const editProduct = async (req, res) => {
             { new: true } // To get the updated document back
         );
         if (req.files) {
-            const croppedImages = await Promise.all(
+            await Promise.all(
                 req.files.map(async (file, i) => {
-                    const filename = `-${Date.now()}test-${i + 1}.jpeg`;
                     const croppedImageBuffer = await sharp(file.buffer)
                         .resize(540, 560)
                         .toFormat('jpeg')
                         .jpeg({ quality: 90 })
                         .toBuffer();
-                    updatedProduct.images.push({ data: croppedImageBuffer, contentType: 'image/jpeg' });
-                    return {
-                        filename: filename,
-                        buffer: croppedImageBuffer,
-                    };
+
+                    const imageUrl = await uploadToCloudinary(croppedImageBuffer, 'product_images');
+
+                    updatedProduct.images.push(imageUrl);
+                    return imageUrl
                 })
             );
             await updatedProduct.save();

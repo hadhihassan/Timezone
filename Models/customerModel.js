@@ -32,8 +32,7 @@ const CustomerSchema = new mongoose.Schema({
         default: false
     },
     images: {
-        data: Buffer,
-        contentType: String
+        type: String
     },
     is_varified: {
         type: Boolean,
@@ -105,7 +104,7 @@ const CustomerSchema = new mongoose.Schema({
     isOnline: {
         type: Boolean,
         default: false,
-      },
+    },
 
 })
 

@@ -1,180 +1,147 @@
 <%- include('../../partials/Adminside/adminNav') %>
-  <div class="container-scroller">
-    <!-- partial:../../partials/_sidebar.html -->
-    <%- include('../../partials/Adminside/adminsidepanel') %>
-      <!-- partial -->
-      <!-- partial -->
-      <div class="container-fluid page-body-wrapper">
-     
-          <!-- partial -->
-          <div class="main-panel">
+<div class="container-scroller">
+  <!-- Sidebar -->
+  <%- include('../../partials/Adminside/adminsidepanel') %>
 
-            <div class="content-wrapper">
-              <ul class="navbar-nav w-100">
-                <li class="nav-item w-100">
-                  <form action="/admin/product" method="get">
-                    <div class="input-group">
+  <div class="container-fluid page-body-wrapper">
+    <div class="main-panel">
+      <div class="content-wrapper">
+        
+        <!-- Search Bar -->
+        <ul class="navbar-nav w-100">
+          <li class="nav-item w-100">
+            <form action="/admin/product" method="get">
+              <div class="input-group">
+                <input type="text" class="form-control" 
+                  name="query" 
+                  value="<%= query || '' %>"
+                  placeholder="Search products">
+                <button class="btn btn-primary" type="submit">Search</button>
+              </div>
+            </form>
+          </li>
+        </ul>
 
-                      <input type="text" class="form-control" name="query" value="<%= query ?? "" %>"
-                        placeholder="Search products">
-                      <button class="btn btn-primary" type="submit">Search</button>
+        <br>
 
-                    </div>
-                </li> 
-                </form>
+        <!-- Products Table -->
+        <div class="row">
+          <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Products Table</h4>
+                <p class="card-description"> All Products <code>.table</code></p>
+
+                <div class="table-responsive">
+                  <% if (products && products.length) { %>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>No</th>
+                        <th>Images</th>
+                        <th>Product Name</th>
+                        <th>Brand</th>
+                        <th>Category</th>
+                        <th>Price (MRP)</th>
+                        <th>Quantity</th>
+                        <th>Offer</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% products.forEach((product, i) => { %>
+                        <tr>
+                          <td><%= i+1 %></td>
+                          <td>
+                            <% if (product.images && product.images.length) { %>
+                              <% product.images.forEach(image => { %>
+                                <img src="<%= image %>" alt="Product Image" style="width:50px; height:50px; object-fit:cover;">
+                              <% }) %>
+                            <% } else { %>
+                              <img src="/images/no-image.png" alt="No Image" style="width:50px; height:50px;">
+                            <% } %>
+                          </td>
+                          <td><%= product.product_name || 'N/A' %></td>
+                          <td><%= product.brand_name || 'N/A' %></td>
+                          <td><%= product.category ? product.category.categoryName : 'No Category' %></td>
+                          <td>&#8377; <%= product.price || 0 %></td>
+                          <td><%= product.stock_count ?? 0 %></td>
+                          <td>
+                            <% if (product.offerPrice > 0) { %>
+                              <p class="text-info">
+                                <%= product.offer?.name || 'Offer Applied' %> <br>
+                                <% if (product.categoryOfferPrice > 0) { %>
+                                  and Category Offer
+                                <% } %>
+                              </p>
+                            <% } else if (product.categoryOfferPrice > 0) { %>
+                              <p class="text-info">Category Offer</p>
+                            <% } else { %>
+                              <p class="text-danger">No offers</p>
+                            <% } %>
+                          </td>
+
+                          <% if (product.is_delete === true) { %>
+                            <td><label class="text-danger">Deactive</label></td>
+                            <td>
+                              <a href="/admin/product/<%= product._id %>/edit" class="btn btn-primary">Edit</a>
+                              <a href="/admin/product/<%= product._id %>/active" class="btn btn-success">Activate</a>
+                            </td>
+                          <% } else { %>
+                            <td><label class="text-success">Active</label></td>
+                            <td>
+                              <a href="/admin/product/<%= product._id %>/edit" class="btn btn-primary">Edit</a>
+                              <a href="/admin/product/<%= product._id %>/deactive" class="btn btn-danger">Deactivate</a>
+                            </td>
+                          <% } %>
+                        </tr>
+                      <% }) %>
+                    </tbody>
+                  </table>
+                  <% } else { %>
+                    <p class="text-center text-muted">No products available.</p>
+                  <% } %>
+                </div>
+
                 <br>
 
-              </ul>
+                <!-- Pagination -->
+                <nav aria-label="Page navigation">
+                  <ul class="pagination justify-content-end">
+                    <% if (currentPage > 1) { %>
+                      <li class="page-item">
+                        <a class="page-link" href="/admin/product?page=<%= currentPage - 1 %>" aria-label="Previous">
+                          <span aria-hidden="true">&laquo;</span>
+                        </a>
+                      </li>
+                    <% } %>
 
-              <div class="row">
-                <div class="col-lg-12 grid-margin stretch-card">
-                  <div class="card">
-                    <div class="card-body">
-                      <h4 class="card-title">Products Table</h4>
-                      <p class="card-description"> All Products <code>.table</code>
-                      </p>
+                    <% const totalPages = Math.max(1, Math.ceil(len / 10)); %>
+                    <% for (let page = 1; page <= totalPages; page++) { %>
+                      <li class="page-item <%= currentPage === page ? 'active' : '' %>">
+                        <a class="page-link" href="/admin/product?page=<%= page %>"><%= page %></a>
+                      </li>
+                    <% } %>
 
-                      <div class="table-responsive">
-                        <table class="table">
-                          <thead>
-                            <tr>
-                              <th>No</th>
-                              <th>images</th>
-                              <th>Product Name</th>
-                              <th>Brand</th>
-                              <th>Category</th>
-                              <th>Price(MRP)</th>
-                              <th>Quantity</th>
-                              <th>Offer</th>
-                              <th>Status</th>
-                              <th>Action</th>
-                            </tr>
-                          </thead>
-                          <tbody>
+                    <% if (currentPage < totalPages) { %>
+                      <li class="page-item">
+                        <a class="page-link" href="/admin/product?page=<%= currentPage + 1 %>" aria-label="Next">
+                          <span aria-hidden="true">&raquo;</span>
+                        </a>
+                      </li>
+                    <% } %>
+                  </ul>
+                </nav>
 
-                            <% products.forEach((product,i)=> { %>
-
-
-
-
-                              <tr>
-                                <td>
-                                  <%= i+1 %>
-                                </td>
-                                <td>
-                                  <% product.images.forEach(image=> { %>
-
-                                    <img src="data:<%= image.contentType %>;base64,<%= image.data.toString('base64') %>"
-                                      alt="<%= product.price %>">
-                                    <% }) %>
-                                    
-                                    
-                                </td>
-                                <td>
-                                  <%= product.product_name %>
-                                </td>
-                                <td>
-                                  <%= product.brand_name %>
-                                </td>
-                                <td>
-                                  <%= product.category ? product.category.categoryName : 'No Category' %>
-                                </td>
-                                <td>&#8377;
-                                  <%= product.price %>
-                                </td>
-                                <td>
-                                  <%= product.stock_count %>
-                                </td>
-                                <td>
-                                  <% if (product.offerPrice > 0 ) { %>
-                                    <p class="text-info">
-                                      <%= product.offer.name %> <br>
-                                      <% if (product.categoryOfferPrice > 0) { %>
-                                        and Category Offer
-                                      <% } %>
-                                    </p>
-                                  <% } else if (product.categoryOfferPrice > 0 ) { %>
-                                    <p class="text-info">Category Offer</p>
-                                  <% } else { %>
-                                    <p class="text-danger">No offers</p>
-                                  <% } %>
-                                  
-                                </td>
-                                <% if (product.is_delete===true) { %>
-                                  <td>
-                                    <label class="text-danger">Deactive</label>
-                                  </td>
-                                  <td>
-                                    <a href="/admin/product/<%= product._id %>/Edit %>" class="btn btn-primary">Edit</a>
-                                    <a href="/admin/product/<%= product._id %>/Active"
-                                      class="btn btn-success">Active</a>
-                                  </td>
-                                  <%} else {%>
-                                    <td>
-                                      <label class="text-success">Active</label>
-                                    </td>
-                                    <td>
-                                      <a href="/admin/product/<%= product._id %>/Edit %>"
-                                        class="btn btn-primary">Edit</a>
-                                      <a href="/admin/product/<%= product._id %>/Deactive"
-                                        class="btn btn-danger">Deactive</a>
-                                    </td>
-                                    <% }%>
-
-
-                                      <td>
-
-                                      </td>
-                              </tr>
-
-                              <% }) %>
-                          </tbody>
-                        </table>
-                      </div>
-                      <br>
-                      <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-end">
-                          <% if (currentPage !==1) { %>
-                            <li class="page-item">
-                              <a class="page-link" href="/admin/product?page=<%= currentPage-1 %>"
-                                aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                              </a>
-                            </li>
-                            <% } %>
-                              <!-- Calculate the total number of pages -->
-                              <% const totalPages=Math.max(1, Math.ceil(len.length / 10)); %>
-                                <!-- Loop through the total number of pages and create a page link for each -->
-                                <% for (let page=1; page <=totalPages; page++) { %>
-                                  <li class="page-item <% if (currentPage == page) { %>active<% } %>">
-                                    <a class="page-link" href="/admin/product?page=<%= page %>">
-                                      <%= page %>
-                                    </a>
-                                  </li>
-                                  <% } %>
-                                    <% if (currentPage !==totalPages ) { %>
-                                      <li class="page-item">
-                                        <% const nextPage=currentPage + 1; %>
-                                          <a class="page-link" href="/admin/product?page=<%= nextPage %>"
-                                            aria-label="Next">
-                                            <span aria-hidden="true">&raquo;</span>
-                                          </a>
-
-                                      </li>
-                                      <% } %>
-                        </ul>
-                      </nav>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
-            <!-- content-wrapper ends -->
-            <!-- partial:../../partials/_footer.html -->
-            <!-- partial -->
           </div>
-          <!-- main-panel ends -->
+        </div>
+
       </div>
-      <!-- page-body-wrapper ends -->
+    </div>
   </div>
-  <%- include('../../partials/Adminside/footer') %>
+</div>
+
+<%- include('../../partials/Adminside/footer') %>

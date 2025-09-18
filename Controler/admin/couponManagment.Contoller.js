@@ -14,14 +14,16 @@ const loadCouponPage = async (req, res) => {
     } catch (error) {
         console.log(error.message)
     }
-}//RENDER THE CREATE COUPON PAGE
+}
+//RENDER THE CREATE COUPON PAGE
 const loadAddCoupon = async (req, res) => {
     try {
         return res.render("admin/Coupon/add", { a: "" })
     } catch (error) {
         console.log(error.message);
     }
-}//CREATE THE NEW COUPON 
+}
+//CREATE THE NEW COUPON 
 const createCoupon = async (req, res) => {
     const { couponName, type, MinimumpurchaseAmount, amountOrPercentage, Description } = req.body;
     try {

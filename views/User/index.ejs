@@ -1,509 +1,500 @@
    <%- include('../partials/Customerside/header') %>
-    <!--header ejs file included ended-->
-    <main>
-        <!--? slider Area Start -->
-        <div class="slider-area ">
-            <div class="slider-active">
-                <!-- Single Slider -->
-                <div class="single-slider slider-height d-flex align-items-center slide-bg">
-                    <div class="container">
-                        <div class="row justify-content-between align-items-center">
-                            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8">
-                                <div class="hero__caption">
-                                    <h1 data-animation="fadeInLeft" data-delay=".4s" data-duration="2000ms">Select Your New Perfect Style</h1>
-                                    <p data-animation="fadeInLeft" data-delay=".7s" data-duration="2000ms">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat is aute irure.</p>
-                                    <!-- Hero-btn -->
-                                    <div class="hero__btn" data-animation="fadeInLeft" data-delay=".8s" data-duration="2000ms">
-                                        <a href="/user/shop" class="btn hero-btn">Shop Now</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-lg-3 col-md-4 col-sm-4 d-none d-sm-block">
-                                <div class="hero__img" data-animation="bounceIn" data-delay=".4s">
-                                    <img src="/Customer/img/hero/watch.png" alt="" class=" heartbeat">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Single Slider -->
-                <div class="single-slider slider-height d-flex align-items-center slide-bg">
-                    <div class="container">
-                        <div class="row justify-content-between align-items-center">
-                            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8">
-                                <div class="hero__caption">
-                                    <h1 data-animation="fadeInLeft" data-delay=".4s" data-duration="2000ms">Select Your New Perfect Style</h1>
-                                    <p data-animation="fadeInLeft" data-delay=".7s" data-duration="2000ms">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat is aute irure.</p>
-                                    <!-- Hero-btn -->
-                                    <div class="hero__btn" data-animation="fadeInLeft" data-delay=".8s" data-duration="2000ms">
-                                        <a href="/user/shop" class="btn hero-btn">Shop Now</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-lg-3 col-md-4 col-sm-4 d-none d-sm-block">
-                                <div class="hero__img" data-animation="bounceIn" data-delay=".4s">
-                                    <img src="/Customer/img/hero/watch.png" alt="" class=" heartbeat">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- slider Area End-->
-        <!-- ? New Product Start -->
-        <section class="new-product-area section-padding30">
-            <div class="container">
-                <!-- Section tittle -->
-                <div class="row">
-                    <div class="col-xl-12">
-                        <div class="section-tittle mb-70">
-                            <h2>New Arrivals</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
-                        <div class="single-new-pro mb-30 text-center">
-                            <div class="product-img">
-                                <a class="add-to-cart-link"
-                                href="/user/displayProduct?productId=<%= newPro[0]._id %>">
-                                <img src="data:<%= newPro[0].images[0].contentType %>;base64,<%= newPro[0].images[0].data.toString('base64') %>"
-                                alt="<%= newPro[0].price %>" </a>
-                            </div>
-                            <div class="product-caption">
-                                <h3><a href=""><%= newPro[0].product_name %></a></h3>
-                                <span>&#8377;<%= newPro[0].price %></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
-                        <div class="single-new-pro mb-30 text-center">
-                            <div class="product-img">
-                                <a class="add-to-cart-link"
-                                href="/user/displayProduct?productId=<%= newPro[1]._id %>">
-                                <img src="data:<%= newPro[1].images[0].contentType %>;base64,<%= newPro[1].images[0].data.toString('base64') %>"
-                                alt="<%= newPro[1].price %>" </a>
-                            </div>
-                            <div class="product-caption">
-                                <h3><a href=""><%= newPro[1].product_name %></a></h3>
-                                <span>&#8377;<%= newPro[1].price %></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
-                        <div class="single-new-pro mb-30 text-center">
-                            <div class="product-img">
-                                <a class="add-to-cart-link"
-                                href="/user/displayProduct?productId=<%= newPro[2]._id %>">
-                                <img src="data:<%= newPro[2].images[0].contentType %>;base64,<%= newPro[2].images[0].data.toString('base64') %>"
-                                alt="<%= newPro[2].price %>" </a>
-                            </div>
-                            <div class="product-caption">
-                                <h3><a href=""><%= newPro[2].product_name %></a></h3>
-                                <span>&#8377;<%= newPro[2].price %></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!--  New Product End -->
-        <!--? Gallery Area Start -->
-        <div class="gallery-area">
-            <div class="container-fluid p-0 fix">
-                <div class="row">
-                    <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6">
-                        <div class="single-gallery mb-30">
-                            <div class="gallery-img big-img" style="background-image: url(/Customer/img/gallery/gallery1.png);"></div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                        <div class="single-gallery mb-30">
-                            <div class="gallery-img big-img" style="background-image: url(/Customer/img/gallery/gallery2.png);"></div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-4 col-md-12">
-                        <div class="row">
-                            <div class="col-xl-12 col-lg-12 col-md-6 col-sm-6">
-                                <div class="single-gallery mb-30">
-                                    <div class="gallery-img small-img" style="background-image: url(/Customer/img/gallery/gallery3.png);"></div>
-                                </div>
-                            </div>
-                            <div class="col-xl-12 col-lg-12  col-md-6 col-sm-6">
-                                <div class="single-gallery mb-30">
-                                    <div class="gallery-img small-img" style="background-image: url(/Customer/img/gallery/gallery4.png);"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+   <!--header ejs file included ended-->
+   <main>
+     <!--? slider Area Start -->
+     <div class="slider-area ">
+       <div class="slider-active">
+         <!-- Single Slider -->
+         <div class="single-slider slider-height d-flex align-items-center slide-bg">
+           <div class="container">
+             <div class="row justify-content-between align-items-center">
+               <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8">
+                 <div class="hero__caption">
+                   <h1 data-animation="fadeInLeft" data-delay=".4s" data-duration="2000ms">Select Your New Perfect Style</h1>
+                   <p data-animation="fadeInLeft" data-delay=".7s" data-duration="2000ms">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat is aute irure.</p>
+                   <!-- Hero-btn -->
+                   <div class="hero__btn" data-animation="fadeInLeft" data-delay=".8s" data-duration="2000ms">
+                     <a href="/user/shop" class="btn hero-btn">Shop Now</a>
+                   </div>
+                 </div>
+               </div>
+               <div class="col-xl-3 col-lg-3 col-md-4 col-sm-4 d-none d-sm-block">
+                 <div class="hero__img" data-animation="bounceIn" data-delay=".4s">
+                   <img src="/Customer/img/hero/watch.png" alt="" class=" heartbeat">
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+         <!-- Single Slider -->
+         <div class="single-slider slider-height d-flex align-items-center slide-bg">
+           <div class="container">
+             <div class="row justify-content-between align-items-center">
+               <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8">
+                 <div class="hero__caption">
+                   <h1 data-animation="fadeInLeft" data-delay=".4s" data-duration="2000ms">Select Your New Perfect Style</h1>
+                   <p data-animation="fadeInLeft" data-delay=".7s" data-duration="2000ms">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat is aute irure.</p>
+                   <!-- Hero-btn -->
+                   <div class="hero__btn" data-animation="fadeInLeft" data-delay=".8s" data-duration="2000ms">
+                     <a href="/user/shop" class="btn hero-btn">Shop Now</a>
+                   </div>
+                 </div>
+               </div>
+               <div class="col-xl-3 col-lg-3 col-md-4 col-sm-4 d-none d-sm-block">
+                 <div class="hero__img" data-animation="bounceIn" data-delay=".4s">
+                   <img src="/Customer/img/hero/watch.png" alt="" class=" heartbeat">
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+     <!-- slider Area End-->
+     <!-- ? New Product Start -->
+     <section class="new-product-area section-padding30">
+       <div class="container">
+         <!-- Section tittle -->
+         <div class="row">
+           <div class="col-xl-12">
+             <div class="section-tittle mb-70">
+               <h2>New Arrivals</h2>
+             </div>
+           </div>
+         </div>
+         <div class="row">
+           <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
+             <div class="single-new-pro mb-30 text-center">
+               <div class="product-img">
+                 <a class="add-to-cart-link" href="/user/displayProduct?productId=<%= newPro && newPro[0] ? newPro[0]._id : '' %>">
+                   <img src="<%= newPro && newPro[0] && newPro[0].images && newPro[0].images[0] 
+              ? newPro[0].images[0] 
+              : '/public/Customer/img/gallery/popular1.png' %>" alt="<%= newPro && newPro[0] ? newPro[0].price : 'No price available' %>">
+                 </a>
+               </div>
+               <div class="product-caption">
+                 <h3><a href=""><%= newPro[0].product_name %></a></h3>
+                 <span>&#8377;<%= newPro[0].price %></span>
+               </div>
+             </div>
+           </div>
+           <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
+             <div class="single-new-pro mb-30 text-center">
+               <div class="product-img">
+                 <a class="add-to-cart-link" href="/user/displayProduct?productId=<%= newPro[1]._id %>">
+                   <img src="<%= newPro && newPro[1] && newPro[1].images && newPro[1].images[0]  ? newPro[1].images[0] : '/public/Customer/img/gallery/popular1.png' %>" alt="<%= newPro[1].price %>">
+                 </a>
+               </div>
+               <div class="product-caption">
+                 <h3><a href=""><%= newPro[1].product_name %></a></h3>
+                 <span>&#8377;<%= newPro[1].price %></span>
+               </div>
+             </div>
+           </div>
+           <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
+             <div class="single-new-pro mb-30 text-center">
+               <div class="product-img">
+                 <a class="add-to-cart-link" href="/user/displayProduct?productId=<%= newPro[2]._id %>">
+                   <img src="<%= newPro && newPro[2] && newPro[2].images && newPro[2]?.images[0] 
+                   ? newPro[2]?.images[0]
+                   : '/public/Customer/img/gallery/popular1.png'
+                   %>" alt="<%= newPro[2]?.price %>">
+                 </a>
+               </div>
+               <div class="product-caption">
+                 <h3><a href=""><%= newPro[2].product_name %></a></h3>
+                 <span>&#8377;<%= newPro[2].price %></span>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+     </section>
+     <!--  New Product End -->
+     <!--? Gallery Area Start -->
+     <div class="gallery-area">
+       <div class="container-fluid p-0 fix">
+         <div class="row">
+           <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6">
+             <div class="single-gallery mb-30">
+               <div class="gallery-img big-img" style="background-image: url(/Customer/img/gallery/gallery1.png);"></div>
+             </div>
+           </div>
+           <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+             <div class="single-gallery mb-30">
+               <div class="gallery-img big-img" style="background-image: url(/Customer/img/gallery/gallery2.png);"></div>
+             </div>
+           </div>
+           <div class="col-xl-3 col-lg-4 col-md-12">
+             <div class="row">
+               <div class="col-xl-12 col-lg-12 col-md-6 col-sm-6">
+                 <div class="single-gallery mb-30">
+                   <div class="gallery-img small-img" style="background-image: url(/Customer/img/gallery/gallery3.png);"></div>
+                 </div>
+               </div>
+               <div class="col-xl-12 col-lg-12  col-md-6 col-sm-6">
+                 <div class="single-gallery mb-30">
+                   <div class="gallery-img small-img" style="background-image: url(/Customer/img/gallery/gallery4.png);"></div>
+                 </div>
+               </div>
+             </div>
+           </div>
 
-                </div>
-            </div>
-        </div>
-        <!-- Gallery Area End -->
-        <!--? Popular Items Start -->
-        <div class="popular-items section-padding30">
-            <div class="container">
-                <!-- Section tittle -->
-                <div class="row justify-content-center">
-                    <div class="col-xl-7 col-lg-8 col-md-10">
-                        <div class="section-tittle mb-70 text-center">
-                            <h2>Popular Items</h2>
-                            <p>Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <% if (products.length==0) { %>
-                        <h4 class="text-center text-danger">
-                            No items products..
-                        </h4>
-                        <% } %>
-                            <% for (let product=0; product < products.length; product +=3) { %>
-                                <!-- Start of product group -->
-                                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
-                                    <div class="single-popular-items mb-50 text-center">
-                                        <div class="popular-img">
-                                            <a class="add-to-cart-link"
-                                                href="/user/displayProduct?productId=<%= products[product]._id %>">
-                                                <img src="data:<%= products[product].images[0].contentType %>;base64,<%= products[product].images[0].data.toString('base64') %>"
-                                                    alt="<%= products[product].price %>" </a>
+         </div>
+       </div>
+     </div>
+     <!-- Gallery Area End -->
+     <!--? Popular Items Start -->
+     <div class="popular-items section-padding30">
+       <div class="container">
+         <!-- Section tittle -->
+         <div class="row justify-content-center">
+           <div class="col-xl-7 col-lg-8 col-md-10">
+             <div class="section-tittle mb-70 text-center">
+               <h2>Popular Items</h2>
+               <p>Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida.</p>
+             </div>
+           </div>
+         </div>
+         <div class="row">
+           <% if (products.length==0) { %>
+           <h4 class="text-center text-danger">
+             No items products..
+           </h4>
+           <% } %>
+           <% for (let product=0; product < products.length; product +=3) { %>
+           <!-- Start of product group -->
+           <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
+             <div class="single-popular-items mb-50 text-center">
+               <div class="popular-img">
+                 <a class="add-to-cart-link" href="/user/displayProduct?productId=<%= products[product]._id %>">
+                   <img src="<%= products[product] && products[product].images && products[product].images[0] 
+        ? products[product].images[0] 
+        : '/Customer/img/gallery/popular1.png' %>" alt="<%= products[product] ? products[product].price : 'No price' %>">
 
-                                                <% if (products[product].stock_count> 0) { %>
-                                                    <div class="img-cap">
-                                                        <a class="add-to-cart-link"
-                                                            href="/user/product/addcart?productId=<%= products[product]._id %>">
-                                                            <span>Add to cart</span>
-                                                        </a>
-                                                    </div>
-                                                    <% } else { %>
-                                                        <div class="img-cap">
-                                                            <span>Out Of stock</span>
-                                                        </div>
-                                                        <% } %>
+                   <% if (products[product].stock_count> 0) { %>
+                   <div class="img-cap">
+                     <a class="add-to-cart-link" href="/user/product/addcart?productId=<%= products[product]._id %>">
+                       <span>Add to cart</span>
+                     </a>
+                   </div>
+                   <% } else { %>
+                   <div class="img-cap">
+                     <span>Out Of stock</span>
+                   </div>
+                   <% } %>
 
 
-                                                            <div class="favorit-items">
-                                                                <a href="/add-wishlist?id=<%= products[product]._id %>"> <span class="flaticon-heart"></span></a>
-                                                               
-                                                            </div>
-                                        </div>
-                                        <div class="popular-caption">
-                                            <h3><a>
-                                                    <%= products[product].product_name %>
-                                                </a></h3>
+                   <div class="favorit-items">
+                     <a href="/add-wishlist?id=<%= products[product]._id %>"> <span class="flaticon-heart"></span></a>
 
-                                            <% if (products[product].offerPrice> 0 &&
+                   </div>
+               </div>
+               <div class="popular-caption">
+                 <h3><a>
+                     <%= products[product].product_name %>
+                   </a></h3>
+
+                 <% if (products[product].offerPrice> 0 &&
                                                 products[product].categoryOfferPrice > 0) { %>
-                                                <% if (products[product].offerPrice <
+                 <% if (products[product].offerPrice <
                                                     products[product].categoryOfferPrice) { %>
-                                                        
-                                                    <span>&#8377;<%= products[product].offerPrice %></span> <small><del class="text-danger"> <%=products[product].price %> </del></small>
 
-                                                    <% } else { %>
+                 <span>&#8377;<%= products[product].offerPrice %></span> <small><del class="text-danger"> <%=products[product].price %> </del></small>
 
-                                                        <p>&#8377;<%= products[product].categoryOfferPrice%></p>
-                                                        <small class="text-danger"><del class="text-danger">&#8377;<%=products[product].price %></del></small>
+                 <% } else { %>
 
-                                                        <% } %>
+                 <p>&#8377;<%= products[product].categoryOfferPrice%></p>
+                 <small class="text-danger"><del class="text-danger">&#8377;<%=products[product].price %></del></small>
 
-                                                            <% } else if (products[product].offerPrice>
+                 <% } %>
+
+                 <% } else if (products[product].offerPrice>
                                                                 0) {
                                                                 %>
-                                                                <!-- Display offer price -->
+                 <!-- Display offer price -->
 
-                                                                <p>&#8377;<%= products[product].offerPrice %>
-                                                                </p>
-                                                                <small class="text-danger"><del
-                                                                        class="text-danger">&#8377;
-                                                                        <%=products[product].price %>
-                                                                    </del></small>
+                 <p>&#8377;<%= products[product].offerPrice %>
+                 </p>
+                 <small class="text-danger"><del class="text-danger">&#8377;
+                     <%=products[product].price %>
+                   </del></small>
 
 
-                                                                <% } else if
+                 <% } else if
                                                                     (products[product].categoryOfferPrice>
                                                                     0) { %>
-                                                                    <!-- Display category offer price -->
+                 <!-- Display category offer price -->
 
 
-                                                                    <p>&#8377;<%=
+                 <p>&#8377;<%=
                                                                             products[product].categoryOfferPrice
                                                                             %></p>
-                                                                    <small class="text-danger"><del
-                                                                            class="text-danger">&#8377;<%=
+                 <small class="text-danger"><del class="text-danger">&#8377;<%=
                                                                                 products[product].price %>
-                                                                        </del></small>
+                   </del></small>
 
-                                                                    <% } else { %>
-                                                                        <!-- Display original price -->
-                                                                        <span>&#8377;<%= products[product].price
+                 <% } else { %>
+                 <!-- Display original price -->
+                 <span>&#8377;<%= products[product].price
                                                                                 %></span>
-                                                                        <% } %>
-                                        </div>
-                                    </div>
-                                </div>
-                                <% if (product + 1 < products.length) { %>
-                                    <!-- Product 2 (if available) -->
-                                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
-                                        <div class="single-popular-items mb-50 text-center">
-                                            <div class="popular-img">
-                                                <a
-                                                    href="/user/displayProduct?productId=<%= products[product + 1]._id %>">
-                                                    <input type="hidden" name="productID"
-                                                        value="<%= product._id %>">
-                                                    <img src="data:<%= products[product + 1].images[0].contentType %>;base64,<%= products[product + 1].images[0].data.toString('base64') %>"
-                                                        alt="<%= products[product + 1].price %> Image">
-                                                </a>
+                 <% } %>
+               </div>
+             </div>
+           </div>
+           <% if (product + 1 < products.length) { %>
+           <!-- Product 2 (if available) -->
+           <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
+             <div class="single-popular-items mb-50 text-center">
+               <div class="popular-img">
+                 <a href="/user/displayProduct?productId=<%= products[product + 1]._id %>">
+                   <input type="hidden" name="productID" value="<%= product._id %>">
+                   <img src="<%= products[product + 1] && products[product + 1].images && products[product + 1].images[0] 
+        ? products[product + 1].images[0] 
+        : '/Customer/img/gallery/popular1.png' %>" alt="<%= products[product + 1] && products[product + 1].price 
+        ? products[product + 1].price + ' Image' 
+        : 'Default Product Image' %>">
 
-                                                <% if (products[product + 1].stock_count> 0) { %>
-                                                    <div class="img-cap">
-                                                        <a class="add-to-cart-link"
-                                                            href="/user/product/addcart?productId=<%= products[product +1]._id %>">
-                                                            <span>Add to cart</span>
-                                                        </a>
-                                                    </div>
-                                                    <% } else { %>
-                                                        <div class="img-cap">
-                                                            <span>Out Of stock</span>
-                                                        </div>
-                                                        <% } %>
-                                                            <div class="favorit-items">
-                                                                <a href="/add-wishlist?id=<%= products[product]._id %>"> <span class="flaticon-heart"></span></a>
-                                                            </div>
-                                            </div>
-                                            <div class="popular-caption">
-                                                <h3><a>
-                                                        <%= products[product + 1].product_name %>
-                                                    </a></h3>
-                                                <% if (products[product + 1].offerPrice> 0 &&
+                 </a>
+
+                 <% if (products[product + 1].stock_count> 0) { %>
+                 <div class="img-cap">
+                   <a class="add-to-cart-link" href="/user/product/addcart?productId=<%= products[product +1]._id %>">
+                     <span>Add to cart</span>
+                   </a>
+                 </div>
+                 <% } else { %>
+                 <div class="img-cap">
+                   <span>Out Of stock</span>
+                 </div>
+                 <% } %>
+                 <div class="favorit-items">
+                   <a href="/add-wishlist?id=<%= products[product]._id %>"> <span class="flaticon-heart"></span></a>
+                 </div>
+               </div>
+               <div class="popular-caption">
+                 <h3><a>
+                     <%= products[product + 1].product_name %>
+                   </a></h3>
+                 <% if (products[product + 1].offerPrice> 0 &&
                                                     products[product + 1].categoryOfferPrice > 0) { %>
-                                                    <% if (products[product + 1].offerPrice <
+                 <% if (products[product + 1].offerPrice <
                                                         products[product + 1].categoryOfferPrice) { %>
 
-                                                        <h1>&#8377;<%= products[product + 1].offerPrice %>
-                                                        </h1>
-                                                        <small><del class="text-danger">
-                                                                <%=products[product + 1].price %>
-                                                            </del></small>
+                 <h1>&#8377;<%= products[product + 1].offerPrice %>
+                 </h1>
+                 <small><del class="text-danger">
+                     <%=products[product + 1].price %>
+                   </del></small>
 
-                                                        <% } else { %>
+                 <% } else { %>
 
-                                                            <small>&#8377;<%= products[product +
+                 <small>&#8377;<%= products[product +
                                                                     1].categoryOfferPrice%></small>
-                                                            <small class="text-danger"><del
-                                                                    class="text-danger">&#8377;<%=
+                 <small class="text-danger"><del class="text-danger">&#8377;<%=
                                                                         products[product + 1].price %>
-                                                                </del></small>
+                   </del></small>
 
-                                                            <% } %>
+                 <% } %>
 
-                                                                <% } else if (products[product +
+                 <% } else if (products[product +
                                                                     1].offerPrice> 0) { %>
-                                                                    <!-- Display offer price -->
+                 <!-- Display offer price -->
 
-                                                                    <small>&#8377;<%= products[product +
+                 <small>&#8377;<%= products[product +
                                                                             1].offerPrice %></small>
-                                                                    <small class="text-danger"><del
-                                                                            class="text-danger">&#8377;
-                                                                            <%=products[product + 1].price
+                 <small class="text-danger"><del class="text-danger">&#8377;
+                     <%=products[product + 1].price
                                                                                 %>
-                                                                        </del></small>
+                   </del></small>
 
 
-                                                                    <% } else if (products[product +
+                 <% } else if (products[product +
                                                                         1].categoryOfferPrice> 0) { %>
-                                                                        <!-- Display category offer price -->
+                 <!-- Display category offer price -->
 
 
-                                                                        <small>&#8377;<%= products[product +
+                 <small>&#8377;<%= products[product +
                                                                                 1].categoryOfferPrice %>
-                                                                        </small>
-                                                                        <small class="text-danger"><del
-                                                                                class="text-danger">&#8377;<%=
+                 </small>
+                 <small class="text-danger"><del class="text-danger">&#8377;<%=
                                                                                     products[product +
                                                                                     1].price %>
-                                                                            </del></small>
+                   </del></small>
 
-                                                                        <% } else { %>
-                                                                            <!-- Display original price -->
-                                                                            <span>&#8377;<%= products[product +
+                 <% } else { %>
+                 <!-- Display original price -->
+                 <span>&#8377;<%= products[product +
                                                                                     1].price %></span>
-                                                                            <% } %>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <% } %>
-                                        <% if (product + 2 < products.length) { %>
-                                            <!-- Product 3 (if available) -->
-                                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
-                                                <div class="single-popular-items mb-50 text-center">
-                                                    <div class="popular-img">
-                                                        <a class="add-to-cart-link"
-                                                            href="/user/displayProduct?productId=<%= products[product + 2]._id %>">
-                                                            <input type="hidden" name="productID"
-                                                                value="<%= product._id %>">
-                                                            <img src="data:<%= products[product + 2].images[0].contentType %>;base64,<%= products[product + 2].images[0].data.toString('base64') %>"
-                                                                alt="<%= products[product + 2].price %> Image">
-                                                        </a>
+                 <% } %>
+               </div>
+             </div>
+           </div>
+           <% } %>
+           <% if (product + 2 < products.length) { %>
+           <!-- Product 3 (if available) -->
+           <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
+             <div class="single-popular-items mb-50 text-center">
+               <div class="popular-img">
+                 <a class="add-to-cart-link" href="/user/displayProduct?productId=<%= products[product + 2]._id %>">
+                   <input type="hidden" name="productID" value="<%= product._id %>">
+                   <img src="<%= products[product + 2] && products[product + 2].images && products[product + 2].images[0] 
+        ? products[product + 2].images[0] 
+        : '/Customer/img/gallery/popular1.png' %>" alt="<%= products[product + 2] && products[product + 2].price 
+        ? products[product + 2].price + ' Image' 
+        : 'Default Product Image' %>">
 
-                                                        <% if (products[product + 2].stock_count> 0) {
+                 </a>
+
+                 <% if (products[product + 2].stock_count> 0) {
                                                             %>
-                                                            <div class="img-cap">
-                                                                <a class="add-to-cart-link"
-                                                                    href="/user/product/addcart?productId=<%= products[product + 2]._id %>">
-                                                                    <span>Add to cart</span>
-                                                                </a>
-                                                            </div>
-                                                            <% } else { %>
-                                                                <div class="img-cap">
-                                                                    <span>Out Of stock</span>
-                                                                </div>
-                                                                <% } %>
-                                                                    <div class="favorit-items">
-                                                                        <a href="/add-wishlist?id=<%= products[product]._id %>"> <span class="flaticon-heart"></span></a>
-                                                                    </div>
-                                                    </div>
-                                                    <div class="popular-caption">
-                                                        <h3><a href="product_details.html"
-                                                                class="add-to-cart-link">
-                                                                <%= products[product + 2].product_name %>
-                                                            </a></h3>
-                                                        <% if (products[product + 2].offerPrice> 0 && products[product + 2].categoryOfferPrice > 0) {%>
-                                                            <% if (products[product + 2].offerPrice < products[product + 2].categoryOfferPrice) { %>
+                 <div class="img-cap">
+                   <a class="add-to-cart-link" href="/user/product/addcart?productId=<%= products[product + 2]._id %>">
+                     <span>Add to cart</span>
+                   </a>
+                 </div>
+                 <% } else { %>
+                 <div class="img-cap">
+                   <span>Out Of stock</span>
+                 </div>
+                 <% } %>
+                 <div class="favorit-items">
+                   <a href="/add-wishlist?id=<%= products[product]._id %>"> <span class="flaticon-heart"></span></a>
+                 </div>
+               </div>
+               <div class="popular-caption">
+                 <h3><a href="product_details.html" class="add-to-cart-link">
+                     <%= products[product + 2].product_name %>
+                   </a></h3>
+                 <% if (products[product + 2].offerPrice> 0 && products[product + 2].categoryOfferPrice > 0) {%>
+                 <% if (products[product + 2].offerPrice < products[product + 2].categoryOfferPrice) { %>
 
-                                                                <span>&#8377;<%= products[product + 2].offerPrice%></span>
-                                                                <small><del class="text-danger"><%=products[product + 2].price %></del></small>
+                 <span>&#8377;<%= products[product + 2].offerPrice%></span>
+                 <small><del class="text-danger"><%=products[product + 2].price %></del></small>
 
-                                                                <% } else { %>
+                 <% } else { %>
 
-                                                                    <small>&#8377;<%= products[product +
+                 <small>&#8377;<%= products[product +
                                                                             2].categoryOfferPrice%>
-                                                                    </small>
-                                                                    <small class="text-danger"><del
-                                                                            class="text-danger">&#8377;<%=
+                 </small>
+                 <small class="text-danger"><del class="text-danger">&#8377;<%=
                                                                                 products[product + 2].price
                                                                                 %>
-                                                                        </del></small>
+                   </del></small>
 
-                                                                    <% } %>
+                 <% } %>
 
-                                                                        <% } else if (products[product +
+                 <% } else if (products[product +
                                                                             2].offerPrice> 0) { %>
-                                                                            <!-- Display offer price -->
+                 <!-- Display offer price -->
 
-                                                                            <small>&#8377;<%= products[product +
+                 <small>&#8377;<%= products[product +
                                                                                     2].offerPrice %>
-                                                                            </small>
-                                                                            <small class="text-danger"><del
-                                                                                    class="text-danger">&#8377;
-                                                                                    <%=products[product +
+                 </small>
+                 <small class="text-danger"><del class="text-danger">&#8377;
+                     <%=products[product +
                                                                                         2].price %>
-                                                                                </del></small>
+                   </del></small>
 
 
-                                                                            <% } else if (products[product +
+                 <% } else if (products[product +
                                                                                 2].categoryOfferPrice>
                                                                                 0) {
                                                                                 %>
-                                                                                <!-- Display category offer price -->
+                 <!-- Display category offer price -->
 
 
-                                                                                <small>&#8377;<%= products[product
+                 <small>&#8377;<%= products[product
                                                                                         +
                                                                                         2].categoryOfferPrice
                                                                                         %></small>
-                                                                                <small
-                                                                                    class="text-danger"><del
-                                                                                        class="text-danger">&#8377;
-                                                                                        <%= products[product
+                 <small class="text-danger"><del class="text-danger">&#8377;
+                     <%= products[product
                                                                                             + 2].price %>
-                                                                                    </del></small>
+                   </del></small>
 
-                                                                                <% } else { %>
-                                                                                    <!-- Display original price -->
-                                                                                    <span>&#8377;<%=
+                 <% } else { %>
+                 <!-- Display original price -->
+                 <span>&#8377;<%=
                                                                                             products[product
                                                                                             + 2].price %>
-                                                                                    </span>
-                                                                                    <% } %>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <% } %>
-                                                <% } %>
-                </div>
-                <!-- Button -->
-                <div class="row justify-content-center">
-                    <div class="room-btn pt-70">
-                        <a href="/user/shop" class="btn view-btn1">View More Products</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Popular Items End -->
-        <!--? Video Area Start -->
-        <div class="video-area">
-            <div class="container-fluid">
-                <div class="row align-items-center">
-                    <div class="col-lg-12">
-                    <div class="video-wrap">
-                        <div class="play-btn "><a class="popup-video" href="https://www.youtube.com/watch?v=KMc6DyEJp04"><i class="fas fa-play"></i></a></div>
-                    </div>
-                    </div>
-                </div>
-                <!-- Arrow -->
-                <div class="thumb-content-box">
-                    <div class="thumb-content">
-                        <h3>Next Video</h3>
-                        <a href="#"> <i class="flaticon-arrow"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Video Area End -->
-        <!--? Watch Choice  Start-->
-        <div class="watch-area section-padding30">
-            <div class="container">
-                <div class="row align-items-center justify-content-between padding-130">
-                    <div class="col-lg-5 col-md-6">
-                        <div class="watch-details mb-40">
-                            <h2>Watch of Choice</h2>
-                            <p>Enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse.</p>
-                            <a href="/user/shop" class="btn">Show Watches</a>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-10">
-                        <div class="choice-watch-img mb-40">
-                            <img src="/Customer/img/gallery/choce_watch1.png" alt="">
-                        </div>
-                    </div>
-                </div>
-                <div class="row align-items-center justify-content-between">
-                    <div class="col-lg-6 col-md-6 col-sm-10">
-                        <div class="choice-watch-img mb-40">
-                            <img src="/Customer/img/gallery/choce_watch2.png" alt="">
-                        </div>
-                    </div>
-                    <div class="col-lg-5 col-md-6">
-                        <div class="watch-details mb-40">
-                            <h2>Watch of Choice</h2>
-                            <p>Enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse.</p>
-                            <a href="/user/shop" class="btn">Show Watches</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Watch Choice  End-->
-        <!--? Shop Method Start-->
-      <%- include('../partials/Customerside/shopMethods') %>
-        <!-- Shop Method End-->
-    </main>
-    <footer>
-        <!-- Footer Start-->
-      <%- include('../partials/Customerside/footer') %>
-        <!-- Footer End-->
-        
-    </footer>
-  
+                 </span>
+                 <% } %>
+               </div>
+             </div>
+           </div>
+           <% } %>
+           <% } %>
+         </div>
+         <!-- Button -->
+         <div class="row justify-content-center">
+           <div class="room-btn pt-70">
+             <a href="/user/shop" class="btn view-btn1">View More Products</a>
+           </div>
+         </div>
+       </div>
+     </div>
+     <!-- Popular Items End -->
+     <!--? Video Area Start -->
+     <div class="video-area">
+       <div class="container-fluid">
+         <div class="row align-items-center">
+           <div class="col-lg-12">
+             <div class="video-wrap">
+               <div class="play-btn "><a class="popup-video" href="https://www.youtube.com/watch?v=KMc6DyEJp04"><i class="fas fa-play"></i></a></div>
+             </div>
+           </div>
+         </div>
+         <!-- Arrow -->
+         <div class="thumb-content-box">
+           <div class="thumb-content">
+             <h3>Next Video</h3>
+             <a href="#"> <i class="flaticon-arrow"></i></a>
+           </div>
+         </div>
+       </div>
+     </div>
+     <!-- Video Area End -->
+     <!--? Watch Choice  Start-->
+     <div class="watch-area section-padding30">
+       <div class="container">
+         <div class="row align-items-center justify-content-between padding-130">
+           <div class="col-lg-5 col-md-6">
+             <div class="watch-details mb-40">
+               <h2>Watch of Choice</h2>
+               <p>Enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse.</p>
+               <a href="/user/shop" class="btn">Show Watches</a>
+             </div>
+           </div>
+           <div class="col-lg-6 col-md-6 col-sm-10">
+             <div class="choice-watch-img mb-40">
+               <img src="/Customer/img/gallery/choce_watch1.png" alt="">
+             </div>
+           </div>
+         </div>
+         <div class="row align-items-center justify-content-between">
+           <div class="col-lg-6 col-md-6 col-sm-10">
+             <div class="choice-watch-img mb-40">
+               <img src="/Customer/img/gallery/choce_watch2.png" alt="">
+             </div>
+           </div>
+           <div class="col-lg-5 col-md-6">
+             <div class="watch-details mb-40">
+               <h2>Watch of Choice</h2>
+               <p>Enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse.</p>
+               <a href="/user/shop" class="btn">Show Watches</a>
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+     <!-- Watch Choice  End-->
+     <!--? Shop Method Start-->
+     <%- include('../partials/Customerside/shopMethods') %>
+     <!-- Shop Method End-->
+   </main>
+   <footer>
+     <!-- Footer Start-->
+     <%- include('../partials/Customerside/footer') %>
+     <!-- Footer End-->
+   </footer>

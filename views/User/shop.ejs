@@ -19,9 +19,9 @@
                                     <label class="form-check-label">
                                         <% if (uniqueCategoryArray[index].category) { %>
                                             <%= uniqueCategoryArray[index].category.categoryName %>
-                                        <% } else {%>
-                                            No Category
-                                            <% } %>
+                                                <% } else {%>
+                                                    No Category
+                                                    <% } %>
                                     </label>
                                     <br>
                                     <% } %>
@@ -35,7 +35,7 @@
                             <div class="form-check">
                                 <% for( let index=0; index < brandNames.length; index++ ) { %>
                                     <input class="form-check-input" type="radio" name="brand"
-                                        value="<%= brandNames[0].brand_name %>" >
+                                        value="<%= brandNames[0].brand_name %>">
                                     <label class="form-check-label">
                                         <%= brandNames[index].brand_name %>
                                     </label>
@@ -64,26 +64,18 @@
                         </div>
                     </div>
                 </div>
-
+            </form>
         </div>
     </div>
-    <!-- Hero Area End-->
     <!-- Latest Products Start -->
     <section class="popular-items latest-padding">
-
         <div class="container">
-
-
             <div class="row product-btn d-flex justify-content-between mb-40">
-               
-                <!-- Grid and List view -->
-                
                 <!-- Select items -->
                 <div class="select-this">
-
                     <div class="input-group col-lg-12">
-                        <input type="text" class="form-control " style="height: 60px;"  name="query" value="<%= query ?? '' %>"
-                            placeholder="Search products">
+                        <input type="text" class="form-control " style="height: 60px;" name="query"
+                            value="<%= query ?? '' %>" placeholder="Search products">
                         <button class="btn btn-sm  btn-search btn-primary" type="submit"
                             style="height: 10px;">Search</button>
                     </div>
@@ -91,26 +83,25 @@
                 </div>
             </div>
             <!-- success message -->
-            <% if (success && success.length > 0) { %>
+            <% if (success && success.length> 0) { %>
                 <script>
-                  document.addEventListener("DOMContentLoaded", function () {
-                    Swal.fire({
-                      icon: "success",
-                      title: "Success!",
-                      html: "<ul>" +
-                        "<% for (const message of success) { %>" +
-                        "<li><%= message %></li>" +
-                        "<% } %>" +
-                        "</ul>",
-                      showConfirmButton: true,
-                      timer: 1000 // Auto close after 5 seconds
+                    document.addEventListener("DOMContentLoaded", function () {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Success!",
+                            html: "<ul>" +
+                                "<% for (const message of success) { %>" +
+                                "<li><%= message %></li>" +
+                                "<% } %>" +
+                                "</ul>",
+                            showConfirmButton: true,
+                            timer: 1000 // Auto close after 5 seconds
+                        });
                     });
-                  });
                 </script>
-              <% } %>
+                <% } %>
                     <!-- Nav Card -->
                     <div class="tab-content" id="nav-tabContent">
-
                         <!-- card one -->
                         <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
                             aria-labelledby="nav-home-tab">
@@ -128,10 +119,14 @@
                                                     <div class="popular-img">
                                                         <a class="add-to-cart-link"
                                                             href="/user/displayProduct?productId=<%= products[product]._id %>">
-                                                            <img src="data:<%= products[product].images[0].contentType %>;base64,<%= products[product].images[0].data.toString('base64') %>"
-                                                                alt="<%= products[product].price %>" </a>
 
-                                                            <% if (products[product].stock_count-1 > 0) { %>
+                                                            <img src="<%= products[product] && products[product].images && products[product].images[0] 
+                                                                        ? products[product].images[0] 
+                                                                        : '/path/to/placeholder.jpg' %>" alt="<%= products[product] && products[product].price 
+                                                                        ? products[product].price + ' Image' 
+                                                                        : 'No Image' %>">
+
+                                                            <% if (products[product].stock_count-1> 0) { %>
                                                                 <div class="img-cap">
                                                                     <a class="add-to-cart-link"
                                                                         href="/user/product/addcart?productId=<%= products[product]._id %>">
@@ -143,38 +138,62 @@
                                                                         <span>Out Of stock</span>
                                                                     </div>
                                                                     <% } %>
-
-
                                                                         <div class="favorit-items">
-                                                                            <a href="/add-wishlist?id=<%= products[product]._id %>"> <span class="flaticon-heart"></span></a>
-                                                                           
+                                                                            <a
+                                                                                href="/add-wishlist?id=<%= products[product]._id %>">
+                                                                                <span class="flaticon-heart"></span></a>
                                                                         </div>
+                                                        </a>
                                                     </div>
                                                     <div class="popular-caption">
                                                         <h3><a>
                                                                 <%= products[product].product_name %>
                                                             </a></h3>
 
-                                                        <% if (products[product].offerPrice> 0 && products[product].categoryOfferPrice > 0) { %>
-                                                            <% if (products[product].offerPrice < products[product].categoryOfferPrice) { %>
-                                                                <span>&#8377;<%= products[product].offerPrice %></span> <span><del class="text-danger"> <%=products[product].price %> </del></span>
+                                                        <% if (products[product].offerPrice> 0 &&
+                                                            products[product].categoryOfferPrice > 0) { %>
+                                                            <% if (products[product].offerPrice <
+                                                                products[product].categoryOfferPrice) { %>
+                                                                <span>&#8377;<%= products[product].offerPrice %></span>
+                                                                <span><del class="text-danger">
+                                                                        <%=products[product].price %>
+                                                                    </del></span>
                                                                 <% } else { %>
-                                                                    <span>&#8377;<%= products[product].categoryOfferPrice%></span>
-                                                                    <span class="text-danger"><del class="text-danger">&#8377;<%=products[product].price %></del></span>
+                                                                    <span>&#8377;<%=
+                                                                            products[product].categoryOfferPrice%>
+                                                                    </span>
+                                                                    <span class="text-danger"><del
+                                                                            class="text-danger">&#8377;
+                                                                            <%=products[product].price %>
+                                                                        </del></span>
                                                                     <% } %>
-                                                                        <% } else if (products[product].offerPrice > 0) {
+                                                                        <% } else if (products[product].offerPrice> 0) {
                                                                             %>
                                                                             <!-- Display offer price -->
-                                                                            <span>&#8377;<%= products[product].offerPrice %></span>
-                                                                            <span class="text-danger"><del class="text-danger">&#8377; <%=products[product].price %> </del></span>
-                                                                            <% } else if (products[product].categoryOfferPrice > 0) { %>
+                                                                            <span>&#8377;<%=
+                                                                                    products[product].offerPrice %>
+                                                                            </span>
+                                                                            <span class="text-danger"><del
+                                                                                    class="text-danger">&#8377;
+                                                                                    <%=products[product].price %>
+                                                                                </del></span>
+                                                                            <% } else if
+                                                                                (products[product].categoryOfferPrice>
+                                                                                0) { %>
                                                                                 <!-- Display category offer price -->
-                                                                                <span>&#8377;<%=products[product].categoryOfferPrice%></span>
-                                                                                <span class="text-danger"><del class="text-danger">&#8377;<%=products[product].price %></del></span>
+                                                                                <span>&#8377;
+                                                                                    <%=products[product].categoryOfferPrice%>
+                                                                                </span>
+                                                                                <span class="text-danger"><del
+                                                                                        class="text-danger">&#8377;
+                                                                                        <%=products[product].price %>
+                                                                                    </del></span>
 
                                                                                 <% } else { %>
                                                                                     <!-- Display original price -->
-                                                                                    <span>&#8377;<%= products[product].price%></span>
+                                                                                    <span>&#8377;<%=
+                                                                                            products[product].price%>
+                                                                                    </span>
                                                                                     <% } %>
                                                     </div>
                                                 </div>
@@ -188,11 +207,14 @@
                                                                 href="/user/displayProduct?productId=<%= products[product + 1]._id %>">
                                                                 <input type="hidden" name="productID"
                                                                     value="<%= product._id %>">
-                                                                <img src="data:<%= products[product + 1].images[0].contentType %>;base64,<%= products[product + 1].images[0].data.toString('base64') %>"
-                                                                    alt="<%= products[product + 1].price %> Image">
+                                                                <img src="<%= products[product + 1] && products[product + 1].images && products[product + 1].images[0] 
+                                                                            ? products[product + 1].images[0] 
+                                                                            : '/path/to/placeholder.jpg' %>" alt="<%= products[product + 1] && products[product + 1].price 
+                                                                            ? products[product + 1].price + ' Image' 
+                                                                            : 'No Image' %>">
                                                             </a>
 
-                                                            <% if (products[product + 1].stock_count-1 > 0) { %>
+                                                            <% if (products[product + 1].stock_count-1> 0) { %>
                                                                 <div class="img-cap">
                                                                     <a class="add-to-cart-link"
                                                                         href="/user/product/addcart?productId=<%= products[product +1]._id %>">
@@ -205,20 +227,31 @@
                                                                     </div>
                                                                     <% } %>
                                                                         <div class="favorit-items">
-                                                                            <a href="/add-wishlist?id=<%= products[product]._id %>"> <span class="flaticon-heart"></span></a>
+                                                                            <a
+                                                                                href="/add-wishlist?id=<%= products[product]._id %>">
+                                                                                <span class="flaticon-heart"></span></a>
                                                                         </div>
                                                         </div>
                                                         <div class="popular-caption">
                                                             <h3><a>
                                                                     <%= products[product + 1].product_name %>
                                                                 </a></h3>
-                                                            <% if (products[product + 1].offerPrice> 0 && products[product + 1].categoryOfferPrice > 0) { %>
-                                                                <% if (products[product + 1].offerPrice < products[product + 1].categoryOfferPrice) { %>
-                                                                    <span>&#8377;<%= products[product + 1].offerPrice %> </span>
-                                                                    <span><del class="text-danger"> <%=products[product + 1].price %> </del></span>
+                                                            <% if (products[product + 1].offerPrice> 0 &&
+                                                                products[product + 1].categoryOfferPrice > 0) { %>
+                                                                <% if (products[product + 1].offerPrice <
+                                                                    products[product + 1].categoryOfferPrice) { %>
+                                                                    <span>&#8377;<%= products[product + 1].offerPrice %>
+                                                                    </span>
+                                                                    <span><del class="text-danger">
+                                                                            <%=products[product + 1].price %>
+                                                                        </del></span>
                                                                     <% } else { %>
-                                                                        <span>&#8377;<%= products[product + 1].categoryOfferPrice%></span>
-                                                                        <span class="text-danger"><del class="text-danger">&#8377;<%=products[product + 1].price %> </del></span>
+                                                                        <span>&#8377;<%= products[product +
+                                                                                1].categoryOfferPrice%></span>
+                                                                        <span class="text-danger"><del
+                                                                                class="text-danger">&#8377;
+                                                                                <%=products[product + 1].price %>
+                                                                            </del></span>
                                                                         <% } %>
                                                                             <% } else if (products[product +
                                                                                 1].offerPrice> 0) { %>
@@ -242,14 +275,15 @@
                                                                                             1].categoryOfferPrice %>
                                                                                     </span>
                                                                                     <span class="text-danger"><del
-                                                                                            class="text-danger">&#8377;<%=
-                                                                                                products[product +
+                                                                                            class="text-danger">&#8377;
+                                                                                            <%= products[product +
                                                                                                 1].price %>
                                                                                         </del></span>
 
                                                                                     <% } else { %>
                                                                                         <!-- Display original price -->
-                                                                                        <span>&#8377;<%= products[product +
+                                                                                        <span>&#8377;<%=
+                                                                                                products[product +
                                                                                                 1].price %></span>
                                                                                         <% } %>
                                                         </div>
@@ -265,11 +299,15 @@
                                                                         href="/user/displayProduct?productId=<%= products[product + 2]._id %>">
                                                                         <input type="hidden" name="productID"
                                                                             value="<%= product._id %>">
-                                                                        <img src="data:<%= products[product + 2].images[0].contentType %>;base64,<%= products[product + 2].images[0].data.toString('base64') %>"
-                                                                            alt="<%= products[product + 2].price %> Image">
+                                                                        <img src="<%= products[product + 2] && products[product + 2].images && products[product + 2].images[0] 
+                                                                                    ? products[product + 2].images[0] 
+                                                                                    : '/path/to/placeholder.jpg' %>"
+                                                                            alt="<%= products[product + 2] && products[product + 2].price 
+                                                                                    ? products[product + 2].price + ' Image' 
+                                                                                    : 'No Image' %>">
                                                                     </a>
 
-                                                                    <% if (products[product + 2].stock_count-1 > 0) {
+                                                                    <% if (products[product + 2].stock_count-1> 0) {
                                                                         %>
                                                                         <div class="img-cap">
                                                                             <a class="add-to-cart-link"
@@ -283,7 +321,10 @@
                                                                             </div>
                                                                             <% } %>
                                                                                 <div class="favorit-items">
-                                                                                    <a href="/add-wishlist?id=<%= products[product]._id %>"> <span class="flaticon-heart"></span></a>
+                                                                                    <a
+                                                                                        href="/add-wishlist?id=<%= products[product]._id %>">
+                                                                                        <span
+                                                                                            class="flaticon-heart"></span></a>
                                                                                 </div>
                                                                 </div>
                                                                 <div class="popular-caption">
@@ -291,15 +332,16 @@
                                                                             class="add-to-cart-link">
                                                                             <%= products[product + 2].product_name %>
                                                                         </a></h3>
-                                                                    <% if (products[product + 2].offerPrice> 0 && products[product + 2].categoryOfferPrice >
+                                                                    <% if (products[product + 2].offerPrice> 0 &&
+                                                                        products[product + 2].categoryOfferPrice >
                                                                         0) {
                                                                         %>
                                                                         <% if (products[product + 2].offerPrice <
                                                                             products[product + 2].categoryOfferPrice) {
                                                                             %>
 
-                                                                            <span>&#8377;<%= products[product + 2].offerPrice
-                                                                                    %></span>
+                                                                            <span>&#8377;<%= products[product +
+                                                                                    2].offerPrice %></span>
                                                                             <span><del class="text-danger">
                                                                                     <%=products[product + 2].price %>
                                                                                 </del></span>
@@ -321,7 +363,8 @@
                                                                                         2].offerPrice> 0) { %>
                                                                                         <!-- Display offer price -->
 
-                                                                                        <span>&#8377;<%= products[product +
+                                                                                        <span>&#8377;<%=
+                                                                                                products[product +
                                                                                                 2].offerPrice %>
                                                                                         </span>
                                                                                         <span class="text-danger"><del
@@ -338,8 +381,8 @@
                                                                                             <!-- Display category offer price -->
 
 
-                                                                                            <span>&#8377;<%= products[product
-                                                                                                    +
+                                                                                            <span>&#8377;<%=
+                                                                                                    products[product +
                                                                                                     2].categoryOfferPrice
                                                                                                     %></span>
                                                                                             <span
@@ -362,7 +405,6 @@
                                                         <% } %>
                                                             <% } %>
                             </div>
-
                         </div>
                         <div class="text-center">
                             <nav aria-label="Page navigation" class="pagination">
@@ -382,27 +424,20 @@
                         </div>
                     </div>
     </section>
-
     <%- include('../partials/Customerside/shopMethods') %>
-
 </main>
+<%- include('../partials/Customerside/footer') %>
 
+    <script>
+        $("#min-price").on("change mousemove", function () {
+            min_price = parseInt($("#min-price").val());
+            $("#min-price-txt").text("$" + min_price);
+            showItemsFiltered();
+        });
 
-    <%- include('../partials/Customerside/footer') %>
-
-
-<script>
-    
-  $("#min-price").on("change mousemove", function () {
-    min_price = parseInt($("#min-price").val());
-    $("#min-price-txt").text("$" + min_price);
-    showItemsFiltered();
-});
-
-$("#max-price").on("change mousemove", function () {
-    max_price = parseInt($("#max-price").val());
-    $("#max-price-txt").text("$" + max_price);
-    showItemsFiltered();
-});
-
-</script>
+        $("#max-price").on("change mousemove", function () {
+            max_price = parseInt($("#max-price").val());
+            $("#max-price-txt").text("$" + max_price);
+            showItemsFiltered();
+        });
+    </script>

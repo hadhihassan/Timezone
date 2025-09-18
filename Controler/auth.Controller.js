@@ -12,6 +12,9 @@ require("dotenv").config();
 const Coupon = require("../Models/couponModel")
 const Category = require("../Models/productCategory")
 const sharp = require('sharp');
+const { sendOTPVerificationEmail } = require('../services/emailService');
+const { generateOTP, hashOTP } = require('../services/otpService');
+const transporter  = require('../config/email');
 
 //RENDER THE SIGNUP PAGE    
 const loadRegister = async (req, res, next) => {
@@ -32,22 +35,8 @@ const loadRegister = async (req, res, next) => {
         ;
         res.render("User/404", { message: "An error occurred. Please try again later." });
     }
-}//RENDER THE INDEX PAGE OR HOME PAGE
-const loadhome = async (req, res) => {
-    try {
-        const newPro = await product.find({ is_delete: false }).sort({ _id: 1 }).limit(3);
-        const pros = await product.find({ is_delete: false }).limit(6)
-        res.render("User/index", {
-            user: req.session.user, query: "", success: "",
-            error: "",
-            newPro,
-            products: pros,
-            userId: req.session.user
-        })
-    } catch (error) {
-        res.render("User/404", { message: "An error occurred. Please try again later." });
-    }
-}//HASH THE USER PASSOWRD
+}
+//HASH THE USER PASSOWRD
 const secrePassword = async (password) => {
     try {
         const passwordHash = await bcrypt.hash(password, 10)
@@ -115,52 +104,7 @@ const insertUser = async (req, res) => {
         res.render("User/404", { message: "An error occurred. Please try again later." });
     }
 }
-
-//EMAIL SENDER 
-let transporter = nodemailer.createTransport({
-    service: "Gmail",
-    host: 'smtp.gmail.com',
-    port: 587,
-    secure: false,
-    auth: {
-        user: process.env.AUTH_EMAIL,
-        pass: process.env.AUTH_PASS,
-    }
-});
-
-// SEND EMAIL TO USER FOR VERFICATION 
-const sendOTPVerificationEmail = async ({ _id, email }, res) => {
-    try {
-        const otp = `${Math.floor(1000 + Math.random() * 9000)}`;
-        // Mail options
-        const mailOption = {
-            from: process.env.AUTH_EMAIL, // Use the correct environment variable
-            to: email,
-            subject: "Verify Your Email",
-            html: `<p>Enter <b>${otp}</b> in the app to verify your email address and complete the verification</p>
-                   <p>This code <b>expires in 1 minute</b>.</p>`
-        };
-        // Hash the OTP
-        const saltRounds = 10;
-        const hashedOTP = await bcrypt.hash(otp, saltRounds);
-        const newOTPVerification = new UserOTPVerification({
-            userId: _id,
-            otp: hashedOTP,
-            createdAt: Date.now(),
-            expireAt: Date.now() + 60000,
-        });
-
-        // Save OTP record
-        await UserOTPVerification.deleteMany({ userId: _id })
-        await newOTPVerification.save();
-        // Send email
-        await transporter.sendMail(mailOption);
-        // Send a single response at the end of the try block
-    } catch (error) {
-        // Handle errors and send an error response
-        res.render("User/404", { message: "An error occurred. Please try again later." });
-    }
-};//RENDER THE OTP PAGE
+//RENDER THE OTP PAGE
 const loadOTPpage = async (req, res) => {
     try {
         const userId = req.query.userId;
@@ -274,7 +218,6 @@ const checkUserValid = async (req, res) => {
     }
 
 }//RENDER THE FORGET PASSWORD PAGE
-
 const loadForgetPage = (req, res) => {
     try {
         if (!req.session.user) {
@@ -286,4 +229,126 @@ const loadForgetPage = (req, res) => {
     } catch (error) {
         res.render("User/404", { message: "An error occurred. Please try again later." });
     }
+}
+const userLogouting = (req, res, next) => {
+    try {
+        if (req.session.user) {
+            req.session.destroy();
+            return res.redirect("/")
+        } else {
+            return res.redirect('/')
+        }
+    } catch (error) {
+        res.render("User/404", { message: "An error occurred. Please try again later." });
+    }
+}
+//FORGETPASSWORD EMAIL VALID OR INVALID AND SEND OTP
+const ForgetPasswordcheckingValid = async (req, res) => {
+    try {
+        const email = req.body.email;
+        const user = await Customer.findOne({ email: email }); // Use findOne instead of find
+        if (user) {
+            const otpexist = await UserOTPVerification.deleteMany({ $or: [{ userId: user._id }, { Email: email }] });
+            const otp = generateOTP()
+            // Mail options
+            const mailOption = {
+                from: process.env.AUTH_EMAIL,
+                to: email,
+                subject: "Forget password",
+                html: `<p>Enter <b>${otp}</b> in the app to verify your email address and complete the verification</p>
+                      <p>This code <b>expires in 1 minute</b>.</p>`
+            };
+        
+            const hashedOTP = await hashOTP(otp);
+            const newOTPVerification = new UserOTPVerification({
+                userId: user._id,
+                otp: hashedOTP,
+                createdAt: Date.now(),
+                expireAt: Date.now() + 60000,
+            });
+            const otp2 = await newOTPVerification.save();
+            await transporter.sendMail(mailOption);
+            res.redirect(`/user/set-new-password?id=${user._id}`);
+        } else {
+            req.flash('error', 'The email was not found. Please try again or sign up.');
+            return res.render("User/ForgetPassword", { message: "The email was not found. Please try again or sign up.", user: req.session.user, success: "" });
+        }
+    } catch (error) {
+        req.flash('error',"An error occurred while processing your request." );
+    }
+};
+//RENDER THE CHANGE PASSWORD PAGE
+const loadChangePass = (req, res) => {
+    const id = req.query.id
+    try {
+        res.render('User/setPAssword', {
+            user: req.session.user, id, success: req.flash("success"),
+            error: req.flash("error"),
+        })
+    } catch (error) {
+        res.render("User/404", { message: "An error occurred. Please try again later." });
+    }
+}
+//VALIDATE THE OTP 
+const validOTPsetPass = async (req, res) => {
+    const { OTP, newpassword, confirmpassword, id } = req.body;
+    try {
+        if (!OTP || !newpassword || !confirmpassword || !id) {
+            // Check if all required fields are present
+            return res.status(400).send("Missing fields in the request.");
+        }
+        const otpRecord = await UserOTPVerification.findOne({ userId: id });
+        const { userId, otp, expireAt } = otpRecord;
+        const checkOtpSame = await bcrypt.compare(OTP, otp);
+        if (!otpRecord) {
+            // No OTP record found for the provided user ID
+            return res.status(400).send("No OTP record found for the email.");
+        }
+        if (expireAt < Date.now()) {
+            return res.status(400).send("otp expaired")
+        }
+        if (checkOtpSame == "false" || checkOtpSame == false) {
+            // Invalid OTP
+            console.log(otpRecord)
+            return res.status(400).send("Invalid OTP.");
+        }
+        if (confirmpassword !== newpassword) {
+            // Passwords do not match
+            return res.status(400).send("Passwords do not match.");
+        }
+        const hashedPassword = await secrePassword(newpassword); // Assuming secrePassword is a password hashing function
+        if (!hashedPassword) {
+            // Error hashing the new password
+            return res.status(500).send("Error hashing the new password.");
+        }
+        const upuser = await Customer.updateOne({ _id: id }, { $set: { password: hashedPassword } });
+        await UserOTPVerification.findOneAndDelete({ userId: id });
+        if (!upuser) {
+            // Error updating password
+            return res.status(500).send("Error updating password.");
+        }
+        return res.redirect("/");
+    } catch (error) {
+        res.render("User/404", { message: "An error occurred. Please try again later." });
+    }
+};
+
+//USER FORGETPASSWORD OTP RESEND 
+const forgetPassResendOtp = async (req, res) => {
+    try {
+        const { id } = req.body
+        const userData = await Customer.findById(id)
+        await sendOTPVerificationEmail(userData)
+        if (userData) {
+            return res.redirect(`/user/set-new-password?id=${id}`)
+        }
+    } catch (error) {
+        res.render("User/404", { message: "An error occurred. Please try again later." });
+    }
+}
+
+module.exports = {
+    loadRegister, insertUser, loadOTPpage, checkOTPValid, loadLogin, checkUserValid,
+    userLogouting, loadForgetPage, ForgetPasswordcheckingValid,
+    loadChangePass, validOTPsetPass, resedOtp, forgetPassResendOtp
 }

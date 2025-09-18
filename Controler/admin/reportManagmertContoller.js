@@ -26,8 +26,10 @@ const calculateReport = async (req, res) => {
         startDate.setUTCHours(0, 0, 0, 0);
         const endDate = new Date(ending);
         endDate.setUTCHours(23, 59, 59, 999);
+
         req.session.startDate = startDate
         req.session.endingDate = endDate
+
         // Successfully delivered orders
         const deliveredOrdersPromise = Order.find({
             updatedAt: { $gte: startDate, $lte: endDate },
@@ -81,7 +83,6 @@ const calculateReport = async (req, res) => {
             .catch((error) => {
                 console.error('Error:', error);
             });
-
     } catch (error) {
         console.log(error.message);
     }
@@ -118,16 +119,20 @@ const reportDownloadinExecle = async (req, res) => {
     try {
         let salesReport;
         if (req.session.startDate) {
+
             const startDate = req.session.startDate;
             const endDate = req.session.endingDate;
+
             const deliveredOrders = await Order.find({
                 updatedAt: { $gte: startDate, $lte: endDate },
                 orderCanceled: false,
                 is_returned: false,
                 returnRequest: 'Completed'
             }).populate("products.product").exec();
+
             const workbook = new excelJs.Workbook();
             const worksheet = workbook.addWorksheet('sales Report');
+
             worksheet.columns = [
                 {
                     header: 'S no.',
@@ -140,11 +145,11 @@ const reportDownloadinExecle = async (req, res) => {
                 { header: 'Method', key: 'paymentOption', width: 10 },
                 { header: 'Amount', key: 'totalAmount' },
             ];
+
             let counter = 1;
-            console.log(deliveredOrders[0].products);
-            console.log(deliveredOrders);
+
             deliveredOrders.forEach((product) => {
-                console.log(product);
+
                 product.s_no = counter;
                 product.orderDate = product.orderDate
                 product.paymentOption = product.paymentOption
@@ -156,21 +161,18 @@ const reportDownloadinExecle = async (req, res) => {
                         if (pro.product && pro.product.product_name !== undefined) {
                             product.product_name += pro.product.product_name + ', ';
                         }
-
                     });
-
                 });
+
                 // product.product_name = product.product.product_name
                 worksheet.addRow(product);
                 counter++;
             });
 
-
-
-
             worksheet.getRow(1).eachCell((cell) => {
                 cell.font = { bold: true };
             });
+            
             res.header('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
             res.header('Content-Disposition', 'attachment; filename=report.xlsx');
 

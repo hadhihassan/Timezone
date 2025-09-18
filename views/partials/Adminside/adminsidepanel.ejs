@@ -1,106 +1,86 @@
+<nav class="sidebar sidebar-offcanvas" id="sidebar" style="margin-top: 15px;">
+  <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top" style="margin-top: 10px;">
+    <h4>Timezone Admin</h4>
+  </div>
+  <ul class="nav">
+    <li class="nav-item menu-items <%= a === "dashboard" ? "active" : "" %>">
+      <a class="nav-link" href="/admin/dashboard">
+        <span class="menu-icon">
+          <i class="mdi mdi-chart-bar"></i>
+        </span>
+        <span class="menu-title">Dashboard</span>
+      </a>
+    </li>
 
-  
-    <nav class="sidebar sidebar-offcanvas" id="sidebar">
-      <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
-       
+    <li class="nav-item menu-items">
+      <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+        <span class="menu-icon">
+          <i class="mdi mdi-wallet-travel"></i>
+        </span>
+        <span class="menu-title">Product</span>
+        <i class="menu-arrow"></i>
+      </a>
+      <div class="collapse" id="ui-basic">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"><a class="nav-link" href="/admin/product/create">Add Products</a></li>
+          <li class="nav-item"><a class="nav-link" href="/admin/product">List Products</a></li>
+        </ul>
       </div>
-      <ul class="nav">
-        <li class="nav-item profile text-center">
-          <h4>
-            TIME ZONE
-          </h4>
-        </li>
-        <li class="nav-item nav-category">
-          <span class="nav-link">Navigation</span>
-        </li>
-      
-          <li class="nav-item menu-item  <%=a === "dashboard" ? "active":""  %>">
-            <a class="nav-link" href="/admin/dashboard">
-              <span class="menu-icon">
-                <i class="mdi mdi-chart-bar"></i>
-              </span>
-              
-              <span class="menu-title">Dashboard</span>
-            </a>
-          </li>
+    </li>
 
-       
-       
-        <li class="nav-item menu-items">
-          <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
-            <span class="menu-icon">
-              <i class="mdi mdi-wallet-travel"></i>
-            </span>
-            <span class="menu-title">Product</span>
-            <i class="menu-arrow"></i>
-          </a>
-          <div class="collapse" id="ui-basic">
-            <ul class="nav flex-column sub-menu">
-              <li class="nav-item"> <a class="nav-link" href="/admin/product/create">Add Products</a></li>
-              <li class="nav-item"> <a class="nav-link" href="/admin/product">List Products</a></li>
-              <!-- <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Typography</a></li> -->
-            </ul>
-          </div>
-        </li>
-          <li class="nav-item menu-items <%=a === "Customers" && "active"  %>">
-            <a class="nav-link" href="/admin/Customers">
-              <span class="menu-icon">
-                <i class="mdi mdi-contacts"></i>
-              </span>
-              <span class="menu-title">Customers</span>
-            </a>
-          </li>
-      
-  
-  
-          <li class="nav-item menu-items <%=a === "order" ? "active":""  %>">
-            <a class="nav-link" href="/admin/orders">
-              <span class="menu-icon">
-                <i class="mdi mdi-table-large"></i>
-              </span>
-              <span class="menu-title">Order</span>
-            </a>
-          </li>
-        
-          <li class="nav-item menu-items <%=a === "offer" ? "active":""  %>">
-            <a class="nav-link" href="/admin/Offer/">
-              <span class="menu-icon">
-                <i class="mdi mdi-wallet-travel"></i>
-              </span>
-              <span class="menu-title">Offers</span>
-            </a>
-          </li>
-  
-    
-       
-        <li class="nav-item menu-items <%=a === "category" ? "active":""  %>">
-          <a class="nav-link" href="/admin/product/Category-management">
-            <span class="menu-icon">
-              <i class="mdi mdi-chart-bar"></i>
-            </span>
-            <span class="menu-title">Category Management</span>
-          </a>
-        </li>
-        <li class="nav-item menu-items <%=a === "coupon" ? "active":""  %>">
-          <a class="nav-link" href="/admin/coupon-management">
-            <span class="menu-icon">
-              <i class="mdi mdi-file-document-box"></i>
-            </span>
-            <span class="menu-title">Coupon Management</span>
-          </a>
-        </li>
+    <li class="nav-item menu-items <%= a === "customers" ? "active" : "" %>">
+      <a class="nav-link" href="/admin/customers">
+        <span class="menu-icon">
+          <i class="mdi mdi-contacts"></i>
+        </span>
+        <span class="menu-title">Customers</span>
+      </a>
+    </li>
 
-          <li class="nav-item menu-items    <%=a === "Report" ? "active":""  %>">
-          <a class="nav-link" href="/admin/Report-managment">
-            <span class="menu-icon">
-              <i class="mdi mdi-table-large"></i>
-            </span>
-            <span class="menu-title">Report Management</span>
-          </a>
-        </li>
-     
-       
-      </ul>
-    </nav>
+    <li class="nav-item menu-items <%= a === "order" ? "active" : "" %>">
+      <a class="nav-link" href="/admin/orders">
+        <span class="menu-icon">
+          <i class="mdi mdi-table-large"></i>
+        </span>
+        <span class="menu-title">Order</span>
+      </a>
+    </li>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <li class="nav-item menu-items <%= a === "offer" ? "active" : "" %>">
+      <a class="nav-link" href="/admin/offer">
+        <span class="menu-icon">
+          <i class="mdi mdi-wallet-travel"></i>
+        </span>
+        <span class="menu-title">Offers</span>
+      </a>
+    </li>
+
+    <li class="nav-item menu-items <%= a === "category" ? "active" : "" %>">
+      <a class="nav-link" href="/admin/product/category-management">
+        <span class="menu-icon">
+          <i class="mdi mdi-chart-bar"></i>
+        </span>
+        <span class="menu-title">Category Management</span>
+      </a>
+    </li>
+
+    <li class="nav-item menu-items <%= a === "coupon" ? "active" : "" %>">
+      <a class="nav-link" href="/admin/coupon-management">
+        <span class="menu-icon">
+          <i class="mdi mdi-file-document-box"></i>
+        </span>
+        <span class="menu-title">Coupon Management</span>
+      </a>
+    </li>
+
+    <li class="nav-item menu-items <%= a === "report" ? "active" : "" %>">
+      <a class="nav-link" href="/admin/report-management">
+        <span class="menu-icon">
+          <i class="mdi mdi-table-large"></i>
+        </span>
+        <span class="menu-title">Report Management</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

@@ -1,150 +1,158 @@
 <%- include('../partials/Adminside/adminNav') %>
-    <div class="container-scroller">
-      <!-- partial:../../partials/_sidebar.html -->
-      <%- include('../partials/Adminside/adminsidepanel') %>
+<div class="container-scroller">
+  <!-- partial:../../partials/_sidebar.html -->
+  <%- include('../partials/Adminside/adminsidepanel') %>
 
-        <div class="container-fluid page-body-wrapper">
-      
+  <div class="container-fluid page-body-wrapper">
+    <!-- partial -->
+    <div class="main-panel">
+      <div class="content-wrapper">
+        <ul class="navbar-nav w-100">
+          <li class="nav-item w-100">
+            <form
+              action="/admin/customers"
+              method="get"
+              class="nav-link mt-2 mt-md-0 d-none d-lg-flex search"
+            >
+              <input
+                id="searchInput"
+                type="text"
+                name="query"
+                value="<%= query || '' %>"
+                class="form-control"
+                placeholder="Search user by name"
+              />
+              <button class="btn btn-info" type="submit" id="searchButton" style="height: 37px; margin-left: 10px; font-size: small;">
+                Search
+              </button>
+            </form>
+          </li>
+        </ul>
 
-        <!-- partial -->
-        <div class="main-panel">
-          
-          <div class="content-wrapper">
-            <ul class="navbar-nav w-100">
-              <li class="nav-item w-100">
+        <div class="row">
+          <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Customers List</h4>
+                <div class="table-responsive">
+                  <% if (users.length) { %>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>No</th>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Mobile</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                        <th>Verified</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% users.forEach((user, i) => { %>
+                      <tr>
+                        <th><%= i + 1 %></th>
+                        <td class="responsive-image-container">
+                          <% if (user.images) { %>
+                          <img
+                            src="<%= user.images %>"
+                            style="object-fit: cover"
+                            alt="User Image"
+                          />
+                          <% } else { %>
+                          <img
+                            src="../../Admin/images/faces-clipart/pic-1.png"
+                            alt="Default Image"
+                          />
+                          <% } %>
+                        </td>
+                        <td><%= user.name %></td>
+                        <td><%= user.mobile %></td>
+                        <td><%= user.email %></td>
 
-                <form action="/admin/customers" method="get" class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
-                  <input id="searchInput" type="text" name="query" value="<%= query || '' %>" class="form-control" placeholder="Search user by name" />
-                  <button class="btn btn-info" type="submit" id="searchButton">Search by name</button>
-                </form>
-              </li>
-            </ul>
-           
-              <div class="row">
-                <div class="col-lg-12 grid-margin stretch-card">
-                  <div class="card">
-                    <div class="card-body">
-                      <h4 class="card-title">Customers List</h4>
-                      <p class="card-description"> All users <code>.table</code>
-                      </p>
-                      <div class="table-responsive">
-                        <% if (users.length) { %>
-                        <table class="table">
-                          <thead>
-                            <tr>
-                              <th>No</th>
-                              <th>images</th>
-                              <th>Name</th>
-                              <th>Mobile</th>
-                              <th>Email</th>
-                              <th>Status</th>
-                              <th>action</th>
-                              <th>Verified</th>
-                              
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <% users.forEach((user, i)=> { %>
-                            <tr>
-                              <th> <%= i+1 %></th>
-                              <td>
-                                <% if (user.image && user.image.contentType && user.image.data) { %>
-                                  <img src="data:<%= user.image.contentType %>;base64,<%= user.image.data.toString('base64') %>" alt="User Image">
-                              <% } else { %>
-                                  <img src="../../Admin/images/faces-clipart/pic-1.png" alt="image">
-                              <% } %>
-                              
-                               
-                                </td>
-                              <td>
-                                <%= user.name %>
-                              </td>
-                              <td><%= user.mobile %></td>
-                              <td><%= user.email %></td>
-                         <!--if User Block then this display -->
-                            <% if (user.is_block === true) { %>
-                              <td>
-                                <p class="text-danger">Deactive</p>
-                              </td>
-                              <td>
-                                <a href="/admin/Customers/Unblock-theUser?id=<%= user._id %>" class="btn btn-success">Unblock</a>
-
-                              </td>
-                              <td>
-                                <% if (user.is_varified === true) { %>
-                                 <label class="text-success">varified</label>
-                                <% } else { %>
-                                  <label class="text-danger">Not varified</label>
-                                <% } %>
-                               </td>
-                            <% } else if (user.is_block === false) { %>
-                              <td>
-                                <p class="text-success">Active</p>
-                              </td>
-                              <td>
-                                <a href="/admin/Customers/block-theUser?id=<%= user._id %>" class="btn btn-danger">Block</i></a>
-                              </td>
-                              <td>
-                              <% if (user.is_varified === true) { %>
-                               <label class="text-success">varified</label>
-                              <% } else { %>
-                                <label class="text-danger">Not varified</label>
-                              <% } %>
-                             </td>
-                            </tr>
-                            
-                            <% } %>
-                            <% }) %>
-                          </tbody>
-                        </table>
-                     
+                        <% if (user.is_block) { %>
+                        <td><p class="text-danger">Deactive</p></td>
+                        <td>
+                          <a
+                            href="/admin/Customers/Unblock-theUser?id=<%= user._id %>"
+                            class="btn btn-success"
+                            >Unblock</a
+                          >
+                        </td>
+                        <% } else { %>
+                        <td><p class="text-success">Active</p></td>
+                        <td>
+                          <a
+                            href="/admin/Customers/block-theUser?id=<%= user._id %>"
+                            class="btn btn-danger"
+                            >Block</a
+                          >
+                        </td>
                         <% } %>
-                   
-                      </div>
-                      <br>
-                      <nav aria-label="Page navigation">
-                          <ul class="pagination justify-content-end">
-                            <% if (currentPage > 1) { %>
-                              <li class="page-item">
-                                <a class="page-link" href="/admin/customers?page=<%= currentPage - 1 %>" aria-label="Previous">
-                                  <span aria-hidden="true">&laquo;</span>
-                                </a>
-                              </li>
-                            <% } %>
-                            
-                            <% const totalPages = Math.max(1, Math.ceil(len / 10)); %>
-                            
-                            <% for (let page = 1; page <= totalPages; page++) { %>
-                              <li class="page-item <%= currentPage === page ? 'active' : '' %>">
-                                <a class="page-link" href="/admin/customers?page=<%= page %>"><%= page %></a>
-                              </li>
-                            <% } %>
-                            
-                            <% if (currentPage < totalPages) { %>
-                              <li class="page-item">
-                                <a class="page-link" href="/admin/customers?page=<%= currentPage + 1 %>" aria-label="Next">
-                                  <span aria-hidden="true">&raquo;</span>
-                                </a>
-                              </li>
-                            <% } %>
-                            
-                          </ul>
-                        </nav>
-                        
-                    </div>
-                  </div>
+
+                        <td>
+                          <% if (user.is_varified) { %>
+                          <label class="text-success">Verified</label>
+                          <% } else { %>
+                          <label class="text-danger">Not Verified</label>
+                          <% } %>
+                        </td>
+                      </tr>
+                      <% }) %>
+                    </tbody>
+                  </table>
+                  <% } %>
                 </div>
-                </div> 
+
+                <br />
+                <nav aria-label="Page navigation">
+                  <ul class="pagination justify-content-end">
+                    <% if (currentPage > 1) { %>
+                    <li class="page-item">
+                      <a
+                        class="page-link"
+                        href="/admin/customers?page=<%= currentPage - 1 %>"
+                        aria-label="Previous"
+                      >
+                        <span aria-hidden="true">&laquo;</span>
+                      </a>
+                    </li>
+                    <% } %> <% const totalPages = Math.max(1, Math.ceil(len /
+                    10)); %> <% for (let page = 1; page <= totalPages; page++) {
+                    %>
+                    <li
+                      class="page-item <%= currentPage === page ? 'active' : '' %>"
+                    >
+                      <a
+                        class="page-link"
+                        href="/admin/customers?page=<%= page %>"
+                        ><%= page %></a
+                      >
+                    </li>
+                    <% } %> <% if (currentPage < totalPages) { %>
+                    <li class="page-item">
+                      <a
+                        class="page-link"
+                        href="/admin/customers?page=<%= currentPage + 1 %>"
+                        aria-label="Next"
+                      >
+                        <span aria-hidden="true">&raquo;</span>
+                      </a>
+                    </li>
+                    <% } %>
+                  </ul>
+                </nav>
+              </div>
+            </div>
           </div>
-
-    
-          <!-- partial -->
         </div>
-        <!-- main-panel ends -->
       </div>
-      <!-- page-body-wrapper ends -->
+      <!-- partial -->
     </div>
-    <%- include('../partials/Adminside/footer') %>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
-
-
+    <!-- main-panel ends -->
+  </div>
+  <!-- page-body-wrapper ends -->
+</div>
+<%- include('../partials/Adminside/footer') %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
